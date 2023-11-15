@@ -25,18 +25,21 @@ import EmblaCartSlider from '../common/gift-cart-slider';
 type MerchandiseSearchParams = {
   [key: string]: string;
 };
-
+const couponDescriptionLine = <b>FOX1099</b>;
+const minimumCartItems = 3;
 export default function CartModal() {
   const carts = useAppSelector((state) => state.cart.cart);
   const { adjustFreebiesInCart } = useCoupon();
 
   const data = getCartData(carts);
+  const totalCartQuantity = data.totalQuantity;
+
   const { currencyCode, totalAmount } = data;
   const dispatch = useAppDispatch();
   function increaseItemQuantity({ item, type }: { item: CartItem; type: string }) {
     const cart = {
       ...carts,
-      lines: carts.lines.map((line) => {
+      lines: carts.lines.map((line: any) => {
         if (line.merchandise.id === item.merchandise.id) {
           if (type === 'plus') {
             return {
@@ -58,6 +61,7 @@ export default function CartModal() {
     console.log('cartToBeUpdate', cartToBeUpdate);
     console.log('itemsToBeAdd', itemsToBeAdd);
     console.log('giftProducts', giftProducts);
+
     const updatedCart = cartToBeUpdate.lines?.map((item: CartItem) => ({
       id: item.id,
       merchandiseId: item.merchandise.id,
@@ -231,9 +235,40 @@ export default function CartModal() {
                       );
                     })}
                     <div className="max-h-60 w-full">
+                      <div>Complete Your Routine With</div>
                       <EmblaCartSlider slides={carts.lines} options={OPTIONS} />
                     </div>
                   </ul>
+                  <div>
+                    {totalCartQuantity > minimumCartItems && (
+                      <div className="bg-[#ffe1d7] p-2 text-xs">
+                        <p className="flex flex-row">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 60 60"
+                            width="30px"
+                            height="30px"
+                          >
+                            <path d="M15,3C8.373,3,3,8.373,3,15c0,6.627,5.373,12,12,12s12-5.373,12-12C27,8.373,21.627,3,15,3z M16,21h-2v-7h2V21z M15,11.5 c-0.828,0-1.5-0.672-1.5-1.5s0.672-1.5,1.5-1.5s1.5,0.672,1.5,1.5S15.828,11.5,15,11.5z" />
+                          </svg>
+                          <span>
+                            {' Use Code: '}
+                            {couponDescriptionLine}
+                            {' at checkout to unlock the De-Tan Scrub'}
+                          </span>
+                        </p>
+                      </div>
+                      // <p className="text-xs">
+                      //   {' '}
+                      //   <Image src="/Images/info.svg" alt="Info Icon" height={28} width={28} />
+                      //   {/* <p className="text-xs"> */}
+                      //   {' Use Code: '}
+                      //   {couponDescriptionLine}
+                      //   {' at checkout to unlock the De-Tan Scrub'}
+                      //   {/* </p>{' '} */}
+                      // </p>
+                    )}
+                  </div>
                   <div className="py-4 text-sm text-neutral-500 ">
                     <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1">
                       <p>Total</p>

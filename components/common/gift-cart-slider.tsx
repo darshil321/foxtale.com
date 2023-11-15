@@ -17,7 +17,7 @@ const EmblaCartSlider: React.FC<PropType> = (props) => {
   const [emblaRef] = useEmblaCarousel(options, [Autoplay()]);
 
   return (
-    <section className="embla_product">
+    <section className="embla_product border-1">
       <div className="embla_product__viewport " ref={emblaRef}>
         <div className="embla_product__container h-full w-full">
           {slides.map((product, index) => (
