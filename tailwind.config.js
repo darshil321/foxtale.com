@@ -6,7 +6,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-geist-sans)']
+        sans: ['var(--font-geist-sans)'],
+        poppins: ['Poppins', 'sans-serif']
       },
       keyframes: {
         fadeIn: {
