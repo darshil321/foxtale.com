@@ -33,7 +33,7 @@ export default async function Navbar() {
                 <li key={item.title}>
                   <Link
                     href={item.path}
-                    className="text-neutral-500 underline-offset-4 hover:text-black hover:underline dark:text-neutral-400 dark:hover:text-neutral-300"
+                    className="text-neutral-500 underline-offset-4 hover:text-black hover:underline "
                   >
                     {item.title}
                   </Link>
@@ -47,7 +47,7 @@ export default async function Navbar() {
             <Search />
           </Suspense>
         </div>
-        <div className="flex justify-end md:w-1/3">
+        <div className="flex w-full justify-end  md:w-1/3">
           <Suspense fallback={<OpenCart />}>
             <Cart />
           </Suspense>
