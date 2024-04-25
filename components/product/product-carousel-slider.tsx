@@ -1,0 +1,64 @@
+'use client';
+import React, { useCallback } from 'react';
+import { EmblaOptionsType, EmblaCarouselType } from 'embla-carousel';
+import { PrevButton, NextButton, usePrevNextButtons } from './embla-carousel-arrow-buttons';
+import Autoplay from 'embla-carousel-autoplay';
+import useEmblaCarousel from 'embla-carousel-react';
+import Image from 'next/image';
+
+type Images = {
+  url: string;
+  altText: string;
+};
+type PropType = {
+  slides: Images[];
+  options?: EmblaOptionsType;
+};
+
+const EmblaCarouselSlider: React.FC<PropType> = (props) => {
+  const { slides, options } = props;
+  const [emblaRef, emblaApi] = useEmblaCarousel(options, [Autoplay()]);
+
+  const onNavButtonClick = useCallback((emblaApi: EmblaCarouselType) => {
+    const autoplay = emblaApi?.plugins()?.autoplay;
+    if (!autoplay) return;
+
+    const resetOrStop =
+      autoplay.options.stopOnInteraction === false ? autoplay.reset : autoplay.stop;
+
+    resetOrStop();
+  }, []);
+
+  const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } =
+    usePrevNextButtons(emblaApi, onNavButtonClick);
+
+  return (
+    <section className="embla_product px-4 md:px-0">
+      <div className="embla_product__viewport" ref={emblaRef}>
+        <div className="embla_product__container">
+          {slides.map((image, index) => (
+            <div className="embla_product__slide" key={index}>
+              <Image
+                className="h-full max-h-[320px] max-w-[320px] object-cover md:max-h-[470px]  md:w-full  md:max-w-[470px]"
+                width={500}
+                height={500}
+                alt={image.altText as string}
+                src={image?.url as string}
+                priority={true}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="embla_product__controls">
+        <div className="embla_product__buttons">
+          <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
+          <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default EmblaCarouselSlider;

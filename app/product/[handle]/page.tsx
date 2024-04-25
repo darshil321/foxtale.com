@@ -1,14 +1,20 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { GridTileImage } from 'components/grid/tile';
-import Footer from 'components/layout/footer';
-import { Gallery } from 'components/product/gallery';
 import { ProductDescription } from 'components/product/product-description';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import { getProduct, getProductRecommendations } from 'lib/shopify';
-import { Image } from 'lib/shopify/types';
 import Link from 'next/link';
 import { Suspense } from 'react';
+import ProductDisclosure from 'components/product/product-disclosure';
+import OfferSection from 'components/product/offers-section';
+import CustomInputBtn from 'components/elements/custom-input-with-btn';
+import ResultsSection from 'components/product/results-section';
+import { ProductCarousel } from 'components/product/product-carousel';
+import ProductDetailsTabs from 'components/product/product-details-tabs';
+import ProductDescFooter from 'components/product/pdp-footer';
+import Accordion from 'components/layout/accordion';
+import { ProductSlider } from 'components/product/product-slider';
 
 export async function generateMetadata({
   params
@@ -71,37 +77,50 @@ export default async function ProductPage({ params }: { params: { handle: string
   };
 
   return (
-    <>
+    <div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(productJsonLd)
         }}
       />
-      <div className="mx-auto max-w-screen-2xl px-4">
-        <div className="flex flex-col rounded-lg border border-neutral-200 bg-white p-8 md:p-12 lg:flex-row lg:gap-8 ">
-          <div className="h-full w-full basis-full lg:basis-4/6">
+      <div className="mx-auto max-w-screen-2xl  pt-3  md:pt-8 ">
+        <div className="flex flex-col rounded-lg  lg:flex-row lg:gap-8 ">
+          <div className="h-full w-full basis-full lg:basis-3/6">
             <Suspense
               fallback={
-                <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden" />
+                <div className="relative aspect-square  h-full max-h-[550px] w-full overflow-hidden" />
               }
             >
-              <Gallery
-                images={product.images.map((image: Image) => ({
-                  src: image.url,
-                  altText: image.altText
-                }))}
-              />
+              <ProductSlider images={product.images} />
             </Suspense>
           </div>
-          <div className="basis-full lg:basis-2/6">
-            <ProductDescription product={product} />
+          <div className="basis-full  lg:basis-3/6">
+            <div className="px-4 md:px-2">
+              <ProductDescription product={product} />
+            </div>
+            <OfferSection />
+            <div className="my-3 px-4 md:px-0">
+              <Suspense fallback={null}>
+                <CustomInputBtn
+                  className="w-full py-1 text-xs "
+                  text="Enter your pincode"
+                  buttonText="Check"
+                />
+              </Suspense>
+            </div>
           </div>
         </div>
+        <div>{<ProductDisclosure />}</div>
+
+        <ResultsSection />
+        <ProductCarousel />
+        <ProductDetailsTabs />
+        <Accordion />
+        <ProductDescFooter product={product} />
         <RelatedProducts id={product.id} />
       </div>
-      <Footer />
-    </>
+    </div>
   );
 }
 
