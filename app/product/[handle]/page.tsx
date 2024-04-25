@@ -6,15 +6,15 @@ import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import { getProduct, getProductRecommendations } from 'lib/shopify';
 import Link from 'next/link';
 import { Suspense } from 'react';
-import ProductDisclosure from 'components/product/product-disclosure';
-import OfferSection from 'components/product/offers-section';
 import CustomInputBtn from 'components/elements/custom-input-with-btn';
 import ResultsSection from 'components/product/results-section';
+import { ProductSlider } from 'components/product/product-slider';
+import Accordion from 'components/layout/accordion';
+import ProductDescFooter from 'components/product/pdp-footer';
+import OfferSection from 'components/product/offers-section';
 import { ProductCarousel } from 'components/product/product-carousel';
 import ProductDetailsTabs from 'components/product/product-details-tabs';
-import ProductDescFooter from 'components/product/pdp-footer';
-import Accordion from 'components/layout/accordion';
-import { ProductSlider } from 'components/product/product-slider';
+import ProductDisclosure from 'components/product/product-disclosure';
 
 export async function generateMetadata({
   params
@@ -96,7 +96,7 @@ export default async function ProductPage({ params }: { params: { handle: string
             </Suspense>
           </div>
           <div className="basis-full  lg:basis-3/6">
-            <div className="px-4 md:px-2">
+            <div className="px-4 pt-3 md:px-2 md:pt-0">
               <ProductDescription product={product} />
             </div>
             <OfferSection />

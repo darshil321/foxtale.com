@@ -33,13 +33,13 @@ const EmblaCarouselSlider: React.FC<PropType> = (props) => {
     usePrevNextButtons(emblaApi, onNavButtonClick);
 
   return (
-    <section className="embla_product px-4 md:px-0">
-      <div className="embla_product__viewport" ref={emblaRef}>
+    <section className="embla_product relative px-4 md:px-0">
+      <div className="embla_product__viewport " ref={emblaRef}>
         <div className="embla_product__container">
           {slides.map((image, index) => (
             <div className="embla_product__slide" key={index}>
               <Image
-                className="h-full max-h-[320px] max-w-[320px] object-cover md:max-h-[470px]  md:w-full  md:max-w-[470px]"
+                className="p  aspect-square h-full w-full object-cover  md:w-full  md:max-w-[470px]"
                 width={500}
                 height={500}
                 alt={image.altText as string}
@@ -51,8 +51,8 @@ const EmblaCarouselSlider: React.FC<PropType> = (props) => {
         </div>
       </div>
 
-      <div className="embla_product__controls">
-        <div className="embla_product__buttons">
+      <div className="embla_product__controls absolute left-0 right-0 top-1/2 translate-y-[-50%] ">
+        <div className="hidden w-full justify-between md:flex ">
           <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
           <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
         </div>
