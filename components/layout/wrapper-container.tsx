@@ -5,7 +5,7 @@ interface WrapperProps {
 }
 
 const WrapperContainer: React.FC<WrapperProps> = ({ children }) => {
-  return <div className="mx-[121px] bg-neutral-50 px-5">{children}</div>;
+  return <div className=" md:px-4 lg:mx-[121px] lg:px-5">{children}</div>;
 };
 
 export default WrapperContainer;

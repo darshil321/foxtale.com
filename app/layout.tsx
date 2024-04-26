@@ -5,6 +5,7 @@ import { ReactNode } from 'react';
 import './globals.css';
 import Footer from 'components/layout/footer';
 import WrapperContainer from 'components/layout/wrapper-container';
+import Banner from 'components/layout/navbar/banner';
 
 const { TWITTER_CREATOR, TWITTER_SITE, SITE_NAME } = process.env;
 const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
@@ -36,7 +37,8 @@ export const metadata = {
 export default async function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={GeistSans.variable}>
-      <body className=" bg-neutral-50 text-black selection:bg-teal-300 ">
+      <body className=" text-black selection:bg-teal-300 ">
+        <Banner />
         <WrapperContainer>
           <Navbar />
           <main>{children}</main>

@@ -9,6 +9,12 @@ module.exports = {
         sans: ['var(--font-geist-sans)'],
         poppins: ['Poppins', 'sans-serif']
       },
+      colors: {
+        primary: '#E85A28',
+        secondary: '#f3f3f3',
+        tertiary: '#f3f3f3',
+        grey: '#f7f7f7'
+      },
       keyframes: {
         fadeIn: {
           from: { opacity: 0 },

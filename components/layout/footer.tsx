@@ -9,6 +9,7 @@ import instagram from '../../assets/svgs/instagram.svg';
 import facebook from '../../assets/svgs/facebook.svg';
 import twitter from '../../assets/svgs/twitterx.svg';
 import youtube from '../../assets/svgs/youtube.svg';
+import CustomInputBtn from 'components/elements/custom-input-with-btn';
 
 const { COMPANY_NAME, SITE_NAME } = process.env;
 
@@ -42,8 +43,8 @@ export default async function Footer() {
   ];
   return (
     <footer className="w-full font-poppins text-sm text-neutral-500 ">
-      <div className=" w-full bg-[#f3bf97] px-8 py-12 text-sm md:flex-row md:gap-20 md:px-4">
-        <div className="mx-32 flex flex-row items-start justify-between gap-6 border-b border-black pb-6">
+      <div className=" w-full bg-[#f3bf97] px-2 py-4 text-sm md:flex-row md:gap-20 md:px-4 md:py-12">
+        <div className="mx-2 flex flex-col-reverse items-start justify-between gap-6 border-b border-black pb-6 md:mx-32 lg:flex-row">
           <div className="flex flex-col gap-8 md:flex-row md:gap-20">
             <Suspense
               fallback={
@@ -76,43 +77,16 @@ export default async function Footer() {
               <FooterMenu menu={ContactUs} />
             </Suspense>
           </div>
-          <div className="flex max-w-[420px] flex-col justify-end gap-7">
+          <div className="flex max-w-[420px] flex-col justify-end gap-3 md:gap-7">
             <p className="text-center font-poppins text-xs leading-5 text-black ">
               Stay up to date with our latest offers and product launches & be the first to get
               exclusive offers and sale information
             </p>
 
-            <div className="flex flex-row gap-2 ">
-              <div className="relative mt-2 flex w-full items-center">
-                <span className="absolute">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    className="dark mx-3 h-6 w-6 "
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-                    />
-                  </svg>
-                </span>
-                <input
-                  type="email"
-                  placeholder="Your email address"
-                  className="block w-full rounded-md border  bg-white py-4 pl-11 pr-5  placeholder-black  focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 rtl:pl-5 rtl:pr-11"
-                />
-                <button className="absolute right-2 rounded-sm bg-black px-5 py-3 text-[12px] tracking-widest text-white">
-                  Subscribe
-                </button>
-              </div>
-            </div>
+            <CustomInputBtn text="Enter your email address" type="email" buttonText="Subscribe" />
           </div>
         </div>
-        <div className="mx-32 flex  flex-col items-center justify-center space-y-2 pt-6">
+        <div className=" mx-2 flex flex-col  items-center justify-center space-y-2 pt-6 md:mx-32">
           <div className="footer-logo-first">
             <svg
               xmlns="http://www.w3.org/2000/svg"
