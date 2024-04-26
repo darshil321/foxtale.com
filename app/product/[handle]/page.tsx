@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { GridTileImage } from 'components/grid/tile';
 import { ProductDescription } from 'components/product/product-description';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import { getProduct, getProductRecommendations } from 'lib/shopify';
-import Link from 'next/link';
-import { Suspense } from 'react';
 import CustomInputBtn from 'components/elements/custom-input-with-btn';
 import ResultsSection from 'components/product/results-section';
 import { ProductSlider } from 'components/product/product-slider';
@@ -16,7 +16,26 @@ import { ProductCarousel } from 'components/product/product-carousel';
 import ProductDetailsTabs from 'components/product/product-details-tabs';
 import ProductDisclosure from 'components/product/product-disclosure';
 
-// export const revalidate = 360;
+export const generateStaticParams = async () => {
+  return [
+    {
+      handle:
+        'cut-piece-of-heavy-multi-color-thread-with-gold-sequins-embroidery-on-baby-pink-soft-net-fabric'
+    },
+    {
+      handle:
+        'cut-piece-of-gold-sequins-with-beige-thread-abstract-embroidery-on-beige-soft-net-fabric'
+    },
+    {
+      handle:
+        'cut-piece-of-silver-sequins-leafy-embroidery-work-on-tie-dye-dark-pink-organza-fabric'
+    },
+    {
+      handle:
+        'cut-piece-of-multi-thread-beautiful-heavy-paisley-kashmiri-embroidery-work-on-off-white-cotton-fabric'
+    }
+  ];
+};
 
 export async function generateMetadata({
   params
@@ -64,17 +83,17 @@ export default async function ProductPage({ params }: { params: { handle: string
   const productJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: product.title,
-    description: product.description,
-    image: product.featuredImage.url,
+    name: product?.title,
+    description: product?.description,
+    image: product?.featuredImage?.url,
     offers: {
       '@type': 'AggregateOffer',
       availability: product.availableForSale
         ? 'https://schema.org/InStock'
         : 'https://schema.org/OutOfStock',
-      priceCurrency: product.priceRange.minVariantPrice.currencyCode,
-      highPrice: product.priceRange.maxVariantPrice.amount,
-      lowPrice: product.priceRange.minVariantPrice.amount
+      priceCurrency: product?.priceRange.minVariantPrice.currencyCode,
+      highPrice: product?.priceRange.maxVariantPrice.amount,
+      lowPrice: product?.priceRange.minVariantPrice.amount
     }
   };
 
@@ -138,7 +157,7 @@ async function RelatedProducts({ id }: { id: string }) {
         {relatedProducts.map((product) => (
           <li
             key={product.handle}
-            className="aspect-square w-full flex-none min-[475px]:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5"
+            className=" w-full flex-none min-[475px]:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5"
           >
             <Link className="relative h-full w-full" href={`/product/${product.handle}`}>
               <GridTileImage
@@ -149,7 +168,6 @@ async function RelatedProducts({ id }: { id: string }) {
                   currencyCode: product.priceRange.maxVariantPrice.currencyCode
                 }}
                 src={product.featuredImage?.url}
-                fill
                 sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
               />
             </Link>

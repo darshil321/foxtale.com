@@ -2,13 +2,13 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import createSagaMiddleware from 'redux-saga';
-import { productSlice } from './slices/products-slice';
+import { productSlice } from './slices/product-slice';
 import { userSlice } from './slices/user-slice';
 
 import rootSaga from './slices';
 
 const rootReducer = combineReducers({
-  [productSlice.name]: (productSlice as any).reducer,
+  [productSlice.name]: productSlice.reducer,
   [userSlice.name]: (userSlice as any).reducer
 });
 

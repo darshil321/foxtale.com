@@ -5,6 +5,7 @@ import { ReactNode } from 'react';
 import './globals.css';
 import Footer from 'components/layout/footer';
 import WrapperContainer from 'components/layout/wrapper-container';
+import Provider from '../store/store-provider';
 import Banner from 'components/layout/navbar/banner';
 
 const { TWITTER_CREATOR, TWITTER_SITE, SITE_NAME } = process.env;
@@ -38,12 +39,14 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     <html lang="en" className={GeistSans.variable}>
       <body className=" text-black selection:bg-teal-300 ">
-        <Banner />
-        <WrapperContainer>
-          <Navbar />
-          <main>{children}</main>
-        </WrapperContainer>
-        <Footer />
+        <Provider>
+          <Banner />
+          <WrapperContainer>
+            <Navbar />
+            <main>{children}</main>
+          </WrapperContainer>
+          <Footer />
+        </Provider>
       </body>
     </html>
   );

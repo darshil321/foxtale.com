@@ -29,6 +29,17 @@ export const getCollectionsQuery = /* GraphQL */ `
       edges {
         node {
           ...collection
+          title
+          description
+          seo {
+            ...seo
+          }
+          updatedAt
+          image {
+            url
+            altText
+            width
+          }
         }
       }
     }

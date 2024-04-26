@@ -1,21 +1,26 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { productActions } from '../actions/product.actions';
+import { getCart } from 'store/requests/cart.request';
 
 // fetches all products
-export function* getProductsSaga(payload: any): Generator<any, void, any> {
+export function* getProductsSagaCart(action: {
+  type: string;
+  payload: {
+    first: number;
+  };
+}): Generator<any, void, any> {
   try {
-    console.log('attempt product: saga', payload);
-    //api no call
-    const res = { ...payload, id: '123' };
-    // const data = yield call(getAllProducts);
+    const { first } = action.payload;
 
-    yield put(productActions.getProductSuccess(res));
+    const data = yield call(getCart, { first });
+
+    yield put(productActions.getProductSuccess(data));
   } catch (error) {
     console.log('error', error);
-    // yield put(getProductsError(error));
+    yield put(productActions.getProductFailed());
   }
 }
 
 export function* productsSagaWatchers() {
-  yield takeLatest(productActions.attemptGetProducts, getProductsSaga);
+  yield takeLatest(productActions.attemptGetProducts, getProductsSagaCart);
 }

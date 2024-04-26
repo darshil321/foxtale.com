@@ -6,6 +6,7 @@ import { createUrl } from 'lib/utils';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import type { ListItem, PathFilterItem } from '.';
+import Image from 'next/image';
 
 function PathFilterItem({ item }: { item: PathFilterItem }) {
   const pathname = usePathname();
@@ -17,15 +18,27 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
   newParams.delete('q');
 
   return (
-    <li className="mt-2 flex text-black " key={item.title}>
-      <DynamicTag
-        href={createUrl(item.path, newParams)}
-        className={clsx('w-full text-sm underline-offset-4 hover:underline ', {
-          'underline underline-offset-4': active
-        })}
-      >
-        {item.title}
-      </DynamicTag>
+    <li className="mt-2 flex items-center justify-center gap-2 text-black  " key={item.title}>
+      <div className="flex flex-col items-center justify-center gap-2">
+        <Image
+          src={item?.image?.url || '/Images/defualt.png'}
+          className=" flex h-[100px] w-[100px]  items-center justify-center rounded-full"
+          alt={item?.title || 'Image'}
+          width={100}
+          height={100}
+        />
+        <DynamicTag
+          href={createUrl(item.path, newParams)}
+          className={clsx(
+            'line-clamp-1 text-ellipsis text-wrap text-center text-sm underline-offset-4 hover:underline ',
+            {
+              'underline underline-offset-4': active
+            }
+          )}
+        >
+          {item.title}
+        </DynamicTag>
+      </div>
     </li>
   );
 }
