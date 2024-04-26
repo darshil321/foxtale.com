@@ -30,13 +30,13 @@ const FaqItems = [
 
 export default function Accordion() {
   return (
-    <div className="w-full px-4 py-16">
+    <div className="w-full px-4 py-8 md:py-16">
       <div className="mx-auto w-full rounded-2xl bg-white p-2">
         <Disclosure>
           {({ open }) => (
             <>
               <Disclosure.Button className="flex h-full w-full  bg-[#f7f7f7] text-sm font-medium text-black hover:bg-[#f7f7f7] focus:outline-none focus-visible:ring-[#f7f7f7]/75 focus-visible:ring-offset-1">
-                <div className="flex w-full items-center justify-between p-6">
+                <div className="flex w-full items-center justify-between p-3 md:p-6">
                   <span className="h-full text-lg font-semibold md:text-2xl">FAQs</span>
                   <ChevronUpIcon
                     className={`${open ? 'rotate-180 transform' : ''} h-10 w-10 text-black`}

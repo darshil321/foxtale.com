@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
@@ -35,15 +35,13 @@ const disclosureItems = [
 ];
 
 export default function ProductDisclosure() {
-  const [openItem, setOpenItem] = useState(null);
-
   return (
     <div className="w-full px-4 py-3 md:px-0  md:py-10">
       <h2 className=" text-2xl font-semibold ">What makes this unique?</h2>
       <div className="w-full pt-2">
         <div className="mx-auto w-full gap-4 space-y-4">
           {disclosureItems.map((item, index) => (
-            <Disclosure key={index} open={openItem === index} onChange={() => setOpenItem(index)}>
+            <Disclosure key={index}>
               {({ open }) => (
                 <>
                   <Disclosure.Button className="flex h-full w-full  bg-[#f7f7f7] text-sm font-medium text-black hover:bg-[#f7f7f7] focus:outline-none focus-visible:ring-[#f7f7f7]/75 focus-visible:ring-offset-1">

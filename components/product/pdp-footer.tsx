@@ -18,7 +18,10 @@ const ProductDescFooter = ({ product }: { product: any }) => {
             <AddToCart variants={product.variants} availableForSale={product.availableForSale} />
           </Suspense>
           <Suspense fallback={null}>
-            <BuyNowButton variants={product.variants} availableForSale={product.availableForSale} />
+            <BuyNowButton
+              selectedVariantId={product.variants}
+              availableForSale={product.availableForSale}
+            />
           </Suspense>
         </div>
       </div>

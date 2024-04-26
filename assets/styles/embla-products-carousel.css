@@ -37,7 +37,7 @@
 }
 .embla_product__buttons {
   display: flex;
-  justify-content: space-between ;
+  justify-content: space-between;
   gap: 0.6rem;
   align-items: center;
 }
@@ -67,7 +67,6 @@
   color: var(--detail-high-contrast);
 }
 .embla_product__button__svg {
-
   background-color: black;
   border-radius: 50%;
   display: flex;

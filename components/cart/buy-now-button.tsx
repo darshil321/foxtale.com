@@ -9,7 +9,7 @@ export function BuyNowButton({
   selectedVariantId
 }: {
   availableForSale: boolean;
-  selectedVariantId: string | undefined;
+  selectedVariantId: any;
 }) {
   const { pending } = useFormStatus();
   const buttonClasses =
@@ -43,7 +43,6 @@ export function BuyNowButton({
     <button
       onClick={(e: React.FormEvent<HTMLButtonElement>) => {
         if (pending) e.preventDefault();
-        // Assuming there's a function to handle the purchase process
         // handlePurchase(selectedVariantId);
       }}
       aria-label="Buy Now"

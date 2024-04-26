@@ -1,5 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import { productActions } from '../actions/products';
+import { productActions } from '../actions/product.actions';
 
 // fetches all products
 export function* getProductsSaga(payload: any): Generator<any, void, any> {

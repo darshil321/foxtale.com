@@ -16,6 +16,8 @@ import { ProductCarousel } from 'components/product/product-carousel';
 import ProductDetailsTabs from 'components/product/product-details-tabs';
 import ProductDisclosure from 'components/product/product-disclosure';
 
+// export const revalidate = 360;
+
 export async function generateMetadata({
   params
 }: {
