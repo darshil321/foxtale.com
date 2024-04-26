@@ -1,6 +1,6 @@
 import { createSlice, current } from '@reduxjs/toolkit';
 
-interface InitialStateType {
+export interface ProductsState {
   products: any;
   productsByCategory: [];
   loading: boolean;
@@ -11,7 +11,7 @@ interface InitialStateType {
   product: any;
 }
 
-export const initialState: InitialStateType = {
+export const initialState: ProductsState = {
   products: [],
   productsByCategory: [],
   loadingByCategory: false,
@@ -25,11 +25,12 @@ export const initialState: InitialStateType = {
 export const productSlice = createSlice({
   name: 'products',
   initialState,
+
   reducers: {
     getProductSuccess: (state, action) => {
-      const data = current(state);
-      console.log('product successs reducer:>> ', data, action);
-      state.loading = false;
+      const { products } = action.payload.body.data;
+      state.products = products.edges;
+      console.log('success reducer:>> ', products);
     },
 
     getProductFailed: (state, action) => {

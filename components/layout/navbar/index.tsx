@@ -8,7 +8,6 @@ import { Suspense } from 'react';
 import MobileMenu from './mobile-menu';
 // import Search, { SearchSkeleton } from './search';
 import Image from 'next/image';
-import Logo from '../../../assets/Images/foxtalelogo.avif';
 
 // const { SITE_NAME } = process.env;
 
@@ -26,7 +25,13 @@ export default async function Navbar() {
         <div className="flex ">
           <Link href="/" className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6">
             {/* <LogoSquare /> */}
-            <Image src={Logo} className="w-full" alt={'Foxtale'} width={96} height={32} />
+            <Image
+              src={'/foxtalelogo.avif'}
+              className="w-full"
+              alt={'Foxtale'}
+              width={96}
+              height={32}
+            />
           </Link>
           {menu.length ? (
             <ul className="hidden gap-6 text-sm md:flex md:items-center">

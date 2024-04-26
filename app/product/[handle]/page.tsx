@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { GridTileImage } from 'components/grid/tile';
 import { ProductDescription } from 'components/product/product-description';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import { getProduct, getProductRecommendations } from 'lib/shopify';
-import Link from 'next/link';
-import { Suspense } from 'react';
 import CustomInputBtn from 'components/elements/custom-input-with-btn';
 import ResultsSection from 'components/product/results-section';
 import { ProductSlider } from 'components/product/product-slider';
@@ -15,6 +15,8 @@ import OfferSection from 'components/product/offers-section';
 import { ProductCarousel } from 'components/product/product-carousel';
 import ProductDetailsTabs from 'components/product/product-details-tabs';
 import ProductDisclosure from 'components/product/product-disclosure';
+
+// export const revalidate = 360;
 
 export async function generateMetadata({
   params

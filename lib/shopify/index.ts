@@ -1,3 +1,4 @@
+'use server';
 import { HIDDEN_PRODUCT_TAG, SHOPIFY_GRAPHQL_API_ENDPOINT, TAGS } from 'lib/constants';
 import { isShopifyError } from 'lib/type-guards';
 import { ensureStartsWith } from 'lib/utils';
@@ -19,6 +20,7 @@ import {
 import { getMenuQuery } from './queries/menu';
 import { getPageQuery, getPagesQuery } from './queries/page';
 import {
+  fetchProductsQuery,
   getProductQuery,
   getProductRecommendationsQuery,
   getProductsQuery
@@ -56,8 +58,6 @@ const domain = process.env.SHOPIFY_STORE_DOMAIN
 const endpoint = `${domain}${SHOPIFY_GRAPHQL_API_ENDPOINT}`;
 const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
 
-type ExtractVariables<T> = T extends { variables: object } ? T['variables'] : never;
-
 export async function shopifyFetch<T>({
   cache = 'force-cache',
   headers,
@@ -69,9 +69,11 @@ export async function shopifyFetch<T>({
   headers?: HeadersInit;
   query: string;
   tags?: string[];
-  variables?: ExtractVariables<T>;
+  variables?: { [key: string]: any };
 }): Promise<{ status: number; body: T } | never> {
   try {
+    console.log('fetching', query, endpoint, key);
+
     const result = await fetch(endpoint, {
       method: 'POST',
       headers: {
@@ -449,4 +451,26 @@ export async function revalidate(req: NextRequest): Promise<NextResponse> {
   }
 
   return NextResponse.json({ status: 200, revalidated: true, now: Date.now() });
+}
+
+export async function getProductsData(first: number): Promise<any> {
+  try {
+    const res = await shopifyFetch<any>({
+      query: fetchProductsQuery,
+      variables: { first }
+      // tags: [TAGS.cart],
+      // cache: 'no-store'
+    });
+    console.log('ppppp', res);
+    return res;
+
+    // Old carts becomes `null` when you checkout.
+    // if (!res.body.data.cart) {
+    //   return undefined;
+    // }
+  } catch (err) {
+    console.log('errpppp', err);
+  }
+
+  // return reshapeCart(res.body.data.cart);
 }
