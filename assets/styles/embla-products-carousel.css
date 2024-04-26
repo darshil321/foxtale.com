@@ -31,7 +31,7 @@
 }
 .embla_product__controls {
   display: flex;
-  justify-content: space-between;;
+  justify-content: space-between;
   gap: 1.2rem;
   margin-top: 1.8rem;
 }

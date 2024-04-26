@@ -63,7 +63,7 @@ function SubmitButton({
   );
 }
 
-export function AddToCart({
+export function AddToCartButton({
   variants,
   availableForSale
 }: {

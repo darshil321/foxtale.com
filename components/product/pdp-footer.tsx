@@ -1,7 +1,8 @@
 import React, { Suspense } from 'react';
 import ProductDetailsItem from './product-details-item';
-import { AddToCart } from 'components/cart/add-to-cart';
+
 import { BuyNowButton } from 'components/cart/buy-now-button';
+import { AddToCartButton } from 'components/cart/add-to-cart-button';
 
 const ProductDescFooter = ({ product }: { product: any }) => {
   return (
@@ -15,7 +16,10 @@ const ProductDescFooter = ({ product }: { product: any }) => {
 
         <div className="flex flex-row  items-center gap-5">
           <Suspense fallback={null}>
-            <AddToCart variants={product.variants} availableForSale={product.availableForSale} />
+            <AddToCartButton
+              variants={product.variants}
+              availableForSale={product.availableForSale}
+            />
           </Suspense>
           <Suspense fallback={null}>
             <BuyNowButton
