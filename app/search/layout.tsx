@@ -1,10 +1,14 @@
 import Collections from 'components/layout/search/collections';
+import HeroBannerSlider from 'components/product/hero-banner-slider';
 // import FilterList from 'components/layout/search/filter';
 // import { sorting } from 'lib/constants';
 
 export default function SearchLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <div>
+      <div>
+        <HeroBannerSlider />
+      </div>
       <div className="mx-auto flex max-w-screen-2xl flex-col gap-8  px-4 pb-4 text-black ">
         <div className=" w-full flex-none">
           <Collections />
@@ -14,6 +18,6 @@ export default function SearchLayout({ children }: { children: React.ReactNode }
           <FilterList list={sorting} title="Sort by" />
         </div> */}
       </div>
-    </>
+    </div>
   );
 }
