@@ -1,7 +1,5 @@
 'use client';
-import { PlusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-import LoadingDots from 'components/loading-dots';
 import { useFormStatus } from 'react-dom';
 
 export function BuyNowButton({
@@ -31,9 +29,6 @@ export function BuyNowButton({
         aria-disabled
         className={clsx(buttonClasses, disabledClasses)}
       >
-        <div className="absolute left-0 ml-4">
-          <PlusIcon className="h-5" />
-        </div>
         Select Option
       </button>
     );
@@ -52,9 +47,6 @@ export function BuyNowButton({
         disabledClasses: pending
       })}
     >
-      <div className="absolute left-0 ml-4 border-2 border-black">
-        {pending ? <LoadingDots className="mb-3 bg-white" /> : <PlusIcon className="h-5" />}
-      </div>
       Buy Now
     </button>
   );

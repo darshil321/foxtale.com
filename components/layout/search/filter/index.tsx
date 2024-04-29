@@ -4,24 +4,25 @@ import FilterItemDropdown from './dropdown';
 import { FilterItem } from './item';
 
 export type ListItem = SortFilterItem | PathFilterItem;
-export type PathFilterItem = { title: string; path: string };
+export type PathFilterItem = { title?: string; path: string; image?: { url: string; alt: string } };
 
 function FilterItemList({ list }: { list: ListItem[] }) {
   return (
-    <>
+    <div className="flex h-full w-full max-w-2xl flex-row items-center justify-evenly ">
       {list.map((item: ListItem, i) => (
         <FilterItem key={i} item={item} />
       ))}
-    </>
+    </div>
   );
 }
 
-export default function FilterList({ list, title }: { list: ListItem[]; title?: string }) {
+export default function FilterList({ list }: { list: ListItem[]; title?: string }) {
+  console.log('list22', list);
+
   return (
     <>
-      <nav>
-        {title ? <h3 className="hidden text-xs text-neutral-500 md:block ">{title}</h3> : null}
-        <ul className="hidden md:block">
+      <nav className="">
+        <ul className="hidden h-full items-center justify-center  md:flex">
           <Suspense fallback={null}>
             <FilterItemList list={list} />
           </Suspense>
