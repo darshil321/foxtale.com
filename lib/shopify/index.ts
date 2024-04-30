@@ -409,18 +409,24 @@ export async function getProducts({
   query?: string;
   reverse?: boolean;
   sortKey?: string;
-}): Promise<Product[]> {
-  const res = await shopifyFetch<ShopifyProductsOperation>({
-    query: getProductsQuery,
-    tags: [TAGS.products],
-    variables: {
-      query,
-      reverse,
-      sortKey
-    }
-  });
+}): Promise<any> {
+  try {
+    const res = await shopifyFetch<ShopifyProductsOperation>({
+      query: getProductsQuery,
+      tags: [TAGS.products],
+      variables: {
+        query,
+        reverse,
+        sortKey
+      }
+    });
 
-  return reshapeProducts(removeEdgesAndNodes(res.body.data.products));
+    console.log('ooooo', res.body.data.products);
+
+    return reshapeProducts(removeEdgesAndNodes(res.body.data.products));
+  } catch (e) {
+    console.log('eeeeeee', e);
+  }
 }
 
 // This is called from `app/api/revalidate.ts` so providers can control revalidation logic.

@@ -18,11 +18,14 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
   newParams.delete('q');
 
   return (
-    <li className="mt-2 flex items-center justify-center gap-2 text-black  " key={item.title}>
-      <div className="flex flex-col items-center justify-center gap-2">
+    <li
+      className="mt-2 flex h-full w-full items-center justify-center gap-2 text-black  "
+      key={item.title}
+    >
+      <div className="flex  flex-col items-center justify-center gap-2">
         <Image
           src={item?.image?.url || '/Images/defualt.png'}
-          className=" flex h-[100px] w-[100px]  items-center justify-center rounded-full"
+          className=" flex min-h-[100px] min-w-[100px]  items-center justify-center rounded-full"
           alt={item?.title || 'Image'}
           width={100}
           height={100}

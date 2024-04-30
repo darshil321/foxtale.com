@@ -39,7 +39,7 @@ const EmblaCarouselSlider: React.FC<PropType> = (props) => {
           {slides.map((image, index) => (
             <div className="embla_product__slide" key={index}>
               <Image
-                className="p  aspect-square h-full w-full object-cover  md:w-full  md:max-w-[470px]"
+                className="p  aspect-square h-full min-h-[475px] w-full object-cover  md:w-full  md:max-w-[470px]"
                 width={500}
                 height={500}
                 alt={image.altText as string}

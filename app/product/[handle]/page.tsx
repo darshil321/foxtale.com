@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { GridTileImage } from 'components/grid/tile';
 import { ProductDescription } from 'components/product/product-description';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
-import { getProduct, getProductRecommendations } from 'lib/shopify';
+import { getProduct, getProductRecommendations, getProducts } from 'lib/shopify';
 import CustomInputBtn from 'components/elements/custom-input-with-btn';
 import ResultsSection from 'components/product/results-section';
 import { ProductSlider } from 'components/product/product-slider';
@@ -17,6 +17,8 @@ import ProductDetailsTabs from 'components/product/product-details-tabs';
 import ProductDisclosure from 'components/product/product-disclosure';
 
 export const generateStaticParams = async () => {
+  const products = await getProducts({});
+  console.log('productssssss1', products);
   return [
     {
       handle:
@@ -96,7 +98,7 @@ export default async function ProductPage({ params }: { params: { handle: string
       lowPrice: product?.priceRange.minVariantPrice.amount
     }
   };
-
+  console.log('productsss', product);
   return (
     <div>
       <script

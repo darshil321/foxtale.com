@@ -18,14 +18,15 @@ export function VariantSelector({
   options: ProductOption[];
   variants: ProductVariant[];
 }) {
+  console.log('options', options, 'variants', variants);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const hasNoOptionsOrJustOneOption =
-    !options.length || (options.length === 1 && options[0]?.values.length === 1);
+    !options?.length || (options?.length === 1 && options[0]?.values?.length === 1);
 
   if (hasNoOptionsOrJustOneOption) {
-    return null;
+    return;
   }
 
   const combinations: Combination[] = variants.map((variant) => ({
@@ -37,6 +38,8 @@ export function VariantSelector({
       {}
     )
   }));
+
+  console.log('combinations', combinations);
 
   return options.map((option) => (
     <dl className="mb-8" key={option.id}>
