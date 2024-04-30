@@ -21,3 +21,18 @@ export const fetchProducts = ` query MyQuery {
     }
   }
 }`;
+
+export const fetchCollectionsQuery = `query collections(($first: Int)) {
+  collections(first: 10) {
+    edges {
+      node {
+        id
+        image {
+          url
+          width
+        }
+        title
+      }
+    }
+  }
+}`;

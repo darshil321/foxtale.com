@@ -1,3 +1,4 @@
+'use client';
 import React, { Suspense } from 'react';
 import ProductDetailsItem from './product-details-item';
 // import { BuyNowButton } from 'components/cart/buy-now-button';

@@ -4,7 +4,6 @@ import storage from 'redux-persist/lib/storage';
 import createSagaMiddleware from 'redux-saga';
 import { productSlice } from './slices/product-slice';
 import { userSlice } from './slices/user-slice';
-
 import rootSaga from './slices';
 
 const rootReducer = combineReducers({
