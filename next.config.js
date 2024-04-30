@@ -21,6 +21,11 @@ module.exports = {
         protocol: 'https',
         hostname: 'foxtale.in',
         pathname: '**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+        pathname: '**'
       }
     ]
   },

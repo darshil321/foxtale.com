@@ -59,7 +59,9 @@ const ProductCard = () => {
                 Purify &amp; Glow Cleanser + Mask
               </a>
             </h3>
-            <p className="text-[10px] text-[#6e6e6e]  md:text-sm">Cleanser + exfoliating facial</p>
+            <p className="text-[10px] leading-7  text-[#6e6e6e] md:text-sm">
+              Cleanser + exfoliating facial
+            </p>
           </div>
           <span className="price dib mb__5">
             <div className="t4s-product-price" data-pr-price data-product-price>

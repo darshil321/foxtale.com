@@ -43,8 +43,8 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <Banner />
           <WrapperContainer>
             <Navbar />
-            <main>{children}</main>
           </WrapperContainer>
+          <main>{children}</main>
           <Footer />
         </Provider>
       </body>

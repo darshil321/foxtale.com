@@ -3,8 +3,9 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { EmblaCarouselType, EmblaEventType, EmblaOptionsType } from 'embla-carousel';
 import useEmblaCarousel from 'embla-carousel-react';
-import { NextButton, PrevButton, usePrevNextButtons } from './embla-hero-arrow-buttons';
-import { DotButton, useDotButton } from './embla-carousel-dots';
+import Image from 'next/image';
+// import { NextButton, PrevButton, usePrevNextButtons } from './embla-hero-arrow-buttons';
+// import { DotButton, useDotButton } from './embla-carousel-dots';
 
 const TWEEN_FACTOR_BASE = 0.2;
 
@@ -19,10 +20,10 @@ const EmblaHeroCarousel: React.FC<PropType> = (props) => {
   const tweenFactor = useRef(0);
   const tweenNodes = useRef<HTMLElement[]>([]);
 
-  const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
+  // const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
 
-  const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } =
-    usePrevNextButtons(emblaApi);
+  // const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } =
+  //   usePrevNextButtons(emblaApi);
 
   const setTweenNodes = useCallback((emblaApi: EmblaCarouselType): void => {
     tweenNodes.current = emblaApi.slideNodes().map((slideNode) => {
@@ -93,7 +94,9 @@ const EmblaHeroCarousel: React.FC<PropType> = (props) => {
             <div className="hero_embla__slide" key={index}>
               <div className="hero_embla__parallax">
                 <div className="hero_embla__parallax__layer">
-                  <img
+                  <Image
+                    width={1200}
+                    height={800}
                     className="hero_embla__slide__img embla__parallax__img"
                     src={`https://picsum.photos/600/350?v=${index}`}
                     alt="Your alt text"
@@ -105,7 +108,7 @@ const EmblaHeroCarousel: React.FC<PropType> = (props) => {
         </div>
       </div>
 
-      <div className="hero_embla__controls">
+      {/* <div className="hero_embla__controls ">
         <div className="hero_embla__buttons">
           <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
           <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
@@ -122,7 +125,7 @@ const EmblaHeroCarousel: React.FC<PropType> = (props) => {
             />
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -22,7 +22,7 @@ export default function FilterList({ list }: { list: ListItem[]; title?: string 
   return (
     <>
       <nav className="">
-        <ul className="hidden h-full items-center justify-center  md:flex">
+        <ul className="hidden h-[175px] items-center justify-center  rounded-md bg-white  md:flex ">
           <Suspense fallback={null}>
             <FilterItemList list={list} />
           </Suspense>

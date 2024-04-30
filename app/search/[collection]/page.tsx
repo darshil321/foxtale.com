@@ -34,11 +34,11 @@ export default async function CategoryPage({
   const products = await getCollectionProducts({ collection: params.collection, sortKey, reverse });
 
   return (
-    <section>
+    <section className="rounded-md bg-white py-7">
       {products.length === 0 ? (
         <p className="py-3 text-lg">{`No products found in this collection`}</p>
       ) : (
-        <Grid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        <Grid className="grid-cols-1 place-items-center sm:grid-cols-2 lg:grid-cols-4">
           <ProductGridItems products={products} />
         </Grid>
       )}
