@@ -15,28 +15,14 @@ import OfferSection from 'components/product/offers-section';
 import { ProductCarousel } from 'components/product/product-carousel';
 import ProductDetailsTabs from 'components/product/product-details-tabs';
 import ProductDisclosure from 'components/product/product-disclosure';
+// import { getProductsQuery } from 'lib/shopify/queries/product';
 
 export const generateStaticParams = async () => {
   const products = await getProducts({});
-  console.log('productssssss1', products);
-  return [
-    {
-      handle:
-        'cut-piece-of-heavy-multi-color-thread-with-gold-sequins-embroidery-on-baby-pink-soft-net-fabric'
-    },
-    {
-      handle:
-        'cut-piece-of-gold-sequins-with-beige-thread-abstract-embroidery-on-beige-soft-net-fabric'
-    },
-    {
-      handle:
-        'cut-piece-of-silver-sequins-leafy-embroidery-work-on-tie-dye-dark-pink-organza-fabric'
-    },
-    {
-      handle:
-        'cut-piece-of-multi-thread-beautiful-heavy-paisley-kashmiri-embroidery-work-on-off-white-cotton-fabric'
-    }
-  ];
+  console.log('tussccvy', products);
+  return products?.map((product: any) => ({
+    handle: product?.id.toString()
+  }));
 };
 
 export async function generateMetadata({
@@ -79,7 +65,6 @@ export async function generateMetadata({
 
 export default async function ProductPage({ params }: { params: { handle: string } }) {
   const product = await getProduct(params.handle);
-
   if (!product) return notFound();
 
   const productJsonLd = {
@@ -163,6 +148,7 @@ async function RelatedProducts({ id }: { id: string }) {
           >
             <Link className="relative h-full w-full" href={`/product/${product.handle}`}>
               <GridTileImage
+                product={product}
                 alt={product.title}
                 label={{
                   title: product.title,

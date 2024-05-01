@@ -21,6 +21,7 @@ export async function Carousel() {
           >
             <Link href={`/product/${product.handle}`} className="relative h-full w-full">
               <GridTileImage
+                product={product}
                 alt={product.title}
                 label={{
                   title: product.title,

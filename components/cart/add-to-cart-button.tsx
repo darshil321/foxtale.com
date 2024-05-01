@@ -7,14 +7,15 @@ import { useFormState, useFormStatus } from 'react-dom';
 
 function SubmitButton({
   availableForSale,
-  selectedVariantId
+  selectedVariantId,
+  buttonClasses
 }: {
   availableForSale: boolean;
   selectedVariantId: string | undefined;
+  buttonClasses: string;
 }) {
   const { pending } = useFormStatus();
-  const buttonClasses =
-    'relative flex  flex-1 text-sm hover:text-purple-400  items-center justify-center text-base bg-white border border-black text-black py-2 px-6 md:py-2 md:px-8 uppercase tracking-wide font-normal md:font-semibold';
+
   const disabledClasses = 'cursor-not-allowed  hover:opacity-80';
 
   if (!availableForSale) {
@@ -57,16 +58,18 @@ function SubmitButton({
 
 export function AddToCartButton({
   variants,
-  availableForSale
+  availableForSale,
+  buttonClasses
 }: {
-  variants: ProductVariant[];
+  variants: any[];
   availableForSale: boolean;
+  buttonClasses: string;
 }) {
   const [message, formAction] = useFormState(addItem, null);
   const searchParams = useSearchParams();
-  const defaultVariantId = variants.length === 1 ? variants[0]?.id : undefined;
-  const variant = variants.find((variant: ProductVariant) =>
-    variant.selectedOptions.every(
+  const defaultVariantId = variants?.length === 1 ? variants[0]?.id : undefined;
+  const variant = variants?.find((variant: ProductVariant) =>
+    variant.selectedOptions?.every(
       (option) => option.value === searchParams.get(option.name.toLowerCase())
     )
   );
@@ -75,7 +78,11 @@ export function AddToCartButton({
 
   return (
     <form action={actionWithVariant}>
-      <SubmitButton availableForSale={availableForSale} selectedVariantId={selectedVariantId} />
+      <SubmitButton
+        availableForSale={availableForSale}
+        buttonClasses={buttonClasses}
+        selectedVariantId={selectedVariantId}
+      />
       <p aria-live="polite" className="sr-only" role="status">
         {message}
       </p>

@@ -10,7 +10,7 @@ export function ProductDescription({ product }: { product: Product }) {
     <>
       <div className="mb-4 flex flex-col pb-3 ">
         <div className="flex flex-row items-center  gap-3">
-          <h1 className="mb-2 text-2xl font-medium leading-6">{product.title.slice(0, 28)}</h1>
+          <h1 className="mb-2 text-2xl font-medium leading-6">{product.title}</h1>
           <span className="text-center text-xs text-neutral-400"> Size -30 ml</span>
         </div>
 

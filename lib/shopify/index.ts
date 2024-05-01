@@ -421,8 +421,6 @@ export async function getProducts({
       }
     });
 
-    console.log('ooooo', res.body.data.products);
-
     return reshapeProducts(removeEdgesAndNodes(res.body.data.products));
   } catch (e) {
     console.log('eeeeeee', e);

@@ -11,15 +11,18 @@ const ProductDescFooter = ({ product }: { product: any }) => {
       <div className="flex w-full justify-center border-t bg-white px-4 py-3 md:justify-between  md:px-[140px] md:py-4">
         <div className="hidden md:block">
           <Suspense fallback={null}>
-            <ProductDetailsItem />
+            <ProductDetailsItem product={product} />
           </Suspense>
         </div>
 
         <div className="flex flex-row  items-center gap-5">
           <Suspense fallback={null}>
             <AddToCartButton
-              variants={product.variants}
+              variants={product?.variants}
               availableForSale={product.availableForSale}
+              buttonClasses={
+                'relative flex  flex-1 text-sm hover:text-purple-400  items-center justify-center text-base bg-white border border-black text-black py-2 px-6 md:py-2 md:px-8 uppercase tracking-wide font-normal md:font-semibold'
+              }
             />
           </Suspense>
           <Suspense fallback={null}>

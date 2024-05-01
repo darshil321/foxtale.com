@@ -13,7 +13,9 @@ export default function SearchLayout({ children }: { children: React.ReactNode }
         <div className=" w-full flex-none ">
           <Collections />
         </div>
-        <div className="h-full w-full rounded-md bg-white px-4 md:order-none ">{children}</div>
+        <div className="h-full min-h-screen w-full rounded-md bg-white px-4 md:order-none ">
+          {children}
+        </div>
         {/* <div className="order-none flex-none md:order-last">
           <FilterList list={sorting} title="Sort by" />
         </div> */}
