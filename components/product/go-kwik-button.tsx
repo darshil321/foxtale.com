@@ -388,6 +388,9 @@ export function GokwikButton(passedData) {
         // onClick && logEvent('gokwik-button-clicked', 'onGkClick');
       }
 
+      const apiResponse = await getCart(updatedCart.id);
+      window.merchantInfo.cart = apiResponse.data ? apiResponse.data.cart : null;
+      buyNowRun = false;
       // Check if initCheckout method is available before calling it
       console.log('window.gokwikSdk', window.merchantInfo);
       try {
