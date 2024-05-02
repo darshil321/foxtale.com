@@ -32,6 +32,9 @@ export default async function CategoryPage({
   const { sort } = searchParams as { [key: string]: string };
   const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
   const products = await getCollectionProducts({ collection: params.collection, sortKey, reverse });
+  console.log('jhgjuy', params.collection, sortKey, reverse);
+
+  console.log('Pooododddxrrd', products);
 
   return (
     <section className="rounded-md bg-white py-7">

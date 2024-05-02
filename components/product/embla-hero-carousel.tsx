@@ -98,7 +98,7 @@ const EmblaHeroCarousel: React.FC<PropType> = (props) => {
                     width={1200}
                     height={800}
                     className="hero_embla__slide__img embla__parallax__img"
-                    src={`https://picsum.photos/600/350?v=${index}`}
+                    src={`/Images/banner.png`}
                     alt="Your alt text"
                   />
                 </div>

@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-const ProductCard = () => {
+const ProductCard = ({ product }: { product: any }) => {
   return (
     <div className="rounded-sm border shadow md:w-full ">
       <div className="">
@@ -19,7 +19,7 @@ const ProductCard = () => {
             />
             <Image
               className="h-full w-full object-cover "
-              src="https://foxtale.in/cdn/shop/files/PDP---First-Image-07.jpg?v=1712244647"
+              src={product?.featuredImage?.url}
               width={300}
               height={300}
               alt="Purify &amp; Glow Cleanser + Mask"
@@ -56,16 +56,17 @@ const ProductCard = () => {
                 className=" md:text-md leading-2 text-[13px] font-semibold md:text-sm md:leading-7"
                 href="/products/purify-glow-cleanser-mask"
               >
-                Purify &amp; Glow Cleanser + Mask
+                {product?.title}
               </a>
             </h3>
             <p className="text-[10px] leading-7  text-[#6e6e6e] md:text-sm">
-              Cleanser + exfoliating facial
+              {product?.description}
             </p>
           </div>
           <span className="price dib mb__5">
             <div className="t4s-product-price" data-pr-price data-product-price>
-              <span className="text-base  font-semibold" /> ₹ 395
+              <span className="text-base  font-semibold" />
+              {product?.priceRange?.maxVariantPrice?.amount}
             </div>
           </span>
         </div>

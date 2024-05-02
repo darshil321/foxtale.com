@@ -20,6 +20,7 @@ export function GridTileImage({
   label?: {
     title: string;
     amount: string;
+    description: string;
     currencyCode: string;
     position?: 'bottom' | 'center';
   };
@@ -27,7 +28,7 @@ export function GridTileImage({
   return (
     <div
       className={clsx(
-        ' flex h-full w-full items-center justify-center  overflow-hidden rounded-lg border bg-white',
+        ' flex h-full w-full items-center  justify-center  overflow-hidden rounded-lg border bg-white',
         {
           relative: label,
           'border-2 border-blue-600': active,
@@ -86,7 +87,7 @@ export function GridTileImage({
                   </h3>
                 </Link>
                 <p className="text-[10px] leading-7 text-[#6e6e6e]  md:text-sm">
-                  Cleanser + exfoliating facial
+                  {label?.description}
                 </p>
               </div>
               <span className="price dib mb__5">

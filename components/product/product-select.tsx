@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 
-const people = [{ name: 'Glow' }, { name: 'Anti Aging' }, { name: 'Sunscreen' }];
+const categories = [{ name: 'fine-lines' }, { name: 'acne-collection' }, { name: 'blemish-prone' }];
 
 export default function SelectCategory({
   selectedCategory,
@@ -29,7 +29,7 @@ export default function SelectCategory({
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-              {people.map((person, personIdx) => (
+              {categories.map((person, personIdx) => (
                 <Listbox.Option
                   key={personIdx}
                   className={({ active }) =>

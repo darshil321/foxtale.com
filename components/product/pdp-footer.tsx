@@ -1,9 +1,7 @@
 'use client';
 import React, { Suspense } from 'react';
 import ProductDetailsItem from './product-details-item';
-// import { BuyNowButton } from 'components/cart/buy-now-button';
 import { AddToCartButton } from 'components/cart/add-to-cart-button';
-// import { GokwikButton } from 'components/elements/gokwik-button';
 
 const ProductDescFooter = ({ product }: { product: any }) => {
   return (

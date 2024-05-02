@@ -8,7 +8,7 @@ export type PathFilterItem = { title?: string; path: string; image?: { url: stri
 
 function FilterItemList({ list }: { list: ListItem[] }) {
   return (
-    <div className="flex h-full w-full max-w-2xl flex-row items-center justify-evenly gap-4 overflow-x-auto ">
+    <div className="flex h-full w-full max-w-2xl flex-row items-center justify-evenly gap-10 overflow-x-auto ">
       {list.map((item: ListItem, i) => (
         <FilterItem key={i} item={item} />
       ))}

@@ -463,9 +463,9 @@ export async function getProductsData(first: number): Promise<any> {
   try {
     const res = await shopifyFetch<any>({
       query: fetchProductsQuery,
-      variables: { first }
-      // tags: [TAGS.cart],
-      // cache: 'no-store'
+      variables: { first },
+      tags: [TAGS.cart],
+      cache: 'no-store'
     });
     console.log('ppppp', res);
     return res;

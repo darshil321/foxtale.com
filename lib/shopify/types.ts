@@ -239,6 +239,7 @@ export type ShopifyPagesOperation = {
 
 export type ShopifyProductOperation = {
   data: { product: ShopifyProduct };
+  tags: any[];
   variables: {
     handle: string;
   };

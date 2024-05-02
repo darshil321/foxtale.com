@@ -12,16 +12,15 @@ import { ProductSlider } from 'components/product/product-slider';
 import Accordion from 'components/layout/accordion';
 import ProductDescFooter from 'components/product/pdp-footer';
 import OfferSection from 'components/product/offers-section';
-import { ProductCarousel } from 'components/product/product-carousel';
 import ProductDetailsTabs from 'components/product/product-details-tabs';
 import ProductDisclosure from 'components/product/product-disclosure';
-// import { getProductsQuery } from 'lib/shopify/queries/product';
+import ProductCarouselSlider from 'components/product/product-carousel';
 
 export const generateStaticParams = async () => {
   const products = await getProducts({});
-  console.log('tussccvy', products);
+
   return products?.map((product: any) => ({
-    handle: product?.id.toString()
+    handle: product?.handle
   }));
 };
 
@@ -65,6 +64,7 @@ export async function generateMetadata({
 
 export default async function ProductPage({ params }: { params: { handle: string } }) {
   const product = await getProduct(params.handle);
+
   if (!product) return notFound();
 
   const productJsonLd = {
@@ -83,7 +83,7 @@ export default async function ProductPage({ params }: { params: { handle: string
       lowPrice: product?.priceRange.minVariantPrice.amount
     }
   };
-  console.log('productsss', product);
+
   return (
     <div>
       <script
@@ -122,7 +122,7 @@ export default async function ProductPage({ params }: { params: { handle: string
         <div>{<ProductDisclosure />}</div>
 
         <ResultsSection />
-        <ProductCarousel />
+        <ProductCarouselSlider />
         <ProductDetailsTabs />
         <Accordion />
         <ProductDescFooter product={product} />

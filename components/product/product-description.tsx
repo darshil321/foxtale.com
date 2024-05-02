@@ -13,10 +13,8 @@ export function ProductDescription({ product }: { product: Product }) {
           <h1 className="mb-2 text-2xl font-medium leading-6">{product.title}</h1>
           <span className="text-center text-xs text-neutral-400"> Size -30 ml</span>
         </div>
-
         <h5>Treats hyperpigmentation and dark spots</h5>
         <ProductsRatings />
-
         <div className="mr-auto text-2xl font-semibold text-black">
           <Price
             amount={product.priceRange.maxVariantPrice.amount}
