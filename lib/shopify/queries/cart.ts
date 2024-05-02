@@ -8,3 +8,27 @@ export const getCartQuery = /* GraphQL */ `
   }
   ${cartFragment}
 `;
+
+export const getMetaobjectsQuery = /* GraphQL */ `
+  query metaObjects {
+    metaobjects(type: "coupon_bxgy", first: 5) {
+      edges {
+        cursor
+        node {
+          id
+          type
+
+          fields {
+            key
+            value
+            references(first: 5) {
+              edges {
+                cursor
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;

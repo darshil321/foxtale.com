@@ -11,7 +11,7 @@ import {
   editCartItemsMutation,
   removeFromCartMutation
 } from './mutations/cart';
-import { getCartQuery } from './queries/cart';
+import { getCartQuery, getMetaobjectsQuery } from './queries/cart';
 import {
   getCollectionProductsQuery,
   getCollectionQuery,
@@ -31,6 +31,7 @@ import {
   Connection,
   Image,
   Menu,
+  MetaobjectsResponse,
   Page,
   Product,
   ShopifyAddToCartOperation,
@@ -51,6 +52,7 @@ import {
   ShopifyRemoveFromCartOperation,
   ShopifyUpdateCartOperation
 } from './types';
+import { Metaobject } from '@shopify/hydrogen-react/storefront-api-types';
 
 const domain = process.env.SHOPIFY_STORE_DOMAIN
   ? ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://')
@@ -72,7 +74,7 @@ export async function shopifyFetch<T>({
   variables?: { [key: string]: any };
 }): Promise<{ status: number; body: T } | never> {
   try {
-    console.log('fetching', query, endpoint, key);
+    console.log('fetching', query, endpoint, key, variables);
 
     const result = await fetch(endpoint, {
       method: 'POST',
@@ -375,6 +377,15 @@ export async function getPages(): Promise<Page[]> {
   });
 
   return removeEdgesAndNodes(res.body.data.pages);
+}
+export async function getMetaObjects(): Promise<Metaobject[]> {
+  const res = await shopifyFetch<MetaobjectsResponse>({
+    query: getMetaobjectsQuery,
+    cache: 'no-store'
+  });
+  console.log('Metaobjects', res);
+
+  return removeEdgesAndNodes(res.body.data.metaobjects);
 }
 
 export async function getProduct(handle: string): Promise<Product | undefined> {

@@ -2,6 +2,9 @@
 import React, { Suspense } from 'react';
 import ProductDetailsItem from './product-details-item';
 import { AddToCartButton } from 'components/cart/add-to-cart-button';
+import { GokwikButton } from './go-kwik-button';
+import { CartProvider } from '@shopify/hydrogen-react';
+// import { GokwikButton } from 'components/elements/gokwik-button';
 
 const ProductDescFooter = ({ product }: { product: any }) => {
   return (
@@ -24,7 +27,9 @@ const ProductDescFooter = ({ product }: { product: any }) => {
             />
           </Suspense>
           <Suspense fallback={null}>
-            {/* <GokwikButton buyNowButton={true} variantId={product?.variants[0]?.id} quantity={1} /> */}
+            <CartProvider>
+              <GokwikButton buyNowButton={true} variantId={product?.variants[0]?.id} quantity={1} />
+            </CartProvider>
           </Suspense>
         </div>
       </div>

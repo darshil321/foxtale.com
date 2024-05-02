@@ -5,10 +5,12 @@ import createSagaMiddleware from 'redux-saga';
 import { productSlice } from './slices/product-slice';
 import { userSlice } from './slices/user-slice';
 import rootSaga from './slices';
+import { cartSlice } from './slices/cart-slice';
 
 const rootReducer = combineReducers({
   [productSlice.name]: productSlice.reducer,
-  [userSlice.name]: (userSlice as any).reducer
+  [userSlice.name]: (userSlice as any).reducer,
+  [cartSlice.name]: cartSlice.reducer
 });
 
 export type RootState = ReturnType<typeof store.getState>;

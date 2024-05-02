@@ -264,3 +264,37 @@ export type ShopifyProductsOperation = {
     sortKey?: string;
   };
 };
+interface CouponMetaobject {
+  cursor: string;
+  node: {
+    id: string;
+    type: string;
+    fields: CouponField[];
+  };
+}
+
+interface CouponField {
+  key: string;
+  value: string;
+  references: CouponReference | null;
+}
+
+interface CouponReference {
+  edges: CouponReferenceEdge[];
+}
+
+interface CouponReferenceEdge {
+  cursor: string;
+  node: {
+    id: string;
+    value: string;
+  };
+}
+
+export interface MetaobjectsResponse {
+  data: {
+    metaobjects: {
+      edges: CouponMetaobject[];
+    };
+  };
+}

@@ -1,7 +1,9 @@
 'use server';
 import { shopifyFetch } from 'lib/shopify';
+import { createCartMutation } from 'lib/shopify/mutations/cart';
+import { getCartQuery } from 'lib/shopify/queries/cart';
 import { ensureStartsWith } from 'lib/utils';
-import { fetchProductsQuery } from 'store/graphql';
+// import { fetchProductsQuery } from 'store/graphql';
 require('dotenv').config();
 
 const domain = process.env.SHOPIFY_STORE_DOMAIN
@@ -72,13 +74,21 @@ console.log('domainnnnnn', endpoint, key, process.env, domain);
 //   }
 // }
 
-export async function getCart({ first: first }: { first: number }) {
-  console.log('first', first);
-
+export async function getCart({ cartId: cartId }: { cartId?: string }) {
   const res = await shopifyFetch({
-    query: fetchProductsQuery,
+    query: getCartQuery,
     variables: {
-      first: first
+      cartId: cartId
+    }
+  });
+
+  return res;
+}
+export async function createCart({ lines }: { lines: any }) {
+  const res = await shopifyFetch({
+    query: createCartMutation,
+    variables: {
+      input: { lines }
     }
   });
 

@@ -1,11 +1,11 @@
 import React from 'react';
-import AddToCart from 'components/cart/add-to-cart';
-import { getCart } from 'store/requests/cart.request';
+import CartPage from 'components/cart/cart-page';
+// import { getCart } from 'store/requests/cart.request';
 const Page: React.FC = async () => {
-  const data = await getCart({ first: 10 });
-  console.log(data);
+  // const data = await getCart({ cartId: '10' });
+  // console.log(data);
 
-  return <>{<AddToCart />}</>;
+  return <>{<CartPage />}</>;
 };
 
 export default Page;

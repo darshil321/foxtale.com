@@ -23,6 +23,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
   const quantityRef = useRef(cart?.totalQuantity);
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
+  console.log('cart', cart);
 
   useEffect(() => {
     // Open cart modal when quantity changes.
@@ -99,7 +100,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                         <li key={i} className="flex w-full flex-col">
                           <div className="relative flex w-full flex-row justify-between px-1 py-4">
                             <div className="absolute z-40 -mt-2 ml-[55px]">
-                              <DeleteItemButton item={item} />
+                              <DeleteItemButton item={item} removeIcon={false} />
                             </div>
                             <Link
                               href={merchandiseUrl}
