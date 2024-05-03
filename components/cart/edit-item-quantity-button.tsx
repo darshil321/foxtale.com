@@ -1,5 +1,4 @@
-'use client';
-
+import React, { useState, useEffect } from 'react';
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { updateItemQuantity } from 'components/cart/actions';
@@ -7,15 +6,30 @@ import LoadingDots from 'components/loading-dots';
 import type { CartItem } from 'lib/shopify/types';
 import { useFormState, useFormStatus } from 'react-dom';
 
-function SubmitButton({ type }: { type: 'plus' | 'minus' }) {
+// Debouncing function
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
+function SubmitButton({ type, onClick }: { type: 'plus' | 'minus'; onClick: () => void }) {
   const { pending } = useFormStatus();
 
   return (
     <button
-      type="submit"
-      onClick={(e: React.FormEvent<HTMLButtonElement>) => {
-        if (pending) e.preventDefault();
-      }}
+      type="button"
+      onClick={onClick}
       aria-label={type === 'plus' ? 'Increase item quantity' : 'Reduce item quantity'}
       aria-disabled={pending}
       className={clsx(
@@ -39,21 +53,33 @@ function SubmitButton({ type }: { type: 'plus' | 'minus' }) {
 
 export function EditItemQuantityButton({ item, type }: { item: CartItem; type: 'plus' | 'minus' }) {
   const [message, formAction] = useFormState(updateItemQuantity, null);
-  console.log('itemm', item, message);
+  const [accumulatedQuantity, setAccumulatedQuantity] = useState(item.quantity);
+  const debouncedQuantity = useDebounce(accumulatedQuantity, 1000); // 1 second delay
 
-  const payload = {
-    lineId: item.id,
-    variantId: item.merchandise.id,
-    quantity: type === 'plus' ? item.quantity + 1 : item.quantity - 1
+  useEffect(() => {
+    // Ensure the debounced quantity is different from the item's current quantity
+    if (debouncedQuantity !== item.quantity) {
+      const payload = {
+        lineId: item.id,
+        variantId: item.merchandise.id,
+        quantity: debouncedQuantity
+      };
+      formAction(payload);
+    }
+  }, [debouncedQuantity, item.id, item.merchandise.id, formAction, item.quantity]);
+
+  const handleClick = () => {
+    setAccumulatedQuantity((prevQuantity) =>
+      Math.max(prevQuantity + (type === 'plus' ? 1 : -1), 1)
+    );
   };
-  const actionWithVariant = formAction.bind(null, payload);
 
   return (
-    <form action={actionWithVariant}>
-      <SubmitButton type={type} />
+    <div>
+      <SubmitButton type={type} onClick={handleClick} />
       <p aria-live="polite" className="sr-only" role="status">
         {message}
       </p>
-    </form>
+    </div>
   );
 }

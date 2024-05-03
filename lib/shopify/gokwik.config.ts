@@ -11,7 +11,7 @@ shopifyGraphQlUrl: Graph QL API for your store, follows the format-
 */
 
 export const gokwikConfig = {
-  mid: '19g6ilvotqthm',
+  mid: '19g6il4y1bh06',
   env: 'production',
   storefrontAccessToken: '847d377ea46e50bf9d66b58c4bd70b96',
   shopifyGraphQlUrl: 'https://chirag-test-123.myshopify.com/api/2024-01/graphql.json'

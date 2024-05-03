@@ -15,18 +15,18 @@ const integrationUrls = {
   production: 'https://pdp.gokwik.co/integration.js'
 };
 
-const analyticsUrl = {
-  local: 'http://localhost:8080/integration.js',
-  dev: 'https://devhits.gokwik.co/api/v1/events',
-  hdev: 'https://devhits.gokwik.co/api/v1/events',
-  ndev: 'https://devhits.gokwik.co/api/v1/events',
-  qa: 'https://qa-hits.gokwik.co/api/v1/events',
-  qatwo: 'https://qa-hits.gokwik.co/api/v1/events',
-  sandbox: 'https://sandbox-hits.gokwik.co/api/v1/events',
-  production: 'https://hits.gokwik.co/api/v1/events',
-  'qa-rto': 'https://qa-hits.gokwik.co/api/v1/events',
-  qaone: 'https://qa-hits.gokwik.co/api/v1/events'
-};
+// const analyticsUrl = {
+//   local: 'http://localhost:8080/integration.js',
+//   dev: 'https://devhits.gokwik.co/api/v1/events',
+//   hdev: 'https://devhits.gokwik.co/api/v1/events',
+//   ndev: 'https://devhits.gokwik.co/api/v1/events',
+//   qa: 'https://qa-hits.gokwik.co/api/v1/events',
+//   qatwo: 'https://qa-hits.gokwik.co/api/v1/events',
+//   sandbox: 'https://sandbox-hits.gokwik.co/api/v1/events',
+//   production: 'https://hits.gokwik.co/api/v1/events',
+//   'qa-rto': 'https://qa-hits.gokwik.co/api/v1/events',
+//   qaone: 'https://qa-hits.gokwik.co/api/v1/events'
+// };
 
 export function GokwikButton(passedData) {
   const updatedCart = useCart();
@@ -88,63 +88,63 @@ export function GokwikButton(passedData) {
   //   gokwikXhttp.send(requestBody);
   // };
 
-  const logEvent = (evtName, evtType) => {
-    const url = analyticsUrl[window.merchantInfo.environment];
-    const timestamp = Date.now();
-    const userAgent = navigator.userAgent;
-    const merchantId = window.merchantInfo.mid;
-    const name = evtName;
-    const eventType = evtType;
-    const type = 'event';
-    const adSource = getCookie('_shopify_sa_p');
-    const sessionId = localStorage.getItem('gokwik-sessionID') || getCookie('gokwik-sessionID');
-    const version = '1';
-    const shopifySessionId = getCookie('_shopify_s') || null;
-    const landing_page = getCookie('gk_landing_page') || '/';
-    const orig_referrer = getCookie('gk_orig_referrer') || 'blank';
-    const analyticsObj: {
-      timestamp: number;
-      userAgent: string;
-      version: string;
-      merchantId: string;
-      name: string;
-      sessionId?: string | null;
-      type: string;
-      adSource?: string;
-      eventType: string;
-      shopifySessionId: string;
-      landing_page: string;
-      orig_referrer: string;
-    } = {
-      timestamp,
-      userAgent,
-      version,
-      merchantId,
-      name,
-      sessionId,
-      type,
-      adSource,
-      eventType,
-      ...(shopifySessionId && { shopifySessionId }),
-      landing_page,
-      orig_referrer
-    };
-    if (!sessionId) delete analyticsObj['sessionId'];
-    if (!adSource) delete analyticsObj['adSource'];
+  // const logEvent = (evtName, evtType) => {
+  //   const url = analyticsUrl[window.merchantInfo.environment];
+  //   const timestamp = Date.now();
+  //   const userAgent = navigator.userAgent;
+  //   const merchantId = window.merchantInfo.mid;
+  //   const name = evtName;
+  //   const eventType = evtType;
+  //   const type = 'event';
+  //   const adSource = getCookie('_shopify_sa_p');
+  //   const sessionId = localStorage.getItem('gokwik-sessionID') || getCookie('gokwik-sessionID');
+  //   const version = '1';
+  //   const shopifySessionId = getCookie('_shopify_s') || null;
+  //   const landing_page = getCookie('gk_landing_page') || '/';
+  //   const orig_referrer = getCookie('gk_orig_referrer') || 'blank';
+  //   const analyticsObj: {
+  //     timestamp: number;
+  //     userAgent: string;
+  //     version: string;
+  //     merchantId: string;
+  //     name: string;
+  //     sessionId?: string | null;
+  //     type: string;
+  //     adSource?: string;
+  //     eventType: string;
+  //     shopifySessionId: string;
+  //     landing_page: string;
+  //     orig_referrer: string;
+  //   } = {
+  //     timestamp,
+  //     userAgent,
+  //     version,
+  //     merchantId,
+  //     name,
+  //     sessionId,
+  //     type,
+  //     adSource,
+  //     eventType,
+  //     ...(shopifySessionId && { shopifySessionId }),
+  //     landing_page,
+  //     orig_referrer
+  //   };
+  //   if (!sessionId) delete analyticsObj['sessionId'];
+  //   if (!adSource) delete analyticsObj['adSource'];
 
-    if (eventType === 'development') {
-      delete analyticsObj.shopifySessionId;
-      delete analyticsObj.sessionId;
-    }
+  //   if (eventType === 'development') {
+  //     delete analyticsObj.shopifySessionId;
+  //     delete analyticsObj.sessionId;
+  //   }
 
-    makeXhr('POST', url, analyticsObj, (status, response) => {
-      console.log(response);
+  //   makeXhr('POST', url, analyticsObj, (status, response) => {
+  //     console.log(response);
 
-      //added to pass param
-      if (status !== 201) {
-      }
-    });
-  };
+  //     //added to pass param
+  //     if (status !== 201) {
+  //     }
+  //   });
+  // };
 
   const addToCart = (cart: CartWithActions) => {
     const query = `
@@ -332,7 +332,7 @@ export function GokwikButton(passedData) {
     console.log(id);
 
     const query = `
-		query getCart($cartId: ID!){
+        query getCart($cartId: ID!){
     cart(id: $cartId){
       id
 
@@ -423,12 +423,13 @@ export function GokwikButton(passedData) {
     if (cart) {
       window.merchantInfo.cart = cart;
       buyNowRun = true;
-      logEvent('gk_buy_now_button_clicked', 'onGkClick');
+      // logEvent('gk_buy_now_button_clicked', 'onGkClick');
     } else {
+      console.log('updatedCart', updatedCart);
       const apiResponse = await getCart(updatedCart.id);
       window.merchantInfo.cart = apiResponse.data ? apiResponse.data.cart : null;
       buyNowRun = false;
-      logEvent('gokwik-button-clicked', 'onGkClick');
+      // logEvent('gokwik-button-clicked', 'onGkClick');
     }
     console.log('window.merchantInfo', window.merchantInfo);
 
@@ -438,12 +439,15 @@ export function GokwikButton(passedData) {
     <>
       {!passedData.hideButton && (
         <button
+          className={
+            'relative flex flex-1 items-center justify-center border  border-black bg-black px-6 py-2 text-base text-sm font-normal  uppercase  tracking-wide text-white hover:text-purple-400 md:px-8 md:font-semibold'
+          }
           onClick={(event) => {
             event.preventDefault();
             passedData.buyNowButton ? triggerBuyNow(passedData) : triggerGokwikCheckout();
           }}
         >
-          {passedData.buyNowButton ? 'Gokwik Buy Now' : 'Pay via UPI/COD'}
+          {passedData.buyNowButton ? 'Buy Now' : 'Pay via UPI/COD'}
         </button>
       )}
     </>
