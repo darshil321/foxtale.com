@@ -39,6 +39,8 @@ function SubmitButton({ type }: { type: 'plus' | 'minus' }) {
 
 export function EditItemQuantityButton({ item, type }: { item: CartItem; type: 'plus' | 'minus' }) {
   const [message, formAction] = useFormState(updateItemQuantity, null);
+  console.log('itemm', item, message);
+
   const payload = {
     lineId: item.id,
     variantId: item.merchandise.id,
