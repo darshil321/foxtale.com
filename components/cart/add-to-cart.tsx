@@ -38,7 +38,6 @@ const AddToCart = ({ cart }: { cart: Cart | undefined }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const dispatch = useAppDispatch();
   // const data = useAppSelector((state) => state.products.products);
-  console.log('data', cart);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -105,59 +104,62 @@ const AddToCart = ({ cart }: { cart: Cart | undefined }) => {
           <p className="mt-6 text-center text-2xl font-bold">Your cart is empty.</p>
         </div>
       ) : (
-        cart.lines.map((item, index) => (
-          <div key={index} className="grid gap-4 py-8 sm:grid-cols-1 lg:grid-cols-6">
-            <div className="flex sm:grid-cols-1 lg:col-span-3">
-              <div>
-                <Image
-                  className="h-full w-full object-cover"
-                  width={120}
-                  height={120}
-                  alt={
-                    item.merchandise.product.featuredImage.altText || item.merchandise.product.title
-                  }
-                  src={item.merchandise.product.featuredImage.url}
-                />
-              </div>
-              <div className="flex flex-col justify-between py-6 pl-4">
-                <p className="cursor-pointer font-medium hover:text-green-500">
-                  {item.merchandise.product.title}
-                </p>
-                {/* <p className="text-sm"> */}
-                {/* <span className="text-gray-500">Option:</span>
-                  <span className="font-semibold text-gray-500">{product.option}</span> */}
-                {/* </p> */}
-                <div className="mt-1 flex space-x-2">
-                  <FiEdit
-                    onClick={() => setModalIsOpen(true)}
-                    className="cursor-pointer text-lg text-gray-600"
+        cart.lines.map((item, index) => {
+          return (
+            <div key={index} className="grid gap-4 py-8 sm:grid-cols-1 lg:grid-cols-6">
+              <div className="flex sm:grid-cols-1 lg:col-span-3">
+                <div>
+                  <Image
+                    className="h-full w-full object-cover"
+                    width={120}
+                    height={120}
+                    alt={
+                      item.merchandise.product.featuredImage.altText ||
+                      item.merchandise.product.title
+                    }
+                    src={item.merchandise.product.featuredImage.url}
                   />
-                  <DeleteItemButton item={item} removeIcon={true} />
+                </div>
+                <div className="flex flex-col justify-between py-6 pl-4">
+                  <p className="cursor-pointer font-medium hover:text-green-500">
+                    {item.merchandise.product.title}
+                  </p>
+                  {/* <p className="text-sm"> */}
+                  {/* <span className="text-gray-500">Option:</span>
+                  <span className="font-semibold text-gray-500">{product.option}</span> */}
+                  {/* </p> */}
+                  <div className="mt-1 flex space-x-2">
+                    <FiEdit
+                      onClick={() => setModalIsOpen(true)}
+                      className="cursor-pointer text-lg text-gray-600"
+                    />
+                    <DeleteItemButton item={item} removeIcon={true} />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="flex flex-row items-center justify-center text-center text-gray-500">
-              {/* {item.cost && (
+              <div className="flex flex-row items-center justify-center text-center text-gray-500">
+                {/* {item.cost && (
                 <span className="mr-1 text-black line-through">{'₹' + item.cost ?? ''}</span>
               )} */}
-              <span className={`${item.cost ? 'text-red-500' : 'text-black'}`}>
-                {'₹' + Number(item.cost.totalAmount.amount) / item.quantity}
-              </span>
-            </div>
-            <div className="justify-left flex items-center text-center">
-              <div className="mx-auto flex h-9 flex-row  items-center rounded-full border border-neutral-500 ">
-                <EditItemQuantityButton item={item} type="minus" />
-                <p className="w-6 text-center">
-                  <span className="w-full text-sm">{item.quantity}</span>
-                </p>
-                <EditItemQuantityButton item={item} type="plus" />
+                <span className={`${item.cost ? 'text-red-500' : 'text-black'}`}>
+                  {'₹' + Number(item.cost.totalAmount.amount) / item.quantity}
+                </span>
+              </div>
+              <div className="justify-left flex items-center text-center">
+                <div className="mx-auto flex h-9 flex-row  items-center rounded-full border border-neutral-500 ">
+                  <EditItemQuantityButton item={item} type="minus" />
+                  <p className="w-6 text-center">
+                    <span className="w-full text-sm">{item.quantity}</span>
+                  </p>
+                  <EditItemQuantityButton item={item} type="plus" />
+                </div>
+              </div>
+              <div className="flex items-center justify-center text-center font-semibold text-gray-500">
+                ₹{item.cost.totalAmount.amount}
               </div>
             </div>
-            <div className="flex items-center justify-center text-center font-semibold text-gray-500">
-              ₹{item.cost.totalAmount.amount}
-            </div>
-          </div>
-        ))
+          );
+        })
       )}
 
       <hr />

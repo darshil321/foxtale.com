@@ -23,7 +23,11 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
   const quantityRef = useRef(cart?.totalQuantity);
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
-  console.log('cart', cart);
+  const [localQuantities, setLocalQuantities] = useState({}) as { [key: string]: number };
+
+  const handleLocalQuantityChange = (itemId: string, newQuantity: number) => {
+    setLocalQuantities((prev) => ({ ...prev, [itemId]: newQuantity }));
+  };
 
   useEffect(() => {
     // Open cart modal when quantity changes.
@@ -95,7 +99,6 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                         `/product/${item.merchandise.product.handle}`,
                         new URLSearchParams(merchandiseSearchParams)
                       );
-
                       return (
                         <li key={i} className="flex w-full flex-col">
                           <div className="relative flex w-full flex-row justify-between px-1 py-4">
@@ -138,11 +141,21 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                                 currencyCode={item.cost.totalAmount.currencyCode}
                               />
                               <div className="ml-auto flex h-9 flex-row items-center rounded-full border border-neutral-200 ">
-                                <EditItemQuantityButton item={item} type="minus" />
+                                <EditItemQuantityButton
+                                  item={item}
+                                  type="minus"
+                                  handleLocalQuantityChange={handleLocalQuantityChange}
+                                />
                                 <p className="w-6 text-center">
-                                  <span className="w-full text-sm">{item.quantity}</span>
+                                  <span className="w-full text-sm">
+                                    {localQuantities[item.id] ?? item.quantity}
+                                  </span>
                                 </p>
-                                <EditItemQuantityButton item={item} type="plus" />
+                                <EditItemQuantityButton
+                                  item={item}
+                                  type="plus"
+                                  handleLocalQuantityChange={handleLocalQuantityChange}
+                                />
                               </div>
                             </div>
                           </div>

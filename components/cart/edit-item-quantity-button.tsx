@@ -1,31 +1,23 @@
-import React, { useState, useEffect } from 'react';
+'use client';
+import React, { useCallback, useEffect, useState } from 'react';
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { updateItemQuantity } from 'components/cart/actions';
 import LoadingDots from 'components/loading-dots';
 import type { CartItem } from 'lib/shopify/types';
 import { useFormState, useFormStatus } from 'react-dom';
+import { debounce } from 'lib/helper/helper';
 
-// Debouncing function
-function useDebounce(value, delay) {
-  const [debouncedValue, setDebouncedValue] = useState(value);
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [value, delay]);
-
-  return debouncedValue;
-}
-
-function SubmitButton({ type, onClick }: { type: 'plus' | 'minus'; onClick: () => void }) {
-  const { pending } = useFormStatus();
-
+function SubmitButton({
+  type,
+  onClick,
+  pending
+}: {
+  type: 'plus' | 'minus';
+  // eslint-disable-next-line no-unused-vars
+  onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  pending: boolean;
+}) {
   return (
     <button
       type="button"
@@ -41,45 +33,67 @@ function SubmitButton({ type, onClick }: { type: 'plus' | 'minus'; onClick: () =
       )}
     >
       {pending ? (
-        <LoadingDots className="bg-black " />
+        <LoadingDots className="bg-black" />
       ) : type === 'plus' ? (
-        <PlusIcon className="h-4 w-4 " />
+        <PlusIcon className="h-4 w-4" />
       ) : (
-        <MinusIcon className="h-4 w-4 " />
+        <MinusIcon className="h-4 w-4" />
       )}
     </button>
   );
 }
 
-export function EditItemQuantityButton({ item, type }: { item: CartItem; type: 'plus' | 'minus' }) {
+export function EditItemQuantityButton({
+  item,
+  type,
+  handleLocalQuantityChange
+}: {
+  item: CartItem;
+  type: 'plus' | 'minus';
+  // eslint-disable-next-line no-unused-vars
+  handleLocalQuantityChange: (itemId: string, newQuantity: number) => void;
+  localQuantity: number;
+}) {
+  const [quantity, setQuantity] = useState(item.quantity);
   const [message, formAction] = useFormState(updateItemQuantity, null);
-  const [accumulatedQuantity, setAccumulatedQuantity] = useState(item.quantity);
-  const debouncedQuantity = useDebounce(accumulatedQuantity, 1000); // 1 second delay
+  const { pending } = useFormStatus();
 
-  useEffect(() => {
-    // Ensure the debounced quantity is different from the item's current quantity
-    if (debouncedQuantity !== item.quantity) {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedUpdateItemQuantity = useCallback(
+    debounce((newQuantity: number) => {
       const payload = {
         lineId: item.id,
         variantId: item.merchandise.id,
-        quantity: debouncedQuantity
+        quantity: newQuantity
       };
       formAction(payload);
-    }
-  }, [debouncedQuantity, item.id, item.merchandise.id, formAction, item.quantity]);
+    }, 1000),
+    [item.id, item.merchandise.id, formAction]
+  );
 
-  const handleClick = () => {
-    setAccumulatedQuantity((prevQuantity) =>
-      Math.max(prevQuantity + (type === 'plus' ? 1 : -1), 1)
-    );
-  };
+  useEffect(() => {
+    setQuantity(item.quantity);
+  }, [item.quantity]);
+
+  const handleQuantityChange = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.preventDefault();
+      const adjustment = type === 'plus' ? 1 : -1;
+      const newQuantity = quantity + adjustment;
+      const clampedQuantity = Math.max(newQuantity, 1);
+      handleLocalQuantityChange(item.id, clampedQuantity);
+      setQuantity(clampedQuantity);
+      debouncedUpdateItemQuantity(clampedQuantity);
+    },
+    [type, handleLocalQuantityChange, quantity, debouncedUpdateItemQuantity, item.id]
+  );
 
   return (
-    <div>
-      <SubmitButton type={type} onClick={handleClick} />
+    <form onSubmit={(e) => e.preventDefault()}>
+      <SubmitButton type={type} onClick={handleQuantityChange} pending={pending} />
       <p aria-live="polite" className="sr-only" role="status">
         {message}
       </p>
-    </div>
+    </form>
   );
 }
