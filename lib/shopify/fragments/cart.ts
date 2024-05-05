@@ -28,6 +28,9 @@ const cartFragment = /* GraphQL */ `
               amount
               currencyCode
             }
+            amountPerQuantity {
+              amount
+            }
           }
           merchandise {
             ... on ProductVariant {

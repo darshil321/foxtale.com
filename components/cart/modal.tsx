@@ -14,6 +14,7 @@ import { EditItemQuantityButton } from './edit-item-quantity-button';
 import OpenCart from './open-cart';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { useAppSelector } from 'store/hooks';
+import { usePathname } from 'next/navigation';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -24,21 +25,19 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
   const quantityRef = useRef(cart?.totalQuantity);
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
-  // const [localQuantities, setLocalQuantities] = useState({}) as any;
+  const pathname = usePathname();
   const quantities = useAppSelector((state) => state.cart.quantities) ?? {};
 
   useEffect(() => {
-    // Open cart modal when quantity changes.
     if (cart?.totalQuantity !== quantityRef.current) {
-      // But only if it's not already open (quantity also changes when editing items in cart).
-      if (!isOpen) {
+      if (!isOpen && pathname !== '/cart') {
         setIsOpen(true);
       }
 
       // Always update the quantity reference
       quantityRef.current = cart?.totalQuantity;
     }
-  }, [isOpen, cart?.totalQuantity, quantityRef]);
+  }, [isOpen, cart?.totalQuantity, quantityRef, pathname]);
 
   return (
     <>
@@ -97,6 +96,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                         `/product/${item.merchandise.product.handle}`,
                         new URLSearchParams(merchandiseSearchParams)
                       );
+
                       return (
                         <li key={i} className="flex w-full flex-col">
                           <div className="relative flex w-full flex-row justify-between px-1 py-4">
@@ -135,7 +135,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                             <div className="flex h-16 flex-col justify-between">
                               <Price
                                 className="flex justify-end space-y-2 text-right text-sm"
-                                amount={item.cost.totalAmount.amount}
+                                amount={item.cost?.amountPerQuantity?.amount * quantities[item?.id]}
                                 currencyCode={item.cost.totalAmount.currencyCode}
                               />
                               <div className="ml-auto flex h-9 flex-row items-center  border border-neutral-200 ">

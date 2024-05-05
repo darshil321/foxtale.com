@@ -17,6 +17,7 @@ export type CartItem = {
   quantity: number;
   cost: {
     totalAmount: Money;
+    amountPerQuantity: Money;
   };
   merchandise: {
     id: string;

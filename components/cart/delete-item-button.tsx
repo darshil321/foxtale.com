@@ -9,7 +9,6 @@ import { useFormState, useFormStatus } from 'react-dom';
 
 function SubmitButton({ removeIcon }: { removeIcon?: boolean }) {
   const { pending } = useFormStatus();
-  console.log('pending', removeIcon);
 
   return (
     <button
@@ -41,7 +40,6 @@ export function DeleteItemButton({ item, removeIcon }: { item: CartItem; removeI
   const [message, formAction] = useFormState(removeItem, null);
   const itemId = item.id;
   const actionWithVariant = formAction.bind(null, itemId);
-  console.log('removeIcon', removeIcon);
 
   return (
     <form action={actionWithVariant}>

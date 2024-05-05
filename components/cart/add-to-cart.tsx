@@ -1,10 +1,10 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FiEdit } from 'react-icons/fi';
 import { HiX } from 'react-icons/hi';
 import EditItemForm from './edit-item-form';
 import Modal from 'react-modal';
-import { useAppDispatch } from 'store/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 // import { productActions } from 'store/actions/product.actions';
 import { cartActions } from 'store/actions/cart.action';
 import Image from 'next/image';
@@ -13,39 +13,16 @@ import { Cart } from 'lib/shopify/types';
 import ShoppingBagIcon from '@heroicons/react/24/outline/ShoppingBagIcon';
 import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
-import { getMetaObjects } from 'lib/shopify';
-// import { cookies } from 'next/headers';
-
-// const products = [
-//   {
-//     name: 'Overnight Glow Mask',
-//     option: 'Single',
-//     mrp: 600,
-//     price: 595,
-//     quantity: 2,
-//     imageSrc: 'https://foxtale.in/cdn/shop/files/PDP---First-Image-16.jpg?v=1712244428&width=240'
-//   },
-//   {
-//     name: 'Hydrating Moisturizer with Ceramide',
-//     option: 'Single',
-//     price: 300,
-//     quantity: 3,
-//     imageSrc: 'https://foxtale.in/cdn/shop/files/PDP---First-Image-09.jpg?v=1712244190&width=240'
-//   }
-// ];
 
 const AddToCart = ({ cart }: { cart: Cart | undefined }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const quantityRef = useRef(cart?.totalQuantity);
+
+  const quantities = useAppSelector((state) => state.cart.quantities) ?? {};
   const dispatch = useAppDispatch();
-  // const data = useAppSelector((state) => state.products.products);
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('attempt product: sagaa');
-      const data = await getMetaObjects();
-      console.log('datam', data);
-
-      // Assuming getMetaObjects() is an async function
       dispatch(
         cartActions.attemptGetCarts({
           cartId:
@@ -54,11 +31,16 @@ const AddToCart = ({ cart }: { cart: Cart | undefined }) => {
       );
     };
 
-    fetchData(); // Call the async function
-
-    // You cannot rely on `products` being updated immediately after dispatch
-    // console.log('attempt product: sagaa1', products);
+    fetchData();
   }, [dispatch]);
+
+  useEffect(() => {
+    // Open cart modal when quantity changes.
+    if (cart?.totalQuantity !== quantityRef.current) {
+      // Always update the quantity reference
+      quantityRef.current = cart?.totalQuantity;
+    }
+  }, [cart?.totalQuantity, quantityRef]);
 
   return (
     <div className="w-full md:px-40 lg:py-20">
@@ -142,20 +124,21 @@ const AddToCart = ({ cart }: { cart: Cart | undefined }) => {
                 <span className="mr-1 text-black line-through">{'₹' + item.cost ?? ''}</span>
               )} */}
                 <span className={`${item.cost ? 'text-red-500' : 'text-black'}`}>
-                  {'₹' + Number(item.cost.totalAmount.amount) / item.quantity}
+                  {' '}
+                  ₹{item.cost?.amountPerQuantity?.amount}
                 </span>
               </div>
               <div className="justify-left flex items-center text-center">
                 <div className="mx-auto flex h-9 flex-row  items-center rounded-full border border-neutral-500 ">
                   <EditItemQuantityButton item={item} type="minus" />
                   <p className="w-6 text-center">
-                    <span className="w-full text-sm">{item.quantity}</span>
+                    <span className="w-full text-sm">{quantities[item?.id] ?? item.quantity}</span>
                   </p>
                   <EditItemQuantityButton item={item} type="plus" />
                 </div>
               </div>
-              <div className="flex items-center justify-center text-center font-semibold text-gray-500">
-                ₹{item.cost.totalAmount.amount}
+              <div className="flex items-center justify-center  text-center font-semibold text-gray-500">
+                ₹{Number(item.cost?.amountPerQuantity?.amount) * quantities[item?.id]}
               </div>
             </div>
           );
