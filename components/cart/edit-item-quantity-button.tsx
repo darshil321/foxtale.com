@@ -7,6 +7,8 @@ import LoadingDots from 'components/loading-dots';
 import type { CartItem } from 'lib/shopify/types';
 import { useFormState, useFormStatus } from 'react-dom';
 import { debounce } from 'lib/helper/helper';
+import { useAppDispatch } from 'store/hooks';
+import { updateCartItemQuantity } from 'store/slices/cart-slice';
 
 function SubmitButton({
   type,
@@ -45,19 +47,18 @@ function SubmitButton({
 
 export function EditItemQuantityButton({
   item,
-  type,
-  handleLocalQuantityChange
+  type
 }: {
   item: CartItem;
   type: 'plus' | 'minus';
   // eslint-disable-next-line no-unused-vars
-  handleLocalQuantityChange: (itemId: string, newQuantity: number) => void;
-  localQuantity: number;
+  handleLocalQuantityChange?: (itemId: string, newQuantity: number) => void;
+  localQuantity?: number;
 }) {
   const [quantity, setQuantity] = useState(item.quantity);
   const [message, formAction] = useFormState(updateItemQuantity, null);
   const { pending } = useFormStatus();
-
+  const dispatch = useAppDispatch();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedUpdateItemQuantity = useCallback(
     debounce((newQuantity: number) => {
@@ -81,11 +82,13 @@ export function EditItemQuantityButton({
       const adjustment = type === 'plus' ? 1 : -1;
       const newQuantity = quantity + adjustment;
       const clampedQuantity = Math.max(newQuantity, 1);
-      handleLocalQuantityChange(item.id, clampedQuantity);
+
+      // handleLocalQuantityChange && handleLocalQuantityChange(item.id, clampedQuantity);
+      dispatch(updateCartItemQuantity({ itemId: item.id, newQuantity }));
       setQuantity(clampedQuantity);
       debouncedUpdateItemQuantity(clampedQuantity);
     },
-    [type, handleLocalQuantityChange, quantity, debouncedUpdateItemQuantity, item.id]
+    [type, quantity, dispatch, debouncedUpdateItemQuantity, item.id]
   );
 
   return (

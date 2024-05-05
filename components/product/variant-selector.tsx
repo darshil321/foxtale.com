@@ -3,13 +3,14 @@
 import clsx from 'clsx';
 import { ProductOption, ProductVariant } from 'lib/shopify/types';
 import { createUrl } from 'lib/utils';
+import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-type Combination = {
-  id: string;
-  availableForSale: boolean;
-  [key: string]: string | boolean; // ie. { color: 'Red', size: 'Large', ... }
-};
+// type Combination = {
+//   id: string;
+//   availableForSale: boolean;
+//   [key: string]: string | boolean;
+// };
 
 export function VariantSelector({
   options,
@@ -18,7 +19,6 @@ export function VariantSelector({
   options: ProductOption[];
   variants: ProductVariant[];
 }) {
-  console.log('options', options, 'variants', variants);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -29,22 +29,16 @@ export function VariantSelector({
     return;
   }
 
-  const combinations: Combination[] = variants.map((variant) => ({
-    id: variant.id,
-    availableForSale: variant.availableForSale,
-    // Adds key / value pairs for each variant (ie. "color": "Black" and "size": 'M").
-    ...variant.selectedOptions.reduce(
-      (accumulator, option) => ({ ...accumulator, [option.name.toLowerCase()]: option.value }),
-      {}
-    )
-  }));
-
-  console.log('combinations', combinations);
+  const findVariantForOptionValue = (optionValue: string) => {
+    return variants.find((variant) =>
+      variant.selectedOptions.some((option) => option.value === optionValue)
+    );
+  };
 
   return options.map((option) => (
-    <dl className="mb-8" key={option.id}>
-      <dt className="mb-4 text-sm uppercase tracking-wide">{option.name}</dt>
-      <dd className="flex flex-wrap gap-3">
+    <dl className="mb-6" key={option.id}>
+      <dt className="mb-2 text-sm uppercase tracking-wide">{option.name}</dt>
+      <dd className="flex w-max flex-wrap divide-x  divide-black border border-black ">
         {option.values.map((value) => {
           const optionNameLowerCase = option.name.toLowerCase();
 
@@ -56,25 +50,11 @@ export function VariantSelector({
           optionSearchParams.set(optionNameLowerCase, value);
           const optionUrl = createUrl(pathname, optionSearchParams);
 
-          // In order to determine if an option is available for sale, we need to:
-          //
-          // 1. Filter out all other param state
-          // 2. Filter out invalid options
-          // 3. Check if the option combination is available for sale
-          //
-          // This is the "magic" that will cross check possible variant combinations and preemptively
-          // disable combinations that are not available. For example, if the color gray is only available in size medium,
-          // then all other sizes should be disabled.
-          const filtered = Array.from(optionSearchParams.entries()).filter(([key, value]) =>
-            options.find(
-              (option) => option.name.toLowerCase() === key && option.values.includes(value)
-            )
-          );
-          const isAvailableForSale = combinations.find((combination) =>
-            filtered.every(
-              ([key, value]) => combination[key] === value && combination.availableForSale
-            )
-          );
+          // Find the corresponding variant for the selected options
+          const selectedVariant = findVariantForOptionValue(value);
+
+          // Determine if the variant is available for sale
+          const isAvailableForSale = selectedVariant?.availableForSale;
 
           // The option is active if it's in the url params.
           const isActive = searchParams.get(optionNameLowerCase) === value;
@@ -87,22 +67,31 @@ export function VariantSelector({
               onClick={() => {
                 router.replace(optionUrl, { scroll: false });
               }}
-              title={`${option.name} ${value}${!isAvailableForSale ? ' (Out of Stock)' : ''}`}
+              title={`${option.name} ${value}${isAvailableForSale ? ' (Out of Stock)' : ''}`}
               className={clsx(
-                'flex min-w-[48px] items-center justify-center  border bg-neutral-100 px-2 py-1 text-sm ',
+                'flex min-w-[48px] flex-col items-center justify-center gap-0 bg-neutral-100 px-12 py-4 text-base uppercase tracking-wider text-gray-700 ',
                 {
-                  'cursor-default bg-neutral-200': isActive,
-                  'ring-1 ring-transparent transition duration-200 ease-in-out hover:bg-neutral-200':
+                  'cursor-default bg-[#a7a5a5] bg-opacity-40 font-medium text-black': isActive,
+                  'ring-1 ring-transparent transition duration-200 ease-in-out hover:text-black':
                     !isActive && isAvailableForSale,
-                  'relative z-10 cursor-not-allowed overflow-hidden bg-neutral-100 text-neutral-500 ring-1 ring-neutral-300 before:absolute before:inset-x-0  before:h-px before:-rotate-45 before:bg-neutral-300 before:transition-transform ':
+                  'relative z-10 cursor-not-allowed overflow-hidden bg-neutral-100 text-black ring-1 ring-neutral-300 before:absolute before:inset-x-0  before:h-px before:-rotate-45 before:bg-neutral-300 before:transition-transform ':
                     !isAvailableForSale
                 }
               )}
             >
               {value}
+              <span>₹{selectedVariant?.price.amount}</span>
             </button>
           );
         })}
+        <Link
+          href={'#combos'}
+          className={clsx(
+            'flex min-w-[48px] items-center  justify-center  bg-neutral-100 px-6 py-4 text-base uppercase tracking-wider text-stone-700 hover:text-black '
+          )}
+        >
+          Combos
+        </Link>
       </dd>
     </dl>
   ));

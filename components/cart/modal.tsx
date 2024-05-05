@@ -13,6 +13,7 @@ import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
 import OpenCart from './open-cart';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
+import { useAppSelector } from 'store/hooks';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -23,11 +24,8 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
   const quantityRef = useRef(cart?.totalQuantity);
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
-  const [localQuantities, setLocalQuantities] = useState({}) as { [key: string]: number };
-
-  const handleLocalQuantityChange = (itemId: string, newQuantity: number) => {
-    setLocalQuantities((prev) => ({ ...prev, [itemId]: newQuantity }));
-  };
+  // const [localQuantities, setLocalQuantities] = useState({}) as any;
+  const quantities = useAppSelector((state) => state.cart.quantities) ?? {};
 
   useEffect(() => {
     // Open cart modal when quantity changes.
@@ -110,7 +108,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                               onClick={closeCart}
                               className="z-30 flex flex-row space-x-4"
                             >
-                              <div className="relative h-16 w-16 cursor-pointer overflow-hidden rounded-md border border-neutral-300 bg-neutral-300 ">
+                              <div className="relative h-16 w-16 cursor-pointer overflow-hidden rounded-md  border border-neutral-300 bg-neutral-300 ">
                                 <Image
                                   className="h-full w-full object-cover"
                                   width={64}
@@ -140,22 +138,14 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                                 amount={item.cost.totalAmount.amount}
                                 currencyCode={item.cost.totalAmount.currencyCode}
                               />
-                              <div className="ml-auto flex h-9 flex-row items-center rounded-full border border-neutral-200 ">
-                                <EditItemQuantityButton
-                                  item={item}
-                                  type="minus"
-                                  handleLocalQuantityChange={handleLocalQuantityChange}
-                                />
+                              <div className="ml-auto flex h-9 flex-row items-center  border border-neutral-200 ">
+                                <EditItemQuantityButton item={item} type="minus" />
                                 <p className="w-6 text-center">
                                   <span className="w-full text-sm">
-                                    {localQuantities[item.id] ?? item.quantity}
+                                    {quantities[item?.id] ?? item.quantity}
                                   </span>
                                 </p>
-                                <EditItemQuantityButton
-                                  item={item}
-                                  type="plus"
-                                  handleLocalQuantityChange={handleLocalQuantityChange}
-                                />
+                                <EditItemQuantityButton item={item} type="plus" />
                               </div>
                             </div>
                           </div>
@@ -187,7 +177,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                   </div>
                   <a
                     href={cart.checkoutUrl}
-                    className="block w-full rounded-full bg-blue-600 p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100"
+                    className="block w-full  bg-blue-600 p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100"
                   >
                     Proceed to Checkout
                   </a>

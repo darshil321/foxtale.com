@@ -30,7 +30,7 @@ export type CartItem = {
 };
 
 export type Collection = ShopifyCollection & {
-  path: string;
+  path?: string;
 };
 
 export type Image = {

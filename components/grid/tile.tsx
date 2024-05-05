@@ -20,7 +20,7 @@ export function GridTileImage({
   label?: {
     title: string;
     amount: string;
-    description: string;
+    description?: string;
     currencyCode: string;
     position?: 'bottom' | 'center';
   };

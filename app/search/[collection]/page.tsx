@@ -1,4 +1,4 @@
-import { getCollection, getCollectionProducts } from 'lib/shopify';
+import { getCollection, getCollectionProducts, getCollections } from 'lib/shopify';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -6,12 +6,25 @@ import Grid from 'components/grid';
 import ProductGridItems from 'components/layout/product-grid-items';
 import { defaultSort, sorting } from 'lib/constants';
 
+export const generateStaticParams = async () => {
+  const collections = await getCollections();
+  return collections?.map((collection: any) => ({
+    collection: collection?.handle
+  }));
+};
+
 export async function generateMetadata({
   params
 }: {
   params: { collection: string };
 }): Promise<Metadata> {
   const collection = await getCollection(params.collection);
+  const collections = await getCollections().then((res) =>
+    res?.map((collection: any) => ({
+      collection: collection?.handle === '' ? 'all' : collection?.handle
+    }))
+  );
+  console.log('collectionswww', collections);
 
   if (!collection) return notFound();
 
@@ -32,10 +45,6 @@ export default async function CategoryPage({
   const { sort } = searchParams as { [key: string]: string };
   const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
   const products = await getCollectionProducts({ collection: params.collection, sortKey, reverse });
-  console.log('jhgjuy', params.collection, sortKey, reverse);
-
-  console.log('Pooododddxrrd', products);
-
   return (
     <section className="rounded-md bg-white py-7">
       {products.length === 0 ? (

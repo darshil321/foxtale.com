@@ -3,14 +3,15 @@ import { createSlice, current } from '@reduxjs/toolkit';
 export interface CartState {
   loading: boolean;
   cart: any;
-
+  quantities: any;
   error: any;
 }
 
 export const initialState: CartState = {
   loading: false,
   cart: null,
-  error: null
+  error: null,
+  quantities: {}
 };
 
 export const cartSlice = createSlice({
@@ -21,7 +22,10 @@ export const cartSlice = createSlice({
     getCartSuccess: (state, action) => {
       const { products } = action.payload.body.data;
       state.cart = products.edges;
-      console.log('success reducer:>> ', products);
+      // Initialize quantities with default values or from cart items
+      products.edges.forEach((item) => {
+        state.quantities[item.id] = item.quantity; // Assuming each item has an 'id' and 'quantity'
+      });
     },
 
     getCartFailed: (state, action) => {
@@ -33,9 +37,16 @@ export const cartSlice = createSlice({
     attemptGetCarts: (state, action) => {
       console.log('attempt product reducer :>> ', action);
       //loading true
+    },
+
+    updateCartItemQuantity: (state, action) => {
+      const { itemId, newQuantity } = action.payload;
+      if (!state.quantities) state.quantities = {};
+      state.quantities[itemId] = newQuantity;
     }
   }
 });
 
-export const { getCartSuccess, getCartFailed, attemptGetCarts } = cartSlice.actions;
+export const { getCartSuccess, getCartFailed, attemptGetCarts, updateCartItemQuantity } =
+  cartSlice.actions;
 export default cartSlice.reducer;

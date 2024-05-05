@@ -1,20 +1,22 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import { getProduct, getProductRecommendations, getProducts } from 'lib/shopify';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import { GridTileImage } from 'components/grid/tile';
-import { ProductDescription } from 'components/product/product-description';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
-import { getProduct, getProductRecommendations, getProducts } from 'lib/shopify';
+import dynamic from 'next/dynamic';
+const ProductDescription = dynamic(() => import('components/product/product-description'));
+const ProductCarouselSlider = dynamic(() => import('components/product/product-carousel'));
+const ProductDetailsTabs = dynamic(() => import('components/product/product-details-tabs'));
+const ProductDisclosure = dynamic(() => import('components/product/product-disclosure'));
+const ProductDescFooter = dynamic(() => import('components/product/pdp-footer'));
+const Accordion = dynamic(() => import('components/layout/accordion'));
+const ResultsSection = dynamic(() => import('components/product/results-section'));
+
 import CustomInputBtn from 'components/elements/custom-input-with-btn';
-import ResultsSection from 'components/product/results-section';
 import { ProductSlider } from 'components/product/product-slider';
-import Accordion from 'components/layout/accordion';
-import ProductDescFooter from 'components/product/pdp-footer';
 import OfferSection from 'components/product/offers-section';
-import ProductDetailsTabs from 'components/product/product-details-tabs';
-import ProductDisclosure from 'components/product/product-disclosure';
-import ProductCarouselSlider from 'components/product/product-carousel';
 
 export const generateStaticParams = async () => {
   const products = await getProducts({});
@@ -62,7 +64,13 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProductPage({ params }: { params: { handle: string } }) {
+export default async function ProductPage({
+  params,
+  searchParams
+}: {
+  params: { handle: string };
+  searchParams: any;
+}) {
   const product = await getProduct(params.handle);
 
   if (!product) return notFound();
@@ -83,7 +91,6 @@ export default async function ProductPage({ params }: { params: { handle: string
       lowPrice: product?.priceRange.minVariantPrice.amount
     }
   };
-
   return (
     <div>
       <script
@@ -105,7 +112,9 @@ export default async function ProductPage({ params }: { params: { handle: string
           </div>
           <div className="basis-full  lg:basis-3/6">
             <div className="px-4 pt-3 md:px-2 md:pt-0">
-              <ProductDescription product={product} />
+              <Suspense fallback={null}>
+                <ProductDescription product={product} searchParams={searchParams} />
+              </Suspense>
             </div>
             <OfferSection />
             <div className="my-3 px-4 md:px-0">

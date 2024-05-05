@@ -16,7 +16,7 @@ export default function ProductCarouselServer() {
   React.useEffect(() => {
     const fetchData = async () => {
       const products = await getCollectionProducts({
-        collection: selectedCategory?.name
+        collection: selectedCategory?.name as string
       });
       setSlides(products);
     };

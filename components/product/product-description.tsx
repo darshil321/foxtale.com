@@ -5,7 +5,17 @@ import { Suspense } from 'react';
 import { VariantSelector } from './variant-selector';
 import ProductsRatings from 'components/product/products-rating';
 
-export function ProductDescription({ product }: { product: Product }) {
+export default function ProductDescription({
+  product,
+  searchParams
+}: {
+  product: Product;
+  searchParams: any;
+}) {
+  const selectedVariantPrice = product.variants.find(
+    (variant) => variant.title === searchParams?.option
+  )?.price.amount;
+
   return (
     <>
       <div className="mb-4 flex flex-col pb-3 ">
@@ -17,7 +27,7 @@ export function ProductDescription({ product }: { product: Product }) {
         <ProductsRatings />
         <div className="mr-auto text-2xl font-semibold text-black">
           <Price
-            amount={product.priceRange.maxVariantPrice.amount}
+            amount={selectedVariantPrice ?? product.priceRange.maxVariantPrice.amount}
             currencyCode={product.priceRange.maxVariantPrice.currencyCode}
             text={'Inclusive of all tax'}
           />

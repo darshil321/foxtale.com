@@ -12,7 +12,7 @@ export function* getProductsSagaCart(action: {
   try {
     const { first } = action.payload;
 
-    const data = yield call(getCart, { first });
+    const data = yield call(getCart, { cartId: first });
 
     yield put(productActions.getProductSuccess(data));
   } catch (error) {
