@@ -18,8 +18,8 @@ export default function ProductDescription({
 
   return (
     <>
-      <div className="mb-4 flex flex-col pb-3 ">
-        <div className="flex flex-row items-center  gap-3">
+      <div className="mb-4 flex flex-col gap-1 pb-3 ">
+        <div className="flex flex-col items-start gap-0 md:flex-row  md:gap-3">
           <h1 className="mb-2 text-2xl font-medium leading-6">{product.title}</h1>
           <span className="text-center text-xs text-neutral-400"> Size -30 ml</span>
         </div>

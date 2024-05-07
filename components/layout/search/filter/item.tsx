@@ -22,10 +22,10 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
       className="mt-2 flex h-full w-full items-center justify-center gap-2 text-black  "
       key={item.title}
     >
-      <div className="flex  flex-col items-center justify-center gap-2">
+      <div className="flex flex-col items-center justify-center gap-1 md:gap-2">
         <Image
           src={item?.image?.url || '/Images/defualt.png'}
-          className=" flex min-h-[100px] min-w-[100px]  items-center justify-center rounded-full"
+          className=" flex min-h-[80px]  min-w-[80px] items-center justify-center  rounded-full md:min-h-[100px] md:min-w-[100px]"
           alt={item?.title || 'Image'}
           width={100}
           height={100}
@@ -33,7 +33,7 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
         <DynamicTag
           href={createUrl(item.path, newParams)}
           className={clsx(
-            'line-clamp-1 text-ellipsis text-wrap text-center text-sm underline-offset-4 hover:underline ',
+            'line-clamp-1 text-ellipsis text-wrap text-center text-xs underline-offset-4 hover:underline md:text-sm ',
             {
               'underline underline-offset-4': active
             }

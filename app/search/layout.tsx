@@ -6,14 +6,14 @@ import HeroBannerSlider from 'components/product/hero-banner-slider';
 export default function SearchLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-[#E4E4E4]">
-      <div className="w-full p-4 md:p-8">
+      <div className="w-full p-1.5 md:p-8">
         <HeroBannerSlider />
       </div>
-      <div className=" flex max-w-screen-2xl flex-col gap-8 px-8 pb-4 text-black ">
+      <div className=" flex max-w-screen-2xl flex-col gap-8 px-2 pb-2 text-black md:px-8 md:pb-4 ">
         <div className=" w-full flex-none ">
           <Collections />
         </div>
-        <div className="h-full min-h-screen w-full rounded-md bg-white px-4 md:order-none ">
+        <div className="h-full min-h-max w-full rounded-md bg-white px-1.5 md:order-none md:px-4 ">
           {children}
         </div>
         {/* <div className="order-none flex-none md:order-last">

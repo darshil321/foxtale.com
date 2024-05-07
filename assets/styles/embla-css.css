@@ -30,12 +30,24 @@
   height: var(--slide-height);
 }
 
+@media screen and (max-width: 1024px) {
+  .embla {
+    max-width: 50rem;
+    --slide-size: 33%;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .embla {
-    --slide-size: 50%;
+    max-width: 35rem;
+    --slide-size: 33%;
     width: 100%;
   }
-  /* .embla{
-      max-width: 40rem;
-    } */
+}
+
+@media screen and (max-width: 480px) {
+  .embla {
+    --slide-size: 50%;
+    max-width: 25rem;
+  }
 }

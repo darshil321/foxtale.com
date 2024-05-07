@@ -14,7 +14,7 @@ export default async function Navbar() {
   const menu = await getMenu('next-js-frontend-header-menu');
 
   return (
-    <nav className="relative flex items-center justify-between px-4 py-4 lg:px-0 lg:py-6">
+    <nav className="relative flex items-center justify-between px-4 py-3 lg:px-0 lg:py-6">
       <div className="flex w-full items-center justify-between">
         <div className="block flex-none md:hidden">
           <Suspense fallback={null}>
@@ -22,7 +22,10 @@ export default async function Navbar() {
           </Suspense>
         </div>
         <div className="flex ">
-          <Link href="/" className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6">
+          <Link
+            href="/"
+            className="mr-2 flex h-[32px] w-[95px] items-center  justify-center md:h-full md:w-auto lg:mr-6"
+          >
             {/* <LogoSquare /> */}
             <Image
               src={'/foxtalelogo.avif'}

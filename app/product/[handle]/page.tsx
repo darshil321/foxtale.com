@@ -3,20 +3,21 @@ import { getProduct, getProductRecommendations, getProducts } from 'lib/shopify'
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { GridTileImage } from 'components/grid/tile';
+import { GridTileImage } from '@/components/grid/tile';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import dynamic from 'next/dynamic';
-const ProductDescription = dynamic(() => import('components/product/product-description'));
-const ProductCarouselSlider = dynamic(() => import('components/product/product-carousel'));
-const ProductDetailsTabs = dynamic(() => import('components/product/product-details-tabs'));
-const ProductDisclosure = dynamic(() => import('components/product/product-disclosure'));
-const ProductDescFooter = dynamic(() => import('components/product/pdp-footer'));
-const Accordion = dynamic(() => import('components/layout/accordion'));
-const ResultsSection = dynamic(() => import('components/product/results-section'));
 
-import CustomInputBtn from 'components/elements/custom-input-with-btn';
-import { ProductSlider } from 'components/product/product-slider';
-import OfferSection from 'components/product/offers-section';
+const ProductDescription = dynamic(() => import('@/components/product/product-description'));
+const ProductCarouselSlider = dynamic(() => import('@/components/product/product-carousel'));
+const ProductDetailsTabs = dynamic(() => import('@/components/product/product-details-tabs'));
+const ProductDisclosure = dynamic(() => import('@/components/product/product-disclosure'));
+const ProductDescFooter = dynamic(() => import('@/components/product/pdp-footer'));
+const Accordion = dynamic(() => import('@/components/layout/accordion'));
+const ResultsSection = dynamic(() => import('@/components/product/results-section'));
+
+import CustomInputBtn from '@/components/elements/custom-input-with-btn';
+import { ProductSlider } from '@/components/product/product-slider';
+import OfferSection from '@/components/product/offers-section';
 
 export const generateStaticParams = async () => {
   const products = await getProducts({});
@@ -135,7 +136,9 @@ export default async function ProductPage({
         <ProductDetailsTabs />
         <Accordion />
         <ProductDescFooter product={product} />
-        <RelatedProducts id={product.id} />
+        <Suspense fallback={null}>
+          <RelatedProducts id={product.id} />
+        </Suspense>
       </div>
     </div>
   );
@@ -165,7 +168,6 @@ async function RelatedProducts({ id }: { id: string }) {
                   currencyCode: product.priceRange.maxVariantPrice.currencyCode
                 }}
                 src={product.featuredImage?.url}
-                sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
               />
             </Link>
           </li>
