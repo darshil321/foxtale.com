@@ -12,6 +12,7 @@ export async function addItem(prevState: any, selectedVariantId: string | undefi
   if (cartId) {
     cart = await getCart(cartId);
   }
+  console.log('cartIdd', cartId);
 
   if (!cartId || !cart) {
     cart = await createCart();
@@ -41,6 +42,8 @@ export async function removeItem(prevState: any, lineId: string) {
   console.log('cartIdd', cartId);
 
   try {
+    console.log('removing');
+
     await removeFromCart(cartId, [lineId]);
     revalidateTag(TAGS.cart);
   } catch (e) {

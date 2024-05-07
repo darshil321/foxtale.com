@@ -16,7 +16,6 @@ export function* getProductsSagaCart(action: {
 
     yield put(productActions.getProductSuccess(data));
   } catch (error) {
-    console.log('error', error);
     yield put(productActions.getProductFailed());
   }
 }
@@ -33,7 +32,6 @@ export function* createCartSaga(action: {
 
     yield put(productActions.getProductSuccess(data));
   } catch (error) {
-    console.log('error', error);
     yield put(productActions.getProductFailed());
   }
 }

@@ -13,11 +13,9 @@ export function* getCartSaga(action: {
     const { cartId } = action.payload;
 
     const data = yield call(getCart, { cartId });
-    console.log('kkkkkkk', data);
 
     yield put(cartActions.getCartSuccess(data));
   } catch (error) {
-    console.log('error', error);
     yield put(cartActions.getCartFailed());
   }
 }

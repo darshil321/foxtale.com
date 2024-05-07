@@ -74,8 +74,6 @@ export async function shopifyFetch<T>({
   variables?: { [key: string]: any };
 }): Promise<{ status: number; body: T } | never> {
   try {
-    console.log('fetching', query, endpoint, key, variables);
-
     const result = await fetch(endpoint, {
       method: 'POST',
       headers: {
@@ -295,8 +293,6 @@ export async function getCollectionProducts({
   reverse?: boolean;
   sortKey?: string;
 }): Promise<Product[]> {
-  console.log(`Fetching products for \`${collection}\``);
-
   const res = await shopifyFetch<ShopifyCollectionProductsOperation>({
     query: getCollectionProductsQuery,
     tags: [TAGS.collections, TAGS.products],
@@ -308,7 +304,6 @@ export async function getCollectionProducts({
   });
 
   if (!res.body.data.collection) {
-    console.log(`No collection found for \`${collection}\``);
     return [];
   }
 
@@ -383,7 +378,6 @@ export async function getMetaObjects(): Promise<Metaobject[]> {
     query: getMetaobjectsQuery,
     cache: 'no-store'
   });
-  console.log('Metaobjects', res);
 
   return removeEdgesAndNodes(res.body.data.metaobjects);
 }
@@ -433,9 +427,7 @@ export async function getProducts({
     });
 
     return reshapeProducts(removeEdgesAndNodes(res.body.data.products));
-  } catch (e) {
-    console.log('eeeeeee', e);
-  }
+  } catch (e) {}
 }
 
 // This is called from `app/api/revalidate.ts` so providers can control revalidation logic.
@@ -478,16 +470,13 @@ export async function getProductsData(first: number): Promise<any> {
       tags: [TAGS.cart],
       cache: 'no-store'
     });
-    console.log('ppppp', res);
     return res;
 
     // Old carts becomes `null` when you checkout.
     // if (!res.body.data.cart) {
     //   return undefined;
     // }
-  } catch (err) {
-    console.log('errpppp', err);
-  }
+  } catch (err) {}
 
   // return reshapeCart(res.body.data.cart);
 }

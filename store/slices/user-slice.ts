@@ -1,4 +1,4 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface InitialStateType {
   isAuthenticated: boolean;
@@ -16,9 +16,9 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    toggleAuth: (state, action) => {
-      const data = current(state);
-      console.log('User success Reducer:>> ', data, action);
+    toggleAuth: (state) => {
+      // const data = current(state);
+
       state.loading = false;
     }
   }
