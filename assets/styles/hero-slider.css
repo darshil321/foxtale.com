@@ -126,16 +126,16 @@
   object-fit: cover;
 }
 
-
-
 @media screen and (max-width: 768px) {
-  .hero_embla__slide__img{
+  .hero_embla__slide__img {
     height: 250px;
   }
-  .hero_embla__slide{
+  .hero_embla__slide {
     border-radius: 4px;
   }
-  .hero_embla__parallax, .hero_embla__parallax__layer, .hero_embla__slide__img{
+  .hero_embla__parallax,
+  .hero_embla__parallax__layer,
+  .hero_embla__slide__img {
     border-radius: 4px;
   }
 }

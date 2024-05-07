@@ -19,12 +19,11 @@ export async function generateMetadata({
   params: { collection: string };
 }): Promise<Metadata> {
   const collection = await getCollection(params.collection);
-  const collections = await getCollections().then((res) =>
-    res?.map((collection: any) => ({
-      collection: collection?.handle === '' ? 'all' : collection?.handle
-    }))
-  );
-  console.log('collectionswww', collections);
+  // const collections = await getCollections().then((res) =>
+  //   res?.map((collection: any) => ({
+  //     collection: collection?.handle === '' ? 'all' : collection?.handle
+  //   }))
+  // );
 
   if (!collection) return notFound();
 

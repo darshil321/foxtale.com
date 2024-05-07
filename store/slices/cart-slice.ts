@@ -1,8 +1,9 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { Cart } from 'lib/shopify/types';
 
 export interface CartState {
   loading: boolean;
-  cart: any;
+  cart: Cart | null;
   quantities: any;
   error: any;
 }
@@ -28,15 +29,18 @@ export const cartSlice = createSlice({
       });
     },
 
-    getCartFailed: (state, action) => {
-      const data = current(state);
-      console.log('failed reducer:>> ', data, action);
+    getCartFailed: (state) => {
+      // const data = current(state);
       state.loading = false;
     },
 
-    attemptGetCarts: (state, action) => {
-      console.log('attempt product reducer :>> ', action);
+    attemptGetCarts: () => {
       //loading true
+    },
+    setCart: (state, action) => {
+      console.log('incart', action.payload);
+
+      state.cart = action.payload;
     },
 
     updateCartItemQuantity: (state, action) => {
@@ -47,6 +51,6 @@ export const cartSlice = createSlice({
   }
 });
 
-export const { getCartSuccess, getCartFailed, attemptGetCarts, updateCartItemQuantity } =
+export const { getCartSuccess, setCart, getCartFailed, attemptGetCarts, updateCartItemQuantity } =
   cartSlice.actions;
 export default cartSlice.reducer;

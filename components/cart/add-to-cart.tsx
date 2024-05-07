@@ -6,33 +6,25 @@ import EditItemForm from './edit-item-form';
 import Modal from 'react-modal';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 // import { productActions } from 'store/actions/product.actions';
-import { cartActions } from 'store/actions/cart.action';
 import Image from 'next/image';
 
 import { Cart } from 'lib/shopify/types';
 import ShoppingBagIcon from '@heroicons/react/24/outline/ShoppingBagIcon';
 import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
+import { setCart } from 'store/slices/cart-slice';
 
 const AddToCart = ({ cart }: { cart: Cart | undefined }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const quantityRef = useRef(cart?.totalQuantity);
 
-  const quantities = useAppSelector((state) => state.cart.quantities) ?? {};
   const dispatch = useAppDispatch();
+  const carts = useAppSelector((state) => state.cart.cart);
 
   useEffect(() => {
-    const fetchData = async () => {
-      dispatch(
-        cartActions.attemptGetCarts({
-          cartId:
-            'gid://shopify/Cart/Z2NwLWFzaWEtc291dGhlYXN0MTowMUhXU0I5MFREMVpGVEtCNTJQQ0tWRVo2Wg'
-        })
-      );
-    };
-
-    fetchData();
-  }, [dispatch]);
+    dispatch(setCart(cart));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cart]);
 
   useEffect(() => {
     // Open cart modal when quantity changes.
@@ -40,7 +32,8 @@ const AddToCart = ({ cart }: { cart: Cart | undefined }) => {
       // Always update the quantity reference
       quantityRef.current = cart?.totalQuantity;
     }
-  }, [cart?.totalQuantity, quantityRef]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cart, quantityRef]);
 
   return (
     <div className="w-full md:px-40 lg:py-20">
@@ -80,13 +73,13 @@ const AddToCart = ({ cart }: { cart: Cart | undefined }) => {
 
       <hr className="bg-gray-400" />
 
-      {!cart || cart.lines.length === 0 ? (
+      {!carts || carts.lines.length === 0 ? (
         <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
           <ShoppingBagIcon className="h-16" />
-          <p className="mt-6 text-center text-2xl font-bold">Your cart is empty.</p>
+          <p className="mt-6 text-center text-2xl font-bold">Your carts is empty.</p>
         </div>
       ) : (
-        cart.lines.map((item, index) => {
+        carts.lines.map((item, index) => {
           return (
             <div key={index} className="grid gap-4 py-8 sm:grid-cols-1 lg:grid-cols-6">
               <div className="flex sm:grid-cols-1 lg:col-span-3">
@@ -132,13 +125,13 @@ const AddToCart = ({ cart }: { cart: Cart | undefined }) => {
                 <div className="mx-auto flex h-9 flex-row  items-center rounded-full border border-neutral-500 ">
                   <EditItemQuantityButton item={item} type="minus" />
                   <p className="w-6 text-center">
-                    <span className="w-full text-sm">{quantities[item?.id] ?? item.quantity}</span>
+                    <span className="w-full text-sm">{item.quantity}</span>
                   </p>
                   <EditItemQuantityButton item={item} type="plus" />
                 </div>
               </div>
               <div className="flex items-center justify-center  text-center font-semibold text-gray-500">
-                ₹{Number(item.cost?.amountPerQuantity?.amount) * quantities[item?.id]}
+                ₹{Number(item.cost.totalAmount.amount)}
               </div>
             </div>
           );

@@ -1,4 +1,4 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 export interface ProductsState {
   products: any;
@@ -30,17 +30,14 @@ export const productSlice = createSlice({
     getProductSuccess: (state, action) => {
       const { products } = action.payload.body.data;
       state.products = products.edges;
-      console.log('success reducer:>> ', products);
     },
 
-    getProductFailed: (state, action) => {
-      const data = current(state);
-      console.log('failed reducer:>> ', data, action);
+    getProductFailed: (state) => {
+      // const data = current(state);
       state.loading = false;
     },
 
-    attemptGetProducts: (state, action) => {
-      console.log('attempt product reducer :>> ', action);
+    attemptGetProducts: () => {
       //loading true
     }
   }

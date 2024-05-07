@@ -35,16 +35,14 @@
     max-width: 50rem;
     --slide-size: 33%;
   }
-  
 }
 
 @media screen and (max-width: 768px) {
   .embla {
-  max-width: 35rem;
+    max-width: 35rem;
     --slide-size: 33%;
     width: 100%;
   }
-
 }
 
 @media screen and (max-width: 480px) {

@@ -7,7 +7,6 @@ export type ListItem = SortFilterItem | PathFilterItem;
 export type PathFilterItem = { title?: string; path: string; image?: { url: string; alt: string } };
 
 function FilterItemList({ list }: { list: ListItem[] }) {
-  console.log('list2222', list);
   return (
     <div className="flex h-max w-full max-w-2xl flex-row items-center justify-evenly gap-2 overflow-x-auto overflow-y-hidden md:gap-10">
       {list && list.map((item: ListItem, i) => <FilterItem key={i} item={item} />)}
