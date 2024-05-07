@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Cart } from 'lib/shopify/types';
+// import { cookies } from 'next/headers';
 
 export interface CartState {
   loading: boolean;
@@ -28,6 +29,45 @@ export const cartSlice = createSlice({
         state.quantities[item.id] = item.quantity; // Assuming each item has an 'id' and 'quantity'
       });
     },
+
+    //     addToCart: (state, action) => {
+    //       const store = getState(state);
+    //       //fetch cart from redux
+    //       const cartProduct = state.cart;
+
+    //       const isProductExist = cartProduct.find((p) => p.id === productId);
+
+    //       if (isProductExist) {
+    //         state = {
+    //           ...state,
+    //           cart: {
+    //             ...state.cart,
+    //             products: state.cart.product.map(p)=> {
+    //                         if (p.id === payload.productId) {
+    //                           return {
+    //                               ...p,
+    //                               quantity: p.quantity + payload.quantity
+    //                           }
+    //                         } else {
+    //                           return p
+    //                         }
+    //             }
+
+    //           }
+    //        }
+    //       } else {
+    //      state = {
+    //        ...state,
+    //        cart: {
+    //          ...state.cart,
+    //          products = state.cart.products.push({...payload.products,quantity:payload.quantity})
+
+    //        }
+
+    //       }
+    // }
+
+    //     },
 
     getCartFailed: (state) => {
       // const data = current(state);

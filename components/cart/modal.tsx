@@ -45,6 +45,8 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, cart?.totalQuantity, quantityRef]);
 
+  // const { totalAmount} = useCart()
+
   return (
     <>
       <button aria-label="Open cart" onClick={openCart}>
