@@ -30,7 +30,6 @@ const integrationUrls = {
 
 export function GokwikButton(passedData) {
   const updatedCart = useCart();
-  console.log('updatedCart', updatedCart.id);
 
   let buyNowRun = false;
   useEffect(() => {
@@ -44,14 +43,10 @@ export function GokwikButton(passedData) {
     const script = document.createElement('script');
     script.src = integrationUrls[window.merchantInfo.environment];
     document.body.appendChild(script);
-    // console.log('script', script);
 
     script.onload = () => {
-      console.log('script1');
       if (window.gokwikSdk && typeof window.gokwikSdk.init === 'function') {
-        console.log('script2', window.gokwikSdk);
         window.gokwikSdk.init();
-        console.log('script3', window.gokwikSdk);
       } else {
         console.error('GoKwik SDK initialization failed: SDK object or init method is undefined.');
         // Handle the error condition gracefully, e.g., display a message to the user or fallback to alternative behavior.
@@ -65,8 +60,6 @@ export function GokwikButton(passedData) {
   }, [buyNowRun]);
 
   const triggerBuyNow = (passedData: { quantity: number; variantId: string }) => {
-    console.log('passedData', passedData);
-
     createBuyNowCart(passedData);
   };
 
@@ -152,6 +145,7 @@ export function GokwikButton(passedData) {
           cartLinesAdd(cartId: $cartId, lines: $lines) {
             cart {
               id}}}`;
+
     const variables = {
       cartId: cart.id,
       lines: {
@@ -162,8 +156,7 @@ export function GokwikButton(passedData) {
     gokwikStoreFrontApi(query, variables);
   };
   const removeFromCart = (cart: CartWithActions) => {
-    const lineIDsToRemove = [];
-    console.log('lineIDsToRemove', lineIDsToRemove);
+    // const lineIDsToRemove = [];
 
     const query = `
         mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
@@ -180,7 +173,7 @@ export function GokwikButton(passedData) {
     };
     gokwikStoreFrontApi(query, variables);
   };
-  console.log(addToCart, removeFromCart);
+  console.log('query', query, addToCart, removeFromCart);
 
   const createBuyNowCart = (passedData) => {
     const q = `mutation AddToCart {
@@ -237,68 +230,67 @@ export function GokwikButton(passedData) {
         }
       }
     }`;
-    const query = `
-    mutation createCart($cartInput: CartInput) {
-      cartCreate(input: {lines: {merchandiseId: "gid://shopify/ProductVariant/46638233420059"}}) {
-        cart {
-          id
-          discountCodes {
-            applicable
-            code
-          }
-          attributes {
-            key
-            value
-          }
-          cost {
-            subtotalAmount {
-              amount
-              currencyCode
-            }
-            totalTaxAmount {
-              amount
-              currencyCode
-            }
-          }
-          totalQuantity
-          note
-          lines(first: 100) {
-            edges {
-              node {
-                id
-                merchandise {
-                  id
-                  title
-                  product {
-                    createdAt
-                    description
-                    id
-                    productType
-                    title
-                    updatedAt
-                    vendor
-                  }
-                  image {
-                    height
-                    id
-                    url
-                    width
-                  }
-                  price
-                  unitPrice {
-                    amount
-                    currencyCode
-                  }
-                }
-                quantity
-              }
-            }
-          }
-        }
-      }
-    }
-        `;
-    console.log(query);
+    // const query = `
+    // mutation createCart($cartInput: CartInput) {
+    //   cartCreate(input: {lines: {merchandiseId: "gid://shopify/ProductVariant/46638233420059"}}) {
+    //     cart {
+    //       id
+    //       discountCodes {
+    //         applicable
+    //         code
+    //       }
+    //       attributes {
+    //         key
+    //         value
+    //       }
+    //       cost {
+    //         subtotalAmount {
+    //           amount
+    //           currencyCode
+    //         }
+    //         totalTaxAmount {
+    //           amount
+    //           currencyCode
+    //         }
+    //       }
+    //       totalQuantity
+    //       note
+    //       lines(first: 100) {
+    //         edges {
+    //           node {
+    //             id
+    //             merchandise {
+    //               id
+    //               title
+    //               product {
+    //                 createdAt
+    //                 description
+    //                 id
+    //                 productType
+    //                 title
+    //                 updatedAt
+    //                 vendor
+    //               }
+    //               image {
+    //                 height
+    //                 id
+    //                 url
+    //                 width
+    //               }
+    //               price
+    //               unitPrice {
+    //                 amount
+    //                 currencyCode
+    //               }
+    //             }
+    //             quantity
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
+    //     `;
 
     //   const query = `mutation AddToCart {
     //   cartCreate(
@@ -320,11 +312,8 @@ export function GokwikButton(passedData) {
         ]
       }
     };
-    console.log('@@@@', variables, passedData);
 
     gokwikStoreFrontApi(q, variables, passedData).then((res) => {
-      console.log('qqq', res.data);
-
       triggerGokwikCheckout(res.data.cartCreate.cart);
     });
   };
@@ -417,6 +406,7 @@ export function GokwikButton(passedData) {
       })
       .catch((err) => {
         console.log(err);
+        return err;
       });
   };
   const triggerGokwikCheckout = async (cart?) => {
@@ -425,13 +415,11 @@ export function GokwikButton(passedData) {
       buyNowRun = true;
       // logEvent('gk_buy_now_button_clicked', 'onGkClick');
     } else {
-      console.log('updatedCart', updatedCart);
       const apiResponse = await getCart(updatedCart.id);
       window.merchantInfo.cart = apiResponse.data ? apiResponse.data.cart : null;
       buyNowRun = false;
       // logEvent('gokwik-button-clicked', 'onGkClick');
     }
-    console.log('window.merchantInfo', window.merchantInfo);
 
     window.gokwikSdk.initCheckout(window.merchantInfo);
   };

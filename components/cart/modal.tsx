@@ -13,8 +13,8 @@ import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
 import OpenCart from './open-cart';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
-import { useAppSelector } from 'store/hooks';
-import { usePathname } from 'next/navigation';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { setCart } from 'store/slices/cart-slice';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -25,24 +25,30 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
   const quantityRef = useRef(cart?.totalQuantity);
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
-  const pathname = usePathname();
-  const quantities = useAppSelector((state) => state.cart.quantities) ?? {};
+  // const [localQuantities, setLocalQuantities] = useState({}) as any;
+  const carts = useAppSelector((state) => state.cart.cart);
+  console.log('carts', carts);
 
+  const dispatch = useAppDispatch();
   useEffect(() => {
+    dispatch(setCart(cart));
+    // Open cart modal when quantity changes.
     if (cart?.totalQuantity !== quantityRef.current) {
-      if (!isOpen && pathname !== '/cart') {
+      // But only if it's not already open (quantity also changes when editing items in cart).
+      if (!isOpen) {
         setIsOpen(true);
       }
 
       // Always update the quantity reference
       quantityRef.current = cart?.totalQuantity;
     }
-  }, [isOpen, cart?.totalQuantity, quantityRef, pathname]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, cart?.totalQuantity, quantityRef]);
 
   return (
     <>
       <button aria-label="Open cart" onClick={openCart}>
-        <OpenCart quantity={cart?.totalQuantity} />
+        <OpenCart quantity={carts?.totalQuantity} />
       </button>
       <Transition show={isOpen}>
         <Dialog onClose={closeCart} className="relative z-50">
@@ -70,20 +76,20 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
               <div className="flex items-center justify-between">
                 <p className="text-lg font-semibold">My Cart</p>
 
-                <button aria-label="Close cart" onClick={closeCart}>
+                <button aria-label="Close carts" onClick={closeCart}>
                   <CloseCart />
                 </button>
               </div>
 
-              {!cart || cart.lines.length === 0 ? (
+              {!carts || carts.lines.length === 0 ? (
                 <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
                   <ShoppingBagIcon className="h-16" />
-                  <p className="mt-6 text-center text-2xl font-bold">Your cart is empty.</p>
+                  <p className="mt-6 text-center text-2xl font-bold">Your carts is empty.</p>
                 </div>
               ) : (
                 <div className="flex h-full flex-col justify-between overflow-hidden p-1">
                   <ul className="flex-grow overflow-auto py-4">
-                    {cart.lines.map((item, i) => {
+                    {carts.lines.map((item, i) => {
                       const merchandiseSearchParams = {} as MerchandiseSearchParams;
 
                       item.merchandise.selectedOptions.forEach(({ name, value }) => {
@@ -96,7 +102,6 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                         `/product/${item.merchandise.product.handle}`,
                         new URLSearchParams(merchandiseSearchParams)
                       );
-
                       return (
                         <li key={i} className="flex w-full flex-col">
                           <div className="relative flex w-full flex-row justify-between px-1 py-4">
@@ -135,15 +140,13 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                             <div className="flex h-16 flex-col justify-between">
                               <Price
                                 className="flex justify-end space-y-2 text-right text-sm"
-                                amount={item.cost?.amountPerQuantity?.amount * quantities[item?.id]}
+                                amount={item.cost.totalAmount.amount}
                                 currencyCode={item.cost.totalAmount.currencyCode}
                               />
                               <div className="ml-auto flex h-9 flex-row items-center  border border-neutral-200 ">
                                 <EditItemQuantityButton item={item} type="minus" />
                                 <p className="w-6 text-center">
-                                  <span className="w-full text-sm">
-                                    {quantities[item?.id] ?? item.quantity}
-                                  </span>
+                                  <span className="w-full text-sm">{item.quantity}</span>
                                 </p>
                                 <EditItemQuantityButton item={item} type="plus" />
                               </div>
@@ -158,8 +161,8 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                       <p>Taxes</p>
                       <Price
                         className="text-right text-base text-black "
-                        amount={cart.cost.totalTaxAmount.amount}
-                        currencyCode={cart.cost.totalTaxAmount.currencyCode}
+                        amount={carts.cost.totalTaxAmount.amount}
+                        currencyCode={carts.cost.totalTaxAmount.currencyCode}
                       />
                     </div>
                     <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1 ">
@@ -170,13 +173,13 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                       <p>Total</p>
                       <Price
                         className="text-right text-base text-black "
-                        amount={cart.cost.totalAmount.amount}
-                        currencyCode={cart.cost.totalAmount.currencyCode}
+                        amount={carts.cost.totalAmount.amount}
+                        currencyCode={carts.cost.totalAmount.currencyCode}
                       />
                     </div>
                   </div>
                   <a
-                    href={cart.checkoutUrl}
+                    href={carts.checkoutUrl}
                     className="block w-full  bg-blue-600 p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100"
                   >
                     Proceed to Checkout

@@ -2,7 +2,6 @@ import { ShopifyProduct } from 'lib/shopify/types';
 import Image from 'next/image';
 
 const ProductDetailsItem = ({ product }: { product: ShopifyProduct }) => {
-  console.log('produc222t', product);
   return (
     <div className="flex w-full max-w-sm flex-row items-center justify-start ">
       <div className="h-full w-max object-cover">
