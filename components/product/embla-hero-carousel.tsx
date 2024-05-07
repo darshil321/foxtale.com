@@ -91,7 +91,7 @@ const EmblaHeroCarousel: React.FC<PropType> = (props) => {
       <div className="hero_embla__viewport" ref={emblaRef}>
         <div className="hero_embla__container">
           {slides.map((index) => (
-            <div className="hero_embla__slide" key={index}>
+            <div className="hero_embla__slide " key={index}>
               <div className="hero_embla__parallax">
                 <div className="hero_embla__parallax__layer">
                   <Image

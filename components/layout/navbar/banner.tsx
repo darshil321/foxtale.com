@@ -3,14 +3,14 @@ import React from 'react';
 const Banner = () => {
   return (
     <div>
-      <div className="bg-gradient-to-r from-yellow-400 to-pink-400 px-4 py-1 text-sm md:px-0 md:py-2 ">
+      <div className="bg-gradient-to-r from-yellow-400 to-pink-400 px-4 py-1 text-sm md:px-0 md:py-1 ">
         <div className="container mx-auto flex items-center justify-center py-1 md:justify-between">
           <div className="text-black">
             <span className="text-black">
               Get up to 50% off your first order + free shipping,&nbsp;
             </span>
             <a href="#" rel="noopener noreferrer" className="underline">
-              sign up
+              sign up{' '}
             </a>
             today!
           </div>

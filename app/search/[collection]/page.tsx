@@ -46,13 +46,19 @@ export default async function CategoryPage({
   const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
   const products = await getCollectionProducts({ collection: params.collection, sortKey, reverse });
   return (
-    <section className="rounded-md bg-white py-7">
+    <section className="rounded-md py-2 md:py-6">
       {products.length === 0 ? (
-        <p className="py-3 text-lg">{`No products found in this collection`}</p>
+        <p className="px-4 py-3 text-lg">{`No products found in this collection`}</p>
       ) : (
-        <Grid className="grid-cols-1 place-items-center sm:grid-cols-2 lg:grid-cols-4">
-          <ProductGridItems products={products} />
-        </Grid>
+        <div>
+          <div className="space-y-1 px-1 pb-2 md:px-5 md:pb-4">
+            <h1 className=" text-base md:text-xl">{`Products in ${params.collection}`}</h1>
+            <p className=" text-xs text-[#6E6E6E] md:text-sm">{`Showing ${products.length} results`}</p>
+          </div>
+          <Grid className="grid-cols-2 place-items-center gap-2 sm:grid-cols-2 lg:grid-cols-4">
+            <ProductGridItems products={products} />
+          </Grid>
+        </div>
       )}
     </section>
   );

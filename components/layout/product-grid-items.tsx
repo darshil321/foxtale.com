@@ -7,7 +7,7 @@ export default function ProductGridItems({ products }: { products: Product[] }) 
     <>
       {products.map((product) => (
         <Grid.Item key={product.handle} className="animate-fadeIn">
-          <div className="relative inline-block h-full w-full max-w-[270px]">
+          <div className="relative inline-block h-full w-full max-w-[200px] md:max-w-[270px] ">
             <GridTileImage
               product={product}
               alt={product.title}
@@ -18,7 +18,6 @@ export default function ProductGridItems({ products }: { products: Product[] }) 
                 currencyCode: product.priceRange.maxVariantPrice.currencyCode
               }}
               src={product.featuredImage?.url}
-              sizes="(min-width: 768px) 33vw, (min-width: 340px) 50vw, 100vw"
             />
           </div>
         </Grid.Item>

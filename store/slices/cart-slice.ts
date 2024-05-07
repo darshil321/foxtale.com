@@ -23,7 +23,7 @@ export const cartSlice = createSlice({
       const { products } = action.payload.body.data;
       state.cart = products.edges;
       // Initialize quantities with default values or from cart items
-      products.edges.forEach((item) => {
+      products.edges.forEach((item: any) => {
         state.quantities[item.id] = item.quantity; // Assuming each item has an 'id' and 'quantity'
       });
     },

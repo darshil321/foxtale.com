@@ -50,7 +50,6 @@ function SubmitButton({
         disabledClasses: pending
       })}
     >
-      <div className="absolute left-0 ml-4"></div>
       Add To Cart
     </button>
   );

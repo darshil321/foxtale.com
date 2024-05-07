@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import { AddToCartButton } from 'components/cart/add-to-cart-button';
 
 import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
+import { AddToCartButton } from '@/components/cart/add-to-cart-button';
 
 export function GridTileImage({
   isInteractive = true,
@@ -28,7 +28,7 @@ export function GridTileImage({
   return (
     <div
       className={clsx(
-        ' flex h-full w-full items-center  justify-center  overflow-hidden rounded-lg border bg-white',
+        ' flex w-full items-center  justify-center  overflow-hidden rounded-lg border bg-white',
         {
           relative: label,
           'border-2 border-blue-600': active,
@@ -37,40 +37,37 @@ export function GridTileImage({
       )}
     >
       {props.src ? (
-        <div className="flex min-h-[456px] flex-col justify-between">
-          <div>
-            <div className="relative ">
-              <div className="group overflow-hidden">
-                <Image
-                  className={clsx(
-                    ' relative aspect-square h-auto min-h-[300px] w-auto  object-cover',
-                    {
-                      ' transition duration-500 ease-in-out group-hover:scale-125': isInteractive
-                    }
-                  )}
-                  width={300}
-                  height={300}
-                  alt={alt}
-                  {...props}
-                />
+        <div className="flex h-full min-h-[320px] w-full flex-col justify-between md:max-h-[100%] md:min-h-[456px]">
+          <div className="flex h-full w-full flex-col">
+            <div className="relative">
+              <div className=" h-full w-full overflow-hidden object-cover">
+                <Link href={`/product/${product?.handle}`}>
+                  <Image
+                    className={clsx(
+                      ' relative aspect-square h-full min-h-[200px] w-full object-cover  md:min-h-[300px]',
+                      {
+                        ' transition duration-500 ease-in-out group-hover:scale-125': isInteractive
+                      }
+                    )}
+                    width={300}
+                    height={300}
+                    alt={alt}
+                    {...props}
+                  />
+                </Link>
               </div>
 
               <div className="absolute bottom-2 left-2 flex w-max flex-row justify-between  gap-1 rounded-sm bg-white px-1 py-[1px]  text-black">
-                <div
-                  className="fera-stars fera-productReviewsSummary-stars fera-productReviewsSummary-reviews-verification-popover"
-                  data-verified-review-count={50}
-                  data-rating="4.8"
-                >
+                <div data-rating="4.8">
                   <div
                     className="fera-stars-rating fera-productReviewsSummary-stars-rating"
                     style={{ width: '96.0%' }}
                   >
                     ★
                   </div>
-                  <div className="fera-stars-bg fera-productReviewsSummary-stars-bg" />
+                  <div />
                 </div>
                 <span
-                  className=" fera-productReviewsSummary-avgRating"
                   data-value="4.8"
                   style={{ transformOrigin: '0px 0px', opacity: 1, transform: 'scale(1, 1)' }}
                 >
@@ -86,8 +83,8 @@ export function GridTileImage({
                     {label?.title}
                   </h3>
                 </Link>
-                <p className="text-[10px] leading-7 text-[#6e6e6e]  md:text-sm">
-                  {label?.description}
+                <p className="text-[10px] leading-7 text-[#6e6e6e]  md:text-xs">
+                  {label?.description?.slice(0, 40)}
                 </p>
               </div>
               <span className="price dib mb__5">
@@ -97,14 +94,14 @@ export function GridTileImage({
               </span>
             </div>
           </div>
-          <div className="flex w-full items-center justify-center overflow-hidden rounded-b-sm bg-black p-4">
+          <div className="flex w-full items-center justify-center overflow-hidden rounded-b-sm bg-black p-2 md:p-4">
             <span className=" flex self-center text-center text-[8px] font-semibold uppercase text-white md:text-xs">
               <Suspense fallback={null}>
                 <AddToCartButton
                   variants={product?.variants}
                   availableForSale={product?.availableForSale || false}
                   buttonClasses={
-                    'relative flex  flex-1 text-sm hover:text-purple-400  items-center justify-center text-base bg-black border border-black text-white  px-6  md:px-8 uppercase tracking-wide font-normal md:font-semibold'
+                    'relative flex  flex-1 text-sm hover:text-purple-400  items-center justify-center text-base bg-black border border-black text-white  md:px-8 uppercase tracking-wide font-normal md:font-semibold'
                   }
                 />
               </Suspense>

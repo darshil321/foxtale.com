@@ -22,7 +22,7 @@ export default async function SearchPage({
   return (
     <>
       {searchValue ? (
-        <p className="mx-4 mt-4">
+        <p className="mx-4 mt-4 text-base">
           {products.length === 0
             ? 'There are no products that match '
             : `Showing ${products.length} ${resultsText} for `}
@@ -30,7 +30,7 @@ export default async function SearchPage({
         </p>
       ) : null}
       {products.length > 0 ? (
-        <Grid className="grid-cols-1 place-items-center py-7 sm:grid-cols-2 lg:grid-cols-4">
+        <Grid className=" grid-cols-2 place-items-center py-2 sm:grid-cols-2 md:py-7 lg:grid-cols-4">
           <ProductGridItems products={products} />
         </Grid>
       ) : null}

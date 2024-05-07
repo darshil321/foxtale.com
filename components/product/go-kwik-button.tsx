@@ -440,7 +440,7 @@ export function GokwikButton(passedData) {
       {!passedData.hideButton && (
         <button
           className={
-            'relative flex flex-1 items-center justify-center border  border-black bg-black px-6 py-2 text-base text-sm font-normal  uppercase  tracking-wide text-white hover:text-purple-400 md:px-8 md:font-semibold'
+            'relative flex flex-1 items-center justify-center border border-black  bg-black px-6 py-2 text-sm font-normal uppercase tracking-wide  text-white  hover:text-purple-400 md:flex-none md:px-8 md:text-base md:font-semibold'
           }
           onClick={(event) => {
             event.preventDefault();

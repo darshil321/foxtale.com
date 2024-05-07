@@ -135,7 +135,10 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                             <div className="flex h-16 flex-col justify-between">
                               <Price
                                 className="flex justify-end space-y-2 text-right text-sm"
-                                amount={item.cost?.amountPerQuantity?.amount * quantities[item?.id]}
+                                amount={(
+                                  Number(item.cost?.amountPerQuantity?.amount) *
+                                  quantities[item?.id]
+                                ).toString()}
                                 currencyCode={item.cost.totalAmount.currencyCode}
                               />
                               <div className="ml-auto flex h-9 flex-row items-center  border border-neutral-200 ">

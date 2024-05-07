@@ -86,7 +86,7 @@ export function EditItemQuantityButton({
       // handleLocalQuantityChange && handleLocalQuantityChange(item.id, clampedQuantity);
       dispatch(updateCartItemQuantity({ itemId: item.id, newQuantity }));
       setQuantity(clampedQuantity);
-      debouncedUpdateItemQuantity(clampedQuantity);
+      debouncedUpdateItemQuantity();
     },
     [type, quantity, dispatch, debouncedUpdateItemQuantity, item.id]
   );

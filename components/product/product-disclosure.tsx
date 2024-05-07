@@ -36,7 +36,7 @@ const disclosureItems = [
 
 export default function ProductDisclosure() {
   return (
-    <div className="w-full px-4 py-3 md:px-0  md:py-10">
+    <div className="w-full px-0 py-3 md:px-0  md:py-10">
       <h2 className=" text-2xl font-semibold ">What makes this unique?</h2>
       <div className="w-full pt-2">
         <div className="mx-auto w-full gap-4 space-y-4">
