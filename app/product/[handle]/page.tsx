@@ -6,6 +6,9 @@ import Link from 'next/link';
 import { GridTileImage } from '@/components/grid/tile';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import dynamic from 'next/dynamic';
+import CustomInputBtn from '@/components/elements/custom-input-with-btn';
+import { ProductSlider } from '@/components/product/product-slider';
+import OfferSection from '@/components/product/offers-section';
 
 const ProductDescription = dynamic(() => import('@/components/product/product-description'));
 const ProductCarouselSlider = dynamic(() => import('@/components/product/product-carousel'));
@@ -14,10 +17,6 @@ const ProductDisclosure = dynamic(() => import('@/components/product/product-dis
 const ProductDescFooter = dynamic(() => import('@/components/product/pdp-footer'));
 const Accordion = dynamic(() => import('@/components/layout/accordion'));
 const ResultsSection = dynamic(() => import('@/components/product/results-section'));
-
-import CustomInputBtn from '@/components/elements/custom-input-with-btn';
-import { ProductSlider } from '@/components/product/product-slider';
-import OfferSection from '@/components/product/offers-section';
 
 export const generateStaticParams = async () => {
   const products = await getProducts({});
@@ -92,6 +91,7 @@ export default async function ProductPage({
       lowPrice: product?.priceRange.minVariantPrice.amount
     }
   };
+
   return (
     <div>
       <script

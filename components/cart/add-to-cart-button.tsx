@@ -1,6 +1,7 @@
 'use client';
+// import { cartActions } from '@/store';
 import clsx from 'clsx';
-import { addItem } from 'components/cart/actions';
+// import { addItem } from 'components/cart/actions';
 import { ProductVariant } from 'lib/shopify/types';
 import { useSearchParams } from 'next/navigation';
 import { useFormState, useFormStatus } from 'react-dom';
@@ -64,7 +65,15 @@ export function AddToCartButton({
   availableForSale: boolean;
   buttonClasses: string;
 }) {
-  const [message, formAction] = useFormState(addItem, null);
+  // const addToCart = () => {
+  //   dispatch(
+  //     cartActions.addToCart({
+  //       ...product,
+  //       quantity: qty
+  //     })
+  //   );
+  // };
+  const [message, formAction] = useFormState(addToCart, null);
   const searchParams = useSearchParams();
   const defaultVariantId = variants?.length === 1 ? variants[0]?.id : undefined;
   const variant = variants?.find((variant: ProductVariant) =>
