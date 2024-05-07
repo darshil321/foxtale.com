@@ -378,7 +378,6 @@ export async function getMetaObjects(): Promise<Metaobject[]> {
     query: getMetaobjectsQuery,
     cache: 'no-store'
   });
-  console.log('Metaobjectss', res.body.data.metaobjects);
 
   return removeEdgesAndNodes(res.body.data.metaobjects);
 }

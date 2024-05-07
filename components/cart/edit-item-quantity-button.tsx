@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-import { updateItemQuantity } from 'components/cart/actions';
+import { addItem, removeItem, updateItemQuantity } from 'components/cart/actions';
 import LoadingDots from 'components/loading-dots';
 import type { Cart, CartItem } from 'lib/shopify/types';
 import { useFormState, useFormStatus } from 'react-dom';
@@ -69,6 +69,7 @@ export function EditItemQuantityButton({
   const [metaObject, setMetaObject] = useState<MetaObject[]>();
 
   const cart = useAppSelector((state) => state.cart.cart);
+  const cartProducts = cart?.lines?.map((line) => line.merchandise?.id);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,6 +80,7 @@ export function EditItemQuantityButton({
           metaObject?.fields?.forEach((field) => {
             fieldsObject[field.key ?? ''] = field.value ?? '';
           });
+          console.log('fieldsObject', fieldsObject);
 
           return { ...metaObject, fields: fieldsObject };
         });
@@ -93,9 +95,17 @@ export function EditItemQuantityButton({
     };
 
     fetchData();
-    findClosestCoupon(metaObject ?? [], cart);
+    const coupen = findClosestCoupon(metaObject ?? [], cart);
+
+    if (coupen) {
+      console.log('coupen', coupen);
+
+      formActionFree(coupen.fields.free_bie);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cart]);
+  }, []);
+  const [messageFree, formActionFree] = useFormState(addItem, null);
+
   const [message, formAction] = useFormState(updateItemQuantity, null);
   const { pending } = useFormStatus();
   const dispatch = useAppDispatch();
@@ -154,13 +164,34 @@ export function EditItemQuantityButton({
       const lineTotalAmount = Number(line.cost.totalAmount.amount);
       return acc + lineTotalAmount;
     }, 0);
-    const totalQuantity = updatedCart.lines.reduce((acc, line) => {
-      const lineQuantity = Number(line.quantity);
+    const totalQuantity = updatedCart.lines.reduce((acc, line: CartItem) => {
+      const lineQuantity =
+        Number(line?.cost?.totalAmount?.amount) === 0 ? 0 : Number(line.quantity);
       return acc + lineQuantity;
     }, 0);
 
     updatedCart.cost.totalAmount.amount = totalCost.toFixed(2);
     updatedCart.totalQuantity = totalQuantity;
+    const coupen = findClosestCoupon(metaObject ?? [], updatedCart);
+    console.log('freeItem', coupen);
+
+    if (coupen) {
+      if (!cartProducts?.includes(coupen.fields.free_bie ?? '')) {
+        formActionFree(coupen.fields.free_bie);
+        console.log('freeItem', cart, coupen);
+      }
+    } else {
+      const freeLineId = cart?.lines?.find(
+        (line) => Number(line?.cost?.totalAmount?.amount) === 0
+      )?.id;
+      console.log('freeItem', freeLineId, coupen);
+
+      if (freeLineId) {
+        console.log('removing', freeLineId, coupen, cartProducts);
+
+        formActionRemove.bind(null, freeLineId);
+      }
+    }
 
     dispatch(setCart(updatedCart));
 
@@ -185,10 +216,18 @@ export function EditItemQuantityButton({
     e.preventDefault();
     increaseItemQuantity({ cart, item });
   };
+  const [messageRemove, formActionRemove] = useFormState(removeItem, null);
+  console.log('cartProducts', messageRemove, messageFree);
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>
-      <SubmitButton type={type} onClick={handleQuantityChange} pending={pending} />
+      <SubmitButton
+        type={type}
+        onClick={(e) => {
+          handleQuantityChange(e);
+        }}
+        pending={pending}
+      />
       <p aria-live="polite" className="sr-only" role="status">
         {message}
       </p>
