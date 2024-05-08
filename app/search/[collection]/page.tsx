@@ -9,7 +9,7 @@ import { defaultSort, sorting } from 'lib/constants';
 export const generateStaticParams = async () => {
   const collections = await getCollections();
   return collections?.map((collection: any) => ({
-    collection: collection?.handle
+    collection: collection?.handle === '' ? 'all' : collection?.handle
   }));
 };
 

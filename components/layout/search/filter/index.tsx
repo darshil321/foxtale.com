@@ -4,7 +4,12 @@ import { Suspense } from 'react';
 import { FilterItem } from './item';
 
 export type ListItem = SortFilterItem | PathFilterItem;
-export type PathFilterItem = { title?: string; path: string; image?: { url: string; alt: string } };
+export type PathFilterItem = {
+  title?: string;
+  handle?: string;
+  path: string;
+  image?: { url: string; alt: string };
+};
 
 function FilterItemList({ list }: { list: ListItem[] }) {
   return (

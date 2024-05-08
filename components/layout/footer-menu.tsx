@@ -38,7 +38,7 @@ export default function FooterMenu({ menu }: { menu: Menu[] }) {
     <nav>
       <ul>
         <h5 className="block px-1 pb-3 text-sm font-medium leading-7  tracking-widest text-black md:inline-block">
-          {menu.length > 0 ? menu[0].title : ''}
+          {menu.length > 0 ? menu[0]?.title : ''}
         </h5>
         {menu?.slice(1, menu.length).map((item: Menu) => {
           return <FooterMenuItem key={item.title} item={item} />;

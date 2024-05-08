@@ -15,15 +15,15 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
   const active = pathname === item.path;
   const newParams = new URLSearchParams(searchParams.toString());
   const DynamicTag = active ? 'p' : Link;
-  const linkRef = useRef<HTMLAnchorElement>(null);
+  const linkRef = useRef<any>(null);
 
   newParams.delete('q');
 
   useEffect(() => {
     if (active) {
       // Scroll to the section when active
-      const handle = item?.handle.toLowerCase();
-      const section = document.getElementById(handle);
+      const handle = item?.handle?.toLowerCase();
+      const section = document.getElementById(handle as string);
       if (section) {
         section.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
