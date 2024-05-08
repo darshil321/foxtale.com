@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import type { ListItem, PathFilterItem } from '.';
 import Image from 'next/image';
+import { useEffect, useRef } from 'react';
 
 function PathFilterItem({ item }: { item: PathFilterItem }) {
   const pathname = usePathname();
@@ -14,9 +15,22 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
   const active = pathname === item.path;
   const newParams = new URLSearchParams(searchParams.toString());
   const DynamicTag = active ? 'p' : Link;
+  const linkRef = useRef<HTMLAnchorElement>(null);
 
   newParams.delete('q');
 
+  useEffect(() => {
+    if (active) {
+      // Scroll to the section when active
+      const handle = item?.handle.toLowerCase();
+      const section = document.getElementById(handle);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active]);
   return (
     <li
       className="mt-2 flex h-full w-full items-center justify-center gap-2 text-black  "
@@ -31,6 +45,7 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
           height={100}
         />
         <DynamicTag
+          ref={linkRef}
           href={createUrl(item.path, newParams)}
           className={clsx(
             'line-clamp-1 text-ellipsis text-wrap text-center text-xs underline-offset-4 hover:underline md:text-sm ',

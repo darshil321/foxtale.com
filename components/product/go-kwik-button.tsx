@@ -1,6 +1,6 @@
 // @ts-nocheck
 'use client';
-import { CartWithActions, useCart } from '@shopify/hydrogen-react';
+import { useCart } from '@shopify/hydrogen-react';
 import { useEffect } from 'react';
 import { gokwikConfig } from '../../lib/shopify/gokwik.config';
 
@@ -139,41 +139,40 @@ export function GokwikButton(passedData) {
   //   });
   // };
 
-  const addToCart = (cart: CartWithActions) => {
-    const query = `
-        mutation addItemToCart($cartId: ID!, $lines: [CartLineInput!]!) {
-          cartLinesAdd(cartId: $cartId, lines: $lines) {
-            cart {
-              id}}}`;
+  //   const addToCart = (cart: CartWithActions) => {
+  //     const query = `
+  //         mutation addItemToCart($cartId: ID!, $lines: [CartLineInput!]!) {
+  //           cartLinesAdd(cartId: $cartId, lines: $lines) {
+  //             cart {
+  //               id}}}`;
 
-    const variables = {
-      cartId: cart.id,
-      lines: {
-        merchandiseId: cart?.lines[0]?.merchandise?.id,
-        quantity: cart?.lines[0]?.quantity
-      }
-    };
-    gokwikStoreFrontApi(query, variables);
-  };
-  const removeFromCart = (cart: CartWithActions) => {
-    // const lineIDsToRemove = [];
+  //     const variables = {
+  //       cartId: cart.id,
+  //       lines: {
+  //         merchandiseId: cart?.lines[0]?.merchandise?.id,
+  //         quantity: cart?.lines[0]?.quantity
+  //       }
+  //     };
+  //     gokwikStoreFrontApi(query, variables);
+  //   };
+  //   const removeFromCart = (cart: CartWithActions) => {
+  //     // const lineIDsToRemove = [];
 
-    const query = `
-        mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
-  cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
-    cart {
-     id
-    }
+  //     const query = `
+  //         mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
+  //   cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
+  //     cart {
+  //      id
+  //     }
 
-  }
-}`;
-    const variables = {
-      cartId: cart.id,
-      lineIds: []
-    };
-    gokwikStoreFrontApi(query, variables);
-  };
-  console.log('query', query, addToCart, removeFromCart);
+  //   }
+  // }`;
+  //     const variables = {
+  //       cartId: cart.id,
+  //       lineIds: []
+  //     };
+  //     gokwikStoreFrontApi(query, variables);
+  //   };
 
   const createBuyNowCart = (passedData) => {
     const q = `mutation AddToCart {

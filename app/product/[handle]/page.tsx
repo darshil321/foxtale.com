@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { GridTileImage } from '@/components/grid/tile';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import dynamic from 'next/dynamic';
+
 const ProductDescription = dynamic(() => import('@/components/product/product-description'));
 const ProductCarouselSlider = dynamic(() => import('@/components/product/product-carousel'));
 const ProductDetailsTabs = dynamic(() => import('@/components/product/product-details-tabs'));
@@ -32,6 +33,7 @@ export async function generateMetadata({
   params: { handle: string };
 }): Promise<Metadata> {
   const product = await getProduct(params.handle);
+  console.log('product.seo', product?.seo);
 
   if (!product) return notFound();
 
@@ -58,7 +60,9 @@ export async function generateMetadata({
               height,
               alt
             }
-          ]
+          ],
+          title: product.seo.title || product.title,
+          description: product.seo.description || product.description
         }
       : null
   };
@@ -104,7 +108,9 @@ export default async function ProductPage({
           <div className="h-full w-full basis-full lg:basis-3/6">
             <Suspense
               fallback={
-                <div className="relative aspect-square  h-full max-h-[550px] w-full overflow-hidden" />
+                <div className="relative aspect-square  h-full max-h-[550px] w-full overflow-hidden">
+                  ...Loading Products
+                </div>
               }
             >
               <ProductSlider images={product.images} />
@@ -112,26 +118,30 @@ export default async function ProductPage({
           </div>
           <div className="basis-full  lg:basis-3/6">
             <div className="px-4 pt-3 md:px-2 md:pt-0">
-              <Suspense fallback={null}>
-                <ProductDescription product={product} searchParams={searchParams} />
-              </Suspense>
+              <ProductDescription product={product} searchParams={searchParams} />
             </div>
             <OfferSection />
             <div className="my-3 px-4 md:px-0">
-              <Suspense fallback={null}>
-                <CustomInputBtn
-                  className="w-full py-1 text-xs "
-                  text="Enter your pincode"
-                  buttonText="Check"
-                />
-              </Suspense>
+              <CustomInputBtn
+                className="w-full py-1 text-xs "
+                text="Enter your pincode"
+                buttonText="Check"
+              />
             </div>
           </div>
         </div>
         <div>{<ProductDisclosure />}</div>
 
         <ResultsSection />
-        <ProductCarouselSlider />
+        <Suspense
+          fallback={
+            <div className="relative aspect-square  h-full max-h-[550px] w-full overflow-hidden">
+              ...Loading Products
+            </div>
+          }
+        >
+          <ProductCarouselSlider />
+        </Suspense>
         <ProductDetailsTabs />
         <Accordion />
         <ProductDescFooter product={product} />
