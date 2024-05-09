@@ -30,9 +30,11 @@ export default async function SearchPage({
         </p>
       ) : null}
       {products.length > 0 ? (
-        <Grid className=" grid-cols-2 place-items-center py-2 sm:grid-cols-2 md:py-7 lg:grid-cols-4">
-          <ProductGridItems products={products} />
-        </Grid>
+        <div className=" rounded-md bg-white px-1.5 py-2 md:order-none md:px-4 md:py-6">
+          <Grid className=" grid-cols-2 place-items-center py-2 sm:grid-cols-2 md:py-7 lg:grid-cols-4">
+            <ProductGridItems products={products} />
+          </Grid>
+        </div>
       ) : null}
     </>
   );
