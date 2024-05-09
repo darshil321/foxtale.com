@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
@@ -98,7 +97,8 @@ export function GridTileImage({
             <span className=" flex self-center text-center text-[8px] font-semibold uppercase text-white md:text-xs">
               <Suspense fallback={null}>
                 <AddToCartButton
-                  variants={product?.variants}
+                  product={product}
+                  variants={product.variants}
                   availableForSale={product?.availableForSale || false}
                   buttonClasses={
                     'relative flex  flex-1 text-sm hover:text-purple-400  items-center justify-center text-base bg-black border border-black text-white  md:px-8 uppercase tracking-wide font-normal md:font-semibold'

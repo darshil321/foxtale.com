@@ -173,7 +173,7 @@ export function GokwikButton(passedData) {
     };
     gokwikStoreFrontApi(query, variables);
   };
-  console.log('query', query, addToCart, removeFromCart);
+  console.log(addToCart, removeFromCart);
 
   const createBuyNowCart = (passedData) => {
     const q = `mutation AddToCart {

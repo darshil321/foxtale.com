@@ -9,7 +9,8 @@ import { useFormState, useFormStatus } from 'react-dom';
 import { debounce } from 'lib/helper/helper';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { setCart } from 'store/slices/cart-slice';
-import { getMetaObjects } from 'lib/shopify';
+
+import { cartActions } from '@/store/actions/cart.action';
 // import { Metaobject } from '@shopify/hydrogen-react/storefront-api-types';
 
 function SubmitButton({
@@ -67,41 +68,44 @@ export function EditItemQuantityButton({
     fields: Field;
   }
   const [metaObject, setMetaObject] = useState<MetaObject[]>();
+  console.log(setMetaObject);
 
   const cart = useAppSelector((state) => state.cart.cart);
   const cartProducts = cart?.lines?.map((line) => line.merchandise?.id);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const metaObjects = await getMetaObjects();
-        const transformedMetaObjects = metaObjects?.map((metaObject) => {
-          const fieldsObject: Record<string, string> = {};
-          metaObject?.fields?.forEach((field) => {
-            fieldsObject[field.key ?? ''] = field.value ?? '';
-          });
-          console.log('fieldsObject', fieldsObject);
+    console.log('cartProductsss');
 
-          return { ...metaObject, fields: fieldsObject };
-        });
-        console.log('transformedMetaObjects', transformedMetaObjects);
+    // const fetchData = async () => {
+    //   try {
+    //     const metaObjects = await getMetaObjects();
+    //     const transformedMetaObjects = metaObjects?.map((metaObject) => {
+    //       const fieldsObject: Record<string, string> = {};
+    //       metaObject?.fields?.forEach((field) => {
+    //         fieldsObject[field.key ?? ''] = field.value ?? '';
+    //       });
+    //       console.log('fieldsObject', fieldsObject);
 
-        setMetaObject(transformedMetaObjects);
+    //       return { ...metaObject, fields: fieldsObject };
+    //     });
+    //     console.log('transformedMetaObjects', transformedMetaObjects);
 
-        console.log('metaObjec', metaObjects);
-      } catch (error) {
-        // Handle error
-      }
-    };
+    //     setMetaObject(transformedMetaObjects);
 
-    fetchData();
-    const coupen = findClosestCoupon(metaObject ?? [], cart);
+    //     console.log('metaObjec', metaObjects);
+    //   } catch (error) {
+    //     // Handle error
+    //   }
+    // };
 
-    if (coupen) {
-      console.log('coupen', coupen);
+    // fetchData();
+    // const coupen = findClosestCoupon(metaObject ?? [], cart);
 
-      formActionFree(coupen.fields.free_bie);
-    }
+    // if (coupen) {
+    //   console.log('coupen', coupen);
+
+    //   // formActionFree(coupen.fields.free_bie);
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [messageFree, formActionFree] = useFormState(addItem, null);
@@ -160,11 +164,11 @@ export function EditItemQuantityButton({
         updatedCart.lines[index].cost.amountPerQuantity.amount * updatedCart.lines[index].quantity;
     }
 
-    const totalCost = updatedCart.lines.reduce((acc, line) => {
+    const totalCost = updatedCart.lines.reduce((acc: number, line: CartItem) => {
       const lineTotalAmount = Number(line.cost.totalAmount.amount);
       return acc + lineTotalAmount;
     }, 0);
-    const totalQuantity = updatedCart.lines.reduce((acc, line: CartItem) => {
+    const totalQuantity = updatedCart.lines.reduce((acc: number, line: CartItem) => {
       const lineQuantity =
         Number(line?.cost?.totalAmount?.amount) === 0 ? 0 : Number(line.quantity);
       return acc + lineQuantity;
@@ -194,8 +198,9 @@ export function EditItemQuantityButton({
     }
 
     dispatch(setCart(updatedCart));
+    console.log('newUp0', updatedCart?.lines[index]?.quantity);
 
-    debouncedUpdateItemQuantity(updatedCart.lines[index].quantity);
+    debouncedUpdateItemQuantity(updatedCart?.lines[index]?.quantity);
   }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedUpdateItemQuantity = useCallback(
@@ -207,16 +212,21 @@ export function EditItemQuantityButton({
         variantId: item.merchandise.id,
         quantity: newQuantity
       };
-      formAction(payload);
+      dispatch(cartActions.updateCart(payload));
+
+      // formAction(payload);
     }, 1000),
     [item.id, item.merchandise.id, formAction]
   );
 
   const handleQuantityChange = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
+    console.log('handleQuantityChange');
+
     increaseItemQuantity({ cart, item });
   };
   const [messageRemove, formActionRemove] = useFormState(removeItem, null);
+
   console.log('cartProducts', messageRemove, messageFree);
 
   return (

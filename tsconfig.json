@@ -19,7 +19,7 @@
       "@/components/*": ["components/*"],
       "@/app/*": ["app/*"],
       "@/lib/*": ["lib/*"],
-      "@/store":["store/*"],
+      "@/store/*":["store/*"],
       "@/assets/*": ["assets/*"],
     },
     "noUncheckedIndexedAccess": true,

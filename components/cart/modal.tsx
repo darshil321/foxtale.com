@@ -13,8 +13,9 @@ import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
 import OpenCart from './open-cart';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { setCart } from 'store/slices/cart-slice';
+import { useAppSelector } from 'store/hooks';
+
+import { useCart } from '@/lib/hooks/use-cart';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -27,11 +28,13 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
   const closeCart = () => setIsOpen(false);
   // const [localQuantities, setLocalQuantities] = useState({}) as any;
   const carts = useAppSelector((state) => state.cart.cart);
-  console.log('carts', carts);
+  console.log('modalcart', carts);
 
-  const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(setCart(cart));
+    console.log('cartttttt', cart);
+
+    // dispatch(setCart(cart));
+
     // Open cart modal when quantity changes.
     if (cart?.totalQuantity !== quantityRef.current) {
       // But only if it's not already open (quantity also changes when editing items in cart).
@@ -43,14 +46,15 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
       quantityRef.current = cart?.totalQuantity;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, cart?.totalQuantity, quantityRef]);
+  }, [isOpen, quantityRef, cart]);
 
   // const { totalAmount} = useCart()
-
+  const data = useCart();
+  console.log('useCart', data);
   return (
     <>
       <button aria-label="Open cart" onClick={openCart}>
-        <OpenCart quantity={carts?.totalQuantity} />
+        <OpenCart quantity={data?.cartTotalQuantity} />
       </button>
       <Transition show={isOpen}>
         <Dialog onClose={closeCart} className="relative z-50">
@@ -83,7 +87,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                 </button>
               </div>
 
-              {!carts || carts.lines.length === 0 ? (
+              {!carts || carts?.lines?.length === 0 ? (
                 <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
                   <ShoppingBagIcon className="h-16" />
                   <p className="mt-6 text-center text-2xl font-bold">Your carts is empty.</p>
@@ -91,7 +95,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
               ) : (
                 <div className="flex h-full flex-col justify-between overflow-hidden p-1">
                   <ul className="flex-grow overflow-auto py-4">
-                    {carts.lines.map((item, i) => {
+                    {carts?.lines?.map((item, i) => {
                       const merchandiseSearchParams = {} as MerchandiseSearchParams;
 
                       item.merchandise.selectedOptions.forEach(({ name, value }) => {
@@ -142,8 +146,10 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                             <div className="flex h-16 flex-col justify-between">
                               <Price
                                 className="flex justify-end space-y-2 text-right text-sm"
-                                amount={item.cost.totalAmount.amount}
-                                currencyCode={item.cost.totalAmount.currencyCode}
+                                amount={(
+                                  item?.quantity * Number(item?.cost?.totalAmount?.amount)
+                                ).toString()}
+                                currencyCode={item?.cost?.totalAmount?.currencyCode}
                               />
                               <div className="ml-auto flex h-9 flex-row items-center  border border-neutral-200 ">
                                 <EditItemQuantityButton item={item} type="minus" />
@@ -159,24 +165,24 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                     })}
                   </ul>
                   <div className="py-4 text-sm text-neutral-500 ">
-                    <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 ">
+                    {/* <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 ">
                       <p>Taxes</p>
                       <Price
                         className="text-right text-base text-black "
-                        amount={carts.cost.totalTaxAmount.amount}
-                        currencyCode={carts.cost.totalTaxAmount.currencyCode}
+                        amount={carts.cost?.totalTaxAmount?.amount}
+                        currencyCode={carts.cost?.totalTaxAmount?.currencyCode}
                       />
                     </div>
                     <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1 ">
                       <p>Shipping</p>
                       <p className="text-right">Calculated at checkout</p>
-                    </div>
+                    </div> */}
                     <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1">
                       <p>Total</p>
                       <Price
                         className="text-right text-base text-black "
-                        amount={carts.cost.totalAmount.amount}
-                        currencyCode={carts.cost.totalAmount.currencyCode}
+                        amount={data?.cartTotalAmount}
+                        currencyCode={carts?.cost?.totalAmount?.currencyCode}
                       />
                     </div>
                   </div>

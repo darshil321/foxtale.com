@@ -1,20 +1,22 @@
 'use client';
 
+import { cartActions } from '@/store/actions/cart.action';
+import { useAppDispatch } from '@/store/hooks';
 import { XMarkIcon, TrashIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-import { removeItem } from 'components/cart/actions';
 import LoadingDots from 'components/loading-dots';
 import type { CartItem } from 'lib/shopify/types';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormStatus } from 'react-dom';
 
-function SubmitButton({ removeIcon }: { removeIcon?: boolean }) {
+function SubmitButton({ removeIcon, item }: { removeIcon?: boolean; item?: CartItem }) {
   const { pending } = useFormStatus();
-
+  const dispatch = useAppDispatch();
   return (
     <button
       type="submit"
       onClick={(e: React.FormEvent<HTMLButtonElement>) => {
         if (pending) e.preventDefault();
+        dispatch(cartActions.removeCart({ lineId: item?.id }));
       }}
       aria-label="Remove cart item"
       aria-disabled={pending}
@@ -37,16 +39,16 @@ function SubmitButton({ removeIcon }: { removeIcon?: boolean }) {
 }
 
 export function DeleteItemButton({ item, removeIcon }: { item: CartItem; removeIcon?: boolean }) {
-  const [message, formAction] = useFormState(removeItem, null);
-  const itemId = item.id;
-  const actionWithVariant = formAction.bind(null, itemId);
+  // const [message, formAction] = useFormState(removeItem, null);
+  // const itemId = item.id;
+  // const actionWithVariant = formAction.bind(null, itemId);
 
   return (
-    <form action={actionWithVariant}>
-      <SubmitButton removeIcon={removeIcon} />
+    <>
+      <SubmitButton removeIcon={removeIcon} item={item} />
       <p aria-live="polite" className="sr-only" role="status">
-        {message}
+        {/* {message} */}
       </p>
-    </form>
+    </>
   );
 }
