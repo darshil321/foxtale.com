@@ -1,6 +1,7 @@
 import { appendReviewAndRating } from '@/lib/helper/helper';
-import Grid from 'components/grid';
-import ProductGridItems from 'components/layout/product-grid-items';
+import dynamic from 'next/dynamic';
+const Grid = dynamic(() => import('components/grid'));
+const ProductGridItems = dynamic(() => import('components/layout/product-grid-items'));
 import { defaultSort, sorting } from 'lib/constants';
 import { getProducts } from 'lib/shopify';
 

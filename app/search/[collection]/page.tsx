@@ -1,9 +1,11 @@
 import { getCollection, getCollectionProducts, getCollections } from 'lib/shopify';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-
-import Grid from 'components/grid';
-import ProductGridItems from 'components/layout/product-grid-items';
+import dynamic from 'next/dynamic';
+const Grid = dynamic(() => import('components/grid'));
+const ProductGridItems = dynamic(() => import('components/layout/product-grid-items'));
+// import Grid from 'components/grid';
+// import ProductGridItems from 'components/layout/product-grid-items';
 import { defaultSort, sorting } from 'lib/constants';
 
 export const generateStaticParams = async () => {

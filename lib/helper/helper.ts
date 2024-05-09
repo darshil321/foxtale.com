@@ -1,15 +1,15 @@
 import axios from 'axios';
 
-export function debounce(func, delay) {
-  let timeoutId;
+export function debounce(func: any, delay: any) {
+  let timeoutId: any;
 
   return function () {
-    const context = this;
-    const args = arguments;
+    // const context = this;
+    // const args = arguments;
 
     clearTimeout(timeoutId);
     timeoutId = setTimeout(function () {
-      func.apply(context, args);
+      // func.apply(context, args);
     }, delay);
   };
 }

@@ -160,11 +160,11 @@ export function EditItemQuantityButton({
         updatedCart.lines[index].cost.amountPerQuantity.amount * updatedCart.lines[index].quantity;
     }
 
-    const totalCost = updatedCart.lines.reduce((acc, line) => {
+    const totalCost = updatedCart.lines.reduce((acc: any, line: any) => {
       const lineTotalAmount = Number(line.cost.totalAmount.amount);
       return acc + lineTotalAmount;
     }, 0);
-    const totalQuantity = updatedCart.lines.reduce((acc, line: CartItem) => {
+    const totalQuantity = updatedCart.lines.reduce((acc: any, line: CartItem) => {
       const lineQuantity =
         Number(line?.cost?.totalAmount?.amount) === 0 ? 0 : Number(line.quantity);
       return acc + lineQuantity;
@@ -198,7 +198,7 @@ export function EditItemQuantityButton({
     debouncedUpdateItemQuantity(updatedCart.lines[index].quantity);
   }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedUpdateItemQuantity = useCallback(
+  const debouncedUpdateItemQuantity: any = useCallback(
     debounce((newQuantity: number) => {
       console.log('newQuantity');
 
@@ -214,7 +214,7 @@ export function EditItemQuantityButton({
 
   const handleQuantityChange = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    increaseItemQuantity({ cart, item });
+    if (cart) increaseItemQuantity({ cart, item });
   };
   const [messageRemove, formActionRemove] = useFormState(removeItem, null);
   console.log('cartProducts', messageRemove, messageFree);

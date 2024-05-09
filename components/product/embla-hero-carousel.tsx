@@ -95,11 +95,15 @@ const EmblaHeroCarousel: React.FC<PropType> = (props) => {
               <div className="hero_embla__parallax">
                 <div className="hero_embla__parallax__layer">
                   <Image
+                    priority
                     width={1200}
                     height={800}
                     className="hero_embla__slide__img embla__parallax__img"
                     src={`/Images/banner.png`}
                     alt="Your alt text"
+                    loading="eager"
+                    sizes="(max-width: 768px) 110vw, (min-width:1200px) 100vw"
+                    quality={75} // Lower quality for smaller file size
                   />
                 </div>
               </div>
