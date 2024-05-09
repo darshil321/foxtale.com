@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+// @ts-ignore
 import { EmblaOptionsType } from 'embla-carousel';
 import { getCollectionProducts } from 'lib/shopify';
 import { ProductCarousel } from './collection-products-slider';

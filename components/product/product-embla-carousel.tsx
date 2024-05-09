@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-ignore
 import { EmblaOptionsType } from 'embla-carousel';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';

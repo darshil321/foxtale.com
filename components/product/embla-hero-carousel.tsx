@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 import React, { useCallback, useEffect, useRef } from 'react';
+// @ts-ignore
 import { EmblaCarouselType, EmblaEventType, EmblaOptionsType } from 'embla-carousel';
 import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';

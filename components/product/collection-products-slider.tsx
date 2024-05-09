@@ -1,5 +1,6 @@
 import React from 'react';
 import SelectCategory from './product-select';
+// @ts-ignore
 import EmblaCarousel from './product-embla-carousel';
 
 export const ProductCarousel: React.FC<{

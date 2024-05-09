@@ -1,5 +1,6 @@
 'use client';
 import React, { useCallback } from 'react';
+// @ts-ignore
 import { EmblaOptionsType, EmblaCarouselType } from 'embla-carousel';
 import { PrevButton, NextButton, usePrevNextButtons } from './embla-carousel-arrow-buttons';
 import Autoplay from 'embla-carousel-autoplay';
