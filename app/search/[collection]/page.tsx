@@ -7,7 +7,7 @@ const ProductGridItems = dynamic(() => import('components/layout/product-grid-it
 // import Grid from 'components/grid';
 // import ProductGridItems from 'components/layout/product-grid-items';
 import { defaultSort, sorting } from 'lib/constants';
-
+export const fetchCache = 'force-cache';
 export const generateStaticParams = async () => {
   const collections = await getCollections();
   return collections?.map((collection: any) => ({
