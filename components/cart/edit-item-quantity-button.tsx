@@ -145,7 +145,7 @@ export function EditItemQuantityButton({
     return closestObject;
   }
 
-  function increaseItemQuantity({ cart, item }: { cart: Cart; item: CartItem }) {
+  function increaseItemQuantity({ cart, item }: { cart: any; item: CartItem }) {
     const updatedCart = JSON.parse(JSON.stringify(cart));
     updatedCart.totalQuantity++;
 
@@ -182,7 +182,7 @@ export function EditItemQuantityButton({
       }
     } else {
       const freeLineId = cart?.lines?.find(
-        (line) => Number(line?.cost?.totalAmount?.amount) === 0
+        (line: any) => Number(line?.cost?.totalAmount?.amount) === 0
       )?.id;
       console.log('freeItem', freeLineId, coupen);
 

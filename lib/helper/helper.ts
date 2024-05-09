@@ -1,16 +1,16 @@
+/* eslint-disable no-unused-vars */
+
 import axios from 'axios';
 
-export function debounce(func: any, delay: any) {
-  let timeoutId: any;
+export function debounce<F extends (...args: any[]) => any>(
+  func: F,
+  delay: number
+): (...args: Parameters<F>) => void {
+  let timeoutId: NodeJS.Timeout | undefined;
 
-  return function () {
-    // const context = this;
-    // const args = arguments;
-
+  return function (this: ThisParameterType<F>, ...args: Parameters<F>) {
     clearTimeout(timeoutId);
-    timeoutId = setTimeout(function () {
-      // func.apply(context, args);
-    }, delay);
+    timeoutId = setTimeout(() => func.apply(this, args), delay);
   };
 }
 

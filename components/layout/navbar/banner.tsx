@@ -6,9 +6,7 @@ const Banner = () => {
       <div className="bg-gradient-to-r from-yellow-400 to-pink-400 px-4 py-1 text-sm md:px-0 md:py-1 ">
         <div className="container mx-auto flex items-center justify-center py-1 md:justify-between">
           <div className="text-black">
-            <span className="text-black">
-              Get up to 50% off your first order + free shipping,&nbsp;
-            </span>
+            <span className="text-black">Buy 2 @ 799 &nbsp;</span>
             <a href="#" rel="noopener noreferrer" className="underline">
               sign up{' '}
             </a>
@@ -22,7 +20,6 @@ const Banner = () => {
                 fillRule="evenodd"
               ></path>
             </svg>
-            <span className="hover:underline focus-visible:underline">Gift Cards</span>
           </a>
         </div>
       </div>

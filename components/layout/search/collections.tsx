@@ -1,11 +1,61 @@
 import clsx from 'clsx';
 import { Suspense } from 'react';
-
-import { getCollections } from 'lib/shopify';
+// import { getCollections } from 'lib/shopify';
 import FilterList from './filter';
 
 async function CollectionList() {
-  const collections = await getCollections();
+  // const collections = await getCollections();
+
+  const collections = [
+    {
+      handle: 'cleansers',
+      title: 'Cleansers',
+      description: 'Discover a range of gentle cleansers for your daily skincare routine.',
+      seo: {
+        description: 'Gentle cleansers for your daily skincare routine',
+        title: 'Cleansers - Shop Gentle Cleansers Online'
+      },
+      updatedAt: '2024-05-06T12:10:15Z',
+      image: '/images/cleansers.jpg',
+      path: '/search/cleansers'
+    },
+    {
+      handle: 'Sunscreens',
+      title: 'Sunscreens',
+      description: 'Explore a variety of sunscreens to protect your skin from harmful UV rays.',
+      seo: {
+        description: 'Sunscreen protection for all skin types',
+        title: 'Sunscreens - Shop Sun Protection Online'
+      },
+      updatedAt: '2024-05-06T12:10:15Z',
+      image: '/images/sunscreens.jpg',
+      path: '/search/Sunscreens'
+    },
+    {
+      handle: 'moisturizers',
+      title: 'Moisturizers',
+      description: 'Shop hydrating moisturizers for all skin types and concerns.',
+      seo: {
+        description: 'Hydrating moisturizers for smooth and supple skin',
+        title: 'Moisturizers - Shop Hydrating Moisturizers Online'
+      },
+      updatedAt: '2024-05-06T12:10:15Z',
+      image: '/images/moisturizers.jpg',
+      path: '/search/moisturizers'
+    },
+    {
+      handle: 'serums',
+      title: 'Serums',
+      description: 'Find targeted serums to address various skincare needs and concerns.',
+      seo: {
+        description: 'Targeted serums for specific skincare needs',
+        title: 'Serums - Shop Targeted Skincare Serums Online'
+      },
+      updatedAt: '2024-05-06T12:10:15Z',
+      image: '/images/serums.jpg',
+      path: '/search/serums'
+    }
+  ];
 
   if (!collections) return null;
 
