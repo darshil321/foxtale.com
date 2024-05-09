@@ -57,24 +57,27 @@ export function GridTileImage({
                 </Link>
               </div>
 
-              <div className="absolute bottom-2 left-2 flex w-max flex-row justify-between  gap-1 rounded-sm bg-white px-1 py-[1px]  text-black">
-                <div data-rating="4.8">
-                  <div
-                    className="fera-stars-rating fera-productReviewsSummary-stars-rating"
-                    style={{ width: '96.0%' }}
-                  >
-                    ★
+              {product.ratings && product.ratings.average !== 0 && (
+                <div className="absolute bottom-2 left-2 flex w-max flex-row justify-between  gap-1 rounded-sm bg-white px-1 py-[1px]  text-black">
+                  <div data-rating="4.8">
+                    <div
+                      className="fera-stars-rating fera-productReviewsSummary-stars-rating"
+                      style={{ width: '96.0%' }}
+                    >
+                      ★
+                    </div>
+                    <div />
                   </div>
-                  <div />
+
+                  <span
+                    data-value={product?.ratings?.average}
+                    style={{ transformOrigin: '0px 0px', opacity: 1, transform: 'scale(1, 1)' }}
+                  >
+                    {product.ratings.average}
+                  </span>
+                  <span style={{ display: 'none' }}>52</span>
                 </div>
-                <span
-                  data-value="4.8"
-                  style={{ transformOrigin: '0px 0px', opacity: 1, transform: 'scale(1, 1)' }}
-                >
-                  4.8
-                </span>
-                <span style={{ display: 'none' }}>52</span>
-              </div>
+              )}
             </div>
             <div className="product-info p-2">
               <div className="">

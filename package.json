@@ -43,6 +43,7 @@
     "@reduxjs/toolkit": "^2.2.3",
     "@shopify/hydrogen": "^2024.4.1",
     "@shopify/hydrogen-react": "^2024.4.1",
+    "axios": "^1.6.8",
     "clsx": "^2.1.0",
     "dotenv": "^16.4.5",
     "embla-carousel-autoplay": "^8.0.2",
