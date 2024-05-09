@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 
+import axios from 'axios';
+
 export function debounce<F extends (...args: any[]) => any>(
   func: F,
   delay: number
