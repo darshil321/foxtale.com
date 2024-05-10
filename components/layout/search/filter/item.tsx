@@ -23,11 +23,14 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
 
   return (
     <li className="mt-2 flex h-full w-full items-center justify-center gap-2 text-black">
-      <div className="flex flex-col items-center justify-center gap-1 md:gap-2">
+      <div
+        className={`relative flex flex-col items-center justify-center gap-1 md:gap-2
+      `}
+      >
         <Image
           src={item?.image?.url || '/Images/defualt.png'}
           className=" flex min-h-[80px]  min-w-[80px] items-center justify-center  rounded-full md:min-h-[100px] md:min-w-[100px]"
-          alt={item?.title || 'Image'}
+          alt={(item?.title && item?.title + Math.random()) || 'Image'}
           width={100}
           loading="lazy"
           objectFit="cover"
@@ -36,13 +39,12 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
           height={100}
         />
         <button
-          className={`line-clamp-1 text-ellipsis text-wrap text-center text-xs underline-offset-4 hover:underline md:text-sm ${
-            active ? 'underline underline-offset-4' : ''
-          }`}
+          className={`line-clamp-1 text-ellipsis text-wrap text-center text-xs underline-offset-4 hover:underline md:text-sm `}
           onClick={handleClick}
         >
           {item.title}
         </button>
+        {active && <div className="h-[2px] w-[138px] rounded-full  bg-black"></div>}
       </div>
     </li>
   );

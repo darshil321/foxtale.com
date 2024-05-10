@@ -13,10 +13,7 @@ export type PathFilterItem = {
 
 function FilterItemList({ list }: { list: ListItem[] }) {
   return (
-    <div
-      style={{ zIndex: 10000 }}
-      className=" flex h-max w-full max-w-2xl flex-row items-center justify-evenly gap-2 overflow-x-auto overflow-y-hidden md:gap-10"
-    >
+    <div className=" flex h-max w-full max-w-2xl flex-row items-center justify-evenly gap-2 overflow-x-auto overflow-y-hidden border-b-2 border-gray-400 md:gap-10">
       {list && list.map((item: ListItem, i) => <FilterItem key={i} item={item} />)}
     </div>
   );
@@ -26,7 +23,7 @@ export default function FilterList({ list }: { list: ListItem[]; title?: string 
   return (
     <>
       <nav className=" sticky top-0 z-auto">
-        <ul className=" h-[125px] items-center justify-center rounded-md  bg-white md:flex  md:h-[170px] ">
+        <ul className=" h-[125px] items-center justify-center rounded-md   bg-white md:flex  md:h-[170px] ">
           <Suspense fallback={null}>
             <FilterItemList list={list} />
           </Suspense>
