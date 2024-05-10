@@ -11,7 +11,7 @@ import {
   editCartItemsMutation,
   removeFromCartMutation
 } from './mutations/cart';
-import { getCartQuery, getMetaobjectsQuery } from './queries/cart';
+import { getCartQuery, getMagicMetaObjectQuery, getMetaobjectsQuery } from './queries/cart';
 import {
   getCollectionProductsQuery,
   getCollectionQuery,
@@ -378,7 +378,14 @@ export async function getMetaObjects(): Promise<Metaobject[]> {
     query: getMetaobjectsQuery,
     cache: 'no-store'
   });
+  return removeEdgesAndNodes(res.body.data.metaobjects);
+}
 
+export async function getMagicLinkMetaObjects(): Promise<Metaobject[]> {
+  const res = await shopifyFetch<MetaobjectsResponse>({
+    query: getMagicMetaObjectQuery,
+    cache: 'no-store'
+  });
   return removeEdgesAndNodes(res.body.data.metaobjects);
 }
 

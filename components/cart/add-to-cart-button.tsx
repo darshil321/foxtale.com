@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import { useFormStatus } from 'react-dom';
 import { useAppDispatch } from 'store/hooks';
 import { cartActions } from 'store/actions/cart.action';
+import { v4 as uuidv4 } from 'uuid';
 
 function SubmitButton({
   availableForSale,
@@ -39,7 +40,8 @@ function SubmitButton({
           dispatch(
             cartActions.addToCart({
               selectedVariantId: selectedVariantId,
-              product: product
+              product: product,
+              tempId: uuidv4()
             })
           );
         }}
@@ -59,7 +61,8 @@ function SubmitButton({
         dispatch(
           cartActions.addToCart({
             selectedVariantId: selectedVariantId,
-            product: product
+            product: product,
+            tempId: uuidv4()
           })
         );
       }}

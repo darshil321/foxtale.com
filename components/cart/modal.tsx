@@ -28,11 +28,8 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
   const closeCart = () => setIsOpen(false);
   // const [localQuantities, setLocalQuantities] = useState({}) as any;
   const carts = useAppSelector((state) => state.cart.cart);
-  console.log('modalcart', carts);
 
   useEffect(() => {
-    console.log('cartttttt', cart);
-
     // dispatch(setCart(cart));
 
     // Open cart modal when quantity changes.
@@ -50,7 +47,6 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
 
   // const { totalAmount} = useCart()
   const data = useCart();
-  console.log('useCart', data);
   return (
     <>
       <button aria-label="Open cart" onClick={openCart}>
@@ -107,7 +103,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                       );
 
                       const merchandiseUrl = createUrl(
-                        `/product/${item.merchandise.product.handle}`,
+                        `/product/${item.merchandise?.product.handle}`,
                         new URLSearchParams(merchandiseSearchParams)
                       );
                       return (

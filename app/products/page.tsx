@@ -1,3 +1,4 @@
+import GetRequiredData from '@/components/common/get-required-data';
 import { appendReviewAndRating } from '@/lib/helper/helper';
 import dynamic from 'next/dynamic';
 const Grid = dynamic(() => import('components/grid'));
@@ -21,9 +22,9 @@ export default async function SearchPage({
   const _products = await getProducts({ sortKey, reverse, query: searchValue });
   const products = await appendReviewAndRating(_products);
   const resultsText = products.length > 1 ? 'results' : 'result';
-
   return (
     <>
+      <GetRequiredData />
       {searchValue ? (
         <p className="mx-2 mt-4 text-base md:mx-4">
           {products.length === 0
