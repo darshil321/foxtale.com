@@ -205,8 +205,7 @@ export function EditItemQuantityButton({
 
   const handleQuantityChange = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-
-    increaseItemQuantity({ cart, item });
+    if (cart) increaseItemQuantity({ cart, item });
   };
   const [formActionRemove] = useFormState(removeItem, null);
 

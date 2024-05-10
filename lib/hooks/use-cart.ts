@@ -6,11 +6,11 @@ export function useCart() {
   const cart = useAppSelector((state) => state.cart.cart); // fetch cart
 
   const { totalAmount, totalQuantity } = useMemo(() => {
-    const totalCost = cart?.lines.reduce((acc: number, line: CartItem) => {
+    const totalCost = cart?.lines?.reduce((acc: number, line: CartItem) => {
       const lineTotalAmount = Number(line.cost.totalAmount.amount);
       return acc + lineTotalAmount;
     }, 0);
-    const cartTotalQuantity = cart?.lines.reduce((acc: number, line: CartItem) => {
+    const cartTotalQuantity = cart?.lines?.reduce((acc: number, line: CartItem) => {
       const lineQuantity =
         Number(line?.cost?.totalAmount?.amount) === 0 ? 0 : Number(line.quantity);
       return acc + lineQuantity;
