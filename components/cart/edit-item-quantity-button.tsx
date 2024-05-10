@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { setCart } from 'store/slices/cart-slice';
 
 import { cartActions } from '@/store/actions/cart.action';
+
 // import { Metaobject } from '@shopify/hydrogen-react/storefront-api-types';
 
 function SubmitButton({
@@ -74,8 +75,6 @@ export function EditItemQuantityButton({
   const cartProducts = cart?.lines?.map((line: any) => line.merchandise?.id);
 
   useEffect(() => {
-    console.log('cartProductsss');
-
     // const fetchData = async () => {
     //   try {
     //     const metaObjects = await getMetaObjects();
@@ -85,30 +84,25 @@ export function EditItemQuantityButton({
     //         fieldsObject[field.key ?? ''] = field.value ?? '';
     //       });
     //       console.log('fieldsObject', fieldsObject);
-
     //       return { ...metaObject, fields: fieldsObject };
     //     });
     //     console.log('transformedMetaObjects', transformedMetaObjects);
-
     //     setMetaObject(transformedMetaObjects);
-
     //     console.log('metaObjec', metaObjects);
     //   } catch (error) {
     //     // Handle error
     //   }
     // };
-
     // fetchData();
     // const coupen = findClosestCoupon(metaObject ?? [], cart);
-
     // if (coupen) {
     //   console.log('coupen', coupen);
-
     //   // formActionFree(coupen.fields.free_bie);
     // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const [messageFree, formActionFree] = useFormState(addItem, null);
+  const [m, formActionFree] = useFormState(addItem, null);
+  console.log(m);
 
   const [formAction] = useFormState(updateItemQuantity, null);
   const { pending } = useFormStatus();
@@ -164,35 +158,18 @@ export function EditItemQuantityButton({
         updatedCart.lines[index].cost.amountPerQuantity.amount * updatedCart.lines[index].quantity;
     }
 
-    const totalCost = updatedCart.lines.reduce((acc: any, line: any) => {
-      const lineTotalAmount = Number(line.cost.totalAmount.amount);
-      return acc + lineTotalAmount;
-    }, 0);
-    const totalQuantity = updatedCart.lines.reduce((acc: any, line: CartItem) => {
-      const lineQuantity =
-        Number(line?.cost?.totalAmount?.amount) === 0 ? 0 : Number(line.quantity);
-      return acc + lineQuantity;
-    }, 0);
-
-    updatedCart.cost.totalAmount.amount = totalCost.toFixed(2);
-    updatedCart.totalQuantity = totalQuantity;
     const coupen = findClosestCoupon(metaObject ?? [], updatedCart);
-    console.log('freeItem', coupen);
 
     if (coupen) {
       if (!cartProducts?.includes(coupen.fields.free_bie ?? '')) {
         formActionFree(coupen.fields.free_bie);
-        console.log('freeItem', cart, coupen);
       }
     } else {
       const freeLineId = cart?.lines?.find(
         (line: any) => Number(line?.cost?.totalAmount?.amount) === 0
       )?.id;
-      console.log('freeItem', freeLineId, coupen);
 
       if (freeLineId) {
-        console.log('removing', freeLineId, coupen, cartProducts);
-
         formActionRemove.bind(null, freeLineId);
       }
     }
@@ -205,8 +182,6 @@ export function EditItemQuantityButton({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedUpdateItemQuantity: any = useCallback(
     debounce((newQuantity: number) => {
-      console.log('newQuantity');
-
       const payload = {
         lineId: item.id,
         variantId: item.merchandise.id,
@@ -223,9 +198,8 @@ export function EditItemQuantityButton({
     e.preventDefault();
     if (cart) increaseItemQuantity({ cart, item });
   };
-  const [messageRemove, formActionRemove] = useFormState(removeItem, null);
-
-  console.log('cartProducts', messageRemove, messageFree);
+  const [mrf, formActionRemove] = useFormState(removeItem, null);
+  console.log(mrf);
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>

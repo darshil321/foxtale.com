@@ -82,3 +82,52 @@ async function getRatings() {
   const ratings = response.data.data;
   return ratings;
 }
+
+export function getCoupon(metaObjects: any, cart: any, type: string, magic_key: any) {
+  if (type === 'magic_link') {
+    const magicArray = metaObjects.map((metaObj: any) => {
+      if (metaObj.type === 'magic_link') {
+        const obj: any = {};
+        metaObj.fields.forEach((field: any) => {
+          obj[field.key] = field.value;
+        });
+        return obj;
+      }
+    });
+
+    const offerObj = magicArray.find((obj: any) => obj.magic_key === magic_key);
+
+    const cartItems = cart.lines;
+    console.log('cartItems', cartItems);
+    const { totalQuantity } = cart;
+    if (offerObj.total_quantity > totalQuantity) {
+      return;
+    }
+
+    const freeProduct = magicArray.find((obj: any) => {
+      if (obj.applicable_product) {
+        const product = cartItems?.find(
+          (item: any) => item.merchandise.product.id === obj.applicable_product
+        );
+        if (product) {
+          return obj.free_product;
+        }
+      } else if (obj.cart_total) {
+        let cartTotal = 0;
+        cartItems.forEach((item: any) => {
+          cartTotal += +item.cost.totalAmount.amount;
+        });
+
+        if (cartTotal >= obj.cart_total) {
+          return obj.free_product;
+        }
+      } else {
+        // applicable collection logic
+      }
+    });
+
+    if (freeProduct) {
+      return freeProduct;
+    }
+  }
+}

@@ -17,12 +17,10 @@ export async function addItem(
   }
 
   let cart;
-  console.log('cartIddh', cartId, selectedVariantId);
 
   if (cartId) {
     cart = await getCart(cartId);
   }
-  console.log('cartIdd', cartId);
 
   if (!cartId || !cart) {
     cart = await createCart();
@@ -36,6 +34,7 @@ export async function addItem(
 
   try {
     const data = await addToCart(cartId, [{ merchandiseId: selectedVariantId, quantity: 1 }]);
+    revalidateTag(TAGS.cart);
     return data;
   } catch (e) {
     return 'Error adding item to cart';
@@ -50,12 +49,9 @@ export async function removeItem(prevState: any, lineId: string) {
   }
 
   try {
-    console.log('removing');
-
     const data = await removeFromCart(cartId, [lineId]);
     revalidateTag(TAGS.cart);
     return data;
-    console.log('cartIdd', cartId);
   } catch (e) {
     return 'Error removing item from cart';
   }
