@@ -97,14 +97,20 @@ export const cartSlice = createSlice({
       const productFound = productArray?.find(
         (item) => item.merchandise.id === product.variants.id
       );
-
+      console.log('window.location.href', window.location.href);
+      let cartItem;
       if (productFound) {
         if (cart.cart && cart.cart.totalQuantity !== undefined) {
-          productFound.quantity += 1;
+          // productFound.quantity += 1;
           // cart.cart.totalQuantity += 1;
+          console.log('Reaching here');
+          cartItem = {
+            ...productFound,
+            quantity: productFound.quantity + 1
+          };
         }
       } else {
-        const cartItem = {
+        cartItem = {
           id: tempId,
           cost: {
             amountPerQuantity: {
@@ -135,17 +141,18 @@ export const cartSlice = createSlice({
             }
           }
         };
-        let arr: any = [];
-        let totQuant = 0;
-        if (cart.cart) {
-          arr = [...cart.cart.lines, cartItem];
-          totQuant = cart.cart.totalQuantity + 1;
-        }
-        state.cart = { ...cart.cart, lines: arr, totalQuantity: totQuant };
-        const _cart = current(state);
-        console.log('_cart.cart', _cart.cart);
-        getCoupon(_cart.metaObjects, _cart);
       }
+      let arr: any = [];
+      let totQuant = 0;
+      if (cart.cart) {
+        arr = [...cart.cart.lines, cartItem];
+        totQuant = cart.cart.totalQuantity + 1;
+      }
+      state.cart = { ...cart.cart, lines: arr, totalQuantity: totQuant };
+      const _cart = current(state);
+      console.log('_cart.cart', _cart.cart);
+      console.log('window.location.href', window.location.href);
+      getCoupon(_cart.metaObjects, _cart);
     },
 
     attemptGetCarts: () => {

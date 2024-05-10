@@ -100,7 +100,8 @@ export function EditItemQuantityButton({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const [formActionFree] = useFormState(addItem, null);
+  const [m, formActionFree] = useFormState(addItem, null);
+  console.log(m);
 
   const [message, formAction] = useFormState(updateItemQuantity, null);
   const { pending } = useFormStatus();
@@ -207,7 +208,8 @@ export function EditItemQuantityButton({
     e.preventDefault();
     if (cart) increaseItemQuantity({ cart, item });
   };
-  const [formActionRemove] = useFormState(removeItem, null);
+  const [mrf, formActionRemove] = useFormState(removeItem, null);
+  console.log(mrf);
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>

@@ -49,7 +49,7 @@ function SubmitButton({
         aria-disabled
         className={clsx(buttonClasses, disabledClasses)}
       >
-        Add To Carttt
+        Add To Cart
       </button>
     );
   }
