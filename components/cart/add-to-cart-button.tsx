@@ -47,7 +47,7 @@ function SubmitButton({
         aria-disabled
         className={clsx(buttonClasses, disabledClasses)}
       >
-        Add To Carttt
+        Add To Cart
       </button>
     );
   }
@@ -87,7 +87,7 @@ export function AddToCartButton({
   product: Product;
 }) {
   const searchParams = useSearchParams();
-  const defaultVariantId = variants?.length === 1 ? variants[0]?.id : undefined;
+  const defaultVariantId = variants[0]?.id;
   const variant = variants?.find((variant: ProductVariant) =>
     variant.selectedOptions?.every(
       (option) => option.value === searchParams.get(option.name.toLowerCase())
@@ -95,9 +95,7 @@ export function AddToCartButton({
   );
 
   const selectedVariantId = variant?.id || defaultVariantId;
-
-  console.log('variantDD', product, variant);
-
+  console.log('selectedVariantIdss', variant?.title);
   return (
     <SubmitButton
       availableForSale={availableForSale}

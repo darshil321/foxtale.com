@@ -4,8 +4,18 @@ import { addToCart, createCart, getCart, removeFromCart, updateCart } from 'lib/
 import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 
-export async function addItem(prevState: any, selectedVariantId: string | undefined) {
-  let cartId = cookies().get('cartId')?.value;
+export async function addItem(
+  prevState: any,
+  selectedVariantId: string | undefined,
+  instantCartId?: string
+) {
+  let cartId;
+  if (!instantCartId) {
+    cartId = cookies().get('cartId')?.value;
+  } else {
+    cartId = instantCartId;
+  }
+
   let cart;
   console.log('cartIddh', cartId, selectedVariantId);
 

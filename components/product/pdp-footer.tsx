@@ -4,9 +4,22 @@ import ProductDetailsItem from './product-details-item';
 import { AddToCartButton } from 'components/cart/add-to-cart-button';
 import { GokwikButton } from './go-kwik-button';
 import { CartProvider } from '@shopify/hydrogen-react';
+import { ProductVariant } from '@shopify/hydrogen-react/storefront-api-types';
+import { useSearchParams } from 'next/navigation';
 // import { GokwikButton } from 'components/elements/gokwik-button';
 
 const ProductDescFooter = ({ product }: { product: any }) => {
+  const searchParams = useSearchParams();
+  const variants = product?.variants;
+  const defaultVariantId = variants[0]?.id;
+  const variant = variants?.find((variant: ProductVariant) =>
+    variant.selectedOptions?.every(
+      (option) => option.value === searchParams.get(option.name.toLowerCase())
+    )
+  );
+
+  const selectedVariantId = variant?.id || defaultVariantId;
+  console.log('selectedVariantIdss', variant?.title);
   return (
     <div className="fixed bottom-0 left-0 z-50 w-screen ">
       <div className="flex w-full justify-center border-t bg-white px-4 py-3 md:justify-between  md:px-[140px] md:py-4">
@@ -29,7 +42,7 @@ const ProductDescFooter = ({ product }: { product: any }) => {
           </Suspense>
           <Suspense fallback={null}>
             <CartProvider>
-              <GokwikButton buyNowButton={true} variantId={product?.variants[0]?.id} quantity={1} />
+              <GokwikButton buyNowButton={true} variantId={selectedVariantId} quantity={1} />
             </CartProvider>
           </Suspense>
         </div>

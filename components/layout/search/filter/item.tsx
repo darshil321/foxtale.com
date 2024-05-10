@@ -44,7 +44,7 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
         >
           {item.title}
         </button>
-        {active && <div className="h-[2px] w-[138px] rounded-full  bg-black"></div>}
+        {active && <div className="h-[2px] rounded-full bg-black md:h-[2px]  md:w-[138px]"></div>}
       </div>
     </li>
   );
