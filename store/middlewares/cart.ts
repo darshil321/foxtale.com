@@ -28,7 +28,7 @@ export function* addToCartSaga(action: {
   try {
     const { selectedVariantId, tempId } = action.payload;
     const data = yield call({ fn: addItem, context: null }, null, selectedVariantId);
-
+    console.log('@@@', data);
     yield put(cartActions.setCart({ ...data, tempId }));
   } catch (error) {
     yield put(cartActions.getCartFailed());

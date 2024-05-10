@@ -157,18 +157,6 @@ export function EditItemQuantityButton({
         updatedCart.lines[index].cost.amountPerQuantity.amount * updatedCart.lines[index].quantity;
     }
 
-    const totalCost = updatedCart.lines.reduce((acc: any, line: any) => {
-      const lineTotalAmount = Number(line.cost.totalAmount.amount);
-      return acc + lineTotalAmount;
-    }, 0);
-    const totalQuantity = updatedCart.lines.reduce((acc: any, line: CartItem) => {
-      const lineQuantity =
-        Number(line?.cost?.totalAmount?.amount) === 0 ? 0 : Number(line.quantity);
-      return acc + lineQuantity;
-    }, 0);
-
-    updatedCart.cost.totalAmount.amount = totalCost.toFixed(2);
-    updatedCart.totalQuantity = totalQuantity;
     const coupen = findClosestCoupon(metaObject ?? [], updatedCart);
 
     if (coupen) {

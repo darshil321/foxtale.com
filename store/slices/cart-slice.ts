@@ -151,8 +151,9 @@ export const cartSlice = createSlice({
       state.cart = { ...cart.cart, lines: arr, totalQuantity: totQuant };
       const _cart = current(state);
       console.log('_cart.cart', _cart.cart);
-      console.log('window.location.href', window.location.href);
-      getCoupon(_cart.metaObjects, _cart);
+      const magic_key = '234567';
+      const _product = getCoupon(_cart.metaObjects, _cart.cart, 'magic_link', magic_key);
+      console.log('_product', _product);
     },
 
     attemptGetCarts: () => {

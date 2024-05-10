@@ -83,22 +83,22 @@ async function getRatings() {
   return ratings;
 }
 
-export async function getCoupon(metaObjects: any, cart: any, type: string, magic_key: any) {
+export function getCoupon(metaObjects: any, cart: any, type: string, magic_key: any) {
   if (type === 'magic_link') {
-    const magicArray = metaObjects.filter((metaObj: any) => {
+    const magicArray = metaObjects.map((metaObj: any) => {
       if (metaObj.type === 'magic_link') {
         const obj: any = {};
         metaObj.fields.forEach((field: any) => {
           obj[field.key] = field.value;
         });
-
         return obj;
       }
     });
 
-    const offerObj = magicArray.find((obj: any) => obj.key === magic_key);
+    const offerObj = magicArray.find((obj: any) => obj.magic_key === magic_key);
 
     const cartItems = cart.lines;
+    console.log('cartItems', cartItems);
     const { totalQuantity } = cart;
     if (offerObj.total_quantity > totalQuantity) {
       return;
@@ -106,8 +106,8 @@ export async function getCoupon(metaObjects: any, cart: any, type: string, magic
 
     const freeProduct = magicArray.find((obj: any) => {
       if (obj.applicable_product) {
-        const product = cartItems.find(
-          (item: any) => item.merchandise.id === obj.applicable_product
+        const product = cartItems?.find(
+          (item: any) => item.merchandise.product.id === obj.applicable_product
         );
         if (product) {
           return obj.free_product;
