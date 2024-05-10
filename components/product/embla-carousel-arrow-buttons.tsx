@@ -1,6 +1,7 @@
 'use client';
 
 import React, { PropsWithChildren, useCallback, useEffect, useState } from 'react';
+// @ts-ignore
 import { EmblaCarouselType } from 'embla-carousel';
 
 type UsePrevNextButtonsType = {

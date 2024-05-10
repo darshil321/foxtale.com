@@ -1,3 +1,4 @@
+// @ts-ignore
 import { EmblaOptionsType } from 'embla-carousel';
 import EmblaHeroCarousel from './embla-hero-carousel';
 import '../../assets/styles/hero-slider.css';

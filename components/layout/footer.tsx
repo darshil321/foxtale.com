@@ -41,6 +41,7 @@ export default async function Footer() {
     { title: 'Get in touch', path: '/get' },
     { title: 'Store Locator', path: '/careers' }
   ];
+
   return (
     <footer className="w-full font-poppins text-sm text-neutral-500 ">
       <div className=" w-full bg-[#f3bf97] px-2 py-4 text-sm md:flex-row md:gap-20 md:px-4 md:py-12">

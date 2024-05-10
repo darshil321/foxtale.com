@@ -10,12 +10,10 @@ export default function SearchLayout({ children }: { children: React.ReactNode }
         <HeroBannerSlider />
       </div>
       <div className=" flex max-w-screen-2xl flex-col gap-8 px-2 pb-2 text-black md:px-8 md:pb-4 ">
-        <div className=" w-full flex-none ">
+        <div className=" sticky top-0 z-50 w-full flex-none rounded-md bg-white  shadow-md">
           <Collections />
         </div>
-        <div className="h-full min-h-max w-full rounded-md bg-white px-1.5 md:order-none md:px-4 ">
-          {children}
-        </div>
+        <div className="h-full min-h-max w-full ">{children}</div>
         {/* <div className="order-none flex-none md:order-last">
           <FilterList list={sorting} title="Sort by" />
         </div> */}
