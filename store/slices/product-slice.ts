@@ -4,8 +4,10 @@ export interface ProductsState {
   products: any;
   productsByCategory: [];
   loading: boolean;
+  selectedCollection: string;
   loadingByCategory: boolean;
   errorByCategory: any;
+  isUserClicked: boolean;
   error: any;
   frequency: any;
   product: any;
@@ -13,8 +15,10 @@ export interface ProductsState {
 
 export const initialState: ProductsState = {
   products: [],
+  selectedCollection: '',
   productsByCategory: [],
   loadingByCategory: false,
+  isUserClicked: false,
   error: null,
   errorByCategory: {},
   loading: false,
@@ -39,9 +43,16 @@ export const productSlice = createSlice({
 
     attemptGetProducts: () => {
       //loading true
+    },
+    setSelectedCollection: (state, action) => {
+      state.selectedCollection = action.payload;
+    },
+    setIsUserClicked: (state, action) => {
+      state.isUserClicked = action.payload;
     }
   }
 });
 
-export const { getProductSuccess, attemptGetProducts } = productSlice.actions;
+export const { getProductSuccess, attemptGetProducts, setSelectedCollection, setIsUserClicked } =
+  productSlice.actions;
 export default productSlice.reducer;

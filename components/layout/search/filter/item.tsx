@@ -7,40 +7,44 @@ import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import type { ListItem, PathFilterItem } from '.';
 import Image from 'next/image';
+import { useDispatch } from 'react-redux';
+import { setIsUserClicked, setSelectedCollection } from '@/store/slices/product-slice';
+import { useAppSelector } from '@/store/hooks';
 
 function PathFilterItem({ item }: { item: PathFilterItem }) {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const active = pathname === item.path;
-  const newParams = new URLSearchParams(searchParams.toString());
-  const DynamicTag = active ? 'p' : Link;
+  const dispatch = useDispatch();
+  const selectedCollection = useAppSelector((state) => state.products.selectedCollection);
 
-  newParams.delete('q');
+  const handleClick = () => {
+    dispatch(setSelectedCollection(item.handle?.toLowerCase()));
+    dispatch(setIsUserClicked(true)); // Reset after action
+  };
+  const active = selectedCollection === item?.handle?.toLowerCase();
 
   return (
-    <li
-      className="mt-2 flex h-full w-full items-center justify-center gap-2 text-black  "
-      key={item.title}
-    >
-      <div className="flex flex-col items-center justify-center gap-1 md:gap-2">
+    <li className="mt-2 flex h-full w-full items-center justify-center gap-2 text-black">
+      <div
+        className={`relative flex flex-col items-center justify-center gap-1 md:gap-2
+      `}
+      >
         <Image
           src={item?.image?.url || '/Images/defualt.png'}
           className=" flex min-h-[80px]  min-w-[80px] items-center justify-center  rounded-full md:min-h-[100px] md:min-w-[100px]"
-          alt={item?.title || 'Image'}
+          alt={(item?.title && item?.title + Math.random()) || 'Image'}
           width={100}
+          loading="lazy"
+          objectFit="cover"
+          quality={75}
+          sizes="(max-width: 640px) 80px, 80px"
           height={100}
         />
-        <DynamicTag
-          href={createUrl(item.path, newParams)}
-          className={clsx(
-            'line-clamp-1 text-ellipsis text-wrap text-center text-xs underline-offset-4 hover:underline md:text-sm ',
-            {
-              'underline underline-offset-4': active
-            }
-          )}
+        <button
+          className={`line-clamp-1 text-ellipsis text-wrap text-center text-xs md:text-sm `}
+          onClick={handleClick}
         >
           {item.title}
-        </DynamicTag>
+        </button>
+        {active && <div className="h-[2px] w-[138px] rounded-full  bg-black"></div>}
       </div>
     </li>
   );

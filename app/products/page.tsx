@@ -1,6 +1,7 @@
 import { appendReviewAndRating } from '@/lib/helper/helper';
-import Grid from 'components/grid';
-import ProductGridItems from 'components/layout/product-grid-items';
+import dynamic from 'next/dynamic';
+const Grid = dynamic(() => import('components/grid'));
+const ProductGridItems = dynamic(() => import('components/layout/product-grid-items'));
 import { defaultSort, sorting } from 'lib/constants';
 import { getProducts } from 'lib/shopify';
 
@@ -24,17 +25,19 @@ export default async function SearchPage({
   return (
     <>
       {searchValue ? (
-        <p className="mx-4 mt-4 text-base">
+        <p className="mx-2 mt-4 text-base md:mx-4">
           {products.length === 0
-            ? 'There are no products that match '
+            ? 'There are no products that match'
             : `Showing ${products.length} ${resultsText} for `}
           <span className="font-bold">&quot;{searchValue}&quot;</span>
         </p>
       ) : null}
       {products.length > 0 ? (
-        <Grid className=" grid-cols-2 place-items-center py-2 sm:grid-cols-2 md:py-7 lg:grid-cols-4">
-          <ProductGridItems products={products} />
-        </Grid>
+        <div className=" rounded-md bg-white px-1.5 py-2 md:order-none md:px-4 md:py-6">
+          <Grid className=" grid-cols-2 place-items-center py-2 sm:grid-cols-2 md:py-7 lg:grid-cols-4">
+            <ProductGridItems products={products} />
+          </Grid>
+        </div>
       ) : null}
     </>
   );

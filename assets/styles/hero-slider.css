@@ -128,7 +128,8 @@
 
 @media screen and (max-width: 768px) {
   .hero_embla__slide__img {
-    height: 250px;
+    height: 234px;
+    object-fit: contain;
   }
   .hero_embla__slide {
     border-radius: 4px;
