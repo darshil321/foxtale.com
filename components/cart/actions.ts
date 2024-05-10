@@ -7,7 +7,7 @@ import { cookies } from 'next/headers';
 export async function addItem(prevState: any, selectedVariantId: string | undefined) {
   let cartId = cookies().get('cartId')?.value;
   let cart;
-  console.log('cartIdd', cartId);
+  console.log('cartIddh', cartId, selectedVariantId);
 
   if (cartId) {
     cart = await getCart(cartId);
@@ -25,8 +25,8 @@ export async function addItem(prevState: any, selectedVariantId: string | undefi
   }
 
   try {
-    await addToCart(cartId, [{ merchandiseId: selectedVariantId, quantity: 1 }]);
-    revalidateTag(TAGS.cart);
+    const data = await addToCart(cartId, [{ merchandiseId: selectedVariantId, quantity: 1 }]);
+    return data;
   } catch (e) {
     return 'Error adding item to cart';
   }
@@ -40,8 +40,12 @@ export async function removeItem(prevState: any, lineId: string) {
   }
 
   try {
-    await removeFromCart(cartId, [lineId]);
+    console.log('removing');
+
+    const data = await removeFromCart(cartId, [lineId]);
     revalidateTag(TAGS.cart);
+    return data;
+    console.log('cartIdd', cartId);
   } catch (e) {
     return 'Error removing item from cart';
   }
@@ -62,22 +66,25 @@ export async function updateItemQuantity(
   }
 
   const { lineId, variantId, quantity } = payload;
+  console.log('updating', payload);
 
   try {
     if (quantity === 0) {
-      await removeFromCart(cartId, [lineId]);
+      const data = await removeFromCart(cartId, [lineId]);
       revalidateTag(TAGS.cart);
-      return;
+      return data;
     }
 
-    await updateCart(cartId, [
+    const data = await updateCart(cartId, [
       {
         id: lineId,
         merchandiseId: variantId,
         quantity
       }
     ]);
+
     revalidateTag(TAGS.cart);
+    return data;
   } catch (e) {
     return 'Error updating item quantity';
   }

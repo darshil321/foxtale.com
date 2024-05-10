@@ -19,6 +19,7 @@ const ProductDescFooter = ({ product }: { product: any }) => {
         <div className="flex flex-row  items-center gap-5">
           <Suspense fallback={null}>
             <AddToCartButton
+              product={product}
               variants={product?.variants}
               availableForSale={product.availableForSale}
               buttonClasses={

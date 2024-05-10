@@ -1,19 +1,25 @@
 'use client';
+// import { cartActions } from '@/store';
 import clsx from 'clsx';
-import { addItem } from 'components/cart/actions';
-import { ProductVariant } from 'lib/shopify/types';
+// import { addItem } from 'components/cart/actions';
+import { Product, ProductVariant } from 'lib/shopify/types';
 import { useSearchParams } from 'next/navigation';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormStatus } from 'react-dom';
+import { useAppDispatch } from 'store/hooks';
+import { cartActions } from 'store/actions/cart.action';
 
 function SubmitButton({
   availableForSale,
   selectedVariantId,
-  buttonClasses
+  buttonClasses,
+  product
 }: {
   availableForSale: boolean;
   selectedVariantId: string | undefined;
   buttonClasses: string;
+  product: Product;
 }) {
+  const dispatch = useAppDispatch();
   const { pending } = useFormStatus();
 
   const disabledClasses = 'cursor-not-allowed  hover:opacity-80';
@@ -29,11 +35,19 @@ function SubmitButton({
   if (!selectedVariantId) {
     return (
       <button
+        onClick={() => {
+          dispatch(
+            cartActions.addToCart({
+              selectedVariantId: selectedVariantId,
+              product: product
+            })
+          );
+        }}
         aria-label="Please select an option"
         aria-disabled
         className={clsx(buttonClasses, disabledClasses)}
       >
-        Add To Cart
+        Add To Carttt
       </button>
     );
   }
@@ -42,6 +56,12 @@ function SubmitButton({
     <button
       onClick={(e: React.FormEvent<HTMLButtonElement>) => {
         if (pending) e.preventDefault();
+        dispatch(
+          cartActions.addToCart({
+            selectedVariantId: selectedVariantId,
+            product: product
+          })
+        );
       }}
       aria-label="Add to cart"
       aria-disabled={pending}
@@ -58,13 +78,14 @@ function SubmitButton({
 export function AddToCartButton({
   variants,
   availableForSale,
-  buttonClasses
+  buttonClasses,
+  product
 }: {
   variants: any[];
   availableForSale: boolean;
   buttonClasses: string;
+  product: Product;
 }) {
-  const [message, formAction] = useFormState(addItem, null);
   const searchParams = useSearchParams();
   const defaultVariantId = variants?.length === 1 ? variants[0]?.id : undefined;
   const variant = variants?.find((variant: ProductVariant) =>
@@ -72,19 +93,17 @@ export function AddToCartButton({
       (option) => option.value === searchParams.get(option.name.toLowerCase())
     )
   );
+
   const selectedVariantId = variant?.id || defaultVariantId;
-  const actionWithVariant = formAction.bind(null, selectedVariantId);
+
+  console.log('variantDD', product, variant);
 
   return (
-    <form action={actionWithVariant}>
-      <SubmitButton
-        availableForSale={availableForSale}
-        buttonClasses={buttonClasses}
-        selectedVariantId={selectedVariantId}
-      />
-      <p aria-live="polite" className="sr-only" role="status">
-        {message}
-      </p>
-    </form>
+    <SubmitButton
+      availableForSale={availableForSale}
+      buttonClasses={buttonClasses}
+      selectedVariantId={selectedVariantId}
+      product={product}
+    />
   );
 }
