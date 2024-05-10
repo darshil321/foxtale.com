@@ -17,7 +17,7 @@ async function CollectionList() {
       },
       updatedAt: '2024-05-06T12:10:15Z',
       image: '/images/cleansers.jpg',
-      path: '/search/cleansers'
+      path: '/products/cleansers'
     },
     {
       handle: 'Sunscreens',
@@ -29,7 +29,7 @@ async function CollectionList() {
       },
       updatedAt: '2024-05-06T12:10:15Z',
       image: '/images/sunscreens.jpg',
-      path: '/search/Sunscreens'
+      path: '/products/Sunscreens'
     },
     {
       handle: 'moisturizers',
@@ -41,7 +41,7 @@ async function CollectionList() {
       },
       updatedAt: '2024-05-06T12:10:15Z',
       image: '/images/moisturizers.jpg',
-      path: '/search/moisturizers'
+      path: '/products/moisturizers'
     },
     {
       handle: 'serums',
@@ -53,7 +53,7 @@ async function CollectionList() {
       },
       updatedAt: '2024-05-06T12:10:15Z',
       image: '/images/serums.jpg',
-      path: '/search/serums'
+      path: '/products/serums'
     }
   ];
 

@@ -53,6 +53,8 @@ export function GridTileImage({
                     height={300}
                     alt={alt}
                     loading="lazy"
+                    quality={75}
+                    sizes="(max-width: 640px) 200px, 300px"
                     {...props}
                   />
                 </Link>
