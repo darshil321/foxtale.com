@@ -63,7 +63,7 @@ const CustomInputBtn = ({
           />
           <button
             type="submit"
-            onClick={handleNewsletterSubscription}
+            onClick={handleNewsletterSubscription as React.EventHandler<React.SyntheticEvent>}
             className="absolute right-1.5 rounded-[4px]  bg-black px-5 py-3 text-[12px] tracking-widest text-white"
           >
             {buttonText}

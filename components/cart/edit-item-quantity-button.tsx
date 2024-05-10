@@ -71,7 +71,7 @@ export function EditItemQuantityButton({
   console.log(setMetaObject);
 
   const cart = useAppSelector((state) => state.cart.cart);
-  const cartProducts = cart?.lines?.map((line) => line.merchandise?.id);
+  const cartProducts = cart?.lines?.map((line: any) => line.merchandise?.id);
 
   useEffect(() => {
     console.log('cartProductsss');
@@ -110,7 +110,7 @@ export function EditItemQuantityButton({
   }, []);
   const [messageFree, formActionFree] = useFormState(addItem, null);
 
-  const [message, formAction] = useFormState(updateItemQuantity, null);
+  const [formAction] = useFormState(updateItemQuantity, null);
   const { pending } = useFormStatus();
   const dispatch = useAppDispatch();
   function findClosestCoupon(
@@ -236,9 +236,6 @@ export function EditItemQuantityButton({
         }}
         pending={pending}
       />
-      <p aria-live="polite" className="sr-only" role="status">
-        {message}
-      </p>
     </form>
   );
 }

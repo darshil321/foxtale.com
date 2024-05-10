@@ -1,10 +1,10 @@
 import { createSlice, current } from '@reduxjs/toolkit';
-import { Cart } from 'lib/shopify/types';
+import { Cart } from '@shopify/hydrogen-react';
 // import { cookies } from 'next/headers';
 
 export interface CartState {
   loading: boolean;
-  cart: Cart | null;
+  cart: Cart | any;
   quantities: any;
   error: any;
 }
@@ -77,7 +77,7 @@ export const cartSlice = createSlice({
       const cart = current(state.cart);
       state.cart = {
         ...cart,
-        lines: cart?.lines.filter((item) => item.id !== action.payload.lineId)
+        lines: cart?.lines?.filter((item: any) => item.id !== action.payload.lineId)
       };
 
       console.log('newRmc3 incart', state.cart, action.payload);

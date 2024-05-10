@@ -54,7 +54,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
   return (
     <>
       <button aria-label="Open cart" onClick={openCart}>
-        <OpenCart quantity={data?.cartTotalQuantity} />
+        <OpenCart quantity={data?.totalQuantity} />
       </button>
       <Transition show={isOpen}>
         <Dialog onClose={closeCart} className="relative z-50">
@@ -95,14 +95,16 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
               ) : (
                 <div className="flex h-full flex-col justify-between overflow-hidden p-1">
                   <ul className="flex-grow overflow-auto py-4">
-                    {carts?.lines?.map((item, i) => {
+                    {carts?.lines?.map((item: any, i: number) => {
                       const merchandiseSearchParams = {} as MerchandiseSearchParams;
 
-                      item.merchandise.selectedOptions.forEach(({ name, value }) => {
-                        if (value !== DEFAULT_OPTION) {
-                          merchandiseSearchParams[name.toLowerCase()] = value;
+                      item.merchandise.selectedOptions.forEach(
+                        ({ name, value }: { name: string; value: string }) => {
+                          if (value !== DEFAULT_OPTION) {
+                            merchandiseSearchParams[name.toLowerCase()] = value;
+                          }
                         }
-                      });
+                      );
 
                       const merchandiseUrl = createUrl(
                         `/product/${item.merchandise.product.handle}`,
@@ -181,7 +183,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                       <p>Total</p>
                       <Price
                         className="text-right text-base text-black "
-                        amount={data?.cartTotalAmount}
+                        amount={data?.totalAmount?.toString() || carts?.cost?.totalAmount?.amount}
                         currencyCode={carts?.cost?.totalAmount?.currencyCode}
                       />
                     </div>

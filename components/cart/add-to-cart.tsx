@@ -73,13 +73,13 @@ const AddToCart = ({ cart }: { cart: Cart | undefined }) => {
 
       <hr className="bg-gray-400" />
 
-      {!carts || carts.lines.length === 0 ? (
+      {!carts || carts?.lines?.length === 0 ? (
         <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
           <ShoppingBagIcon className="h-16" />
           <p className="mt-6 text-center text-2xl font-bold">Your carts is empty.</p>
         </div>
       ) : (
-        carts.lines.map((item, index) => {
+        carts?.lines?.map((item: any, index: number) => {
           return (
             <div key={index} className="grid gap-4 py-8 sm:grid-cols-1 lg:grid-cols-6">
               <div className="flex sm:grid-cols-1 lg:col-span-3">
