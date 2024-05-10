@@ -16,7 +16,8 @@ async function CollectionList() {
         title: 'Cleansers - Shop Gentle Cleansers Online'
       },
       updatedAt: '2024-05-06T12:10:15Z',
-      image: '/images/cleansers.jpg',
+      // image: { url: '/images/cleansers.jpg' },
+      image: { url: '/Images/img1.png' },
       path: '/products/cleansers'
     },
     {
@@ -28,7 +29,8 @@ async function CollectionList() {
         title: 'Sunscreens - Shop Sun Protection Online'
       },
       updatedAt: '2024-05-06T12:10:15Z',
-      image: '/images/sunscreens.jpg',
+      // image: '/images/sunscreens.jpg',
+      image: { url: '/Images/img2.png' },
       path: '/products/Sunscreens'
     },
     {
@@ -40,7 +42,8 @@ async function CollectionList() {
         title: 'Moisturizers - Shop Hydrating Moisturizers Online'
       },
       updatedAt: '2024-05-06T12:10:15Z',
-      image: '/images/moisturizers.jpg',
+      // image: '/images/moisturizers.jpg',
+      image: { url: '/Images/img3.png' },
       path: '/products/moisturizers'
     },
     {
@@ -52,7 +55,8 @@ async function CollectionList() {
         title: 'Serums - Shop Targeted Skincare Serums Online'
       },
       updatedAt: '2024-05-06T12:10:15Z',
-      image: '/images/serums.jpg',
+      // image: '/images/serums.jpg',
+      image: { url: '/Images/img4.png' },
       path: '/products/serums'
     }
   ];

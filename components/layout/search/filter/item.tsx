@@ -39,7 +39,7 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
           height={100}
         />
         <button
-          className={`line-clamp-1 text-ellipsis text-wrap text-center text-xs underline-offset-4 hover:underline md:text-sm `}
+          className={`line-clamp-1 text-ellipsis text-wrap text-center text-xs md:text-sm `}
           onClick={handleClick}
         >
           {item.title}
