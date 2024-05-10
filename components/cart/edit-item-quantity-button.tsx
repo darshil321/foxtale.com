@@ -68,47 +68,38 @@ export function EditItemQuantityButton({
     fields: Field;
   }
   const [metaObject, setMetaObject] = useState<MetaObject[]>();
-  console.log(setMetaObject);
 
   const cart = useAppSelector((state) => state.cart.cart);
   const cartProducts = cart?.lines?.map((line) => line.merchandise?.id);
 
   useEffect(() => {
-    console.log('cartProductsss');
-
-    // const fetchData = async () => {
-    //   try {
-    //     const metaObjects = await getMetaObjects();
-    //     const transformedMetaObjects = metaObjects?.map((metaObject) => {
-    //       const fieldsObject: Record<string, string> = {};
-    //       metaObject?.fields?.forEach((field) => {
-    //         fieldsObject[field.key ?? ''] = field.value ?? '';
-    //       });
-    //       console.log('fieldsObject', fieldsObject);
-
-    //       return { ...metaObject, fields: fieldsObject };
-    //     });
-    //     console.log('transformedMetaObjects', transformedMetaObjects);
-
-    //     setMetaObject(transformedMetaObjects);
-
-    //     console.log('metaObjec', metaObjects);
-    //   } catch (error) {
-    //     // Handle error
-    //   }
-    // };
-
-    // fetchData();
-    // const coupen = findClosestCoupon(metaObject ?? [], cart);
-
-    // if (coupen) {
-    //   console.log('coupen', coupen);
-
-    //   // formActionFree(coupen.fields.free_bie);
-    // }
+    const fetchData = async () => {
+      try {
+        const metaObjects = await getMetaObjects();
+        const transformedMetaObjects = metaObjects?.map((metaObject) => {
+          const fieldsObject: Record<string, string> = {};
+          metaObject?.fields?.forEach((field) => {
+            fieldsObject[field.key ?? ''] = field.value ?? '';
+          });
+          console.log('fieldsObject', fieldsObject);
+          return { ...metaObject, fields: fieldsObject };
+        });
+        console.log('transformedMetaObjects', transformedMetaObjects);
+        setMetaObject(transformedMetaObjects);
+        console.log('metaObjec', metaObjects);
+      } catch (error) {
+        // Handle error
+      }
+    };
+    fetchData();
+    const coupen = findClosestCoupon(metaObject ?? [], cart);
+    if (coupen) {
+      console.log('coupen', coupen);
+      // formActionFree(coupen.fields.free_bie);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const [messageFree, formActionFree] = useFormState(addItem, null);
+  const [formActionFree] = useFormState(addItem, null);
 
   const [message, formAction] = useFormState(updateItemQuantity, null);
   const { pending } = useFormStatus();
@@ -177,36 +168,28 @@ export function EditItemQuantityButton({
     updatedCart.cost.totalAmount.amount = totalCost.toFixed(2);
     updatedCart.totalQuantity = totalQuantity;
     const coupen = findClosestCoupon(metaObject ?? [], updatedCart);
-    console.log('freeItem', coupen);
 
     if (coupen) {
       if (!cartProducts?.includes(coupen.fields.free_bie ?? '')) {
         formActionFree(coupen.fields.free_bie);
-        console.log('freeItem', cart, coupen);
       }
     } else {
       const freeLineId = cart?.lines?.find(
         (line: any) => Number(line?.cost?.totalAmount?.amount) === 0
       )?.id;
-      console.log('freeItem', freeLineId, coupen);
 
       if (freeLineId) {
-        console.log('removing', freeLineId, coupen, cartProducts);
-
         formActionRemove.bind(null, freeLineId);
       }
     }
 
     dispatch(setCart(updatedCart));
-    console.log('newUp0', updatedCart?.lines[index]?.quantity);
 
     debouncedUpdateItemQuantity(updatedCart?.lines[index]?.quantity);
   }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedUpdateItemQuantity: any = useCallback(
     debounce((newQuantity: number) => {
-      console.log('newQuantity');
-
       const payload = {
         lineId: item.id,
         variantId: item.merchandise.id,
@@ -221,11 +204,10 @@ export function EditItemQuantityButton({
 
   const handleQuantityChange = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    if (cart) increaseItemQuantity({ cart, item });
-  };
-  const [messageRemove, formActionRemove] = useFormState(removeItem, null);
 
-  console.log('cartProducts', messageRemove, messageFree);
+    increaseItemQuantity({ cart, item });
+  };
+  const [formActionRemove] = useFormState(removeItem, null);
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>

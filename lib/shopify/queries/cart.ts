@@ -32,3 +32,27 @@ export const getMetaobjectsQuery = /* GraphQL */ `
     }
   }
 `;
+
+export const getMagicMetaObjectQuery = /* GraphQL */ `
+  query metaObjects {
+    metaobjects(type: "magic_link", first: 5) {
+      edges {
+        cursor
+        node {
+          id
+          type
+
+          fields {
+            key
+            value
+            references(first: 5) {
+              edges {
+                cursor
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;

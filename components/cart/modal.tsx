@@ -28,11 +28,8 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
   const closeCart = () => setIsOpen(false);
   // const [localQuantities, setLocalQuantities] = useState({}) as any;
   const carts = useAppSelector((state) => state.cart.cart);
-  console.log('modalcart', carts);
 
   useEffect(() => {
-    console.log('cartttttt', cart);
-
     // dispatch(setCart(cart));
 
     // Open cart modal when quantity changes.
@@ -50,11 +47,10 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
 
   // const { totalAmount} = useCart()
   const data = useCart();
-  console.log('useCart', data);
   return (
     <>
       <button aria-label="Open cart" onClick={openCart}>
-        <OpenCart quantity={data?.cartTotalQuantity} />
+        <OpenCart quantity={data?.totalQuantity} />
       </button>
       <Transition show={isOpen}>
         <Dialog onClose={closeCart} className="relative z-50">
@@ -98,14 +94,14 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                     {carts?.lines?.map((item, i) => {
                       const merchandiseSearchParams = {} as MerchandiseSearchParams;
 
-                      item.merchandise.selectedOptions.forEach(({ name, value }) => {
+                      item.merchandise?.selectedOptions.forEach(({ name, value }) => {
                         if (value !== DEFAULT_OPTION) {
                           merchandiseSearchParams[name.toLowerCase()] = value;
                         }
                       });
 
                       const merchandiseUrl = createUrl(
-                        `/product/${item.merchandise.product.handle}`,
+                        `/product/${item.merchandise?.product.handle}`,
                         new URLSearchParams(merchandiseSearchParams)
                       );
                       return (
@@ -181,7 +177,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                       <p>Total</p>
                       <Price
                         className="text-right text-base text-black "
-                        amount={data?.cartTotalAmount}
+                        amount={data?.totalAmount as string}
                         currencyCode={carts?.cost?.totalAmount?.currencyCode}
                       />
                     </div>

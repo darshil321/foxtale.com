@@ -23,14 +23,13 @@ export function* getCartSaga(action: {
 
 export function* addToCartSaga(action: {
   type: string;
-  payload: { selectedVariantId: string; product: any };
+  payload: { selectedVariantId: string; product: any; tempId: string };
 }): Generator<any, void, any> {
   try {
-    const { selectedVariantId } = action.payload;
-
+    const { selectedVariantId, tempId } = action.payload;
     const data = yield call({ fn: addItem, context: null }, null, selectedVariantId);
 
-    yield put(cartActions.setCart(data));
+    yield put(cartActions.setCart({ ...data, tempId }));
   } catch (error) {
     yield put(cartActions.getCartFailed());
   }
@@ -40,10 +39,8 @@ export function* updateCartSaga(action: {
   payload: { lineId: string; variantId: string; quantity: number };
 }): Generator<any, void, any> {
   try {
-    console.log('newUp1', action);
     const { payload } = action;
     const data = yield call({ fn: updateItemQuantity, context: null }, null, payload);
-    console.log('newUp2', data, action);
 
     yield put(cartActions.setCart(data));
   } catch (error) {

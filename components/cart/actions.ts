@@ -7,12 +7,10 @@ import { cookies } from 'next/headers';
 export async function addItem(prevState: any, selectedVariantId: string | undefined) {
   let cartId = cookies().get('cartId')?.value;
   let cart;
-  console.log('cartIdd', cartId);
 
   if (cartId) {
     cart = await getCart(cartId);
   }
-  console.log('cartIdd', cartId);
 
   if (!cartId || !cart) {
     cart = await createCart();
@@ -40,8 +38,9 @@ export async function removeItem(prevState: any, lineId: string) {
   }
 
   try {
-    await removeFromCart(cartId, [lineId]);
+    const data = await removeFromCart(cartId, [lineId]);
     revalidateTag(TAGS.cart);
+    return data;
   } catch (e) {
     return 'Error removing item from cart';
   }

@@ -1,5 +1,6 @@
+import { getCoupon } from '@/lib/helper/helper';
 import { createSlice, current } from '@reduxjs/toolkit';
-import { Cart } from 'lib/shopify/types';
+import { Cart, CartItem } from 'lib/shopify/types';
 // import { cookies } from 'next/headers';
 
 export interface CartState {
@@ -7,13 +8,15 @@ export interface CartState {
   cart: Cart | null;
   quantities: any;
   error: any;
+  metaObjects: any;
 }
 
 export const initialState: CartState = {
   loading: false,
   cart: null,
   error: null,
-  quantities: {}
+  quantities: {},
+  metaObjects: []
 };
 
 export const cartSlice = createSlice({
@@ -80,37 +83,109 @@ export const cartSlice = createSlice({
         lines: cart?.lines.filter((item) => item.id !== action.payload.lineId)
       };
 
-      console.log('newRmc3 incart', state.cart, action.payload);
-
       // const data = current(state.cart);
       // console.log('newRmc3 incart', data, action);
     },
     addToCart: (state, action) => {
       const {
-        payload: { selectedVariantId, product }
+        payload: { product, tempId }
       } = action;
-      const cart = current(state.cart);
-      console.log(selectedVariantId, product, cart);
+
+      const cart = current(state);
+
+      const productArray = cart.cart?.lines;
+      const productFound = productArray?.find(
+        (item) => item.merchandise.id === product.variants.id
+      );
+
+      if (productFound) {
+        if (cart.cart && cart.cart.totalQuantity !== undefined) {
+          productFound.quantity += 1;
+          // cart.cart.totalQuantity += 1;
+        }
+      } else {
+        const cartItem = {
+          id: tempId,
+          cost: {
+            amountPerQuantity: {
+              amount: product.variants[0].price.amount,
+              currencyCode: product.variants[0].price.currencyCode
+            },
+            totalAmount: {
+              amount: product.variants[0].price.amount,
+              currencyCode: product.variants[0].price.currencyCode
+            }
+          },
+          quantity: 1,
+          merchandise: {
+            id: product.variants.id,
+            price: {
+              amount: product.variants[0].price.amount
+            },
+            title: product.variants[0].title,
+            selectedOptions: product.variants[0].selectedOptions,
+            product: {
+              ...product,
+              images: {
+                edges: product.images
+              },
+              variants: {
+                edges: product.variants
+              }
+            }
+          }
+        };
+        let arr: any = [];
+        let totQuant = 0;
+        if (cart.cart) {
+          arr = [...cart.cart.lines, cartItem];
+          totQuant = cart.cart.totalQuantity + 1;
+        }
+        state.cart = { ...cart.cart, lines: arr, totalQuantity: totQuant };
+        const _cart = current(state);
+        console.log('_cart.cart', _cart.cart);
+        getCoupon(_cart.metaObjects, _cart);
+      }
     },
 
     attemptGetCarts: () => {
       //loading true
     },
     setCart: (state, action) => {
-      // console.log('newUp3 incart', data, action.payload);
+      const { tempId, ...res } = action.payload;
+      const cartState = current(state);
+      const cartLines = res?.lines.map((cartItem: any) => {
+        if (cartItem.id === tempId) {
+          return { ...res };
+        }
+        return cartItem;
+      });
 
-      state.cart = action.payload;
-      console.log('newUp3 incart', state.cart);
+      console.log('cartState', cartState, res);
+      console.log('state.cart', state.cart);
+      state.cart = { ...res, lines: cartLines as CartItem[] };
+      const _cart = current(state);
+      console.log('_cart', _cart);
     },
 
     updateCartItemQuantity: (state, action) => {
       const { itemId, newQuantity } = action.payload;
       if (!state.quantities) state.quantities = {};
       state.quantities[itemId] = newQuantity;
+    },
+
+    setMetaObject: (state, action) => {
+      state.metaObjects = action.payload;
     }
   }
 });
 
-export const { getCartSuccess, setCart, getCartFailed, attemptGetCarts, updateCartItemQuantity } =
-  cartSlice.actions;
+export const {
+  getCartSuccess,
+  setCart,
+  getCartFailed,
+  attemptGetCarts,
+  updateCartItemQuantity,
+  setMetaObject
+} = cartSlice.actions;
 export default cartSlice.reducer;
