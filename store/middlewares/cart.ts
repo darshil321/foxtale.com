@@ -28,7 +28,6 @@ export function* addToCartSaga(action: {
   try {
     const { selectedVariantId, tempId } = action.payload;
     const data = yield call({ fn: addItem, context: null }, null, selectedVariantId);
-    console.log('@@@', data);
     yield put(cartActions.setCart({ ...data, tempId }));
   } catch (error) {
     yield put(cartActions.getCartFailed());
@@ -66,9 +65,23 @@ export function* removeCartSaga(action: {
   }
 }
 
+export function* addFreeProductSaga(action: {
+  type: string;
+  payload: { selectedVariantId: string; product: any; tempId: string };
+}): Generator<any, void, any> {
+  try {
+    const { selectedVariantId, tempId } = action.payload;
+    const data = yield call({ fn: addItem, context: null }, null, selectedVariantId);
+    yield put(cartActions.setCart({ ...data, tempId }));
+  } catch (error) {
+    yield put(cartActions.getCartFailed());
+  }
+}
+
 export function* cartSagaWatchers() {
   yield takeLatest(cartActions.attemptGetCarts, getCartSaga);
   yield takeLatest(cartActions.addToCart, addToCartSaga);
   yield takeLatest(cartActions.updateCart, updateCartSaga);
   yield takeLatest(cartActions.removeCart, removeCartSaga);
+  yield takeLatest(cartActions.removeCart, addFreeProductSaga);
 }

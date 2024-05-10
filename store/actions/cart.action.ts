@@ -9,6 +9,7 @@ export const cartActions = {
   updateCart: createAction<{}>('cart/updateCart'),
   removeCart: createAction<{}>('cart/removeCart'),
   setCart: createAction<{}>('cart/setCart'),
-  setMetaObject: createAction<{}>('cart/setMetaObject')
+  setMetaObject: createAction<{}>('cart/setMetaObject'),
+  setFreeProduct: createAction<{}>('cart/setFreeProduct')
   // gid://shopify/ProductVariant/46638240530715
 };

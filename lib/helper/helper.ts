@@ -98,7 +98,6 @@ export function getCoupon(metaObjects: any, cart: any, type: string, magic_key: 
     const offerObj = magicArray.find((obj: any) => obj.magic_key === magic_key);
 
     const cartItems = cart.lines;
-    console.log('cartItems', cartItems);
     const { totalQuantity } = cart;
     if (offerObj.total_quantity > totalQuantity) {
       return;
@@ -106,13 +105,17 @@ export function getCoupon(metaObjects: any, cart: any, type: string, magic_key: 
 
     const freeProduct = magicArray.find((obj: any) => {
       if (obj.applicable_product) {
+        console.log('obj.applicable_product', obj.applicable_product);
+        console.log('cartItems', cartItems);
         const product = cartItems?.find(
-          (item: any) => item.merchandise.product.id === obj.applicable_product
+          (item: any) => item.merchandise.id === obj.applicable_product
         );
+        console.log('product', product);
         if (product) {
           return obj.free_product;
         }
       } else if (obj.cart_total) {
+        console.log('reached here in cart total');
         let cartTotal = 0;
         cartItems.forEach((item: any) => {
           cartTotal += +item.cost.totalAmount.amount;
@@ -131,3 +134,45 @@ export function getCoupon(metaObjects: any, cart: any, type: string, magic_key: 
     }
   }
 }
+
+export const getDefaultVariant = (product: any, variantId: any) => {
+  if (!product?.variants?.length) return null;
+  if (variantId) {
+    return product.variants.find((v: any) => v.id === variantId);
+  }
+  return product.variants[0];
+};
+
+export const getCartItem = (tempId: any, product: any) => {
+  return {
+    id: tempId,
+    cost: {
+      amountPerQuantity: {
+        amount: product.variants[0].price.amount,
+        currencyCode: product.variants[0].price.currencyCode
+      },
+      totalAmount: {
+        amount: product.variants[0].price.amount,
+        currencyCode: product.variants[0].price.currencyCode
+      }
+    },
+    quantity: 1,
+    merchandise: {
+      id: product.variants[0].id,
+      price: {
+        amount: product.variants[0].price.amount
+      },
+      title: product.variants[0].title,
+      selectedOptions: product.variants[0].selectedOptions,
+      product: {
+        ...product,
+        images: {
+          edges: product.images
+        },
+        variants: {
+          edges: product.variants
+        }
+      }
+    }
+  };
+};

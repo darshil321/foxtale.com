@@ -1,4 +1,4 @@
-import { getCoupon } from '@/lib/helper/helper';
+import { getCartItem, getDefaultVariant } from '@/lib/helper/helper';
 import { createSlice, current } from '@reduxjs/toolkit';
 import { Cart, CartItem } from 'lib/shopify/types';
 // import { cookies } from 'next/headers';
@@ -88,72 +88,50 @@ export const cartSlice = createSlice({
     },
     addToCart: (state, action) => {
       const {
-        payload: { product, tempId }
+        payload: { product, selectedVariantId, tempId }
       } = action;
 
+      const variant = getDefaultVariant(product, selectedVariantId);
+      if (!variant) {
+        console.log('Variant Not Found');
+        return;
+      }
       const cart = current(state);
 
       const productArray = cart.cart?.lines;
-      const productFound = productArray?.find(
-        (item) => item.merchandise.id === product.variants.id
-      );
-      console.log('window.location.href', window.location.href);
-      let cartItem;
+
+      const productFound = productArray?.find((item) => item.merchandise.id === variant.id);
+      let cartLines;
       if (productFound) {
-        if (cart.cart && cart.cart.totalQuantity !== undefined) {
-          // productFound.quantity += 1;
-          // cart.cart.totalQuantity += 1;
-          console.log('Reaching here');
-          cartItem = {
-            ...productFound,
-            quantity: productFound.quantity + 1
-          };
-        }
-      } else {
-        cartItem = {
-          id: tempId,
-          cost: {
-            amountPerQuantity: {
-              amount: product.variants[0].price.amount,
-              currencyCode: product.variants[0].price.currencyCode
-            },
-            totalAmount: {
-              amount: product.variants[0].price.amount,
-              currencyCode: product.variants[0].price.currencyCode
-            }
-          },
-          quantity: 1,
-          merchandise: {
-            id: product.variants.id,
-            price: {
-              amount: product.variants[0].price.amount
-            },
-            title: product.variants[0].title,
-            selectedOptions: product.variants[0].selectedOptions,
-            product: {
-              ...product,
-              images: {
-                edges: product.images
-              },
-              variants: {
-                edges: product.variants
-              }
-            }
+        cartLines = productArray?.map((line) => {
+          if (line.id === productFound.id) {
+            return {
+              ...productFound,
+              quantity: productFound.quantity + 1
+            };
+          } else {
+            return line;
           }
-        };
+        });
+      } else {
+        const cartItem = getCartItem(tempId, product);
+        cartLines = [...productArray, cartItem];
       }
-      let arr: any = [];
+
       let totQuant = 0;
       if (cart.cart) {
-        arr = [...cart.cart.lines, cartItem];
         totQuant = cart.cart.totalQuantity + 1;
       }
-      state.cart = { ...cart.cart, lines: arr, totalQuantity: totQuant };
-      const _cart = current(state);
-      console.log('_cart.cart', _cart.cart);
-      const magic_key = '234567';
-      const _product = getCoupon(_cart.metaObjects, _cart.cart, 'magic_link', magic_key);
-      console.log('_product', _product);
+      state.cart = { ...cart.cart, lines: cartLines, totalQuantity: totQuant };
+
+      // const _cart = current(state);
+      // const magic_key = '234567';
+      // const _product = getCoupon(_cart.metaObjects, _cart.cart, 'magic_link', magic_key);
+      // console.log('_product', _product);
+      // const isExist = cartLines?.find((item) => )
+      // if (_product && ) {
+      //   dispatch(addtocart)
+      // }
     },
 
     attemptGetCarts: () => {
@@ -161,7 +139,6 @@ export const cartSlice = createSlice({
     },
     setCart: (state, action) => {
       const { tempId, ...res } = action.payload;
-      const cartState = current(state);
       const cartLines = res?.lines.map((cartItem: any) => {
         if (cartItem.id === tempId) {
           return { ...res };
@@ -169,8 +146,6 @@ export const cartSlice = createSlice({
         return cartItem;
       });
 
-      console.log('cartState', cartState, res);
-      console.log('state.cart', state.cart);
       state.cart = { ...res, lines: cartLines as CartItem[] };
       const _cart = current(state);
       console.log('_cart', _cart);

@@ -82,12 +82,9 @@ export function EditItemQuantityButton({
           metaObject?.fields?.forEach((field) => {
             fieldsObject[field.key ?? ''] = field.value ?? '';
           });
-          console.log('fieldsObject', fieldsObject);
           return { ...metaObject, fields: fieldsObject };
         });
-        console.log('transformedMetaObjects', transformedMetaObjects);
         setMetaObject(transformedMetaObjects);
-        console.log('metaObjec', metaObjects);
       } catch (error) {
         // Handle error
       }
