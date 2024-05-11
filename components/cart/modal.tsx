@@ -1,52 +1,41 @@
 'use client';
-
 import { Dialog, Transition } from '@headlessui/react';
 import Price from 'components/price';
 import { DEFAULT_OPTION } from 'lib/constants';
-import type { Cart } from 'lib/shopify/types';
 import { createUrl } from 'lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import CloseCart from './close-cart';
 import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
 import OpenCart from './open-cart';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { useAppSelector } from 'store/hooks';
-
-import { useCart } from '@/lib/hooks/use-cart';
+import { getCartData } from '@/lib/helper/helper';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
 };
 
-export default function CartModal({ cart }: { cart: Cart | undefined }) {
+export default function CartModal() {
   const [isOpen, setIsOpen] = useState(false);
-  const quantityRef = useRef(cart?.totalQuantity);
+
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
   // const [localQuantities, setLocalQuantities] = useState({}) as any;
   const carts = useAppSelector((state) => state.cart.cart);
 
   useEffect(() => {
-    // dispatch(setCart(cart));
-
-    // Open cart modal when quantity changes.
-    if (cart?.totalQuantity !== quantityRef.current) {
-      // But only if it's not already open (quantity also changes when editing items in cart).
-      if (!isOpen) {
-        setIsOpen(true);
-      }
-
-      // Always update the quantity reference
-      quantityRef.current = cart?.totalQuantity;
+    if (carts && !isOpen) {
+      setIsOpen(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, quantityRef, cart]);
+  }, [carts]);
 
-  // const { totalAmount} = useCart()
-  const data = useCart();
+  const data = getCartData(carts);
+  const { currencyCode, totalAmount } = data;
+
   return (
     <>
       <button aria-label="Open cart" onClick={openCart}>
@@ -145,7 +134,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                               <Price
                                 className="flex justify-end space-y-2 text-right text-sm"
                                 amount={(
-                                  item?.quantity * Number(item?.cost?.totalAmount?.amount)
+                                  item?.quantity * Number(item?.cost?.amountPerQuantity?.amount)
                                 ).toString()}
                                 currencyCode={item?.cost?.totalAmount?.currencyCode}
                               />
@@ -179,8 +168,8 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                       <p>Total</p>
                       <Price
                         className="text-right text-base text-black "
-                        amount={data?.totalAmount?.toString() || carts?.cost?.totalAmount?.amount}
-                        currencyCode={carts?.cost?.totalAmount?.currencyCode}
+                        amount={totalAmount?.toString()}
+                        currencyCode={currencyCode}
                       />
                     </div>
                   </div>

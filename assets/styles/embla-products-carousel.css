@@ -79,9 +79,8 @@
 }
 
 @media screen and (max-width: 768px) {
-  .embla_product__slide{
+  .embla_product__slide {
     --slide-size: 90%;
     padding-left: 1.6rem;
   }
-  
 }

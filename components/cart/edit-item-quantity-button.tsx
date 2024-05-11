@@ -4,14 +4,13 @@ import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { addItem, removeItem, updateItemQuantity } from 'components/cart/actions';
 import LoadingDots from 'components/loading-dots';
-import type { Cart, CartItem } from 'lib/shopify/types';
+import type { CartItem } from 'lib/shopify/types';
 import { useFormState, useFormStatus } from 'react-dom';
-import { debounce } from 'lib/helper/helper';
+import { MetaObject, debounce, findClosestCoupon } from 'lib/helper/helper';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { setCart } from 'store/slices/cart-slice';
 
 import { cartActions } from '@/store/actions/cart.action';
-
 // import { Metaobject } from '@shopify/hydrogen-react/storefront-api-types';
 
 function SubmitButton({
@@ -59,17 +58,7 @@ export function EditItemQuantityButton({
   handleLocalQuantityChange?: (itemId: string, newQuantity: number) => void;
   localQuantity?: number;
 }) {
-  interface Field {
-    [key: string]: string;
-  }
-
-  interface MetaObject {
-    id: string;
-    type: string;
-    fields: Field;
-  }
-  const [metaObject, setMetaObject] = useState<MetaObject[]>();
-  console.log(setMetaObject);
+  const [metaObject] = useState<MetaObject[]>();
 
   const cart = useAppSelector((state) => state.cart.cart);
   const cartProducts = cart?.lines?.map((line: any) => line.merchandise?.id);
@@ -107,41 +96,6 @@ export function EditItemQuantityButton({
   const [formAction] = useFormState(updateItemQuantity, null);
   const { pending } = useFormStatus();
   const dispatch = useAppDispatch();
-  function findClosestCoupon(
-    metaObjects: MetaObject[],
-    updatedCart: Cart | null
-  ): MetaObject | undefined {
-    let closestObject;
-    let minDifference = Infinity;
-
-    metaObjects.forEach((obj) => {
-      const buyXQuantity = parseInt(obj?.fields?.buy_x_quantity ?? '');
-      const priceCap = parseInt(obj?.fields?.price_cap ?? '');
-      console.log(
-        'buyXQuantity',
-        buyXQuantity,
-        'priceCap',
-        priceCap,
-        updatedCart?.totalQuantity,
-        updatedCart?.cost.totalAmount.amount
-      );
-
-      if (
-        buyXQuantity <= Number(updatedCart?.totalQuantity) &&
-        priceCap <= Number(updatedCart?.cost.totalAmount.amount)
-      ) {
-        const difference = Math.abs(priceCap - Number(updatedCart?.cost.totalAmount.amount));
-        if (difference < minDifference) {
-          minDifference = difference;
-          closestObject = obj;
-        }
-      }
-    });
-
-    console.log('closestObject', closestObject);
-
-    return closestObject;
-  }
 
   function increaseItemQuantity({ cart, item }: { cart: any; item: CartItem }) {
     const updatedCart = JSON.parse(JSON.stringify(cart));

@@ -1,6 +1,17 @@
 /* eslint-disable no-unused-vars */
 
+import { Metaobject } from '@shopify/hydrogen-react/storefront-api-types';
 import axios from 'axios';
+import { Cart, CartItem } from '../shopify/types';
+
+interface Field {
+  [key: string]: string;
+}
+export interface MetaObject {
+  id: string;
+  type: string;
+  fields: Field;
+}
 
 export function debounce<F extends (...args: any[]) => any>(
   func: F,
@@ -98,7 +109,6 @@ export function getCoupon(metaObjects: any, cart: any, type: string, magic_key: 
     const offerObj = magicArray.find((obj: any) => obj.magic_key === magic_key);
 
     const cartItems = cart.lines;
-    console.log('cartItems', cartItems);
     const { totalQuantity } = cart;
     if (offerObj.total_quantity > totalQuantity) {
       return;
@@ -106,13 +116,17 @@ export function getCoupon(metaObjects: any, cart: any, type: string, magic_key: 
 
     const freeProduct = magicArray.find((obj: any) => {
       if (obj.applicable_product) {
+        console.log('obj.applicable_product', obj.applicable_product);
+        console.log('cartItems', cartItems);
         const product = cartItems?.find(
-          (item: any) => item.merchandise.product.id === obj.applicable_product
+          (item: any) => item.merchandise.id === obj.applicable_product
         );
+        console.log('product', product);
         if (product) {
           return obj.free_product;
         }
       } else if (obj.cart_total) {
+        console.log('reached here in cart total');
         let cartTotal = 0;
         cartItems.forEach((item: any) => {
           cartTotal += +item.cost.totalAmount.amount;
@@ -131,3 +145,95 @@ export function getCoupon(metaObjects: any, cart: any, type: string, magic_key: 
     }
   }
 }
+
+export const getDefaultVariant = (product: any, variantId?: string) => {
+  if (!variantId) {
+    return product.variants[0];
+  } else {
+    return product.variants.find((v: any) => v.id === variantId);
+  }
+};
+
+export const getMagicLink = () => {
+  return '123';
+};
+
+export const findClosestCoupon = (
+  metaObjects: MetaObject[],
+  updatedCart: Cart | null
+): Metaobject | undefined => {
+  let closestObject;
+  let minDifference = Infinity;
+
+  metaObjects.forEach((obj) => {
+    const buyXQuantity = parseInt(obj?.fields?.buy_x_quantity ?? '');
+    const priceCap = parseInt(obj?.fields?.price_cap ?? '');
+    if (
+      buyXQuantity <= Number(updatedCart?.totalQuantity) &&
+      priceCap <= Number(updatedCart?.cost.totalAmount.amount)
+    ) {
+      const difference = Math.abs(priceCap - Number(updatedCart?.cost.totalAmount.amount));
+      if (difference < minDifference) {
+        minDifference = difference;
+        closestObject = obj;
+      }
+    }
+  });
+
+  return closestObject;
+};
+
+export const getCartItem = (tempId: any, product: any, variant) => {
+  return {
+    id: tempId,
+    cost: {
+      amountPerQuantity: {
+        amount: variant.price.amount,
+        currencyCode: variant.price.currencyCode
+      },
+      totalAmount: {
+        amount: variant.price.amount * 1,
+        currencyCode: variant.price.currencyCode
+      }
+    },
+    quantity: 1,
+    merchandise: {
+      id: variant.id,
+      price: {
+        amount: variant.price.amount
+      },
+      title: variant.title,
+      selectedOptions: variant.selectedOptions,
+      product: {
+        ...product,
+        images: {
+          edges: product.images
+        },
+        variants: {
+          edges: product.variants
+        }
+      }
+    }
+  };
+};
+
+export const getCartData = (cart: Cart) => {
+  const totalCost = cart?.lines?.reduce((acc: number, line: CartItem) => {
+    const lineTotalAmount = Number(line.cost.amountPerQuantity.amount) * line.quantity;
+    return acc + lineTotalAmount;
+  }, 0);
+
+  const cartTotalQuantity = cart?.lines?.reduce((acc: number, line: CartItem) => {
+    const lineQuantity =
+      Number(line?.cost?.amountPerQuantity?.amount) === 0 ? 0 : Number(line.quantity);
+    return acc + lineQuantity;
+  }, 0);
+
+  const cartTotalAmount = totalCost?.toFixed(2);
+
+  return {
+    totalAmount: cartTotalAmount,
+    totalQuantity: cartTotalQuantity,
+    currencyCode: cart?.cost?.totalAmount?.currencyCode
+  };
+};
