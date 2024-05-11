@@ -1,4 +1,4 @@
-import { getCoupon } from '@/lib/helper/helper';
+import { getCartItem, getDefaultVariant } from '@/lib/helper/helper';
 import { createSlice, current } from '@reduxjs/toolkit';
 import { Cart, CartItem } from 'lib/shopify/types';
 // import { cookies } from 'next/headers';
@@ -88,73 +88,52 @@ export const cartSlice = createSlice({
     },
     addToCart: (state, action) => {
       const {
-        payload: { product, tempId }
+        payload: { product, selectedVariantId, tempId }
       } = action;
+
+      const variant = getDefaultVariant(product, selectedVariantId);
+
+      if (!variant) {
+        console.log('Variant Not Found');
+        return;
+      }
 
       const cart = current(state);
 
-      const productArray = cart.cart?.lines;
-      const productFound = productArray?.find(
-        (item: any) => item.merchandise.id === product.variants.id
-      );
-      let cartItem;
+      const productArray = cart.cart?.lines || [];
+      const productFound = productArray?.find((item: any) => item.merchandise.id === variant.id);
+
+      let cartLines;
       if (productFound) {
-        if (cart.cart && cart.cart.totalQuantity !== undefined) {
-          // productFound.quantity += 1;
-          // cart.cart.totalQuantity += 1;
-          console.log('Reaching here');
-          cartItem = {
-            ...productFound,
-            quantity: productFound.quantity + 1
-          };
-        }
-      } else {
-        cartItem = {
-          id: tempId,
-          cost: {
-            amountPerQuantity: {
-              amount: product.variants[0].price.amount,
-              currencyCode: product.variants[0].price.currencyCode
-            },
-            totalAmount: {
-              amount: product.variants[0].price.amount,
-              currencyCode: product.variants[0].price.currencyCode
-            }
-          },
-          quantity: 1,
-          merchandise: {
-            id: product.variants.id,
-            price: {
-              amount: product.variants[0].price.amount
-            },
-            title: product.variants[0].title,
-            selectedOptions: product.variants[0].selectedOptions,
-            product: {
-              ...product,
-              images: {
-                edges: product.images
-              },
-              variants: {
-                edges: product.variants
-              }
-            }
+        cartLines = productArray?.map((line: any) => {
+          if (line.id === productFound.id) {
+            return {
+              ...productFound,
+              quantity: productFound.quantity + 1
+            };
+          } else {
+            return line;
           }
-        };
-      }
-      let arr: any = [];
-      let totQuant = 0;
-      if (cart.cart && Array.isArray(cart.cart.lines)) {
-        arr = [...cart.cart.lines, cartItem];
-        totQuant = cart.cart.totalQuantity + 1;
+        });
       } else {
-        // Handle the case when cart.cart.lines is not iterable
+        const cartItem = getCartItem(tempId, product, variant);
+        cartLines = [...productArray, cartItem];
       }
-      state.cart = { ...cart.cart, lines: arr, totalQuantity: totQuant };
-      const _cart = current(state);
-      console.log('_cart.cart', _cart.cart);
-      const magic_key = '234567';
-      const _product = getCoupon(_cart.metaObjects, _cart.cart, 'magic_link', magic_key);
-      console.log('_product', _product);
+
+      if (!cart.cart || !cart.cart.lines) {
+        console.log('cartLines not found');
+        return;
+      }
+      state.cart = { ...cart.cart, lines: cartLines, totalQuantity: cart.cart.totalQuantity + 1 };
+
+      // const _cart = current(state);
+      // const magic_key = '234567';
+      // const _product = getCoupon(_cart.metaObjects, _cart.cart, 'magic_link', magic_key);
+      // console.log('_product', _product);
+      // const isExist = cartLines?.find((item) => _product.id === item.id);
+      // if (_product && isExist) {
+      //   dispatch(cartActions.addToCart({}));
+      // }
     },
 
     attemptGetCarts: () => {

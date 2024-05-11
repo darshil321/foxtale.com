@@ -98,7 +98,6 @@ export function getCoupon(metaObjects: any, cart: any, type: string, magic_key: 
     const offerObj = magicArray.find((obj: any) => obj.magic_key === magic_key);
 
     const cartItems = cart.lines;
-    console.log('cartItems', cartItems);
     const { totalQuantity } = cart;
     if (offerObj.total_quantity > totalQuantity) {
       return;
@@ -106,13 +105,17 @@ export function getCoupon(metaObjects: any, cart: any, type: string, magic_key: 
 
     const freeProduct = magicArray.find((obj: any) => {
       if (obj.applicable_product) {
+        console.log('obj.applicable_product', obj.applicable_product);
+        console.log('cartItems', cartItems);
         const product = cartItems?.find(
-          (item: any) => item.merchandise.product.id === obj.applicable_product
+          (item: any) => item.merchandise.id === obj.applicable_product
         );
+        console.log('product', product);
         if (product) {
           return obj.free_product;
         }
       } else if (obj.cart_total) {
+        console.log('reached here in cart total');
         let cartTotal = 0;
         cartItems.forEach((item: any) => {
           cartTotal += +item.cost.totalAmount.amount;
@@ -131,3 +134,45 @@ export function getCoupon(metaObjects: any, cart: any, type: string, magic_key: 
     }
   }
 }
+
+export const getDefaultVariant = (product: any, variantId: any) => {
+  if (!product?.variants?.length) return null;
+  if (variantId) {
+    return product.variants.find((v: any) => v.id === variantId);
+  }
+  return product.variants[0];
+};
+
+export const getCartItem = (tempId: any, product: any, variant) => {
+  return {
+    id: tempId,
+    cost: {
+      amountPerQuantity: {
+        amount: variant.price.amount,
+        currencyCode: variant.price.currencyCode
+      },
+      totalAmount: {
+        amount: variant.price.amount,
+        currencyCode: variant.price.currencyCode
+      }
+    },
+    quantity: 1,
+    merchandise: {
+      id: variant.id,
+      price: {
+        amount: variant.price.amount
+      },
+      title: variant.title,
+      selectedOptions: variant.selectedOptions,
+      product: {
+        ...product,
+        images: {
+          edges: product.images
+        },
+        variants: {
+          edges: product.variants
+        }
+      }
+    }
+  };
+};

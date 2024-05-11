@@ -3,11 +3,10 @@
 import { Dialog, Transition } from '@headlessui/react';
 import Price from 'components/price';
 import { DEFAULT_OPTION } from 'lib/constants';
-import type { Cart } from 'lib/shopify/types';
 import { createUrl } from 'lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import CloseCart from './close-cart';
 import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
@@ -21,9 +20,8 @@ type MerchandiseSearchParams = {
   [key: string]: string;
 };
 
-export default function CartModal({ cart }: { cart: Cart | undefined }) {
+export default function CartModal() {
   const [isOpen, setIsOpen] = useState(false);
-  const quantityRef = useRef(cart?.totalQuantity);
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
   // const [localQuantities, setLocalQuantities] = useState({}) as any;
@@ -33,17 +31,17 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
     // dispatch(setCart(cart));
 
     // Open cart modal when quantity changes.
-    if (cart?.totalQuantity !== quantityRef.current) {
-      // But only if it's not already open (quantity also changes when editing items in cart).
-      if (!isOpen) {
-        setIsOpen(true);
-      }
-
-      // Always update the quantity reference
-      quantityRef.current = cart?.totalQuantity;
+    // if (cart?.totalQuantity !== quantityRef.current) {
+    // But only if it's not already open (quantity also changes when editing items in cart).
+    if (carts && !isOpen) {
+      setIsOpen(true);
     }
+
+    // Always update the quantity reference
+    // quantityRef.current = cart?.totalQuantity;
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, quantityRef, cart]);
+  }, [carts]);
 
   // const { totalAmount} = useCart()
   const data = useCart();
