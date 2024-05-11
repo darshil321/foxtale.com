@@ -2,7 +2,7 @@
 
 import { Metaobject } from '@shopify/hydrogen-react/storefront-api-types';
 import axios from 'axios';
-import { Cart } from '../shopify/types';
+import { Cart, CartItem } from '../shopify/types';
 
 interface Field {
   [key: string]: string;
@@ -183,14 +183,6 @@ export const findClosestCoupon = (
   return closestObject;
 };
 
-export const getDefaultVariant = (product: any, variantId: any) => {
-  if (!product?.variants?.length) return null;
-  if (variantId) {
-    return product.variants.find((v: any) => v.id === variantId);
-  }
-  return product.variants[0];
-};
-
 export const getCartItem = (tempId: any, product: any, variant) => {
   return {
     id: tempId,
@@ -200,7 +192,7 @@ export const getCartItem = (tempId: any, product: any, variant) => {
         currencyCode: variant.price.currencyCode
       },
       totalAmount: {
-        amount: variant.price.amount,
+        amount: variant.price.amount * 1,
         currencyCode: variant.price.currencyCode
       }
     },
@@ -222,5 +214,26 @@ export const getCartItem = (tempId: any, product: any, variant) => {
         }
       }
     }
+  };
+};
+
+export const getCartData = (cart: Cart) => {
+  const totalCost = cart?.lines?.reduce((acc: number, line: CartItem) => {
+    const lineTotalAmount = Number(line.cost.amountPerQuantity.amount) * line.quantity;
+    return acc + lineTotalAmount;
+  }, 0);
+
+  const cartTotalQuantity = cart?.lines?.reduce((acc: number, line: CartItem) => {
+    const lineQuantity =
+      Number(line?.cost?.amountPerQuantity?.amount) === 0 ? 0 : Number(line.quantity);
+    return acc + lineQuantity;
+  }, 0);
+
+  const cartTotalAmount = totalCost?.toFixed(2);
+
+  return {
+    totalAmount: cartTotalAmount,
+    totalQuantity: cartTotalQuantity,
+    currencyCode: cart?.cost?.totalAmount?.currencyCode
   };
 };

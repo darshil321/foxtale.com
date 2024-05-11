@@ -70,13 +70,13 @@ export function AddToCartButton({
   product: Product;
 }) {
   const searchParams = useSearchParams();
-  const defaultVariantId = getDefaultVariant(product);
+  const defaultVariant = getDefaultVariant(product);
   const variant = variants?.find((variant: ProductVariant) =>
     variant.selectedOptions?.every(
       (option) => option.value === searchParams.get(option.name.toLowerCase())
     )
   );
-  const selectedVariantId = variant?.id || defaultVariantId;
+  const selectedVariantId = variant?.id || defaultVariant.id;
 
   return (
     <SubmitButton

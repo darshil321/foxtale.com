@@ -58,8 +58,7 @@ export function EditItemQuantityButton({
   handleLocalQuantityChange?: (itemId: string, newQuantity: number) => void;
   localQuantity?: number;
 }) {
-  const [metaObject, setMetaObject] = useState<MetaObject[]>();
-  console.log(setMetaObject);
+  const [metaObject] = useState<MetaObject[]>();
 
   const cart = useAppSelector((state) => state.cart.cart);
   const cartProducts = cart?.lines?.map((line: any) => line.merchandise?.id);

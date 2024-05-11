@@ -32,46 +32,6 @@ export const cartSlice = createSlice({
         state.quantities[item.id] = item.quantity; // Assuming each item has an 'id' and 'quantity'
       });
     },
-
-    //     addToCart: (state, action) => {
-    //       const store = getState(state);
-    //       //fetch cart from redux
-    //       const cartProduct = state.cart;
-
-    //       const isProductExist = cartProduct.find((p) => p.id === productId);
-
-    //       if (isProductExist) {
-    //         state = {
-    //           ...state,
-    //           cart: {
-    //             ...state.cart,
-    //             products: state.cart.product.map(p)=> {
-    //                         if (p.id === payload.productId) {
-    //                           return {
-    //                               ...p,
-    //                               quantity: p.quantity + payload.quantity
-    //                           }
-    //                         } else {
-    //                           return p
-    //                         }
-    //             }
-
-    //           }
-    //        }
-    //       } else {
-    //      state = {
-    //        ...state,
-    //        cart: {
-    //          ...state.cart,
-    //          products = state.cart.products.push({...payload.products,quantity:payload.quantity})
-
-    //        }
-
-    //       }
-    // }
-
-    //     },
-
     getCartFailed: (state) => {
       // const data = current(state);
       state.loading = false;
@@ -87,11 +47,15 @@ export const cartSlice = createSlice({
       // console.log('newRmc3 incart', data, action);
     },
     addToCart: (state, action) => {
+      console.log('@@@5');
+
       const {
         payload: { product, selectedVariantId, tempId }
       } = action;
 
+      console.log('selectedVariantId', selectedVariantId);
       const variant = getDefaultVariant(product, selectedVariantId);
+      console.log('variant', variant);
 
       if (!variant) {
         console.log('Variant Not Found');
@@ -141,7 +105,6 @@ export const cartSlice = createSlice({
     },
     setCart: (state, action) => {
       const { tempId, ...res } = action.payload;
-      const cartState = current(state);
       const cartLines = res?.lines.map((cartItem: any) => {
         if (cartItem.id === tempId) {
           return { ...res };
@@ -149,11 +112,7 @@ export const cartSlice = createSlice({
         return cartItem;
       });
 
-      console.log('cartState', cartState, res);
-      console.log('state.cart', state.cart);
       state.cart = { ...res, lines: cartLines as CartItem[] };
-      const _cart = current(state);
-      console.log('_cart', _cart);
     },
 
     updateCartItemQuantity: (state, action) => {
