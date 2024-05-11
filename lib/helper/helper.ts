@@ -237,3 +237,15 @@ export const getCartData = (cart: Cart) => {
     currencyCode: cart?.cost?.totalAmount?.currencyCode
   };
 };
+
+export function getReformedCoupons(metaObjects: any) {
+  const transformedMetaObjects = metaObjects?.map((metaObject: any) => {
+    const fieldsObject: Record<string, string> = {};
+    metaObject?.fields?.forEach((field: any) => {
+      fieldsObject[field.key ?? ''] = field.value ?? '';
+    });
+    console.log('fieldsObject', fieldsObject);
+    return { ...metaObject, fields: fieldsObject };
+  });
+  return transformedMetaObjects;
+}

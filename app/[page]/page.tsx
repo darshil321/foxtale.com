@@ -43,3 +43,5 @@ export default async function Page({ params }: { params: { page: string } }) {
     </>
   );
 }
+
+// ssr  metaobjects

@@ -1,14 +1,39 @@
-import { getCartItem, getDefaultVariant } from '@/lib/helper/helper';
+import { getCartItem, getDefaultVariant, getReformedCoupons } from '@/lib/helper/helper';
 import { createSlice, current } from '@reduxjs/toolkit';
 import { Cart, CartItem } from 'lib/shopify/types';
-// import { cookies } from 'next/headers';
+interface Giftfield {
+  applicable_product: string[];
+  buy_x_quantity: string;
+  coupon_code: string;
+  gift: string[];
+  price_cap: string;
+}
+interface Freebiefield {
+  applicable_products: string[];
+  buy_x_quantity: string;
+  coupon_code: string;
+  freebie: string[];
+  price_cap: string;
+}
 
+interface GiftCoupon {
+  fields: Giftfield[];
+  id: string; // ID of the coupon
+  type: string; // Type of coupon
+}
+interface FreebieCoupon {
+  fields: Freebiefield[];
+  id: string; // ID of the coupon
+  type: string; // Type of coupon
+}
 export interface CartState {
   loading: boolean;
   cart: Cart | any;
   quantities: any;
   error: any;
   metaObjects: any;
+  giftCoupons?: GiftCoupon;
+  freebieCoupons: FreebieCoupon;
 }
 
 export const initialState: CartState = {
@@ -123,6 +148,14 @@ export const cartSlice = createSlice({
 
     setMetaObject: (state, action) => {
       state.metaObjects = action.payload;
+    },
+    setGiftCoupons: (state, action) => {
+      state.giftCoupons = getReformedCoupons(action.payload);
+      console.log('setGiftCoupons', state.giftCoupons);
+    },
+    setFreebieCoupons: (state, action) => {
+      state.freebieCoupons = getReformedCoupons(action.payload);
+      console.log('freebieCoupons', state.freebieCoupons);
     }
   }
 });
@@ -133,6 +166,8 @@ export const {
   getCartFailed,
   attemptGetCarts,
   updateCartItemQuantity,
-  setMetaObject
+  setMetaObject,
+  setGiftCoupons,
+  setFreebieCoupons
 } = cartSlice.actions;
 export default cartSlice.reducer;

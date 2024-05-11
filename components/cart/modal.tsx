@@ -12,6 +12,7 @@ import { EditItemQuantityButton } from './edit-item-quantity-button';
 import OpenCart from './open-cart';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { useAppSelector } from 'store/hooks';
+
 import { getCartData } from '@/lib/helper/helper';
 
 type MerchandiseSearchParams = {
@@ -23,13 +24,17 @@ export default function CartModal() {
 
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
-  // const [localQuantities, setLocalQuantities] = useState({}) as any;
+
   const carts = useAppSelector((state) => state.cart.cart);
 
   useEffect(() => {
     if (carts && !isOpen) {
       setIsOpen(true);
     }
+
+    // Always update the quantity reference
+    // quantityRef.current = cart?.totalQuantity;
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [carts]);
 

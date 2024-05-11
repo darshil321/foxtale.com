@@ -10,8 +10,8 @@ export const getCartQuery = /* GraphQL */ `
 `;
 
 export const getMetaobjectsQuery = /* GraphQL */ `
-  query metaObjects {
-    metaobjects(type: "coupon_bxgy", first: 5) {
+  query metaObjects($type: String!) {
+    metaobjects(type: $type, first: 5) {
       edges {
         cursor
         node {
