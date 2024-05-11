@@ -37,7 +37,6 @@ export function VariantSelector({
 
   return options.map((option) => (
     <dl className="mb-6" key={option.id}>
-      <dt className="mb-2 text-sm  uppercase tracking-wide">{option.name}</dt>
       <dd className="flex w-full divide-x divide-black border border-black ">
         {option.values.map((value) => {
           const optionNameLowerCase = option.name.toLowerCase();
@@ -69,9 +68,9 @@ export function VariantSelector({
               }}
               title={`${option.name} ${value}${isAvailableForSale ? ' (Out of Stock)' : ''}`}
               className={clsx(
-                'flex   flex-1 flex-col items-center justify-center gap-0 bg-neutral-100 py-3 text-base uppercase tracking-wider text-gray-700 ',
+                'flex   flex-1 flex-col items-center justify-center gap-0 bg-neutral-100 py-3 text-sm uppercase tracking-wider text-gray-700 md:text-base ',
                 {
-                  'cursor-default bg-slate-300 font-medium text-black': isActive,
+                  'cursor-default bg-gray-600 bg-opacity-30 font-medium text-black': isActive,
                   'ring-1 ring-transparent transition duration-200 ease-in-out hover:text-black':
                     !isActive && isAvailableForSale,
                   'relative z-10 cursor-not-allowed overflow-hidden bg-neutral-100 text-black ring-1 ring-neutral-300 before:absolute before:inset-x-0  before:h-px before:-rotate-45 before:bg-neutral-300 before:transition-transform ':
@@ -87,7 +86,7 @@ export function VariantSelector({
         <Link
           href={'#combos'}
           className={clsx(
-            'flex flex-1 items-center  justify-center  bg-neutral-100 py-4 text-base uppercase tracking-wider text-stone-700 hover:text-black '
+            'flex flex-1 items-center justify-center  scroll-smooth  bg-neutral-100 py-4 text-sm uppercase tracking-wider text-stone-700 hover:text-black md:text-base '
           )}
         >
           Combos

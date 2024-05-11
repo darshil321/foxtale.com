@@ -98,7 +98,7 @@ export function AddToCartButton({
   );
 
   const selectedVariantId = variant?.id || defaultVariantId;
-  console.log('selectedVariantIdss', variant?.title);
+
   return (
     <SubmitButton
       availableForSale={availableForSale}

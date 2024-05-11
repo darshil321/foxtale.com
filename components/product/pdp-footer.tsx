@@ -19,7 +19,7 @@ const ProductDescFooter = ({ product }: { product: any }) => {
   );
 
   const selectedVariantId = variant?.id || defaultVariantId;
-  console.log('selectedVariantIdss', variant?.title);
+
   return (
     <div className="fixed bottom-0 left-0 z-50 w-screen ">
       <div className="flex w-full justify-center border-t bg-white px-4 py-3 md:justify-between  md:px-[140px] md:py-4">
@@ -29,14 +29,14 @@ const ProductDescFooter = ({ product }: { product: any }) => {
           </Suspense>
         </div>
 
-        <div className="flex flex-row  items-center gap-5">
+        <div className="flex flex-row items-center gap-5">
           <Suspense fallback={null}>
             <AddToCartButton
               product={product}
               variants={product?.variants}
               availableForSale={product.availableForSale}
               buttonClasses={
-                'relative flex  flex-1 text-sm hover:text-purple-400  items-center justify-center text-base bg-white border border-black text-black py-2 px-6 md:py-2 md:px-8 uppercase tracking-wide font-normal md:font-semibold'
+                ' flex text-sm hover:text-purple-400  items-center justify-center text-base bg-white border border-black text-black py-2 px-6 md:py-2 md:px-8 uppercase tracking-wide font-normal'
               }
             />
           </Suspense>

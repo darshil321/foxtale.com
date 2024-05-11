@@ -14,7 +14,9 @@ export default function ProductDetailsTabs() {
       category: 'usage details',
       contentType: 'image',
       contentImage:
-        'https://cdn.shopify.com/s/files/1/0609/6096/4855/files/Single_Product_Website_Design-17_2_1_1_1_1.jpg?v=1679991078'
+        'https://cdn.shopify.com/s/files/1/0609/6096/4855/files/Single_Product_Website_Design-17_2_1_1_1_1.jpg?v=1679991078',
+      contentImageMobile:
+        'https://cdn.shopify.com/s/files/1/0609/6096/4855/files/Daily_Hydrating_Serum-07.jpg?v=1683804229'
     },
     {
       id: 3,
@@ -48,7 +50,9 @@ export default function ProductDetailsTabs() {
       category: 'Good to know',
       contentType: 'image',
       contentImage:
-        'https://cdn.shopify.com/s/files/1/0609/6096/4855/files/Matte_Finish_Sunscreen_SPF_70_-04.jpg?v=1685299918'
+        'https://cdn.shopify.com/s/files/1/0609/6096/4855/files/Matte_Finish_Sunscreen_SPF_70_-04.jpg?v=1685299918',
+      contentImageMobile:
+        'https://cdn.shopify.com/s/files/1/0609/6096/4855/files/Daily_Hydrating_Serum-15.jpg?v=1683804229'
     }
   ]);
 
@@ -74,13 +78,23 @@ export default function ProductDetailsTabs() {
           {categories.map((post, idx) => (
             <Tab.Panel key={idx} className={classNames(' bg-white p-3')}>
               {post.contentType === 'image' ? (
-                <Image
-                  src={post?.contentImage || ''}
-                  alt={post.category}
-                  height={540}
-                  width={570}
-                  className=" h-full w-full object-cover"
-                />
+                <div className="h-full w-full">
+                  <Image
+                    src={post?.contentImageMobile || ''}
+                    alt={post.category}
+                    className="object-cover md:hidden"
+                    height={470}
+                    width={382}
+                  />
+
+                  <Image
+                    src={post?.contentImage || ''}
+                    alt={post.category}
+                    height={540}
+                    width={570}
+                    className="hidden h-full w-full object-cover md:block"
+                  />
+                </div>
               ) : (
                 <div className="px-4  md:px-8">
                   {post?.contentText?.map((text) => (

@@ -31,7 +31,7 @@ const OfferSection: React.FC = () => {
         <div className="text-2xl font-semibold">Offers</div>
         <p className="text-[10px] text-gray-500 ">Tap below to copy the coupon code</p>
       </div>
-      <div className="grid w-full grid-cols-2 gap-4 pr-8">
+      <div className="grid w-full grid-cols-2 gap-4 pr-2 md:pr-8">
         {offers.map((offer, index) => (
           <React.Fragment key={index}>
             <div className="flex items-center  space-x-2">

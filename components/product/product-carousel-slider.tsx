@@ -34,13 +34,13 @@ const EmblaCarouselSlider: React.FC<PropType> = (props) => {
     usePrevNextButtons(emblaApi, onNavButtonClick);
 
   return (
-    <section className="embla_product relative px-4 md:px-0">
+    <section className="embla_product relative pl-4 md:px-0">
       <div className="embla_product__viewport " ref={emblaRef}>
         <div className="embla_product__container">
           {slides.map((image, index) => (
             <div className="embla_product__slide" key={index}>
               <Image
-                className="  aspect-square h-full  w-full object-cover md:min-h-[475px]  md:w-full  md:max-w-[470px]"
+                className="  aspect-square h-[344px] w-[344px] object-cover md:min-h-[475px]  md:w-full  md:max-w-[470px]"
                 width={500}
                 height={500}
                 alt={image.altText as string}
