@@ -1,7 +1,11 @@
+// import { useAppSelector } from '@/store/hooks';
 import { getMagicLink } from '../helper/helper';
 import { useEffect } from 'react';
 
 function useCoupon() {
+  //   const cart = useAppSelector((state) => state.cart.cart);
+  //   const metaObject = useAppSelector((state) => state.cart.cart) || [];
+
   const magicLink = getMagicLink();
 
   useEffect(() => {

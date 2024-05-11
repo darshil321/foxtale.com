@@ -23,7 +23,7 @@ export default function CartModal() {
 
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
-
+  // const [localQuantities, setLocalQuantities] = useState({}) as any;
   const carts = useAppSelector((state) => state.cart.cart);
 
   useEffect(() => {
