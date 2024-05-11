@@ -100,10 +100,10 @@ export const cartSlice = createSlice({
 
       const productArray = cart.cart?.lines;
 
-      const productFound = productArray?.find((item) => item.merchandise.id === variant.id);
+      const productFound = productArray?.find((item: any) => item.merchandise.id === variant.id);
       let cartLines;
       if (productFound) {
-        cartLines = productArray?.map((line) => {
+        cartLines = productArray?.map((line: any) => {
           if (line.id === productFound.id) {
             return {
               ...productFound,
@@ -128,9 +128,9 @@ export const cartSlice = createSlice({
       // const magic_key = '234567';
       // const _product = getCoupon(_cart.metaObjects, _cart.cart, 'magic_link', magic_key);
       // console.log('_product', _product);
-      // const isExist = cartLines?.find((item) => )
-      // if (_product && ) {
-      //   dispatch(addtocart)
+      // const isExist = cartLines?.find((item) => _product.id === item.id);
+      // if (_product && isExist) {
+      //   dispatch(cartActions.addToCart({}));
       // }
     },
 
