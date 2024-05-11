@@ -1,6 +1,17 @@
 /* eslint-disable no-unused-vars */
 
+import { Metaobject } from '@shopify/hydrogen-react/storefront-api-types';
 import axios from 'axios';
+import { Cart } from '../shopify/types';
+
+interface Field {
+  [key: string]: string;
+}
+export interface MetaObject {
+  id: string;
+  type: string;
+  fields: Field;
+}
 
 export function debounce<F extends (...args: any[]) => any>(
   func: F,
@@ -134,6 +145,43 @@ export function getCoupon(metaObjects: any, cart: any, type: string, magic_key: 
     }
   }
 }
+
+export const getDefaultVariant = (product: any, variantId?: string) => {
+  if (!variantId) {
+    return product.variants[0];
+  } else {
+    return product.variants.find((v: any) => v.id === variantId);
+  }
+};
+
+export const getMagicLink = () => {
+  return '123';
+};
+
+export const findClosestCoupon = (
+  metaObjects: MetaObject[],
+  updatedCart: Cart | null
+): Metaobject | undefined => {
+  let closestObject;
+  let minDifference = Infinity;
+
+  metaObjects.forEach((obj) => {
+    const buyXQuantity = parseInt(obj?.fields?.buy_x_quantity ?? '');
+    const priceCap = parseInt(obj?.fields?.price_cap ?? '');
+    if (
+      buyXQuantity <= Number(updatedCart?.totalQuantity) &&
+      priceCap <= Number(updatedCart?.cost.totalAmount.amount)
+    ) {
+      const difference = Math.abs(priceCap - Number(updatedCart?.cost.totalAmount.amount));
+      if (difference < minDifference) {
+        minDifference = difference;
+        closestObject = obj;
+      }
+    }
+  });
+
+  return closestObject;
+};
 
 export const getDefaultVariant = (product: any, variantId: any) => {
   if (!product?.variants?.length) return null;

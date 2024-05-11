@@ -8,6 +8,7 @@ import { useFormStatus } from 'react-dom';
 import { useAppDispatch } from 'store/hooks';
 import { cartActions } from 'store/actions/cart.action';
 import { v4 as uuidv4 } from 'uuid';
+import { getDefaultVariant } from '@/lib/helper/helper';
 
 function SubmitButton({
   availableForSale,
@@ -29,27 +30,6 @@ function SubmitButton({
     return (
       <button aria-disabled className={clsx(buttonClasses, disabledClasses)}>
         Out Of Stock
-      </button>
-    );
-  }
-
-  if (!selectedVariantId) {
-    return (
-      <button
-        onClick={() => {
-          dispatch(
-            cartActions.addToCart({
-              selectedVariantId: selectedVariantId,
-              product: product,
-              tempId: uuidv4()
-            })
-          );
-        }}
-        aria-label="Please select an option"
-        aria-disabled
-        className={clsx(buttonClasses, disabledClasses)}
-      >
-        Add To Cart
       </button>
     );
   }
@@ -90,7 +70,7 @@ export function AddToCartButton({
   product: Product;
 }) {
   const searchParams = useSearchParams();
-  const defaultVariantId = variants[0]?.id;
+  const defaultVariantId = getDefaultVariant(product);
   const variant = variants?.find((variant: ProductVariant) =>
     variant.selectedOptions?.every(
       (option) => option.value === searchParams.get(option.name.toLowerCase())
