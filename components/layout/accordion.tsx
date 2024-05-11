@@ -39,7 +39,7 @@ export default function Accordion() {
                 <div className="flex w-full items-center justify-between p-3 md:p-6">
                   <span className="h-full text-lg font-semibold md:text-2xl">FAQs</span>
                   <ChevronUpIcon
-                    className={`${open ? 'rotate-180 transform' : ''} h-10 w-10 text-black`}
+                    className={`${open ? '' : 'rotate-180 transform'} h-10 w-10 text-black`}
                   />
                 </div>
               </Disclosure.Button>

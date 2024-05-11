@@ -8,7 +8,7 @@ import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import dynamic from 'next/dynamic';
 import { ProductSlider } from '@/components/product/product-slider';
 import OfferSection from '@/components/product/offers-section';
-import CustomInputBtn from '@/components/elements/custom-input-with-btn';
+import ProductsRatings from '@/components/product/products-rating';
 
 const ProductDescription = dynamic(() => import('@/components/product/product-description'));
 const ProductCarouselSlider = dynamic(() => import('@/components/product/product-carousel'));
@@ -103,8 +103,18 @@ export default async function ProductPage({
           __html: JSON.stringify(productJsonLd)
         }}
       />
-      <div className="mx-auto max-w-screen-2xl  pt-3  md:pt-8 ">
+      <div className="mx-auto max-w-screen-2xl  pt-4  md:pt-8">
         <div className="flex flex-col rounded-lg  lg:flex-row lg:gap-8 ">
+          <div className="flex flex-col px-4 pb-2 md:hidden">
+            <div className="mb-2 flex items-end gap-2 md:gap-3">
+              <h1 className=" text-2xl font-medium leading-7">
+                {product.title}{' '}
+                <span className="text-center text-xs text-[#bcbec0]"> Size -30 ml</span>
+              </h1>
+            </div>
+            <h5 className="text-[#6d6e71]">Treats hyperpigmentation and dark spots</h5>
+            <ProductsRatings product={product} />
+          </div>
           <div className="h-full w-full basis-full lg:basis-3/6">
             <Suspense
               fallback={
@@ -121,13 +131,6 @@ export default async function ProductPage({
               <ProductDescription product={product} searchParams={searchParams} />
             </div>
             <OfferSection />
-            <div className="my-3 px-4 md:px-0">
-              <CustomInputBtn
-                className="w-full py-1 text-xs "
-                text="Enter your pincode"
-                buttonText="Check"
-              />
-            </div>
           </div>
         </div>
         <div>{<ProductDisclosure />}</div>

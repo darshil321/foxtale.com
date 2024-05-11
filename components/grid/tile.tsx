@@ -84,17 +84,17 @@ export function GridTileImage({
             <div className="product-info p-2">
               <div className="">
                 <Link href={`/product/${product?.handle}`}>
-                  <h3 className=" md:text-md leading-2 line-clamp-2 cursor-pointer text-[13px] font-semibold transition-all hover:text-purple-400 md:text-sm md:leading-6">
+                  <h3 className=" leading-2 line-clamp-1 cursor-pointer text-[12px] font-medium transition-all hover:text-purple-400 md:text-base md:leading-6">
                     {label?.title}
                   </h3>
                 </Link>
-                <p className="text-[10px] leading-7 text-[#6e6e6e]  md:text-xs">
+                {/* <p className="text-[10px] leading-7 text-[#6e6e6e]  md:text-xs">
                   {label?.description?.slice(0, 40)}
-                </p>
+                </p> */}
               </div>
-              <span className="price dib mb__5">
-                <div className="t4s-product-price" data-pr-price data-product-price>
-                  <span className="font-poppins text-base font-bold" /> ₹ {label?.amount}
+              <span className="">
+                <div className="t4s-product-price text-base font-medium">
+                  <span className="font-poppins text-base font-semibold" /> ₹ {label?.amount}
                 </div>
               </span>
             </div>

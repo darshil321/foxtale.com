@@ -23,10 +23,10 @@ export default async function SearchPage({
   const products = await appendReviewAndRating(_products);
   const resultsText = products.length > 1 ? 'results' : 'result';
   return (
-    <>
+    <div className="rounded-md bg-white ">
       <GetRequiredData />
       {searchValue ? (
-        <p className="mx-2 mt-4 text-base md:mx-4">
+        <p className="mx-2 pt-2 text-base md:mx-4 ">
           {products.length === 0
             ? 'There are no products that match'
             : `Showing ${products.length} ${resultsText} for `}
@@ -40,6 +40,6 @@ export default async function SearchPage({
           </Grid>
         </div>
       ) : null}
-    </>
+    </div>
   );
 }

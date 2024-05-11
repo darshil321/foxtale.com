@@ -69,7 +69,7 @@ const CollectionProductsContainer = ({
           <h1 className="text-base md:text-xl">{`Products in ${collections[index]?.handle}`}</h1>
           <p className="text-xs text-[#6E6E6E] md:text-sm">{`Showing ${products?.length} results`}</p>
         </div>
-        <Grid className="grid-cols-2 place-items-center gap-2 sm:grid-cols-2 lg:grid-cols-4">
+        <Grid className="grid-cols-2 place-items-center gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
           <ProductGridItems products={products} />
         </Grid>
       </div>

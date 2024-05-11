@@ -18,13 +18,15 @@ export default function ProductDescription({
 
   return (
     <>
-      <div className="mb-4 flex flex-col gap-1 pb-3 ">
-        <div className="flex flex-col items-start gap-0 md:flex-row  md:gap-3">
-          <h1 className="mb-2 text-2xl font-medium leading-6">{product.title}</h1>
-          <span className="text-center text-xs text-neutral-400"> Size -30 ml</span>
+      <div className=" flex flex-col gap-1 pb-1 md:pb-3 ">
+        <div className=" hidden flex-col gap-1 md:flex ">
+          <div className="flex flex-col items-center gap-0 md:flex-row md:gap-3">
+            <h1 className="mb-2 text-2xl font-medium leading-6">{product.title}</h1>
+            <span className="text-center text-xs text-neutral-400"> Size -30 ml</span>
+          </div>
+          <h5>Treats hyperpigmentation and dark spots</h5>
+          <ProductsRatings product={product} />
         </div>
-        <h5>Treats hyperpigmentation and dark spots</h5>
-        <ProductsRatings />
         <div className="mr-auto text-2xl font-semibold text-black">
           <Price
             amount={selectedVariantPrice ?? product.priceRange.maxVariantPrice.amount}
