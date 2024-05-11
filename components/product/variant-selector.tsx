@@ -71,7 +71,7 @@ export function VariantSelector({
               className={clsx(
                 'flex   flex-1 flex-col items-center justify-center gap-0 bg-neutral-100 py-3 text-base uppercase tracking-wider text-gray-700 ',
                 {
-                  'cursor-default bg-gray-300 font-medium text-black': isActive,
+                  'cursor-default bg-slate-300 font-medium text-black': isActive,
                   'ring-1 ring-transparent transition duration-200 ease-in-out hover:text-black':
                     !isActive && isAvailableForSale,
                   'relative z-10 cursor-not-allowed overflow-hidden bg-neutral-100 text-black ring-1 ring-neutral-300 before:absolute before:inset-x-0  before:h-px before:-rotate-45 before:bg-neutral-300 before:transition-transform ':

@@ -11,7 +11,6 @@ import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { setCart } from 'store/slices/cart-slice';
 
 import { cartActions } from '@/store/actions/cart.action';
-import { getMetaObjects } from '@/lib/shopify';
 // import { Metaobject } from '@shopify/hydrogen-react/storefront-api-types';
 
 function SubmitButton({
@@ -69,41 +68,42 @@ export function EditItemQuantityButton({
     fields: Field;
   }
   const [metaObject, setMetaObject] = useState<MetaObject[]>();
+  console.log(setMetaObject);
 
   const cart = useAppSelector((state) => state.cart.cart);
-  const cartProducts = cart?.lines?.map((line) => line.merchandise?.id);
+  const cartProducts = cart?.lines?.map((line: any) => line.merchandise?.id);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const metaObjects = await getMetaObjects();
-        const transformedMetaObjects = metaObjects?.map((metaObject) => {
-          const fieldsObject: Record<string, string> = {};
-          metaObject?.fields?.forEach((field) => {
-            fieldsObject[field.key ?? ''] = field.value ?? '';
-          });
-          console.log('fieldsObject', fieldsObject);
-          return { ...metaObject, fields: fieldsObject };
-        });
-        console.log('transformedMetaObjects', transformedMetaObjects);
-        setMetaObject(transformedMetaObjects);
-        console.log('metaObjec', metaObjects);
-      } catch (error) {
-        // Handle error
-      }
-    };
-    fetchData();
-    const coupen = findClosestCoupon(metaObject ?? [], cart);
-    if (coupen) {
-      console.log('coupen', coupen);
-      // formActionFree(coupen.fields.free_bie);
-    }
+    // const fetchData = async () => {
+    //   try {
+    //     const metaObjects = await getMetaObjects();
+    //     const transformedMetaObjects = metaObjects?.map((metaObject) => {
+    //       const fieldsObject: Record<string, string> = {};
+    //       metaObject?.fields?.forEach((field) => {
+    //         fieldsObject[field.key ?? ''] = field.value ?? '';
+    //       });
+    //       console.log('fieldsObject', fieldsObject);
+    //       return { ...metaObject, fields: fieldsObject };
+    //     });
+    //     console.log('transformedMetaObjects', transformedMetaObjects);
+    //     setMetaObject(transformedMetaObjects);
+    //     console.log('metaObjec', metaObjects);
+    //   } catch (error) {
+    //     // Handle error
+    //   }
+    // };
+    // fetchData();
+    // const coupen = findClosestCoupon(metaObject ?? [], cart);
+    // if (coupen) {
+    //   console.log('coupen', coupen);
+    //   // formActionFree(coupen.fields.free_bie);
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [m, formActionFree] = useFormState(addItem, null);
   console.log(m);
 
-  const [message, formAction] = useFormState(updateItemQuantity, null);
+  const [formAction] = useFormState(updateItemQuantity, null);
   const { pending } = useFormStatus();
   const dispatch = useAppDispatch();
   function findClosestCoupon(
@@ -174,6 +174,7 @@ export function EditItemQuantityButton({
     }
 
     dispatch(setCart(updatedCart));
+    console.log('newUp0', updatedCart?.lines[index]?.quantity);
 
     debouncedUpdateItemQuantity(updatedCart?.lines[index]?.quantity);
   }
@@ -208,9 +209,6 @@ export function EditItemQuantityButton({
         }}
         pending={pending}
       />
-      <p aria-live="polite" className="sr-only" role="status">
-        {message}
-      </p>
     </form>
   );
 }

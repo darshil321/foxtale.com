@@ -4,8 +4,18 @@ import { addToCart, createCart, getCart, removeFromCart, updateCart } from 'lib/
 import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 
-export async function addItem(prevState: any, selectedVariantId: string | undefined) {
-  let cartId = cookies().get('cartId')?.value;
+export async function addItem(
+  prevState: any,
+  selectedVariantId: string | undefined,
+  instantCartId?: string
+) {
+  let cartId;
+  if (!instantCartId) {
+    cartId = cookies().get('cartId')?.value;
+  } else {
+    cartId = instantCartId;
+  }
+
   let cart;
 
   if (cartId) {
@@ -62,22 +72,25 @@ export async function updateItemQuantity(
   }
 
   const { lineId, variantId, quantity } = payload;
+  console.log('updating', payload);
 
   try {
     if (quantity === 0) {
-      await removeFromCart(cartId, [lineId]);
+      const data = await removeFromCart(cartId, [lineId]);
       revalidateTag(TAGS.cart);
-      return;
+      return data;
     }
 
-    await updateCart(cartId, [
+    const data = await updateCart(cartId, [
       {
         id: lineId,
         merchandiseId: variantId,
         quantity
       }
     ]);
+
     revalidateTag(TAGS.cart);
+    return data;
   } catch (e) {
     return 'Error updating item quantity';
   }

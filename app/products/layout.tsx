@@ -9,7 +9,7 @@ export default function SearchLayout({ children }: { children: React.ReactNode }
       <div className="w-full p-1.5 md:p-8">
         <HeroBannerSlider />
       </div>
-      <div className=" flex max-w-screen-2xl flex-col gap-8 px-2 pb-2 text-black md:px-8 md:pb-4 ">
+      <div className=" flex max-w-screen-2xl flex-col gap-2 px-2 pb-2 text-black md:gap-8 md:px-8 md:pb-4 ">
         <div className=" sticky top-0 z-50 w-full flex-none rounded-md bg-white  shadow-md">
           <Collections />
         </div>

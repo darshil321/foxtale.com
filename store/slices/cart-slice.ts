@@ -5,7 +5,7 @@ import { Cart, CartItem } from 'lib/shopify/types';
 
 export interface CartState {
   loading: boolean;
-  cart: Cart | null;
+  cart: Cart | any;
   quantities: any;
   error: any;
   metaObjects: any;
@@ -80,7 +80,7 @@ export const cartSlice = createSlice({
       const cart = current(state.cart);
       state.cart = {
         ...cart,
-        lines: cart?.lines.filter((item) => item.id !== action.payload.lineId)
+        lines: cart?.lines.filter((item: any) => item.id !== action.payload.lineId)
       };
 
       // const data = current(state.cart);
@@ -95,9 +95,8 @@ export const cartSlice = createSlice({
 
       const productArray = cart.cart?.lines;
       const productFound = productArray?.find(
-        (item) => item.merchandise.id === product.variants.id
+        (item: any) => item.merchandise.id === product.variants.id
       );
-      console.log('window.location.href', window.location.href);
       let cartItem;
       if (productFound) {
         if (cart.cart && cart.cart.totalQuantity !== undefined) {
@@ -144,9 +143,11 @@ export const cartSlice = createSlice({
       }
       let arr: any = [];
       let totQuant = 0;
-      if (cart.cart) {
+      if (cart.cart && Array.isArray(cart.cart.lines)) {
         arr = [...cart.cart.lines, cartItem];
         totQuant = cart.cart.totalQuantity + 1;
+      } else {
+        // Handle the case when cart.cart.lines is not iterable
       }
       state.cart = { ...cart.cart, lines: arr, totalQuantity: totQuant };
       const _cart = current(state);

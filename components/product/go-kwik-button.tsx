@@ -3,6 +3,8 @@
 import { useCart } from '@shopify/hydrogen-react';
 import { useEffect } from 'react';
 import { gokwikConfig } from '../../lib/shopify/gokwik.config';
+import { createCart } from '@/lib/shopify';
+import { addItem } from '../cart/actions';
 
 const integrationUrls = {
   local: 'http://localhost:8080/integration.js',
@@ -29,7 +31,12 @@ const integrationUrls = {
 // };
 
 export function GokwikButton(passedData) {
+  console.log('passedData', passedData);
+
+  // const cartId = cart.id;
   const updatedCart = useCart();
+
+  // const cartId = useAppSelector((state) => state.cart.cart?.id);
 
   let buyNowRun = false;
   useEffect(() => {
@@ -60,7 +67,14 @@ export function GokwikButton(passedData) {
   }, [buyNowRun]);
 
   const triggerBuyNow = (passedData: { quantity: number; variantId: string }) => {
-    createBuyNowCart(passedData);
+    // createBuyNowCart(passedData);
+    createCart().then((data) => {
+      console.log('ppp', data);
+      addItem(null, passedData.variantId, data.id).then((data) => {
+        console.log('pppp', data);
+        triggerGokwikCheckout(data);
+      });
+    });
   };
 
   // const makeXhr = async (method, url, data, track) => {
@@ -174,148 +188,6 @@ export function GokwikButton(passedData) {
   //     gokwikStoreFrontApi(query, variables);
   //   };
 
-  const createBuyNowCart = (passedData) => {
-    const q = `mutation AddToCart {
-      cartCreate(
-        input: {lines: {merchandiseId: "gid://shopify/ProductVariant/44755858620663"}}
-      ) {
-        cart {
-            lines(first: 100) {
-            edges {
-              node {
-                id
-                discountAllocations{
-                   ... on CartAutomaticDiscountAllocation {
-                    title
-                    discountedAmount {
-                      currencyCode
-                      amount
-                    }
-                  }
-                }
-                merchandise {
-                  ... on ProductVariant {
-                    id
-                    title
-                    product {
-                      createdAt
-                      description
-                      id
-                      productType
-                      title
-                      updatedAt
-                      vendor
-                    }
-                    image {
-                      height
-                      id
-                      url
-                      width
-                    }
-                    price{
-                        amount
-                    }
-                    unitPrice {
-                      amount
-                      currencyCode
-                    }
-                  }
-                }
-                quantity
-              }
-            }
-            }
-          id
-        }
-      }
-    }`;
-    // const query = `
-    // mutation createCart($cartInput: CartInput) {
-    //   cartCreate(input: {lines: {merchandiseId: "gid://shopify/ProductVariant/46638233420059"}}) {
-    //     cart {
-    //       id
-    //       discountCodes {
-    //         applicable
-    //         code
-    //       }
-    //       attributes {
-    //         key
-    //         value
-    //       }
-    //       cost {
-    //         subtotalAmount {
-    //           amount
-    //           currencyCode
-    //         }
-    //         totalTaxAmount {
-    //           amount
-    //           currencyCode
-    //         }
-    //       }
-    //       totalQuantity
-    //       note
-    //       lines(first: 100) {
-    //         edges {
-    //           node {
-    //             id
-    //             merchandise {
-    //               id
-    //               title
-    //               product {
-    //                 createdAt
-    //                 description
-    //                 id
-    //                 productType
-    //                 title
-    //                 updatedAt
-    //                 vendor
-    //               }
-    //               image {
-    //                 height
-    //                 id
-    //                 url
-    //                 width
-    //               }
-    //               price
-    //               unitPrice {
-    //                 amount
-    //                 currencyCode
-    //               }
-    //             }
-    //             quantity
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    //     `;
-
-    //   const query = `mutation AddToCart {
-    //   cartCreate(
-    //     input: {lines: {merchandiseId: "gid://shopify/ProductVariant/46638233420059"}}
-    //   ) {
-    //     cart {
-    //       id
-    //     }
-    //   }
-    // }`;
-
-    const variables = {
-      cartInput: {
-        lines: [
-          {
-            quantity: passedData.quantity,
-            merchandiseId: passedData.variantId
-          }
-        ]
-      }
-    };
-
-    gokwikStoreFrontApi(q, variables, passedData).then((res) => {
-      triggerGokwikCheckout(res.data.cartCreate.cart);
-    });
-  };
   const getCart = async (id) => {
     console.log(id);
 

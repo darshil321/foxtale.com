@@ -100,11 +100,11 @@ const EmblaHeroCarousel: React.FC<PropType> = (props) => {
                     width={1200}
                     height={800}
                     objectFit="cover"
-                    className="hero_embla__slide__img embla__parallax__img object-cover"
+                    className="hero_embla__slide__img embla__parallax__img"
                     src={`/Images/banner.png`}
                     alt="Your alt text"
                     loading="eager"
-                    sizes="(max-width: 768px) 378px, (min-width:1200px) 1200pxn"
+                    sizes="(max-width: 768px) 378px, (min-width:1200px) 1200px"
                     quality={75} // Lower quality for smaller file size
                   />
                 </div>
