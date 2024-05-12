@@ -41,11 +41,13 @@ const EmblaCarouselSlider: React.FC<PropType> = (props) => {
             <div className="embla_product__slide" key={index}>
               <Image
                 className="  aspect-square h-[344px] w-[344px] object-cover md:min-h-[475px]  md:w-full  md:max-w-[470px]"
-                width={500}
-                height={500}
+                width={400}
+                height={400}
                 alt={image.altText as string}
                 src={image?.url as string}
                 priority={true}
+                quality={80}
+                loading="eager"
               />
             </div>
           ))}

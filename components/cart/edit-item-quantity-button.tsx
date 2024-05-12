@@ -11,7 +11,6 @@ import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { setCart } from 'store/slices/cart-slice';
 
 import { cartActions } from '@/store/actions/cart.action';
-// import { Metaobject } from '@shopify/hydrogen-react/storefront-api-types';
 
 function SubmitButton({
   type,

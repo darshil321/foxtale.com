@@ -1,5 +1,4 @@
 import Navbar from 'components/layout/navbar';
-import { GeistSans } from 'geist/font/sans';
 import { ensureStartsWith } from 'lib/utils';
 import { ReactNode } from 'react';
 import './globals.css';
@@ -37,10 +36,10 @@ export const metadata = {
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={GeistSans.variable}>
+    <html lang="en">
       <link rel="preconnect" href={process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN} />{' '}
       <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN} />
-      <body className=" text-black selection:bg-teal-300 ">
+      <body>
         <Provider>
           <Banner />
           <WrapperContainer>

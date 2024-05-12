@@ -38,6 +38,7 @@ export function VariantSelector({
   return options.map((option) => (
     <dl className="mb-6" key={option.id}>
       <dd className="flex w-full divide-x divide-black border border-black ">
+        <p>{option.name}</p>
         {option.values.map((value) => {
           const optionNameLowerCase = option.name.toLowerCase();
 

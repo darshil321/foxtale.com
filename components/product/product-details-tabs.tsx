@@ -109,8 +109,10 @@ export default function ProductDetailsTabs({ product }: Props) {
                   <Image
                     src={post?.contentImage || ''}
                     alt={post.category}
-                    height={540}
-                    width={570}
+                    height={500}
+                    width={500}
+                    loading="lazy"
+                    quality={80}
                     className="hidden h-full w-full object-cover md:block"
                   />
                 </div>

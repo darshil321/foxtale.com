@@ -16,6 +16,8 @@ const ResultsSection = () => {
             }
             alt="Foxtale"
             width={570}
+            quality={80}
+            loading="lazy"
             height={370}
           />
         </div>
