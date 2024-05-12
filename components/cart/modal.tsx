@@ -168,7 +168,7 @@ export default function CartModal() {
                       <p>Total</p>
                       <Price
                         className="text-right text-base text-black "
-                        amount={totalAmount?.toString()}
+                        amount={totalAmount?.toString() || '0'}
                         currencyCode={currencyCode}
                       />
                     </div>

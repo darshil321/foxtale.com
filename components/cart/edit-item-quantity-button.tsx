@@ -112,7 +112,7 @@ export function EditItemQuantityButton({
         updatedCart.lines[index].cost.amountPerQuantity.amount * updatedCart.lines[index].quantity;
     }
 
-    const coupen = findClosestCoupon(metaObject ?? [], updatedCart);
+    const coupen = findClosestCoupon(metaObject ?? [], updatedCart) as any;
 
     if (coupen) {
       if (!cartProducts?.includes(coupen.fields.free_bie ?? '')) {
