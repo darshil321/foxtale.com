@@ -9,6 +9,7 @@ export default async function Cart() {
   if (cartId) {
     cart = await getCart(cartId);
   }
+  console.log('cart', cart);
 
-  return <CartModal cart={cart} />;
+  return <CartModal />;
 }

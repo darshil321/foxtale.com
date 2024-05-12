@@ -183,7 +183,7 @@ export const findClosestCoupon = (
   return closestObject;
 };
 
-export const getCartItem = (tempId: any, product: any, variant) => {
+export const getCartItem = (tempId: any, product: any, variant: any) => {
   return {
     id: tempId,
     cost: {
