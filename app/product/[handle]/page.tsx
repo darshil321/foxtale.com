@@ -32,7 +32,6 @@ export async function generateMetadata({
   params: { handle: string };
 }): Promise<Metadata> {
   const product = await getProduct(params.handle);
-  console.log('product.seo', product?.seo);
 
   if (!product) return notFound();
 
@@ -75,7 +74,7 @@ export default async function ProductPage({
   searchParams: any;
 }) {
   const product = await getProduct(params.handle);
-
+  console.log('productsfs', product);
   if (!product) return notFound();
 
   const productJsonLd = {
@@ -133,7 +132,7 @@ export default async function ProductPage({
             <OfferSection />
           </div>
         </div>
-        <div>{<ProductDisclosure />}</div>
+        <div>{<ProductDisclosure product={product} />}</div>
 
         <ResultsSection />
         <Suspense
@@ -145,7 +144,7 @@ export default async function ProductPage({
         >
           <ProductCarouselSlider />
         </Suspense>
-        <ProductDetailsTabs />
+        <ProductDetailsTabs product={product} />
         <Accordion />
         <ProductDescFooter product={product} />
         <Suspense fallback={null}>
