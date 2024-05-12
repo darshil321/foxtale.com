@@ -57,8 +57,8 @@ export default function ProductDisclosure({ product }: { product: Product }) {
                       <Disclosure.Button className="flex h-full w-full bg-[#f7f7f7] text-sm font-medium text-black hover:bg-[#f7f7f7] focus:outline-none focus-visible:ring-[#f7f7f7]/75 focus-visible:ring-offset-1">
                         <div className="flex h-full w-full items-center justify-between">
                           <Image
-                            src={item?.image}
-                            alt={item?.title}
+                            src={item?.image || '/Images/defualt.png'}
+                            alt={item?.title || 'image'}
                             width={500}
                             height={500}
                             className="h-24 w-24 object-cover"
@@ -76,8 +76,8 @@ export default function ProductDisclosure({ product }: { product: Product }) {
 
                       <Disclosure.Panel className="flex justify-center px-4 pb-2 pt-4 text-sm text-gray-500">
                         <Image
-                          src={item?.contentImage || item?.image}
-                          alt={item?.title}
+                          src={item?.contentImage || item?.image || '/Images/defualt.png'}
+                          alt={item?.title || 'image'}
                           width={500}
                           height={500}
                           className="h-full w-full max-w-[500px] object-cover"

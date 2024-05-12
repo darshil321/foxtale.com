@@ -66,7 +66,7 @@ export default function ProductDetailsTabs({ product }: Props) {
       }));
 
       if (categories[index]) {
-        categories[index].contentText = contentText || [];
+        (categories[index] as any).contentText = contentText || [];
       }
     });
 
