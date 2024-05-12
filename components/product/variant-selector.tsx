@@ -54,7 +54,7 @@ export function VariantSelector({
                 const isActive = searchParams.get(optionNameLowerCase) === value;
 
                 return (
-                  <div
+                  <button
                     key={value}
                     aria-disabled={!isAvailableForSale}
                     disabled={!isAvailableForSale}
@@ -81,7 +81,7 @@ export function VariantSelector({
                   >
                     {!isColorOption && value}
                     {!isColorOption && <span>₹{selectedVariant?.price.amount}</span>}
-                  </div>
+                  </button>
                 );
               })}
               {!isColorOption && (
