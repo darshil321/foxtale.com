@@ -6,7 +6,7 @@ import { createUrl } from 'lib/utils';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-export function VariantSelector({
+export default function VariantSelector({
   options,
   variants
 }: {

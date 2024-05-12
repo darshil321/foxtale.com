@@ -6,6 +6,12 @@ import Footer from 'components/layout/footer';
 import WrapperContainer from 'components/layout/wrapper-container';
 import Provider from '../store/store-provider';
 import Banner from 'components/layout/navbar/banner';
+import { Poppins } from 'next/font/google';
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['200', '300', '400', '500', '600', '700', '800', '900']
+});
 
 const { TWITTER_CREATOR, TWITTER_SITE, SITE_NAME } = process.env;
 const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
@@ -45,7 +51,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <WrapperContainer>
             <Navbar />
           </WrapperContainer>
-          <main>{children}</main>
+          <main className={poppins.className}>{children}</main>
           <Footer />
         </Provider>
       </body>
