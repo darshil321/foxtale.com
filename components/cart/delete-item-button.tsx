@@ -42,9 +42,6 @@ export function DeleteItemButton({ item, removeIcon }: { item: CartItem; removeI
   return (
     <>
       <SubmitButton removeIcon={removeIcon} item={item} />
-      <p aria-live="polite" className="sr-only" role="status">
-        {/* {message} */}
-      </p>
     </>
   );
 }

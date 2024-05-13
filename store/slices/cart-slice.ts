@@ -146,12 +146,6 @@ export const cartSlice = createSlice({
       state.cart = { ...res, lines: cartLines as CartItem[] };
     },
 
-    updateCartItemQuantity: (state, action) => {
-      const { itemId, newQuantity } = action.payload;
-      if (!state.quantities) state.quantities = {};
-      state.quantities[itemId] = newQuantity;
-    },
-
     setMetaObject: (state, action) => {
       state.metaObjects = action.payload;
     },
@@ -179,7 +173,6 @@ export const {
   setCart,
   getCartFailed,
   attemptGetCarts,
-  updateCartItemQuantity,
   setMetaObject,
   setGiftCoupons,
   setFreebieCoupons,

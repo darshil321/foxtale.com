@@ -33,12 +33,6 @@ export default function CartModal() {
 
   const carts = useAppSelector((state) => state.cart.cart);
 
-  const loading = useAppSelector((state) => state.cart.loading);
-
-  useEffect(() => {
-    console.log('loading', loading);
-  }, [loading]);
-
   const data = getCartData(carts);
   const { currencyCode, totalAmount } = data;
   const dispatch = useAppDispatch();

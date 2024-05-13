@@ -10,5 +10,4 @@ export const cartActions = {
   removeCart: createAction<{}>('cart/removeCart'),
   setCart: createAction<{}>('cart/setCart'),
   setMetaObject: createAction<{}>('cart/setMetaObject')
-  // gid://shopify/ProductVariant/46638240530715
 };

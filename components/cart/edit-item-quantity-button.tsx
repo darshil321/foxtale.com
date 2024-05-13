@@ -15,6 +15,8 @@ function SubmitButton({
   onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   pending: boolean;
 }) {
+  console.log('pending', pending);
+
   return (
     <button
       type="button"
@@ -54,8 +56,8 @@ export function EditItemQuantityButton({
     <form onSubmit={(e) => e.preventDefault()}>
       <SubmitButton
         type={type}
-        onClick={(e) => {
-          onClick(e);
+        onClick={() => {
+          onClick();
         }}
         pending={pending}
       />
