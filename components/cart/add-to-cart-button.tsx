@@ -4,7 +4,6 @@ import clsx from 'clsx';
 // import { addItem } from 'components/cart/actions';
 import { Product, ProductVariant } from 'lib/shopify/types';
 import { useSearchParams } from 'next/navigation';
-import { useFormStatus } from 'react-dom';
 import { useAppDispatch } from 'store/hooks';
 import { cartActions } from 'store/actions/cart.action';
 import { v4 as uuidv4 } from 'uuid';
@@ -22,7 +21,6 @@ function SubmitButton({
   product: Product;
 }) {
   const dispatch = useAppDispatch();
-  const { pending } = useFormStatus();
 
   const disabledClasses = 'cursor-not-allowed  hover:opacity-80';
 
@@ -37,7 +35,7 @@ function SubmitButton({
   return (
     <button
       onClick={(e: React.FormEvent<HTMLButtonElement>) => {
-        if (pending) e.preventDefault();
+        e.preventDefault();
         dispatch(
           cartActions.addToCart({
             selectedVariantId: selectedVariantId,
@@ -47,10 +45,8 @@ function SubmitButton({
         );
       }}
       aria-label="Add to cart"
-      aria-disabled={pending}
       className={clsx(buttonClasses, {
-        'hover:opacity-90': true,
-        disabledClasses: pending
+        'hover:opacity-90': true
       })}
     >
       Add To Cart

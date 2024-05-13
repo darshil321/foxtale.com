@@ -4,19 +4,13 @@ import { addToCart, createCart, getCart, removeFromCart, updateCart } from 'lib/
 import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 
-export async function addItem(selectedVariantId: string | undefined, instantCartId?: string) {
-  let cartId;
-  if (!instantCartId) {
-    cartId = cookies().get('cartId')?.value;
-  } else {
-    cartId = instantCartId;
-  }
-
+export async function addItem(selectedVariantId: string) {
+  let cartId = cookies().get('cartId')?.value || null;
   let cart;
 
-  // Get cart
-  if (cartId) {
-    cart = await getCart(cartId);
+  if (!selectedVariantId) {
+    console.log('Missing product variant ID');
+    return 'Missing product variant ID';
   }
 
   // Create cart
@@ -26,10 +20,7 @@ export async function addItem(selectedVariantId: string | undefined, instantCart
     cookies().set('cartId', cartId);
   }
 
-  if (!selectedVariantId) {
-    console.log('Missing product variant ID');
-    return 'Missing product variant ID';
-  }
+  cart = await getCart(cartId);
 
   try {
     const data = await addToCart(cartId, [{ merchandiseId: selectedVariantId, quantity: 1 }]);
