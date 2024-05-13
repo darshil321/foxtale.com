@@ -49,10 +49,19 @@ export const productSlice = createSlice({
     },
     setIsUserClicked: (state, action) => {
       state.isUserClicked = action.payload;
+    },
+
+    setProducts: (state, action) => {
+      state.products = action.payload;
     }
   }
 });
 
-export const { getProductSuccess, attemptGetProducts, setSelectedCollection, setIsUserClicked } =
-  productSlice.actions;
+export const {
+  getProductSuccess,
+  attemptGetProducts,
+  setSelectedCollection,
+  setIsUserClicked,
+  setProducts
+} = productSlice.actions;
 export default productSlice.reducer;

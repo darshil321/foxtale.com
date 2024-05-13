@@ -7,7 +7,7 @@ import Footer from 'components/layout/footer';
 import WrapperContainer from 'components/layout/wrapper-container';
 import Provider from '../store/store-provider';
 import Banner from 'components/layout/navbar/banner';
-import { getCollections, getMetaObjects } from '@/lib/shopify';
+import { getCollections, getMetaObjects, getProducts } from '@/lib/shopify';
 import InitialData from '@/components/initial-data';
 
 const { TWITTER_CREATOR, TWITTER_SITE, SITE_NAME } = process.env;
@@ -42,6 +42,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const freebieCoupons = await getMetaObjects('freebies');
   const magicLinks = await getMetaObjects('magic_link');
   const collections = await getCollections();
+  const products = await getProducts();
 
   return (
     <html lang="en" className={GeistSans.variable}>
@@ -54,6 +55,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             freebieCoupons={freebieCoupons}
             magicLinks={magicLinks}
             collections={collections}
+            products={products}
           />
           <Banner />
           <WrapperContainer>

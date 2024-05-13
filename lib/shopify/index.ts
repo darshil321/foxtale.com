@@ -422,7 +422,7 @@ export async function getProducts({
   query?: string;
   reverse?: boolean;
   sortKey?: string;
-}): Promise<any> {
+} = {}): Promise<any> {
   try {
     const res = await shopifyFetch<ShopifyProductsOperation>({
       query: getProductsQuery,

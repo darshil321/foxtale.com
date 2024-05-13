@@ -31,8 +31,6 @@ const integrationUrls = {
 // };
 
 export function GokwikButton(passedData) {
-  console.log('passedData', passedData);
-
   // const cartId = cart.id;
   const updatedCart = useCart();
 
