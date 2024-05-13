@@ -26,10 +26,10 @@ type MerchandiseSearchParams = {
 
 export default function CartModal() {
   const [isOpen, setIsOpen] = useState(false);
-  console.log('isOpen', isOpen);
+  console.warn('isOpen', isOpen);
 
   const test = useCoupon();
-  console.log('test', test);
+  console.warn('test', test);
 
   const carts = useAppSelector((state) => state.cart.cart);
 

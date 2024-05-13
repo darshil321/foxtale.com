@@ -33,7 +33,9 @@ export const getApplicableCoupon = (coupon, cart) => {
 const getApplicableSubCart = (cart, applicableProducts) => {
   if (!applicableProducts) return null;
   const applicableCart = cart.lines.filter((cartItem) => {
-    const product = applicableProducts.find((item) => item === cartItem.merchandise.id);
+    const product = applicableProducts.find((item) => {
+      return item === cartItem.merchandise.id;
+    });
     if (product) {
       return true;
     }
@@ -48,6 +50,12 @@ const getApplicableSubCart = (cart, applicableProducts) => {
 };
 
 export const getMagicKey = () => {
+  const url = window.location.href;
+  const searchParams = new URLSearchParams(new URL(url).search);
+  const magicKey = searchParams.get('magicKey');
+
+  console.log('m', magicKey);
+
   return '234567';
 };
 
@@ -61,6 +69,7 @@ export const getApplicableMagicLink = ({ magicKey: key, coupons, cart, collectio
   }
   const { fields } = coupon;
 
+  console.log('coupon', coupon);
   //check if already added
   const isAlreadyAdded = cart.lines.some((line) => line.merchandise.id === fields.free_product);
   if (isAlreadyAdded) return null;
@@ -71,10 +80,14 @@ export const getApplicableMagicLink = ({ magicKey: key, coupons, cart, collectio
     const collection = collections.find((c) => c.id === fields.applicable_collection);
     if (collection) {
       const _products = removeEdgesAndNodes(collection.products);
-      if (_products) applicableProducts = _products.map((p) => p.id) || [];
+      if (!_products.length) return null;
+      const variants = _products
+        .map((p) => removeEdgesAndNodes(p.variants).map((v) => v.id))
+        .flat();
+
+      if (variants) applicableProducts = variants || [];
     }
   }
-
   //check if applicable product
   if (fields.applicable_products) {
     applicableProducts = [...applicableProducts, ...fields.applicable_products];
@@ -82,11 +95,21 @@ export const getApplicableMagicLink = ({ magicKey: key, coupons, cart, collectio
 
   const { totalAmount, totalQuantity } = getApplicableSubCart(cart, applicableProducts);
 
+  console.log(
+    'first',
+    fields.cart_total,
+    Number(fields.cart_total),
+    totalAmount,
+    fields.total_quantity,
+    Number(fields.total_quantity),
+    totalQuantity
+  );
   if (
     (!fields.cart_total || Number(fields.cart_total) <= totalAmount) &&
     fields.total_quantity &&
     Number(fields.total_quantity) <= totalQuantity
   ) {
+    console.log('@@@@', coupon);
     return coupon;
   }
   return null;

@@ -10,10 +10,13 @@ function useCoupon() {
   const gifts = useAppSelector((state) => state.cart.giftCoupons) || [];
   const magicLinks = useAppSelector((state) => state.cart.magicLinkCoupons) || [];
   const collections = useAppSelector((state) => state.collections.collections) || [];
+  // const products = useAppSelector((state) => state.products.products) || [];
+
+  console.log('cart', cart);
 
   // const dispatch = useDispatch();
 
-  const getFreeProductsByCoupon = () => {
+  const getFreeProductsByCoupon = (cart: any) => {
     const magicKey = getMagicKey();
 
     let magicLinkCoupon, freebieCoupon, giftCoupon;
@@ -36,10 +39,14 @@ function useCoupon() {
   };
 
   const adjustFreebiesInCart = () => {
-    const { freebieCoupon, giftCoupon, magicLinkCoupon } = getFreeProductsByCoupon();
+    const cartWithoutFree = clearFreeProductsFromCart();
+    const { freebieCoupon, giftCoupon, magicLinkCoupon } = getFreeProductsByCoupon(cartWithoutFree);
+    console.log('first', magicLinkCoupon);
     if (magicLinkCoupon) {
       const { fields } = magicLinkCoupon;
       if (fields.applicable_product) {
+        //applicable product cart chhe k nai .. product no data levano
+        //check free products exists in cart or not and remove extra free products
         // dispatch(cartActions.addToCart());
       }
     } else {
@@ -58,12 +65,24 @@ function useCoupon() {
       }
     }
   };
+
+  // const isFree = (id) => {
+  //   //check from 3 coupon's applicable free product
+  //   return true;
+  // };
+  const clearFreeProductsFromCart = () => {
+    // const items = cart.lines.filter((line) => !(line.price === 0 && isFree(line.merchandise.id))
+    //remove these items
+  };
+
   useEffect(() => {
     adjustFreebiesInCart();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cart]);
 
-  return {};
+  return {
+    adjustFreebiesInCart
+  };
 }
 
 export default useCoupon;

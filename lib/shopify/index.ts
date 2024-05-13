@@ -379,6 +379,7 @@ export async function getMetaObjects(type: string): Promise<Metaobject[]> {
     cache: 'no-store',
     variables: { type }
   });
+
   return removeEdgesAndNodes(res.body.data.metaobjects);
 }
 

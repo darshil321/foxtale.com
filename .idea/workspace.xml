@@ -5,28 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="91ba569e-7324-4d5b-be1e-59cd35442d9b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/globals.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/product/[handle]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/product/[handle]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/products/[collection]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/products/[collection]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/cart/add-to-cart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/cart/add-to-cart.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/cart/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/cart/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/[page]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/[page]/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/cart/modal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/cart/modal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/grid/tile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/grid/tile.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/layout/accordion.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/layout/accordion.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/layout/search/filter/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/layout/search/filter/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/layout/search/scrollhandler.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/product/product-carousel-slider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/product/product-carousel-slider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/product/product-description.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/product/product-description.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/product/product-details-tabs.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/product/product-details-tabs.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/product/product-disclosure.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/product/product-disclosure.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/product/results-section.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/product/results-section.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/product/variant-selector.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/product/variant-selector.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/helper/helper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/helper/helper.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/shopify/fragments/product.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/shopify/fragments/product.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/shopify/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/shopify/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/helper/cart-helper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/helper/cart-helper.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/hooks/use-coupon.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/hooks/use-coupon.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/shopify/queries/collection.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/shopify/queries/collection.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,18 +24,18 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2gGpH2ynIrqohfkXSXfO9UEzpPi" />
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Merging coupons&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/chiragparmar/Documents/foxtale/foxtale-frontend&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/chiragparmar/Documents/foxtale/foxtale-frontend/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/chiragparmar/Documents/foxtale/foxtale-frontend",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "/Users/chiragparmar/Documents/foxtale/foxtale-frontend/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

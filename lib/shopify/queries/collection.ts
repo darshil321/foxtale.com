@@ -60,6 +60,14 @@ export const getCollectionsQuery = /* GraphQL */ `
                     }
                   }
                 }
+                variants(first: 10) {
+                  edges {
+                    node {
+                      id
+                      title
+                    }
+                  }
+                }
               }
             }
           }

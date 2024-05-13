@@ -6,8 +6,6 @@ import Footer from 'components/layout/footer';
 import WrapperContainer from 'components/layout/wrapper-container';
 import Provider from '../store/store-provider';
 import Banner from 'components/layout/navbar/banner';
-import { getCollections, getMetaObjects, getProducts } from '@/lib/shopify';
-import InitialData from '@/components/initial-data';
 import { Poppins } from 'next/font/google';
 
 const poppins = Poppins({
@@ -43,25 +41,12 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
-  const giftsCoupon = await getMetaObjects('gifts');
-  const freebieCoupons = await getMetaObjects('freebies');
-  const magicLinks = await getMetaObjects('magic_link');
-  const collections = await getCollections();
-  const products = await getProducts();
-
   return (
     <html lang="en">
       <link rel="preconnect" href={process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN} />{' '}
       <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN} />
       <body>
         <Provider>
-          <InitialData
-            giftsCoupon={giftsCoupon}
-            freebieCoupons={freebieCoupons}
-            magicLinks={magicLinks}
-            collections={collections}
-            products={products}
-          />
           <Banner />
           <WrapperContainer>
             <Navbar />
