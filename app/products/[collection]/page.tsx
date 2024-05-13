@@ -1,4 +1,4 @@
-import { getCollection, getCollectionProducts } from 'lib/shopify';
+import { getCollection, getCollectionProducts, getCollections } from 'lib/shopify';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { defaultSort, sorting } from 'lib/constants';
@@ -6,13 +6,13 @@ import CollectionProductsContainer from '@/components/layout/search/collection-p
 
 export const fetchCache = 'force-cache';
 
-// export const generateStaticParams = async () => {
-//   const collections = await getCollections();
+export const generateStaticParams = async () => {
+  const collections = await getCollections();
 
-//   return collections?.map((collection: any) => ({
-//     collection: collection?.handle === '' ? 'all' : collection?.handle
-//   }));
-// };
+  return collections?.map((collection: any) => ({
+    collection: collection?.handle === '' ? 'all' : collection?.handle
+  }));
+};
 
 export async function generateMetadata({
   params

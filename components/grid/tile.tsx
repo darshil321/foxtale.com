@@ -24,6 +24,8 @@ export function GridTileImage({
     position?: 'bottom' | 'center';
   };
 } & React.ComponentProps<typeof Image>) {
+  if (!product) return null;
+  console.log('product.options', product.options);
   return (
     <div
       className={clsx(
@@ -83,7 +85,7 @@ export function GridTileImage({
             </div>
             <div className="product-info p-2">
               <div className="">
-                <Link href={`/product/${product?.handle}`}>
+                <Link href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}>
                   <h3 className=" leading-2 line-clamp-1 cursor-pointer text-[12px] transition-all hover:text-purple-400 md:text-base md:leading-6">
                     {label?.title}
                   </h3>
