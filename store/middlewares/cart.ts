@@ -35,7 +35,7 @@ export function* addToCartSaga(action: {
 }
 export function* updateCartSaga(action: {
   type: string;
-  payload: { lineId: string; variantId: string; quantity: number };
+  payload: { lineId: string; variantId: string; quantity: number }[];
 }): Generator<any, void, any> {
   try {
     const { payload } = action;
@@ -51,13 +51,11 @@ export function* removeCartSaga(action: {
   payload: { lineId: string };
 }): Generator<any, void, any> {
   try {
-    console.log('newRm1', action);
     const {
       payload: { lineId }
     } = action;
 
     const data = yield call({ fn: removeItem, context: null }, null, lineId);
-    console.log('newRm2', data, action);
 
     yield put(cartActions.setCart(data));
   } catch (error) {

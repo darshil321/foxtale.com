@@ -30,7 +30,7 @@ function SubmitButton({ removeIcon, item }: { removeIcon?: boolean; item?: CartI
       {pending ? (
         <LoadingDots className="bg-white" />
       ) : removeIcon ? (
-        <TrashIcon className="cursor-pointer bg-white text-lg text-black hover:text-red-600" />
+        <TrashIcon className="h-4 w-4" />
       ) : (
         <XMarkIcon className="hover:text-accent-3 mx-[1px] h-4 w-4 text-white " />
       )}
@@ -39,10 +39,6 @@ function SubmitButton({ removeIcon, item }: { removeIcon?: boolean; item?: CartI
 }
 
 export function DeleteItemButton({ item, removeIcon }: { item: CartItem; removeIcon?: boolean }) {
-  // const [message, formAction] = useFormState(removeItem, null);
-  // const itemId = item.id;
-  // const actionWithVariant = formAction.bind(null, itemId);
-
   return (
     <>
       <SubmitButton removeIcon={removeIcon} item={item} />

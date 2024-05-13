@@ -5,15 +5,19 @@ import { DEFAULT_OPTION } from 'lib/constants';
 import { createUrl } from 'lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import CloseCart from './close-cart';
 import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
 import OpenCart from './open-cart';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
-import { useAppSelector } from 'store/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 
-import { getCartData } from '@/lib/helper/helper';
+import { debounce, getCartData } from '@/lib/helper/helper';
+import { CartItem } from '@/lib/shopify/types';
+import { setCart, setCartOpen } from '@/store/slices/cart-slice';
+import { cartActions } from '@/store/actions/cart.action';
+import { GokwikButton } from '../product/go-kwik-button';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -22,32 +26,56 @@ type MerchandiseSearchParams = {
 export default function CartModal() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const openCart = () => setIsOpen(true);
-  const closeCart = () => setIsOpen(false);
-
   const carts = useAppSelector((state) => state.cart.cart);
-
-  useEffect(() => {
-    if (carts && !isOpen) {
-      setIsOpen(true);
-    }
-
-    // Always update the quantity reference
-    // quantityRef.current = cart?.totalQuantity;
-    // }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [carts]);
 
   const data = getCartData(carts);
   const { currencyCode, totalAmount } = data;
+  const dispatch = useAppDispatch();
+  function increaseItemQuantity({ cart, item, type }: { cart: any; item: CartItem; type: string }) {
+    const updatedCart = JSON.parse(JSON.stringify(cart));
+    updatedCart.totalQuantity++;
+
+    const index = updatedCart.lines.findIndex(
+      (line: any) => line.merchandise.id === item.merchandise.id
+    );
+
+    if (index !== -1) {
+      type === 'plus' ? updatedCart.lines[index].quantity++ : updatedCart.lines[index].quantity--;
+
+      updatedCart.lines[index].cost.totalAmount.amount =
+        updatedCart.lines[index].cost.amountPerQuantity.amount * updatedCart.lines[index].quantity;
+    }
+
+    dispatch(setCart(updatedCart));
+    const payload = updatedCart?.lines?.map((item: any) => {
+      return {
+        id: item.id,
+        merchandiseId: item.merchandise.id,
+        quantity: item.quantity
+      };
+    });
+    debouncedUpdateItemQuantity(payload);
+  }
+  const debouncedUpdateItemQuantity = useCallback(() => {
+    const debouncedFunction = debounce((payload) => {
+      dispatch(cartActions.updateCart(payload));
+    }, 2000);
+
+    return debouncedFunction;
+  }, [dispatch]);
+
+  const { isCartOpen } = useAppSelector((state) => state.cart);
+  useEffect(() => {
+    setIsOpen(isCartOpen);
+  }, [isCartOpen]);
 
   return (
     <>
-      <button aria-label="Open cart" onClick={openCart}>
+      <button aria-label="Open cart" onClick={() => dispatch(setCartOpen(true))}>
         <OpenCart quantity={data?.totalQuantity} />
       </button>
       <Transition show={isOpen}>
-        <Dialog onClose={closeCart} className="relative z-50">
+        <Dialog onClose={() => dispatch(setCartOpen(false))} className="relative z-50">
           <Transition.Child
             as={Fragment}
             enter="transition-all ease-in-out duration-300"
@@ -72,7 +100,7 @@ export default function CartModal() {
               <div className="flex items-center justify-between">
                 <p className="text-lg font-semibold">My Cart</p>
 
-                <button aria-label="Close carts" onClick={closeCart}>
+                <button aria-label="Close carts" onClick={() => dispatch(setCartOpen(false))}>
                   <CloseCart />
                 </button>
               </div>
@@ -100,6 +128,7 @@ export default function CartModal() {
                         `/product/${item.merchandise?.product.handle}`,
                         new URLSearchParams(merchandiseSearchParams)
                       );
+
                       return (
                         <li key={i} className="flex w-full flex-col">
                           <div className="relative flex w-full flex-row justify-between px-1 py-4">
@@ -108,7 +137,7 @@ export default function CartModal() {
                             </div>
                             <Link
                               href={merchandiseUrl}
-                              onClick={closeCart}
+                              onClick={() => dispatch(setCartOpen(false))}
                               className="z-30 flex flex-row space-x-4"
                             >
                               <div className="relative h-16 w-16 cursor-pointer overflow-hidden rounded-md  border border-neutral-300 bg-neutral-300 ">
@@ -144,11 +173,26 @@ export default function CartModal() {
                                 currencyCode={item?.cost?.totalAmount?.currencyCode}
                               />
                               <div className="ml-auto flex h-9 flex-row items-center  border border-neutral-200 ">
-                                <EditItemQuantityButton item={item} type="minus" />
+                                <EditItemQuantityButton
+                                  onClick={() => {
+                                    if (item.quantity > 1) {
+                                      increaseItemQuantity({ cart: carts, item, type: 'minus' });
+                                    } else {
+                                      dispatch(cartActions.removeCart({ lineId: item.id }));
+                                    }
+                                  }}
+                                  type="minus"
+                                />
+
                                 <p className="w-6 text-center">
                                   <span className="w-full text-sm">{item.quantity}</span>
                                 </p>
-                                <EditItemQuantityButton item={item} type="plus" />
+                                <EditItemQuantityButton
+                                  onClick={() =>
+                                    increaseItemQuantity({ cart: carts, item, type: 'plus' })
+                                  }
+                                  type="plus"
+                                />
                               </div>
                             </div>
                           </div>
@@ -157,18 +201,6 @@ export default function CartModal() {
                     })}
                   </ul>
                   <div className="py-4 text-sm text-neutral-500 ">
-                    {/* <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 ">
-                      <p>Taxes</p>
-                      <Price
-                        className="text-right text-base text-black "
-                        amount={carts.cost?.totalTaxAmount?.amount}
-                        currencyCode={carts.cost?.totalTaxAmount?.currencyCode}
-                      />
-                    </div>
-                    <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1 ">
-                      <p>Shipping</p>
-                      <p className="text-right">Calculated at checkout</p>
-                    </div> */}
                     <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1">
                       <p>Total</p>
                       <Price
@@ -178,12 +210,7 @@ export default function CartModal() {
                       />
                     </div>
                   </div>
-                  <a
-                    href={carts.checkoutUrl}
-                    className="block w-full  bg-black p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100"
-                  >
-                    Proceed to Checkout
-                  </a>
+                  <GokwikButton title={'Proceed To Checkout'} buyNowButton={true} quantity={1} />
                 </div>
               )}
             </Dialog.Panel>

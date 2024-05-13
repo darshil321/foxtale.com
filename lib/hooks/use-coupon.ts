@@ -6,19 +6,18 @@ function useCoupon() {
   const cart = useAppSelector((state) => state.cart.cart);
   const freebies = useAppSelector((state) => state.cart.freebieCoupons) || [];
   const gifts = useAppSelector((state) => state.cart.giftCoupons) || [];
-  console.log('freebies', freebies, gifts);
+  console.log(gifts);
+
   const getFreebiesProduct = (freebies, cart) => {
-    console.log(2);
     if (!freebies.length) return null;
     freebies.map((freebie) => {
       const { applicable_products } = freebie;
       const res = getApplicableSubCart(cart, applicable_products);
-      console.log('applicableCart', res);
+      console.log(res);
     });
   };
 
   const getApplicableSubCart = (cart, applicableProducts) => {
-    console.log(3);
     const applicableCart = cart.lines.filter((cartItem) => {
       const product = applicableProducts.find((item) => item.id === cartItem.merchandise.id);
       if (product) {
@@ -26,7 +25,6 @@ function useCoupon() {
       }
       return false;
     });
-    console.log('applicableCart', applicableCart);
     const { totalAmount, totalQuantity } = getCartData(applicableCart);
     return {
       totalAmount,
@@ -40,11 +38,10 @@ function useCoupon() {
     } else {
       // const coupon = findClosestCoupon(freebies, cart);
       const freeProduct = getFreebiesProduct(freebies, cart);
-      console.log('freeProduct', freeProduct);
+      console.log(freeProduct);
     }
   };
   useEffect(() => {
-    console.log(1);
     getFreeProductsByCoupon();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [freebies, cart]);

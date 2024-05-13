@@ -60,10 +60,10 @@ export async function removeItem(prevState: any, lineId: string) {
 export async function updateItemQuantity(
   prevState: any,
   payload: {
-    lineId: string;
-    variantId: string;
+    id: string;
+    merchandiseId: string;
     quantity: number;
-  }
+  }[]
 ) {
   const cartId = cookies().get('cartId')?.value;
 
@@ -71,23 +71,16 @@ export async function updateItemQuantity(
     return 'Missing cart ID';
   }
 
-  const { lineId, variantId, quantity } = payload;
-  console.log('updating', payload);
+  // const { lineId, variantId, quantity } = payload;
 
   try {
-    if (quantity === 0) {
-      const data = await removeFromCart(cartId, [lineId]);
-      revalidateTag(TAGS.cart);
-      return data;
-    }
+    // if (quantity === 0) {
+    //   const data = await removeFromCart(cartId, [lineId]);
+    //   revalidateTag(TAGS.cart);
+    //   return data;
+    // }
 
-    const data = await updateCart(cartId, [
-      {
-        id: lineId,
-        merchandiseId: variantId,
-        quantity
-      }
-    ]);
+    const data = await updateCart(cartId, payload);
 
     revalidateTag(TAGS.cart);
     return data;

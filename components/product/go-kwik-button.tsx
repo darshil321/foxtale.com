@@ -1,10 +1,10 @@
 // @ts-nocheck
 'use client';
-import { useCart } from '@shopify/hydrogen-react';
 import { useEffect } from 'react';
 import { gokwikConfig } from '../../lib/shopify/gokwik.config';
-import { createCart } from '@/lib/shopify';
+import { createCart, getCart } from '@/lib/shopify';
 import { addItem } from '../cart/actions';
+import { useAppSelector } from '@/store/hooks';
 
 const integrationUrls = {
   local: 'http://localhost:8080/integration.js',
@@ -31,12 +31,7 @@ const integrationUrls = {
 // };
 
 export function GokwikButton(passedData) {
-  console.log('passedData', passedData);
-
-  // const cartId = cart.id;
-  const updatedCart = useCart();
-
-  // const cartId = useAppSelector((state) => state.cart.cart?.id);
+  const cartId = useAppSelector((state) => state.cart.cart?.id);
 
   let buyNowRun = false;
   useEffect(() => {
@@ -66,15 +61,18 @@ export function GokwikButton(passedData) {
     };
   }, [buyNowRun]);
 
-  const triggerBuyNow = (passedData: { quantity: number; variantId: string }) => {
-    // createBuyNowCart(passedData);
-    createCart().then((data) => {
-      console.log('ppp', data);
-      addItem(null, passedData.variantId, data.id).then((data) => {
-        console.log('pppp', data);
+  const triggerBuyNow = (passedData: { quantity: number; variantId: string; title: string }) => {
+    if (passedData.title === 'Buy Now') {
+      createCart().then((data) => {
+        addItem(null, passedData.variantId, data.id).then((data) => {
+          triggerGokwikCheckout(data);
+        });
+      });
+    } else {
+      getCart(cartId).then((data) => {
         triggerGokwikCheckout(data);
       });
-    });
+    }
   };
 
   // const makeXhr = async (method, url, data, track) => {
@@ -145,7 +143,6 @@ export function GokwikButton(passedData) {
   //   }
 
   //   makeXhr('POST', url, analyticsObj, (status, response) => {
-  //     console.log(response);
 
   //     //added to pass param
   //     if (status !== 201) {
@@ -153,133 +150,6 @@ export function GokwikButton(passedData) {
   //   });
   // };
 
-  //   const addToCart = (cart: CartWithActions) => {
-  //     const query = `
-  //         mutation addItemToCart($cartId: ID!, $lines: [CartLineInput!]!) {
-  //           cartLinesAdd(cartId: $cartId, lines: $lines) {
-  //             cart {
-  //               id}}}`;
-
-  //     const variables = {
-  //       cartId: cart.id,
-  //       lines: {
-  //         merchandiseId: cart?.lines[0]?.merchandise?.id,
-  //         quantity: cart?.lines[0]?.quantity
-  //       }
-  //     };
-  //     gokwikStoreFrontApi(query, variables);
-  //   };
-  //   const removeFromCart = (cart: CartWithActions) => {
-  //     // const lineIDsToRemove = [];
-
-  //     const query = `
-  //         mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
-  //   cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
-  //     cart {
-  //      id
-  //     }
-
-  //   }
-  // }`;
-  //     const variables = {
-  //       cartId: cart.id,
-  //       lineIds: []
-  //     };
-  //     gokwikStoreFrontApi(query, variables);
-  //   };
-
-  const getCart = async (id) => {
-    console.log(id);
-
-    const query = `
-        query getCart($cartId: ID!){
-    cart(id: $cartId){
-      id
-
-
-      discountCodes {
-        applicable
-        code
-      }
-
-      attributes {
-        key
-        value
-      }
-      cost {
-        totalAmount {
-          amount
-          currencyCode
-        }
-        subtotalAmount {
-          amount
-          currencyCode
-        }
-      }
-      totalQuantity
-      note
-      lines(first: 100) {
-        edges {
-          node {
-            id
-						
-            merchandise {
-              ... on ProductVariant {
-                id
-                title
-                product {
-                  createdAt
-                  description
-                  id
-                  productType
-                  title
-                  updatedAt
-                  vendor
-                }
-                image {
-                  height
-                  id
-                  url
-                  width
-                }
-                price{
-                  amount
-                }
-                unitPrice {
-                  amount
-                  currencyCode
-                }
-              }
-            }
-            quantity
-          }
-        }
-      }
-    }
-  }`;
-    const variable = {
-      cartId: 'gid://shopify/Cart/Z2NwLXVzLWVhc3QxOjAxSFdZVlNSMjJRMkRNMTI0S0tNWDBTRjJQ'
-    };
-    return await gokwikStoreFrontApi(query, variable);
-  };
-
-  const gokwikStoreFrontApi = async (query: string, variables: any) => {
-    return await fetch(gokwikConfig.shopifyGraphQlUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': gokwikConfig.storefrontAccessToken
-      },
-      body: JSON.stringify({ query, variables })
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .catch((err) => {
-        console.log(err);
-        return err;
-      });
-  };
   const triggerGokwikCheckout = async (cart?) => {
     if (cart) {
       window.merchantInfo.cart = cart;
@@ -306,7 +176,7 @@ export function GokwikButton(passedData) {
             passedData.buyNowButton ? triggerBuyNow(passedData) : triggerGokwikCheckout();
           }}
         >
-          {passedData.buyNowButton ? 'Buy Now' : 'Pay via UPI/COD'}
+          {passedData.buyNowButton ? passedData.title : 'Pay via UPI/COD'}
         </button>
       )}
     </>

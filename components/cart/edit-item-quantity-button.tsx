@@ -1,17 +1,9 @@
 'use client';
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-import { addItem, removeItem, updateItemQuantity } from 'components/cart/actions';
 import LoadingDots from 'components/loading-dots';
-import type { CartItem } from 'lib/shopify/types';
-import { useFormState, useFormStatus } from 'react-dom';
-import { MetaObject, debounce, findClosestCoupon } from 'lib/helper/helper';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { setCart } from 'store/slices/cart-slice';
-
-import { cartActions } from '@/store/actions/cart.action';
-// import { Metaobject } from '@shopify/hydrogen-react/storefront-api-types';
+import { useFormStatus } from 'react-dom';
 
 function SubmitButton({
   type,
@@ -49,118 +41,21 @@ function SubmitButton({
 }
 
 export function EditItemQuantityButton({
-  item,
+  onClick,
   type
 }: {
-  item: CartItem;
-  type: 'plus' | 'minus';
+  onClick: () => void;
   // eslint-disable-next-line no-unused-vars
-  handleLocalQuantityChange?: (itemId: string, newQuantity: number) => void;
-  localQuantity?: number;
+  type: 'plus' | 'minus';
 }) {
-  const [metaObject] = useState<MetaObject[]>();
-
-  const cart = useAppSelector((state) => state.cart.cart);
-  const cartProducts = cart?.lines?.map((line: any) => line.merchandise?.id);
-
-  useEffect(() => {
-    // const fetchData = async () => {
-    //   try {
-    //     const metaObjects = await getMetaObjects();
-    //     const transformedMetaObjects = metaObjects?.map((metaObject) => {
-    //       const fieldsObject: Record<string, string> = {};
-    //       metaObject?.fields?.forEach((field) => {
-    //         fieldsObject[field.key ?? ''] = field.value ?? '';
-    //       });
-    //       console.log('fieldsObject', fieldsObject);
-    //       return { ...metaObject, fields: fieldsObject };
-    //     });
-    //     console.log('transformedMetaObjects', transformedMetaObjects);
-    //     setMetaObject(transformedMetaObjects);
-    //     console.log('metaObjec', metaObjects);
-    //   } catch (error) {
-    //     // Handle error
-    //   }
-    // };
-    // fetchData();
-    // const coupen = findClosestCoupon(metaObject ?? [], cart);
-    // if (coupen) {
-    //   console.log('coupen', coupen);
-    //   // formActionFree(coupen.fields.free_bie);
-    // }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  const [m, formActionFree] = useFormState(addItem, null);
-  console.log(m);
-
-  const [formAction] = useFormState(updateItemQuantity, null);
   const { pending } = useFormStatus();
-  const dispatch = useAppDispatch();
-
-  function increaseItemQuantity({ cart, item }: { cart: any; item: CartItem }) {
-    const updatedCart = JSON.parse(JSON.stringify(cart));
-    updatedCart.totalQuantity++;
-
-    const index = updatedCart.lines.findIndex(
-      (line: any) => line.merchandise.id === item.merchandise.id
-    );
-
-    if (index !== -1) {
-      type === 'plus' ? updatedCart.lines[index].quantity++ : updatedCart.lines[index].quantity--;
-
-      updatedCart.lines[index].cost.totalAmount.amount =
-        updatedCart.lines[index].cost.amountPerQuantity.amount * updatedCart.lines[index].quantity;
-    }
-
-    const coupen = findClosestCoupon(metaObject ?? [], updatedCart);
-
-    if (coupen) {
-      if (!cartProducts?.includes(coupen.fields.free_bie ?? '')) {
-        formActionFree(coupen.fields.free_bie);
-      }
-    } else {
-      const freeLineId = cart?.lines?.find(
-        (line: any) => Number(line?.cost?.totalAmount?.amount) === 0
-      )?.id;
-
-      if (freeLineId) {
-        formActionRemove.bind(null, freeLineId);
-      }
-    }
-
-    dispatch(setCart(updatedCart));
-    console.log('newUp0', updatedCart?.lines[index]?.quantity);
-
-    debouncedUpdateItemQuantity(updatedCart?.lines[index]?.quantity);
-  }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedUpdateItemQuantity: any = useCallback(
-    debounce((newQuantity: number) => {
-      const payload = {
-        lineId: item.id,
-        variantId: item.merchandise.id,
-        quantity: newQuantity
-      };
-      dispatch(cartActions.updateCart(payload));
-
-      // formAction(payload);
-    }, 1000),
-    [item.id, item.merchandise.id, formAction]
-  );
-
-  const handleQuantityChange = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    if (cart) increaseItemQuantity({ cart, item });
-  };
-  const [mrf, formActionRemove] = useFormState(removeItem, null);
-  console.log(mrf);
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>
       <SubmitButton
         type={type}
         onClick={(e) => {
-          handleQuantityChange(e);
+          onClick(e);
         }}
         pending={pending}
       />

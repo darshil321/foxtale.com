@@ -34,6 +34,7 @@ export interface CartState {
   metaObjects: any;
   giftCoupons?: GiftCoupon;
   freebieCoupons: FreebieCoupon;
+  isCartOpen: boolean;
 }
 
 export const initialState: CartState = {
@@ -41,7 +42,9 @@ export const initialState: CartState = {
   cart: null,
   error: null,
   quantities: {},
-  metaObjects: []
+  metaObjects: [],
+
+  isCartOpen: false
 };
 
 export const cartSlice = createSlice({
@@ -67,23 +70,15 @@ export const cartSlice = createSlice({
         ...cart,
         lines: cart?.lines.filter((item: any) => item.id !== action.payload.lineId)
       };
-
-      // const data = current(state.cart);
-      // console.log('newRmc3 incart', data, action);
     },
     addToCart: (state, action) => {
-      console.log('@@@5');
-
       const {
         payload: { product, selectedVariantId, tempId }
       } = action;
 
-      console.log('selectedVariantId', selectedVariantId);
       const variant = getDefaultVariant(product, selectedVariantId);
-      console.log('variant', variant);
 
       if (!variant) {
-        console.log('Variant Not Found');
         return;
       }
 
@@ -110,19 +105,9 @@ export const cartSlice = createSlice({
       }
 
       if (!cart.cart || !cart.cart.lines) {
-        console.log('cartLines not found');
         return;
       }
       state.cart = { ...cart.cart, lines: cartLines, totalQuantity: cart.cart.totalQuantity + 1 };
-
-      // const _cart = current(state);
-      // const magic_key = '234567';
-      // const _product = getCoupon(_cart.metaObjects, _cart.cart, 'magic_link', magic_key);
-      // console.log('_product', _product);
-      // const isExist = cartLines?.find((item) => _product.id === item.id);
-      // if (_product && isExist) {
-      //   dispatch(cartActions.addToCart({}));
-      // }
     },
 
     attemptGetCarts: () => {
@@ -130,13 +115,13 @@ export const cartSlice = createSlice({
     },
     setCart: (state, action) => {
       const { tempId, ...res } = action.payload;
-      const cartLines = res?.lines.map((cartItem: any) => {
+      const cartLines: CartItem[] = res?.lines.map((cartItem: CartItem) => {
         if (cartItem.id === tempId) {
           return { ...res };
         }
         return cartItem;
       });
-
+      // const filteredCartLines = cartLines.filter((cartItem) => cartItem.quantity > 0);
       state.cart = { ...res, lines: cartLines as CartItem[] };
     },
 
@@ -151,11 +136,12 @@ export const cartSlice = createSlice({
     },
     setGiftCoupons: (state, action) => {
       state.giftCoupons = getReformedCoupons(action.payload);
-      console.log('setGiftCoupons', state.giftCoupons);
     },
     setFreebieCoupons: (state, action) => {
       state.freebieCoupons = getReformedCoupons(action.payload);
-      console.log('freebieCoupons', state.freebieCoupons);
+    },
+    setCartOpen: (state, action) => {
+      state.isCartOpen = action.payload;
     }
   }
 });
@@ -168,6 +154,9 @@ export const {
   updateCartItemQuantity,
   setMetaObject,
   setGiftCoupons,
-  setFreebieCoupons
+  setFreebieCoupons,
+  setCartOpen,
+  removeCart,
+  addToCart
 } = cartSlice.actions;
 export default cartSlice.reducer;

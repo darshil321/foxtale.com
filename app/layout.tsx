@@ -40,7 +40,6 @@ export const metadata = {
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const giftsCoupon = await getMetaObjects('gifts');
   const freebieCoupons = await getMetaObjects('freebies');
-  console.log('dataaaaaa2', freebieCoupons);
   return (
     <html lang="en" className={GeistSans.variable}>
       <link rel="preconnect" href={process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN} />{' '}

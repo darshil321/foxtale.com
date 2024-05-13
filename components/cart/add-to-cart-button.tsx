@@ -9,6 +9,7 @@ import { useAppDispatch } from 'store/hooks';
 import { cartActions } from 'store/actions/cart.action';
 import { v4 as uuidv4 } from 'uuid';
 import { getDefaultVariant } from '@/lib/helper/helper';
+import { setCartOpen } from '@/store/slices/cart-slice';
 
 function SubmitButton({
   availableForSale,
@@ -38,6 +39,7 @@ function SubmitButton({
     <button
       onClick={(e: React.FormEvent<HTMLButtonElement>) => {
         if (pending) e.preventDefault();
+        dispatch(setCartOpen(true));
         dispatch(
           cartActions.addToCart({
             selectedVariantId: selectedVariantId,
