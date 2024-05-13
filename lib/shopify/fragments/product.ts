@@ -8,6 +8,27 @@ const productFragment = /* GraphQL */ `
     availableForSale
     title
     description
+    metafields(
+      identifiers: [
+        { key: "unique", namespace: "custom" }
+        { key: "combo_overview", namespace: "custom" }
+        { key: "faq-section", namespace: "global" }
+        { key: "custom-tab", namespace: "custom" }
+      ]
+    ) {
+      description
+      id
+      key
+      parentResource {
+        ... on Product {
+          id
+          handle
+          title
+        }
+      }
+      namespace
+      value
+    }
     descriptionHtml
     options {
       id

@@ -52,7 +52,6 @@ export async function appendReviewAndRating(products: any) {
 
     return products;
   } catch (error) {
-    console.log('error', error);
     throw error;
   }
 }
@@ -116,17 +115,13 @@ export function getCoupon(metaObjects: any, cart: any, type: string, magic_key: 
 
     const freeProduct = magicArray.find((obj: any) => {
       if (obj.applicable_product) {
-        console.log('obj.applicable_product', obj.applicable_product);
-        console.log('cartItems', cartItems);
         const product = cartItems?.find(
           (item: any) => item.merchandise.id === obj.applicable_product
         );
-        console.log('product', product);
         if (product) {
           return obj.free_product;
         }
       } else if (obj.cart_total) {
-        console.log('reached here in cart total');
         let cartTotal = 0;
         cartItems.forEach((item: any) => {
           cartTotal += +item.cost.totalAmount.amount;
@@ -154,10 +149,6 @@ export const getDefaultVariant = (product: any, variantId?: string) => {
   }
 };
 
-export const getMagicLink = () => {
-  return '123';
-};
-
 export const findClosestCoupon = (
   metaObjects: MetaObject[],
   updatedCart: Cart | null
@@ -183,7 +174,7 @@ export const findClosestCoupon = (
   return closestObject;
 };
 
-export const getCartItem = (tempId: any, product: any, variant) => {
+export const getCartItem = (tempId: any, product: any, variant: any) => {
   return {
     id: tempId,
     cost: {
@@ -223,17 +214,37 @@ export const getCartData = (cart: Cart) => {
     return acc + lineTotalAmount;
   }, 0);
 
-  const cartTotalQuantity = cart?.lines?.reduce((acc: number, line: CartItem) => {
-    const lineQuantity =
-      Number(line?.cost?.amountPerQuantity?.amount) === 0 ? 0 : Number(line.quantity);
-    return acc + lineQuantity;
-  }, 0);
+  const cartTotalQuantity =
+    cart?.lines?.reduce((acc: number, line: CartItem) => {
+      const lineQuantity =
+        Number(line?.cost?.amountPerQuantity?.amount) === 0 ? 0 : Number(line.quantity);
+      return acc + lineQuantity;
+    }, 0) || null;
 
-  const cartTotalAmount = totalCost?.toFixed(2);
+  const cartTotalAmount = totalCost?.toFixed(2) || null;
 
   return {
-    totalAmount: cartTotalAmount,
-    totalQuantity: cartTotalQuantity,
+    totalAmount: Number(cartTotalAmount),
+    totalQuantity: Number(cartTotalQuantity),
     currencyCode: cart?.cost?.totalAmount?.currencyCode
   };
+};
+
+export function getReformedCoupons(metaObjects: any) {
+  const transformedMetaObjects = metaObjects?.map((metaObject: any) => {
+    const fieldsObject: Record<string, string> = {};
+    metaObject?.fields?.forEach((field: any) => {
+      fieldsObject[field.key ?? ''] = field.value ?? '';
+
+      if ((field.key === 'applicable_products' || field.key === 'gift') && field.value) {
+        fieldsObject[field.key ?? ''] = JSON.parse(field.value) ?? '';
+      }
+    });
+    return { ...metaObject, fields: fieldsObject };
+  });
+  return transformedMetaObjects;
+}
+
+export const removeEdgesAndNodes = (array: Connection<any>) => {
+  return array.edges.map((edge) => edge?.node);
 };

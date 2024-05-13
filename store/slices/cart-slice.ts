@@ -1,14 +1,55 @@
-import { getCartItem, getDefaultVariant } from '@/lib/helper/helper';
+import { getCartItem, getDefaultVariant, getReformedCoupons } from '@/lib/helper/helper';
 import { createSlice, current } from '@reduxjs/toolkit';
 import { Cart, CartItem } from 'lib/shopify/types';
-// import { cookies } from 'next/headers';
+interface Giftfield {
+  applicable_product: string[];
+  buy_x_quantity: string;
+  coupon_code: string;
+  gift: string[];
+  price_cap: string;
+}
+interface Freebiefield {
+  applicable_products: string[];
+  buy_x_quantity: string;
+  coupon_code: string;
+  freebie: string[];
+  price_cap: string;
+}
 
+interface MagicLinkFields {
+  applicable_products: string[];
+  applicable_collection: string[];
+  cart_total: number;
+  magic_key: string;
+  free_product: string[];
+  total_quantity: string;
+}
+
+interface GiftCoupon {
+  fields: Giftfield[];
+  id: string; // ID of the coupon
+  type: string; // Type of coupon
+}
+interface FreebieCoupon {
+  fields: Freebiefield[];
+  id: string; // ID of the coupon
+  type: string; // Type of coupon
+}
+interface MagicLinkCoupon {
+  fields: MagicLinkFields[];
+  id: string;
+  type: string;
+}
 export interface CartState {
   loading: boolean;
   cart: Cart | any;
   quantities: any;
   error: any;
   metaObjects: any;
+  giftCoupons?: GiftCoupon;
+  freebieCoupons: FreebieCoupon;
+  magicLinkCoupons: MagicLinkCoupon;
+  isCartOpen: boolean;
 }
 
 export const initialState: CartState = {
@@ -16,7 +57,8 @@ export const initialState: CartState = {
   cart: null,
   error: null,
   quantities: {},
-  metaObjects: []
+  metaObjects: [],
+  isCartOpen: false
 };
 
 export const cartSlice = createSlice({
@@ -42,23 +84,15 @@ export const cartSlice = createSlice({
         ...cart,
         lines: cart?.lines.filter((item: any) => item.id !== action.payload.lineId)
       };
-
-      // const data = current(state.cart);
-      // console.log('newRmc3 incart', data, action);
     },
     addToCart: (state, action) => {
-      console.log('@@@5');
-
       const {
         payload: { product, selectedVariantId, tempId }
       } = action;
 
-      console.log('selectedVariantId', selectedVariantId);
       const variant = getDefaultVariant(product, selectedVariantId);
-      console.log('variant', variant);
 
       if (!variant) {
-        console.log('Variant Not Found');
         return;
       }
 
@@ -85,33 +119,30 @@ export const cartSlice = createSlice({
       }
 
       if (!cart.cart || !cart.cart.lines) {
-        console.log('cartLines not found');
         return;
       }
       state.cart = { ...cart.cart, lines: cartLines, totalQuantity: cart.cart.totalQuantity + 1 };
-
-      // const _cart = current(state);
-      // const magic_key = '234567';
-      // const _product = getCoupon(_cart.metaObjects, _cart.cart, 'magic_link', magic_key);
-      // console.log('_product', _product);
-      // const isExist = cartLines?.find((item) => _product.id === item.id);
-      // if (_product && isExist) {
-      //   dispatch(cartActions.addToCart({}));
-      // }
     },
 
     attemptGetCarts: () => {
       //loading true
     },
+
     setCart: (state, action) => {
+      console.log('action', action.payload);
+      const fromSaga = action.payload?.isTest;
+
+      const _state = current(state);
+      if (_state.loading && fromSaga) return;
       const { tempId, ...res } = action.payload;
-      const cartLines = res?.lines.map((cartItem: any) => {
+
+      const cartLines: CartItem[] = res?.lines.map((cartItem: CartItem) => {
         if (cartItem.id === tempId) {
           return { ...res };
         }
         return cartItem;
       });
-
+      // const filteredCartLines = cartLines.filter((cartItem) => cartItem.quantity > 0);
       state.cart = { ...res, lines: cartLines as CartItem[] };
     },
 
@@ -123,16 +154,38 @@ export const cartSlice = createSlice({
 
     setMetaObject: (state, action) => {
       state.metaObjects = action.payload;
+    },
+    setGiftCoupons: (state, action) => {
+      state.giftCoupons = getReformedCoupons(action.payload);
+    },
+    setFreebieCoupons: (state, action) => {
+      state.freebieCoupons = getReformedCoupons(action.payload);
+    },
+    setMagicLinkCoupons: (state, action) => {
+      state.magicLinkCoupons = getReformedCoupons(action.payload);
+    },
+    setCartOpen: (state, action) => {
+      state.isCartOpen = action.payload;
+    },
+    setCartLoading: (state, action) => {
+      state.loading = action.payload;
     }
   }
 });
 
 export const {
+  setCartLoading,
   getCartSuccess,
   setCart,
   getCartFailed,
   attemptGetCarts,
   updateCartItemQuantity,
-  setMetaObject
+  setMetaObject,
+  setGiftCoupons,
+  setFreebieCoupons,
+  setCartOpen,
+  removeCart,
+  addToCart,
+  setMagicLinkCoupons
 } = cartSlice.actions;
 export default cartSlice.reducer;

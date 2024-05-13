@@ -2,11 +2,18 @@ import { getCollection, getCollectionProducts, getCollections } from 'lib/shopif
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { defaultSort, sorting } from 'lib/constants';
-import CollectionProductsContainer from '@/components/layout/search/collection-products';
-import GetRequiredData from '@/components/common/get-required-data';
+import dynamic from 'next/dynamic';
+
+const CollectionProductsContainer = dynamic(
+  () => import('@/components/layout/search/collection-products'),
+  { ssr: false }
+);
+
 export const fetchCache = 'force-cache';
+
 export const generateStaticParams = async () => {
   const collections = await getCollections();
+
   return collections?.map((collection: any) => ({
     collection: collection?.handle === '' ? 'all' : collection?.handle
   }));
@@ -60,7 +67,7 @@ export default async function CategoryPage({
 
   return (
     <>
-      <GetRequiredData />
+      {/* <GetRequiredData /> */}
       <div className="h-full w-full gap-4 space-y-6 ">
         {productsByCollection?.map((products, index) => (
           <CollectionProductsContainer

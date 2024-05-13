@@ -4,33 +4,25 @@ import { addToCart, createCart, getCart, removeFromCart, updateCart } from 'lib/
 import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 
-export async function addItem(
-  prevState: any,
-  selectedVariantId: string | undefined,
-  instantCartId?: string
-) {
-  let cartId;
-  if (!instantCartId) {
-    cartId = cookies().get('cartId')?.value;
-  } else {
-    cartId = instantCartId;
-  }
-
+export async function addItem(selectedVariantId: string) {
+  let cartId = cookies().get('cartId')?.value || null;
   let cart;
 
-  if (cartId) {
-    cart = await getCart(cartId);
+  if (!selectedVariantId) {
+    console.log('Missing product variant ID');
+    return 'Missing product variant ID';
   }
+  if (cartId) cart = await getCart(cartId);
 
+  // Create cart
   if (!cartId || !cart) {
     cart = await createCart();
+    console.log('@@', cart);
     cartId = cart.id;
     cookies().set('cartId', cartId);
   }
 
-  if (!selectedVariantId) {
-    return 'Missing product variant ID';
-  }
+  console.log('cart', selectedVariantId);
 
   try {
     const data = await addToCart(cartId, [{ merchandiseId: selectedVariantId, quantity: 1 }]);
@@ -60,10 +52,10 @@ export async function removeItem(prevState: any, lineId: string) {
 export async function updateItemQuantity(
   prevState: any,
   payload: {
-    lineId: string;
-    variantId: string;
+    id: string;
+    merchandiseId: string;
     quantity: number;
-  }
+  }[]
 ) {
   const cartId = cookies().get('cartId')?.value;
 
@@ -71,27 +63,13 @@ export async function updateItemQuantity(
     return 'Missing cart ID';
   }
 
-  const { lineId, variantId, quantity } = payload;
-  console.log('updating', payload);
-
   try {
-    if (quantity === 0) {
-      const data = await removeFromCart(cartId, [lineId]);
-      revalidateTag(TAGS.cart);
-      return data;
-    }
-
-    const data = await updateCart(cartId, [
-      {
-        id: lineId,
-        merchandiseId: variantId,
-        quantity
-      }
-    ]);
+    const data = await updateCart(cartId, payload);
 
     revalidateTag(TAGS.cart);
     return data;
   } catch (e) {
+    console.log('Error updating item quantity', e);
     return 'Error updating item quantity';
   }
 }

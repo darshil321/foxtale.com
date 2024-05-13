@@ -62,8 +62,17 @@ export type Page = {
   updatedAt: string;
 };
 
+export type MetaField = {
+  key: string;
+  value: any;
+  type?: string;
+  namespace?: string;
+  description?: string;
+};
+
 export type Product = Omit<ShopifyProduct, 'variants' | 'images'> & {
   variants: ProductVariant[];
+  metafields: MetaField[];
   images: Image[];
 };
 
@@ -115,6 +124,7 @@ export type ShopifyProduct = {
   availableForSale: boolean;
   title: string;
   description: string;
+  metafields: MetaField[];
   descriptionHtml: string;
   options: ProductOption[];
   priceRange: {

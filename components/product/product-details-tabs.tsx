@@ -1,66 +1,85 @@
 'use client';
-import { useState } from 'react';
 import { Tab } from '@headlessui/react';
 import Image from 'next/image';
+import { Product } from '@/lib/shopify/types';
+
+type Category = {
+  id: number;
+  category: string;
+  contentType: 'text' | 'image';
+  contentImage: string | null;
+  contentImageMobile: string | null;
+  contentText?: { title?: string; content?: string }[];
+};
+
+type Props = {
+  product: Product;
+};
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function ProductDetailsTabs() {
-  const [categories] = useState([
-    {
-      id: 1,
-      category: 'usage details',
-      contentType: 'image',
-      contentImage:
-        'https://cdn.shopify.com/s/files/1/0609/6096/4855/files/Single_Product_Website_Design-17_2_1_1_1_1.jpg?v=1679991078',
-      contentImageMobile:
-        'https://cdn.shopify.com/s/files/1/0609/6096/4855/files/Daily_Hydrating_Serum-07.jpg?v=1683804229'
-    },
-    {
-      id: 3,
-      category: 'Hero ingredients',
-      contentType: 'text',
-      contentText: [
-        {
-          title: 'MATTE FINISH SUNSCREEN SPF 70',
-          content:
-            'Acts as a carrier system that releases and activates the retinol molecule in deeper layers of your skin. It’s capable of altering the behaviour of aged cells, improving collagen production to modify skin texture, boosting radiance, and treating the signs of ageing 2X faster compared to other Retinol serums.'
-        },
-        {
-          title: 'MATTE FINISH SUNSCREEN SPF 70',
-          content:
-            'We ship orders within 24 hours of purchase. Please check our FAQ for more details.'
-        },
-        {
-          title: 'MATTE FINISH SUNSCREEN SPF 70',
-          content:
-            'We ship orders within 24 hours of purchase. Please check our FAQ for more details.'
-        },
-        {
-          title: 'MATTE FINISH SUNSCREEN SPF 70',
-          content:
-            'We ship orders within 24 hours of purchase. Please check our FAQ for more details.'
-        }
-      ]
-    },
-    {
-      id: 2,
-      category: 'Good to know',
-      contentType: 'image',
-      contentImage:
-        'https://cdn.shopify.com/s/files/1/0609/6096/4855/files/Matte_Finish_Sunscreen_SPF_70_-04.jpg?v=1685299918',
-      contentImageMobile:
-        'https://cdn.shopify.com/s/files/1/0609/6096/4855/files/Daily_Hydrating_Serum-15.jpg?v=1683804229'
-    }
-  ]);
+export default function ProductDetailsTabs({ product }: Props) {
+  const filteredDataByKey = product?.metafields?.find(
+    (item: any) => item?.key === 'combo_overview'
+  );
+  const parser = new DOMParser();
+
+  const htmlDocument = parser.parseFromString(filteredDataByKey?.value, 'text/html');
+  const parseHTML = (doc: Document): Category[] => {
+    const categories: Category[] = [];
+
+    const tabButtons = doc?.querySelectorAll('.tablinks');
+    tabButtons?.forEach((button: any, index: number) => {
+      const category = button?.textContent?.trim();
+      const contentContainer = doc.getElementById(
+        button.getAttribute('onclick').match(/(?<=\")(.*?)(?=\")/g)[0]
+      ) as any;
+      const contentImage = contentContainer?.querySelector('img')?.getAttribute('src');
+      const contentImageMobile = contentContainer
+        ?.querySelector('.mb_img_slide img')
+        ?.getAttribute('src');
+
+      let contentType: 'text' | 'image' = 'text';
+
+      if (contentImage) {
+        contentType = 'image';
+      }
+
+      const categoryData: Category = {
+        id: index + 1,
+        category,
+        contentType,
+        contentImage,
+        contentImageMobile
+      };
+      categories.push(categoryData);
+    });
+
+    const tabContents = doc.querySelectorAll('.tabcontent');
+    tabContents.forEach((content, index) => {
+      const textBlocks = content.querySelectorAll('.combo-hero-ingredients p');
+      const contentText = Array.from(textBlocks)?.map((block: any) => ({
+        title: block?.previousElementSibling?.textContent?.trim(),
+        content: block?.textContent?.trim()
+      }));
+
+      if (categories[index]) {
+        (categories[index] as any).contentText = contentText || [];
+      }
+    });
+
+    return categories;
+  };
+
+  const categories: Category[] = parseHTML(htmlDocument);
 
   return (
     <div className="w-full px-2 sm:px-0">
       <Tab.Group>
         <Tab.List className="flex justify-between gap-1 p-1  ">
-          {categories.map((result) => (
+          {categories?.map((result) => (
             <Tab
               key={result.category}
               className={({ selected }) =>
@@ -75,7 +94,7 @@ export default function ProductDetailsTabs() {
           ))}
         </Tab.List>
         <Tab.Panels className="mt-2">
-          {categories.map((post, idx) => (
+          {categories?.map((post, idx) => (
             <Tab.Panel key={idx} className={classNames(' bg-white p-3')}>
               {post.contentType === 'image' ? (
                 <div className="h-full w-full">
@@ -90,8 +109,10 @@ export default function ProductDetailsTabs() {
                   <Image
                     src={post?.contentImage || ''}
                     alt={post.category}
-                    height={540}
-                    width={570}
+                    height={500}
+                    width={500}
+                    loading="lazy"
+                    quality={80}
                     className="hidden h-full w-full object-cover md:block"
                   />
                 </div>

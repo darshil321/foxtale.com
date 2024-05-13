@@ -7,11 +7,13 @@ import { userSlice } from './slices/user-slice';
 import rootSaga from './slices';
 import { cartSlice } from './slices/cart-slice';
 import { metaObjectSlice } from './slices/meta-objects-slice';
+import { collectionsSlice } from './slices/collections-slice';
 
 const rootReducer = combineReducers({
   [productSlice.name]: productSlice.reducer,
   [userSlice.name]: (userSlice as any).reducer,
   [cartSlice.name]: cartSlice.reducer,
+  [collectionsSlice.name]: (collectionsSlice as any).reducer,
   [metaObjectSlice.name]: (metaObjectSlice as any).reducer
 });
 

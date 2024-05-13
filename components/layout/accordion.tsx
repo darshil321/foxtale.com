@@ -1,34 +1,40 @@
 'use client';
+import { Product } from '@/lib/shopify/types';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 
-const FaqItems = [
-  {
-    question: 'When should you use the Niacinamide Serum?',
-    answer:
-      'Our Niacinamide, like its name, is truly a game changer. You can use it any time you want oil-free radiance and matte skin. It instantly blurs pores, hydrates your skin, and gives you a primer-like finish.'
-  },
-  {
-    question: 'What are the benefits of using the Niacinamide Serum?',
-    answer:
-      'Our Niacinamide, like its name, is truly a game changer. You can use it any time you want oil-free radiance and matte skin. It instantly blurs pores, hydrates your skin, and gives you a primer-like finish.'
-  },
-  {
-    question: 'What are the benefits of using the Niacinamide Serum?',
-    answer:
-      ' You can use this Niacinamide Serum daily - in the morning and evening, or whenever you require a touch-up. Take a pea-sized amount of the serum, evenly spread it on your face, and gently pat onto a cleansed face. '
-  },
-  {
-    question: 'What are the benefits of using the Niacinamide Serum?',
-    answer: 'We ship orders within 24 hours of purchase. Please check our FAQ for more details. '
-  },
-  {
-    question: 'What are the benefits of using the Niacinamide Serum?',
-    answer: '4. For which skin type does the Niacinamide Serum work best?'
-  }
-];
+export default function Accordion({ product }: { product: Product }) {
+  const filteredDataByKey = product?.metafields?.find((item: any) => item?.key === 'faq-section');
+  const parser = new DOMParser();
+  const htmlDocument = parser.parseFromString(filteredDataByKey?.value, 'text/html');
 
-export default function Accordion() {
+  function extractQuestionsAndAnswersFromHTML(html: any) {
+    const faqItemsArray: any = [];
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const faqDiv = doc.querySelector('.faq_item');
+
+    if (faqDiv) {
+      const questions = faqDiv.querySelectorAll('h4');
+      const answers = faqDiv.querySelectorAll('p');
+
+      questions.forEach((question, index) => {
+        const answer = answers[index];
+        if (question && answer) {
+          faqItemsArray.push({
+            question: question.textContent?.trim(),
+            answer: answer.textContent?.trim()
+          });
+        }
+      });
+    }
+
+    return faqItemsArray;
+  }
+
+  const FaqItems = extractQuestionsAndAnswersFromHTML(htmlDocument);
+
   return (
     <div className="w-full px-4 py-8 md:py-16">
       <div className="mx-auto w-full rounded-2xl bg-white p-2">
@@ -44,11 +50,9 @@ export default function Accordion() {
                 </div>
               </Disclosure.Button>
               <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-black">
-                {FaqItems.map((item, index) => (
+                {FaqItems.map((item: any, index: number) => (
                   <div className="flex flex-col py-2" key={index}>
-                    <h4 className="text-lg font-semibold ">
-                      {index + 1}. {item.question}
-                    </h4>
+                    <h4 className="text-lg font-semibold ">{item.question}</h4>
                     <p className="text-sm font-normal">{item.answer}</p>
                   </div>
                 ))}
