@@ -52,7 +52,6 @@ export async function appendReviewAndRating(products: any) {
 
     return products;
   } catch (error) {
-    console.log('error', error);
     throw error;
   }
 }
@@ -116,17 +115,13 @@ export function getCoupon(metaObjects: any, cart: any, type: string, magic_key: 
 
     const freeProduct = magicArray.find((obj: any) => {
       if (obj.applicable_product) {
-        console.log('obj.applicable_product', obj.applicable_product);
-        console.log('cartItems', cartItems);
         const product = cartItems?.find(
           (item: any) => item.merchandise.id === obj.applicable_product
         );
-        console.log('product', product);
         if (product) {
           return obj.free_product;
         }
       } else if (obj.cart_total) {
-        console.log('reached here in cart total');
         let cartTotal = 0;
         cartItems.forEach((item: any) => {
           cartTotal += +item.cost.totalAmount.amount;
@@ -245,7 +240,6 @@ export function getReformedCoupons(metaObjects: any) {
         fieldsObject[field.key ?? ''] = JSON.parse(field.value) ?? '';
       }
     });
-
     return { ...metaObject, fields: fieldsObject };
   });
   return transformedMetaObjects;

@@ -42,7 +42,12 @@ const ProductDescFooter = ({ product }: { product: any }) => {
           </Suspense>
           <Suspense fallback={null}>
             <CartProvider>
-              <GokwikButton buyNowButton={true} variantId={selectedVariantId} quantity={1} />
+              <GokwikButton
+                title={'Buy Now'}
+                buyNowButton={true}
+                variantId={selectedVariantId}
+                quantity={1}
+              />
             </CartProvider>
           </Suspense>
         </div>

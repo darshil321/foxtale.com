@@ -26,10 +26,8 @@ const CustomInputBtn = ({
       const response = await axios.post('/api/subscribe', {
         email: emailRef.current.value
       });
-      console.log(response.data);
-    } catch (error) {
-      console.log('error', error);
-    }
+      console.log(response);
+    } catch (error) {}
   };
   return (
     <form onSubmit={handleNewsletterSubscription}>
