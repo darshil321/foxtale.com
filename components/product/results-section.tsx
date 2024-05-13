@@ -2,8 +2,30 @@
 import Image from 'next/image';
 import React from 'react';
 import ResultsTabs from './results-tabs';
+import { Product } from '@/lib/shopify/types';
 
-const ResultsSection = () => {
+type Props = {
+  product: Product;
+};
+
+const ResultsSection = ({ product }: Props) => {
+  const filteredDataByKey = product?.metafields?.find((item: any) => item?.key === 'custom-tab');
+
+  function extractImageSources(htmlString: string, className: string) {
+    const parser = new DOMParser();
+    const htmlDocument = parser.parseFromString(htmlString, 'text/html');
+
+    const resultImages = htmlDocument.querySelectorAll(`.${className}`);
+    const imageSources = Array.from(resultImages).map((image) => image.getAttribute('src'));
+
+    return imageSources;
+  }
+
+  const htmlString = filteredDataByKey?.value; // Assign your HTML string here
+  const className = 'result-img'; // Define the class name you want to search for
+
+  const imageSources = extractImageSources(htmlString, className);
+
   return (
     <div className="w-full px-4 py-3 md:px-0  md:py-10">
       <h2 className=" mb-3 text-2xl  font-semibold">Real People, Verified Results</h2>
@@ -11,9 +33,7 @@ const ResultsSection = () => {
         <div className="h-full w-full basis-full lg:basis-3/6">
           <Image
             className="h-full w-full"
-            src={
-              'https://cdn.shopify.com/s/files/1/0609/6096/4855/files/Matte_Finish_Sunscreen_SPF_70_-02_a0aed983-4981-464f-b9a0-1445eb24963c.jpg?v=1685299985'
-            }
+            src={imageSources[0] as string}
             alt="Foxtale"
             width={570}
             quality={80}

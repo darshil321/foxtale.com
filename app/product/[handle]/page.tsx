@@ -74,7 +74,7 @@ export default async function ProductPage({
   searchParams: any;
 }) {
   const product = await getProduct(params.handle);
-  console.log('productsfs', product);
+
   if (!product) return notFound();
 
   const productJsonLd = {
@@ -134,7 +134,7 @@ export default async function ProductPage({
         </div>
         <div>{<ProductDisclosure product={product} />}</div>
 
-        <ResultsSection />
+        <ResultsSection product={product} />
         <Suspense
           fallback={
             <div className="relative aspect-square  h-full max-h-[550px] w-full overflow-hidden">
@@ -145,7 +145,7 @@ export default async function ProductPage({
           <ProductCarouselSlider />
         </Suspense>
         <ProductDetailsTabs product={product} />
-        <Accordion />
+        <Accordion product={product} />
         <ProductDescFooter product={product} />
         <Suspense fallback={null}>
           <RelatedProducts id={product.id} />

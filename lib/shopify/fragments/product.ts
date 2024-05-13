@@ -12,6 +12,8 @@ const productFragment = /* GraphQL */ `
       identifiers: [
         { key: "unique", namespace: "custom" }
         { key: "combo_overview", namespace: "custom" }
+        { key: "faq-section", namespace: "global" }
+        { key: "custom-tab", namespace: "custom" }
       ]
     ) {
       description
