@@ -2,6 +2,7 @@ import { addItem, removeItem, updateItemQuantity } from '@/components/cart/actio
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { cartActions } from 'store/actions/cart.action';
 import { getCart } from 'store/requests/cart.request';
+import { setCartLoading } from '../slices/cart-slice';
 
 // fetches all products
 export function* getCartSaga(action: {
@@ -38,10 +39,12 @@ export function* updateCartSaga(action: {
   payload: { lineId: string; variantId: string; quantity: number }[];
 }): Generator<any, void, any> {
   try {
+    yield put(setCartLoading(true));
     const { payload } = action;
     const data = yield call({ fn: updateItemQuantity, context: null }, null, payload);
 
-    yield put(cartActions.setCart(data));
+    yield put(setCartLoading(false));
+    yield put(cartActions.setCart({ data, fromSaga: true }));
   } catch (error) {
     yield put(cartActions.getCartFailed());
   }

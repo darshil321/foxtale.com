@@ -113,8 +113,15 @@ export const cartSlice = createSlice({
     attemptGetCarts: () => {
       //loading true
     },
+
     setCart: (state, action) => {
+      console.log('action', action.payload);
+      const fromSaga = action.payload?.isTest;
+
+      const _state = current(state);
+      if (_state.loading && fromSaga) return;
       const { tempId, ...res } = action.payload;
+
       const cartLines: CartItem[] = res?.lines.map((cartItem: CartItem) => {
         if (cartItem.id === tempId) {
           return { ...res };
@@ -142,11 +149,15 @@ export const cartSlice = createSlice({
     },
     setCartOpen: (state, action) => {
       state.isCartOpen = action.payload;
+    },
+    setCartLoading: (state, action) => {
+      state.loading = action.payload;
     }
   }
 });
 
 export const {
+  setCartLoading,
   getCartSuccess,
   setCart,
   getCartFailed,

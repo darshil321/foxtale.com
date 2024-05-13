@@ -5,7 +5,7 @@ import { DEFAULT_OPTION } from 'lib/constants';
 import { createUrl } from 'lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import CloseCart from './close-cart';
 import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
@@ -27,6 +27,12 @@ export default function CartModal() {
   const [isOpen, setIsOpen] = useState(false);
 
   const carts = useAppSelector((state) => state.cart.cart);
+
+  const loading = useAppSelector((state) => state.cart.loading);
+
+  useEffect(() => {
+    console.log('loading', loading);
+  }, [loading]);
 
   const data = getCartData(carts);
   const { currencyCode, totalAmount } = data;
@@ -56,13 +62,14 @@ export default function CartModal() {
     });
     debouncedUpdateItemQuantity(payload);
   }
-  const debouncedUpdateItemQuantity = useCallback(() => {
-    const debouncedFunction = debounce((payload) => {
-      dispatch(cartActions.updateCart(payload));
-    }, 2000);
-
-    return debouncedFunction;
-  }, [dispatch]);
+  const debouncedUpdateItemQuantity = useMemo(
+    () =>
+      debounce((payload) => {
+        console.log('dd', payload);
+        dispatch(cartActions.updateCart(payload));
+      }, 1000),
+    [dispatch]
+  );
 
   const { isCartOpen } = useAppSelector((state) => state.cart);
   useEffect(() => {

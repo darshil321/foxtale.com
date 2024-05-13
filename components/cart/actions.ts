@@ -71,15 +71,7 @@ export async function updateItemQuantity(
     return 'Missing cart ID';
   }
 
-  // const { lineId, variantId, quantity } = payload;
-
   try {
-    // if (quantity === 0) {
-    //   const data = await removeFromCart(cartId, [lineId]);
-    //   revalidateTag(TAGS.cart);
-    //   return data;
-    // }
-
     const data = await updateCart(cartId, payload);
 
     revalidateTag(TAGS.cart);
