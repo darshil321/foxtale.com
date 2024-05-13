@@ -13,7 +13,7 @@ const rootReducer = combineReducers({
   [productSlice.name]: productSlice.reducer,
   [userSlice.name]: (userSlice as any).reducer,
   [cartSlice.name]: cartSlice.reducer,
-  [collectionsSlice.name]: (collectionsSlice as any).reducer,
+  [collectionsSlice.name]: collectionsSlice.reducer,
   [metaObjectSlice.name]: (metaObjectSlice as any).reducer
 });
 

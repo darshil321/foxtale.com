@@ -13,13 +13,14 @@ interface Props {
   products?: any;
 }
 
-const InitialData: React.FC<Props> = ({
+export const InitialData: React.FC<Props> = ({
   giftsCoupon,
   freebieCoupons,
   magicLinks,
   collections,
   products
 }) => {
+  console.log('giftsCoupon', giftsCoupon);
   const dispatch = useAppDispatch();
   useEffect(() => {
     if (freebieCoupons) dispatch(setFreebieCoupons(freebieCoupons));
@@ -35,7 +36,5 @@ const InitialData: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <div></div>;
+  return <></>;
 };
-
-export default InitialData;

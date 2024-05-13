@@ -16,7 +16,7 @@ export const collectionsSlice = createSlice({
 
   reducers: {
     setCollections: (state, action) => {
-      state.collections = action.payload;
+      state.collections = action?.payload;
     }
   }
 });

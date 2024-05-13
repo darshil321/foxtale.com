@@ -7,7 +7,7 @@ function useCoupon() {
   const freebies = useAppSelector((state) => state.cart.freebieCoupons) || [];
   const gifts = useAppSelector((state) => state.cart.giftCoupons) || [];
   const magicLinks = useAppSelector((state) => state.cart.magicLinkCoupons) || [];
-  const collections = useAppSelector((state) => state.collections);
+  const collections = useAppSelector((state) => state.collections.collections);
 
   const getFreeProductsByCoupon = () => {
     const magicKey = getMagicKey();

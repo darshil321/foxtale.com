@@ -1,23 +1,18 @@
-import { getCollection, getCollectionProducts, getCollections } from 'lib/shopify';
+import { getCollection, getCollectionProducts } from 'lib/shopify';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { defaultSort, sorting } from 'lib/constants';
-import dynamic from 'next/dynamic';
-
-const CollectionProductsContainer = dynamic(
-  () => import('@/components/layout/search/collection-products'),
-  { ssr: false }
-);
+import CollectionProductsContainer from '@/components/layout/search/collection-products';
 
 export const fetchCache = 'force-cache';
 
-export const generateStaticParams = async () => {
-  const collections = await getCollections();
+// export const generateStaticParams = async () => {
+//   const collections = await getCollections();
 
-  return collections?.map((collection: any) => ({
-    collection: collection?.handle === '' ? 'all' : collection?.handle
-  }));
-};
+//   return collections?.map((collection: any) => ({
+//     collection: collection?.handle === '' ? 'all' : collection?.handle
+//   }));
+// };
 
 export async function generateMetadata({
   params
@@ -67,7 +62,6 @@ export default async function CategoryPage({
 
   return (
     <>
-      {/* <GetRequiredData /> */}
       <div className="h-full w-full gap-4 space-y-6 ">
         {productsByCollection?.map((products, index) => (
           <CollectionProductsContainer

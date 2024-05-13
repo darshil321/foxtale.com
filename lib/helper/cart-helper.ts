@@ -64,7 +64,7 @@ export const getApplicableMagicLink = ({
 }) => {
   if (!key || !coupons.length || !cart) return null;
 
-  const coupon = coupons.find((c: any) => c.fields.magic_key === key);
+  const coupon = coupons?.find((c: any) => c.fields.magic_key === key);
   if (!coupon) {
     console.log('magic link not valid');
     return null;
@@ -80,10 +80,10 @@ export const getApplicableMagicLink = ({
   //check if applicable collection
   let applicableProducts = [];
   if (fields.applicable_collection) {
-    const collection = collections.find((c: any) => c.id === fields.applicable_collection);
+    const collection = collections?.find((c: any) => c.id === fields.applicable_collection);
     if (collection) {
       const _products = removeEdgesAndNodes(collection.products);
-      if (_products) applicableProducts = _products.map((p) => p.id) || [];
+      if (_products) applicableProducts = _products?.map((p) => p.id) || [];
     }
   }
 
