@@ -117,7 +117,9 @@ export default function VariantSelector({
                     ref={isLastOption ? lastOptionRef : null}
                   >
                     {!isColorOption && value}
-                    {!isColorOption && <span>₹{selectedVariant?.price.amount}</span>}
+                    {!isColorOption && (
+                      <span className="text-xs">₹{selectedVariant?.price.amount}</span>
+                    )}
                   </button>
                 );
               })}
@@ -139,7 +141,7 @@ export default function VariantSelector({
       {/* Text strip */}
       <div
         ref={textStripRef}
-        className="absolute bottom-6 bg-green-500 text-center text-[10px] text-white"
+        className="absolute bottom-6 bg-green-500 text-center text-[7px] text-white md:text-[10px]"
         style={{ left: 0, width: '100%' }} // This will be overridden by useEffect logic
       >
         Save Extra
