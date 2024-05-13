@@ -7,7 +7,7 @@ import Footer from 'components/layout/footer';
 import WrapperContainer from 'components/layout/wrapper-container';
 import Provider from '../store/store-provider';
 import Banner from 'components/layout/navbar/banner';
-import { getMetaObjects } from '@/lib/shopify';
+import { getCollections, getMetaObjects } from '@/lib/shopify';
 import InitialData from '@/components/initial-data';
 
 const { TWITTER_CREATOR, TWITTER_SITE, SITE_NAME } = process.env;
@@ -40,14 +40,21 @@ export const metadata = {
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const giftsCoupon = await getMetaObjects('gifts');
   const freebieCoupons = await getMetaObjects('freebies');
-  console.log('dataaaaaa2', freebieCoupons);
+  const magicLinks = await getMetaObjects('magic_link');
+  const collections = await getCollections();
+
   return (
     <html lang="en" className={GeistSans.variable}>
       <link rel="preconnect" href={process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN} />{' '}
       <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN} />
       <body className=" text-black selection:bg-teal-300 ">
         <Provider>
-          <InitialData giftsCoupon={giftsCoupon} freebieCoupons={freebieCoupons} />
+          <InitialData
+            giftsCoupon={giftsCoupon}
+            freebieCoupons={freebieCoupons}
+            magicLinks={magicLinks}
+            collections={collections}
+          />
           <Banner />
           <WrapperContainer>
             <Navbar />

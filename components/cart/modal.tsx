@@ -14,6 +14,7 @@ import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { useAppSelector } from 'store/hooks';
 
 import { getCartData } from '@/lib/helper/helper';
+import useCoupon from '@/lib/hooks/use-coupon';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -22,6 +23,8 @@ type MerchandiseSearchParams = {
 export default function CartModal() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const test = useCoupon();
+  console.log('test', test);
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
 

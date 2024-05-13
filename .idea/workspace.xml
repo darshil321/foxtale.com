@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="91ba569e-7324-4d5b-be1e-59cd35442d9b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/components/cart/add-to-cart-button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/cart/add-to-cart-button.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/slices/cart-slice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/store/slices/cart-slice.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2gGpH2ynIrqohfkXSXfO9UEzpPi" />
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;coupons&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/chiragparmar/Documents/foxtale/foxtale-frontend&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="91ba569e-7324-4d5b-be1e-59cd35442d9b" name="Changes" comment="" />
+      <created>1715333679323</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1715333679323</updated>
+      <workItem from="1715333680300" duration="27000" />
+      <workItem from="1715333718295" duration="10000" />
+      <workItem from="1715333736721" duration="106000" />
+    </task>
+    <servers />
+  </component>
+</project>

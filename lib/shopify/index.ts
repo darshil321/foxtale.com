@@ -374,8 +374,6 @@ export async function getPages(): Promise<Page[]> {
   return removeEdgesAndNodes(res.body.data.pages);
 }
 export async function getMetaObjects(type: string): Promise<Metaobject[]> {
-  console.log('getMetaObjects', type);
-
   const res = await shopifyFetch<MetaobjectsResponse>({
     query: getMetaobjectsQuery,
     cache: 'no-store',

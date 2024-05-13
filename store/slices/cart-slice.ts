@@ -16,6 +16,15 @@ interface Freebiefield {
   price_cap: string;
 }
 
+interface MagicLinkFields {
+  applicable_products: string[];
+  applicable_collection: string[];
+  cart_total: number;
+  magic_key: string;
+  free_product: string[];
+  total_quantity: string;
+}
+
 interface GiftCoupon {
   fields: Giftfield[];
   id: string; // ID of the coupon
@@ -26,6 +35,11 @@ interface FreebieCoupon {
   id: string; // ID of the coupon
   type: string; // Type of coupon
 }
+interface MagicLinkCoupon {
+  fields: MagicLinkFields[];
+  id: string;
+  type: string;
+}
 export interface CartState {
   loading: boolean;
   cart: Cart | any;
@@ -34,6 +48,7 @@ export interface CartState {
   metaObjects: any;
   giftCoupons?: GiftCoupon;
   freebieCoupons: FreebieCoupon;
+  magicLinkCoupons: MagicLinkCoupon;
 }
 
 export const initialState: CartState = {
@@ -72,13 +87,10 @@ export const cartSlice = createSlice({
       // console.log('newRmc3 incart', data, action);
     },
     addToCart: (state, action) => {
-      console.log('@@@5');
-
       const {
         payload: { product, selectedVariantId, tempId }
       } = action;
 
-      console.log('selectedVariantId', selectedVariantId);
       const variant = getDefaultVariant(product, selectedVariantId);
       console.log('variant', variant);
 
@@ -114,15 +126,6 @@ export const cartSlice = createSlice({
         return;
       }
       state.cart = { ...cart.cart, lines: cartLines, totalQuantity: cart.cart.totalQuantity + 1 };
-
-      // const _cart = current(state);
-      // const magic_key = '234567';
-      // const _product = getCoupon(_cart.metaObjects, _cart.cart, 'magic_link', magic_key);
-      // console.log('_product', _product);
-      // const isExist = cartLines?.find((item) => _product.id === item.id);
-      // if (_product && isExist) {
-      //   dispatch(cartActions.addToCart({}));
-      // }
     },
 
     attemptGetCarts: () => {
@@ -151,11 +154,12 @@ export const cartSlice = createSlice({
     },
     setGiftCoupons: (state, action) => {
       state.giftCoupons = getReformedCoupons(action.payload);
-      console.log('setGiftCoupons', state.giftCoupons);
     },
     setFreebieCoupons: (state, action) => {
       state.freebieCoupons = getReformedCoupons(action.payload);
-      console.log('freebieCoupons', state.freebieCoupons);
+    },
+    setMagicLinkCoupons: (state, action) => {
+      state.magicLinkCoupons = getReformedCoupons(action.payload);
     }
   }
 });
@@ -168,6 +172,7 @@ export const {
   updateCartItemQuantity,
   setMetaObject,
   setGiftCoupons,
-  setFreebieCoupons
+  setFreebieCoupons,
+  setMagicLinkCoupons
 } = cartSlice.actions;
 export default cartSlice.reducer;

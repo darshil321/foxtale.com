@@ -11,7 +11,7 @@ export const getCartQuery = /* GraphQL */ `
 
 export const getMetaobjectsQuery = /* GraphQL */ `
   query metaObjects($type: String!) {
-    metaobjects(type: $type, first: 5) {
+    metaobjects(type: $type, first: 10) {
       edges {
         cursor
         node {
@@ -21,7 +21,7 @@ export const getMetaobjectsQuery = /* GraphQL */ `
           fields {
             key
             value
-            references(first: 5) {
+            references(first: 10) {
               edges {
                 cursor
               }

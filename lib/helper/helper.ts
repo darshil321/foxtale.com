@@ -154,10 +154,6 @@ export const getDefaultVariant = (product: any, variantId?: string) => {
   }
 };
 
-export const getMagicLink = () => {
-  return '123';
-};
-
 export const findClosestCoupon = (
   metaObjects: MetaObject[],
   updatedCart: Cart | null
@@ -223,17 +219,18 @@ export const getCartData = (cart: Cart) => {
     return acc + lineTotalAmount;
   }, 0);
 
-  const cartTotalQuantity = cart?.lines?.reduce((acc: number, line: CartItem) => {
-    const lineQuantity =
-      Number(line?.cost?.amountPerQuantity?.amount) === 0 ? 0 : Number(line.quantity);
-    return acc + lineQuantity;
-  }, 0);
+  const cartTotalQuantity =
+    cart?.lines?.reduce((acc: number, line: CartItem) => {
+      const lineQuantity =
+        Number(line?.cost?.amountPerQuantity?.amount) === 0 ? 0 : Number(line.quantity);
+      return acc + lineQuantity;
+    }, 0) || null;
 
-  const cartTotalAmount = totalCost?.toFixed(2);
+  const cartTotalAmount = totalCost?.toFixed(2) || null;
 
   return {
-    totalAmount: cartTotalAmount,
-    totalQuantity: cartTotalQuantity,
+    totalAmount: Number(cartTotalAmount),
+    totalQuantity: Number(cartTotalQuantity),
     currencyCode: cart?.cost?.totalAmount?.currencyCode
   };
 };
@@ -243,9 +240,17 @@ export function getReformedCoupons(metaObjects: any) {
     const fieldsObject: Record<string, string> = {};
     metaObject?.fields?.forEach((field: any) => {
       fieldsObject[field.key ?? ''] = field.value ?? '';
+
+      if ((field.key === 'applicable_products' || field.key === 'gift') && field.value) {
+        fieldsObject[field.key ?? ''] = JSON.parse(field.value) ?? '';
+      }
     });
-    console.log('fieldsObject', fieldsObject);
+
     return { ...metaObject, fields: fieldsObject };
   });
   return transformedMetaObjects;
 }
+
+export const removeEdgesAndNodes = (array: Connection<any>) => {
+  return array.edges.map((edge) => edge?.node);
+};

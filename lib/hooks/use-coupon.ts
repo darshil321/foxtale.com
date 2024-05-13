@@ -1,57 +1,69 @@
 import { useAppSelector } from '@/store/hooks';
-import { getCartData, getMagicLink } from '../helper/helper';
 import { useEffect } from 'react';
+import { getApplicableCoupon, getApplicableMagicLink, getMagicKey } from '../helper/cart-helper';
+// import { useDispatch } from 'react-redux';
+// import { cartActions } from '@/store/actions/cart.action';
 
 function useCoupon() {
   const cart = useAppSelector((state) => state.cart.cart);
   const freebies = useAppSelector((state) => state.cart.freebieCoupons) || [];
   const gifts = useAppSelector((state) => state.cart.giftCoupons) || [];
-  console.log('freebies', freebies, gifts);
-  const getFreebiesProduct = (freebies, cart) => {
-    console.log(2);
-    if (!freebies.length) return null;
-    freebies.map((freebie) => {
-      const { applicable_products } = freebie;
-      const res = getApplicableSubCart(cart, applicable_products);
-      console.log('applicableCart', res);
-    });
-  };
+  const magicLinks = useAppSelector((state) => state.cart.magicLinkCoupons) || [];
+  const collections = useAppSelector((state) => state.collections.collections) || [];
 
-  const getApplicableSubCart = (cart, applicableProducts) => {
-    console.log(3);
-    const applicableCart = cart.lines.filter((cartItem) => {
-      const product = applicableProducts.find((item) => item.id === cartItem.merchandise.id);
-      if (product) {
-        return true;
-      }
-      return false;
-    });
-    console.log('applicableCart', applicableCart);
-    const { totalAmount, totalQuantity } = getCartData(applicableCart);
-    return {
-      totalAmount,
-      totalQuantity
-    };
-  };
+  // const dispatch = useDispatch();
 
-  const magicLink = getMagicLink();
   const getFreeProductsByCoupon = () => {
-    if (magicLink && false) {
+    const magicKey = getMagicKey();
+
+    let magicLinkCoupon, freebieCoupon, giftCoupon;
+    if (magicKey) {
+      magicLinkCoupon = getApplicableMagicLink({
+        magicKey,
+        coupons: magicLinks,
+        cart,
+        collections
+      });
     } else {
-      // const coupon = findClosestCoupon(freebies, cart);
-      const freeProduct = getFreebiesProduct(freebies, cart);
-      console.log('freeProduct', freeProduct);
+      //freebie
+      freebieCoupon = getApplicableCoupon(freebies, cart);
+
+      //gift
+      giftCoupon = getApplicableCoupon(gifts, cart);
+    }
+
+    return { magicLinkCoupon, freebieCoupon, giftCoupon };
+  };
+
+  const adjustFreebiesInCart = () => {
+    const { freebieCoupon, giftCoupon, magicLinkCoupon } = getFreeProductsByCoupon();
+    if (magicLinkCoupon) {
+      const { fields } = magicLinkCoupon;
+      if (fields.applicable_product) {
+        // dispatch(cartActions.addToCart());
+      }
+    } else {
+      if (freebieCoupon) {
+        const { fields } = freebieCoupon;
+        if (fields.applicable_product) {
+          // dispatch(cartActions.addToCart());
+        }
+      }
+
+      if (giftCoupon) {
+        const { fields } = giftCoupon;
+        if (fields.applicable_product) {
+          // dispatch(cartActions.addToCart());
+        }
+      }
     }
   };
   useEffect(() => {
-    console.log(1);
-    getFreeProductsByCoupon();
+    adjustFreebiesInCart();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [freebies, cart]);
+  }, [cart]);
 
-  return {
-    getFreeProductsByCoupon
-  };
+  return {};
 }
 
 export default useCoupon;

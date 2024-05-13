@@ -1,18 +1,27 @@
 'use client';
 import { useAppDispatch } from '@/store/hooks';
-import { setFreebieCoupons, setGiftCoupons } from '@/store/slices/cart-slice';
+import { setFreebieCoupons, setGiftCoupons, setMagicLinkCoupons } from '@/store/slices/cart-slice';
+import { setCollections } from '@/store/slices/collections-slice';
 import React, { useEffect } from 'react';
 
 interface Props {
-  giftsCoupon: any;
-  freebieCoupons: any;
+  giftsCoupon?: any;
+  freebieCoupons?: any;
+  magicLinks?: any;
+  collections?: any;
 }
 
-const InitialData: React.FC<Props> = ({ giftsCoupon, freebieCoupons }) => {
+const InitialData: React.FC<Props> = ({ giftsCoupon, freebieCoupons, magicLinks, collections }) => {
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(setFreebieCoupons(freebieCoupons));
-    dispatch(setGiftCoupons(giftsCoupon));
+    if (freebieCoupons) dispatch(setFreebieCoupons(freebieCoupons));
+
+    if (giftsCoupon) dispatch(setGiftCoupons(giftsCoupon));
+
+    if (magicLinks) dispatch(setMagicLinkCoupons(magicLinks));
+
+    if (collections) dispatch(setCollections(collections));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

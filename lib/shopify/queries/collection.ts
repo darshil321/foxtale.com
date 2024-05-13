@@ -25,10 +25,11 @@ export const getCollectionQuery = /* GraphQL */ `
 
 export const getCollectionsQuery = /* GraphQL */ `
   query getCollections {
-    collections(first: 100, sortKey: TITLE) {
+    collections(first: 250, sortKey: TITLE) {
       edges {
         node {
           ...collection
+          id
           title
           description
           seo {
@@ -39,6 +40,28 @@ export const getCollectionsQuery = /* GraphQL */ `
             url
             altText
             width
+          }
+          products(first: 100) {
+            edges {
+              node {
+                id
+                title
+                description
+                handle
+                createdAt
+                updatedAt
+                images(first: 1) {
+                  edges {
+                    node {
+                      originalSrc
+                      altText
+                      width
+                      height
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }

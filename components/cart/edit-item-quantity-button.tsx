@@ -91,7 +91,7 @@ export function EditItemQuantityButton({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [m, formActionFree] = useFormState(addItem, null);
-  console.log(m);
+  console.log('m', m);
 
   const [formAction] = useFormState(updateItemQuantity, null);
   const { pending } = useFormStatus();
