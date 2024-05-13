@@ -43,7 +43,7 @@ export function* updateCartSaga(action: {
     console.log(1111);
     yield put(setCartLoading(true));
     const { payload } = action;
-    const data = yield call({ fn: updateItemQuantity, context: null }, null, payload);
+    const data = yield call({ fn: updateItemQuantity, context: null }, null, payload as any);
 
     yield put(setCartLoading(false));
     yield put(cartActions.setCart({ data, fromSaga: true }));

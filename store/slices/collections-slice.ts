@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export interface collectionState {
-  collections: any;
+  collections: any[];
   error: any;
 }
 

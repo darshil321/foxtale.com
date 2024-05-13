@@ -1,17 +1,13 @@
 import { useAppSelector } from '@/store/hooks';
 import { useEffect } from 'react';
 import { getApplicableCoupon, getApplicableMagicLink, getMagicKey } from '../helper/cart-helper';
-// import { useDispatch } from 'react-redux';
-// import { cartActions } from '@/store/actions/cart.action';
 
 function useCoupon() {
   const cart = useAppSelector((state) => state.cart.cart);
   const freebies = useAppSelector((state) => state.cart.freebieCoupons) || [];
   const gifts = useAppSelector((state) => state.cart.giftCoupons) || [];
   const magicLinks = useAppSelector((state) => state.cart.magicLinkCoupons) || [];
-  const collections = useAppSelector((state) => state.collections.collections) || [];
-
-  // const dispatch = useDispatch();
+  const collections = useAppSelector((state) => state.collections);
 
   const getFreeProductsByCoupon = () => {
     const magicKey = getMagicKey();
