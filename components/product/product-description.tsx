@@ -1,9 +1,11 @@
-import Price from 'components/price';
 import Prose from 'components/prose';
 import { Product } from 'lib/shopify/types';
 import { Suspense } from 'react';
-import { VariantSelector } from './variant-selector';
-import ProductsRatings from 'components/product/products-rating';
+import dynamic from 'next/dynamic';
+
+const Price = dynamic(() => import('components/price'));
+const ProductsRatings = dynamic(() => import('components/product/products-rating'));
+const VariantSelector = dynamic(() => import('components/product/variant-selector'));
 
 export default function ProductDescription({
   product,

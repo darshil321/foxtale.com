@@ -119,7 +119,7 @@ export default function CartModal() {
               {!carts || carts?.lines?.length === 0 ? (
                 <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
                   <ShoppingBagIcon className="h-16" />
-                  <p className="mt-6 text-center text-2xl font-bold">Your carts is empty.</p>
+                  <p className="mt-6 text-center text-2xl font-bold">Your cart is empty.</p>
                 </div>
               ) : (
                 <div className="flex h-full flex-col justify-between overflow-hidden p-1">
@@ -216,7 +216,7 @@ export default function CartModal() {
                       <p>Total</p>
                       <Price
                         className="text-right text-base text-black "
-                        amount={totalAmount?.toString()}
+                        amount={totalAmount?.toString() || '0'}
                         currencyCode={currencyCode}
                       />
                     </div>

@@ -23,7 +23,6 @@ export default function SelectCategory({
             </span>
           </Listbox.Button>
           <Transition
-            show={true}
             as={Fragment}
             leave="transition ease-in duration-100"
             leaveFrom="opacity-100"

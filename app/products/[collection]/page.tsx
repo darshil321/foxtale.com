@@ -2,8 +2,15 @@ import { getCollection, getCollectionProducts, getCollections } from 'lib/shopif
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { defaultSort, sorting } from 'lib/constants';
-import CollectionProductsContainer from '@/components/layout/search/collection-products';
+import dynamic from 'next/dynamic';
+
+const CollectionProductsContainer = dynamic(
+  () => import('@/components/layout/search/collection-products'),
+  { ssr: false }
+);
+
 export const fetchCache = 'force-cache';
+
 export const generateStaticParams = async () => {
   const collections = await getCollections();
 

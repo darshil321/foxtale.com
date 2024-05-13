@@ -52,7 +52,7 @@ export const getMagicKey = () => {
 };
 
 export const getApplicableMagicLink = ({ magicKey: key, coupons, cart, collections }) => {
-  if (!key || !coupons.length) return null;
+  if (!key || !coupons.length || !cart) return null;
 
   const coupon = coupons.find((c: any) => c.fields.magic_key === key);
   if (!coupon) {

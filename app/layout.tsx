@@ -1,5 +1,4 @@
 import Navbar from 'components/layout/navbar';
-import { GeistSans } from 'geist/font/sans';
 import { ensureStartsWith } from 'lib/utils';
 import { ReactNode } from 'react';
 import './globals.css';
@@ -9,6 +8,12 @@ import Provider from '../store/store-provider';
 import Banner from 'components/layout/navbar/banner';
 import { getCollections, getMetaObjects, getProducts } from '@/lib/shopify';
 import InitialData from '@/components/initial-data';
+import { Poppins } from 'next/font/google';
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['200', '300', '400', '500', '600', '700', '800', '900']
+});
 
 const { TWITTER_CREATOR, TWITTER_SITE, SITE_NAME } = process.env;
 const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
@@ -45,10 +50,10 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const products = await getProducts();
 
   return (
-    <html lang="en" className={GeistSans.variable}>
+    <html lang="en">
       <link rel="preconnect" href={process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN} />{' '}
       <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN} />
-      <body className=" text-black selection:bg-teal-300 ">
+      <body>
         <Provider>
           <InitialData
             giftsCoupon={giftsCoupon}
@@ -61,7 +66,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <WrapperContainer>
             <Navbar />
           </WrapperContainer>
-          <main>{children}</main>
+          <main className={poppins.className}>{children}</main>
           <Footer />
         </Provider>
       </body>

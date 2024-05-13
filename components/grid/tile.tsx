@@ -84,7 +84,7 @@ export function GridTileImage({
             <div className="product-info p-2">
               <div className="">
                 <Link href={`/product/${product?.handle}`}>
-                  <h3 className=" leading-2 line-clamp-1 cursor-pointer text-[12px] font-medium transition-all hover:text-purple-400 md:text-base md:leading-6">
+                  <h3 className=" leading-2 line-clamp-1 cursor-pointer text-[12px] transition-all hover:text-purple-400 md:text-base md:leading-6">
                     {label?.title}
                   </h3>
                 </Link>

@@ -1,13 +1,7 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import { FiEdit } from 'react-icons/fi';
-import { HiX } from 'react-icons/hi';
-import EditItemForm from './edit-item-form';
-import Modal from 'react-modal';
+import React, { useEffect, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-// import { productActions } from 'store/actions/product.actions';
 import Image from 'next/image';
-
 import { Cart } from 'lib/shopify/types';
 import ShoppingBagIcon from '@heroicons/react/24/outline/ShoppingBagIcon';
 import { DeleteItemButton } from './delete-item-button';
@@ -15,7 +9,7 @@ import { EditItemQuantityButton } from './edit-item-quantity-button';
 import { setCart } from 'store/slices/cart-slice';
 
 const AddToCart = ({ cart }: { cart: Cart | undefined }) => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  // const [setModalIsOpen] = useState(false);
   const quantityRef = useRef(cart?.totalQuantity);
 
   const dispatch = useAppDispatch();
@@ -37,7 +31,7 @@ const AddToCart = ({ cart }: { cart: Cart | undefined }) => {
 
   return (
     <div className="w-full md:px-40 lg:py-20">
-      <Modal
+      {/* <Modal
         shouldFocusAfterRender={false}
         style={{
           content: {
@@ -63,7 +57,7 @@ const AddToCart = ({ cart }: { cart: Cart | undefined }) => {
           onClick={() => setModalIsOpen(false)}
         />
         <EditItemForm />
-      </Modal>
+      </Modal> */}
       <div className="grid grid-cols-6 gap-4 py-2 text-sm font-semibold">
         <div className="col-span-3">PRODUCT</div>
         <div className="hidden text-center sm:block">PRICE</div>
@@ -104,10 +98,10 @@ const AddToCart = ({ cart }: { cart: Cart | undefined }) => {
                   <span className="font-semibold text-gray-500">{product.option}</span> */}
                   {/* </p> */}
                   <div className="mt-1 flex space-x-2">
-                    <FiEdit
+                    {/* <FiEdit
                       onClick={() => setModalIsOpen(true)}
                       className="cursor-pointer text-lg text-gray-600"
-                    />
+                    /> */}
                     <DeleteItemButton item={item} removeIcon={true} />
                   </div>
                 </div>

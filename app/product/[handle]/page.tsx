@@ -132,9 +132,9 @@ export default async function ProductPage({
             <OfferSection />
           </div>
         </div>
-        <div>{<ProductDisclosure />}</div>
+        <div>{<ProductDisclosure product={product} />}</div>
 
-        <ResultsSection />
+        <ResultsSection product={product} />
         <Suspense
           fallback={
             <div className="relative aspect-square  h-full max-h-[550px] w-full overflow-hidden">
@@ -144,8 +144,8 @@ export default async function ProductPage({
         >
           <ProductCarouselSlider />
         </Suspense>
-        <ProductDetailsTabs />
-        <Accordion />
+        <ProductDetailsTabs product={product} />
+        <Accordion product={product} />
         <ProductDescFooter product={product} />
         <Suspense fallback={null}>
           <RelatedProducts id={product.id} />
