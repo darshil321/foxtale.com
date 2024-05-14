@@ -95,24 +95,13 @@ const EmblaHeroCarousel: React.FC<PropType> = (props) => {
             <div className="hero_embla__slide " key={index}>
               <div className="hero_embla__parallax">
                 <div className="hero_embla__parallax__layer ">
-                  {/* <Image
-                    priority
-                    width={1200}
-                    height={800}
-                    objectFit="cover"
-                    className=" hero_embla__slide__img embla__parallax__img hidden w-full md:block "
-                    src={`/Images/banner.png`}
-                    alt="Your alt text"
-                    loading="eager"
-                    quality={80}
-                  /> */}
                   <Image
                     priority
-                    width={700}
-                    height={300}
+                    fill
                     objectFit="cover"
                     className="hero_embla__slide__img embla__parallax__img"
                     src={`/Images/banner.png`}
+                    sizes="(max-width: 768px) 70vw"
                     alt="Your alt text"
                     quality={80}
                   />
