@@ -28,8 +28,8 @@ const EmblaCartSlider: React.FC<PropType> = (props) => {
                 width={80}
                 height={80}
                 alt={
-                  product.merchandise.product.images.edges[0].node.altText ||
-                  product.merchandise.product.title
+                  product?.merchandise?.product?.images?.edges[0].node.altText ||
+                  product?.merchandise?.product?.title
                 }
                 src={product.merchandise.product.images.edges[0].node.url as string}
                 quality={80}
