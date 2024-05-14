@@ -115,7 +115,7 @@
 }
 .hero_embla__parallax__layer {
   position: relative;
-  height: var(--slide-height) ;
+  height: 100%;
   width: 100%;
   border-radius: 8px;
   display: flex;
@@ -140,6 +140,6 @@
   .hero_embla__parallax__layer,
   .hero_embla__slide__img {
     border-radius: 4px;
-    height: 240px;
+    height: auto;
   }
 }
