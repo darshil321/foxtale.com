@@ -25,7 +25,7 @@ export function GridTileImage({
   };
 } & React.ComponentProps<typeof Image>) {
   if (!product) return null;
-  console.log('product.options', product.options);
+  // console.log('product.options', product.options);
   return (
     <div
       className={clsx(
