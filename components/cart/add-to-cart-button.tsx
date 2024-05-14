@@ -9,6 +9,7 @@ import { cartActions } from 'store/actions/cart.action';
 import { v4 as uuidv4 } from 'uuid';
 import { getDefaultVariant } from '@/lib/helper/helper';
 import { setCartOpen } from '@/store/slices/cart-slice';
+import { trackEvent } from 'utils/mixpanel';
 
 function SubmitButton({
   availableForSale,
@@ -45,6 +46,16 @@ function SubmitButton({
             tempId: uuidv4()
           })
         );
+        trackEvent('Add To Cart', {
+          Product_Name: product.title,
+          Product_Url: '',
+          Product_Price: product?.priceRange?.maxVariantPrice?.amount,
+          Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
+          Source: '',
+          Category: '',
+          Tags: product.tags,
+          Variant_SKU: ''
+        });
       }}
       aria-label="Add to cart"
       className={clsx(buttonClasses, {

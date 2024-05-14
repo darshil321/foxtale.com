@@ -48,6 +48,7 @@
     "embla-carousel": "^8.0.2",
     "embla-carousel-autoplay": "^8.0.2",
     "embla-carousel-react": "^8.0.2",
+    "mixpanel-browser": "^2.50.0",
     "next": "^14.3.0-canary.30",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -60,6 +61,7 @@
   "devDependencies": {
     "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/typography": "^0.5.12",
+    "@types/mixpanel-browser": "^2.49.0",
     "@types/node": "20.12.7",
     "@types/react": "18.2.79",
     "@types/react-dom": "18.2.25",
