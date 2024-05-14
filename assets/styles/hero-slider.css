@@ -24,6 +24,7 @@
   display: block;
   /* height: var(--slide-height); */
   height: auto;
+  min-height: 240px;
   width: 100%;
   object-fit: cover;
 }

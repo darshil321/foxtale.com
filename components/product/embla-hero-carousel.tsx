@@ -111,8 +111,9 @@ const EmblaHeroCarousel: React.FC<PropType> = (props) => {
                     width={700}
                     height={300}
                     objectFit="cover"
-                    className="hero_embla__slide__img embla__parallax__img block w-full md:hidden"
+                    className="hero_embla__slide__img embla__parallax__img"
                     src={`/Images/banner.png`}
+                    sizes="(max-width: 768px) 70vw"
                     alt="Your alt text"
                     loading="eager"
                     quality={80}
