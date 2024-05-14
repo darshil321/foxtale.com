@@ -1,6 +1,6 @@
 import { getCartItem, getDefaultVariant, getReformedCoupons } from '@/lib/helper/helper';
 import { createSlice, current } from '@reduxjs/toolkit';
-import { Cart, CartItem } from 'lib/shopify/types';
+import { Cart } from 'lib/shopify/types';
 interface Giftfield {
   applicable_product: string[];
   buy_x_quantity: string;
@@ -41,7 +41,10 @@ interface MagicLinkCoupon {
   type: string;
 }
 export interface CartState {
-  loading: boolean;
+  getCartLoading: boolean;
+  addToCartLoading: boolean;
+  updateCartLoading: boolean;
+  removeCartLoading: boolean;
   cart: Cart | any;
   quantities: any;
   error: any;
@@ -53,7 +56,11 @@ export interface CartState {
 }
 
 export const initialState: CartState = {
-  loading: false,
+  getCartLoading: false,
+  addToCartLoading: false,
+  updateCartLoading: false,
+  removeCartLoading: false,
+
   cart: null,
   error: null,
   quantities: {},
@@ -66,17 +73,17 @@ export const cartSlice = createSlice({
   initialState,
 
   reducers: {
-    getCartSuccess: (state, action) => {
-      const { products } = action.payload.body.data;
-      state.cart = products.edges;
-      // Initialize quantities with default values or from cart items
-      products.edges.forEach((item: any) => {
-        state.quantities[item.id] = item.quantity; // Assuming each item has an 'id' and 'quantity'
-      });
+    getCartSuccess: () => {
+      // const { products } = action.payload.body.data;
+      // state.cart = products.edges;
+      // // Initialize quantities with default values or from cart items
+      // products.edges.forEach((item: any) => {
+      //   state.quantities[item.id] = item.quantity; // Assuming each item has an 'id' and 'quantity'
+      // });
     },
     getCartFailed: (state) => {
       // const data = current(state);
-      state.loading = false;
+      state.getCartLoading = false;
     },
     removeCart: (state, action) => {
       const cart = current(state.cart);
@@ -92,7 +99,6 @@ export const cartSlice = createSlice({
       const {
         payload: { product, selectedVariantId, tempId }
       } = action;
-
       const variant = getDefaultVariant(product, selectedVariantId);
 
       if (!variant) {
@@ -121,34 +127,41 @@ export const cartSlice = createSlice({
         cartLines = [...productArray, cartItem];
       }
 
-      if (!cart.cart || !cart.cart.lines) {
-        return;
+      if (!cart.cart) {
+        state.cart = { lines: cartLines, totalQuantity: 1 };
+      } else {
+        state.cart = { ...cart.cart, lines: cartLines, totalQuantity: cart.cart.totalQuantity + 1 };
       }
-      state.cart = { ...cart.cart, lines: cartLines, totalQuantity: cart.cart.totalQuantity + 1 };
     },
 
-    attemptGetCarts: () => {
+    attemptGetCart: () => {
       //loading true
     },
 
     setCart: (state, action) => {
-      console.log('action', action.payload);
-      const fromSaga = action.payload?.isTest;
+      console.log('setCart', action.payload);
 
-      const _state = current(state);
-      if (_state.loading && fromSaga) return;
-      console.log('fromSaga', fromSaga, action.payload);
+      state.cart = action.payload;
+      // const _state = current(state);
 
-      const { tempId, ...res } = action.payload;
+      // const { tempId, ...rest } = action.payload;
+      // console.log('rest', action.payload);
 
-      const cartLines: CartItem[] = res?.lines.map((cartItem: CartItem) => {
-        if (cartItem.id === tempId) {
-          return { ...res };
-        }
-        return cartItem;
-      });
-      // const filteredCartLines = cartLines.filter((cartItem) => cartItem.quantity > 0);
-      state.cart = { ...res, lines: cartLines as CartItem[] };
+      // const res = rest.data;
+      // console.log('res', action);
+
+      // let cartLines = res?.lines;
+      // if (tempId) {
+      //   cartLines = res?.lines.map((cartItem: CartItem) => {
+      //     if (cartItem.id === tempId) {
+      //       return { ...res };
+      //     }
+      //     return cartItem;
+      //   });
+      // }
+
+      // state.cart = { ...res, lines: cartLines as CartItem[] };
+      // console.log('state.cart', state.cart);
     },
 
     setMetaObject: (state, action) => {
@@ -166,24 +179,32 @@ export const cartSlice = createSlice({
     setCartOpen: (state, action) => {
       state.isCartOpen = action.payload;
     },
-    setCartLoading: (state, action) => {
-      state.loading = action.payload;
+    setAddToCartLoading: (state, action) => {
+      state.addToCartLoading = action.payload;
+    },
+    setUpdateCartLoading: (state, action) => {
+      state.updateCartLoading = action.payload;
+    },
+    setRemoveCartLoading: (state, action) => {
+      state.removeCartLoading = action.payload;
     }
   }
 });
 
 export const {
-  setCartLoading,
   getCartSuccess,
   setCart,
   getCartFailed,
-  attemptGetCarts,
+  attemptGetCart,
   setMetaObject,
   setGiftCoupons,
   setFreebieCoupons,
   setCartOpen,
   removeCart,
   addToCart,
-  setMagicLinkCoupons
+  setMagicLinkCoupons,
+  setAddToCartLoading,
+  setUpdateCartLoading,
+  setRemoveCartLoading
 } = cartSlice.actions;
 export default cartSlice.reducer;

@@ -26,6 +26,7 @@ export async function addItem(selectedVariantId: string) {
     revalidateTag(TAGS.cart);
     return data;
   } catch (e) {
+    console.log('e', e);
     return 'Error adding item to cart';
   }
 }

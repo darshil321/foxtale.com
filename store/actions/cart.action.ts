@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 
 export const cartActions = {
-  attemptGetCarts: createAction<{}>('cart/attemptGetcarts'),
+  attemptGetCarts: createAction<{}>('cart/attemptGetcart'),
   getCartFailed: createAction('cart/getCartFailed'),
   getCartSuccess: createAction('cart/getCartSuccess'),
 

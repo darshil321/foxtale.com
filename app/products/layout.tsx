@@ -1,5 +1,5 @@
 import InitialData from '@/components/initial-data';
-import { getCollections, getMetaObjects } from '@/lib/shopify';
+import { getCollections, getMetaObjects, getProducts } from '@/lib/shopify';
 import Collections from 'components/layout/search/collections';
 import HeroBannerSlider from 'components/product/hero-banner-slider';
 
@@ -8,7 +8,8 @@ export default async function SearchLayout({ children }: { children: React.React
     getMetaObjects('gifts'),
     getMetaObjects('freebies'),
     getMetaObjects('magic_link'),
-    getCollections()
+    getCollections(),
+    getProducts()
   ];
 
   const results = await Promise.allSettled(promises);
@@ -17,6 +18,7 @@ export default async function SearchLayout({ children }: { children: React.React
   const freebieCoupons = results[1]?.status === 'fulfilled' ? results[1].value : null;
   const magicLinks = results[2]?.status === 'fulfilled' ? results[2].value : null;
   const collections = results[3]?.status === 'fulfilled' ? results[3].value : null;
+  const products = results[4]?.status === 'fulfilled' ? results[4].value : null;
 
   return (
     <div className="bg-[#E4E4E4]">
@@ -25,6 +27,7 @@ export default async function SearchLayout({ children }: { children: React.React
         freebieCoupons={freebieCoupons}
         magicLinks={magicLinks}
         collections={collections}
+        products={products}
       />
       <div className="w-full p-1.5 md:p-8">
         <HeroBannerSlider />

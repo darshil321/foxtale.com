@@ -15,8 +15,6 @@ function SubmitButton({
   onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   pending: boolean;
 }) {
-  console.log('pending', pending);
-
   return (
     <button
       type="button"

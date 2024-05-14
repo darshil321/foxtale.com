@@ -3,7 +3,6 @@ import { getCartData, removeEdgesAndNodes } from './helper';
 
 export const getApplicableCoupon = (coupon, cart) => {
   if (!coupon.length) return null;
-  console.log('getApplicableCoupon', coupon, cart);
 
   let minDifference = Infinity;
   const applicableCoupon = coupon.reduce((acc, coupon) => {
@@ -51,6 +50,15 @@ export const getFreeProductCartLines = (cart: Cart) => {
   return lines?.filter((line: CartItem) => Number(line.cost.amountPerQuantity.amount) === 0);
 };
 
+export const getCartWithoutFreeProduct = (cart: Cart) => {
+  const { lines } = cart;
+  const cartLine = lines?.map((line: CartItem) => {
+    if (Number(line.cost.amountPerQuantity.amount) === 0) return { ...line, quantity: 0 };
+    return line;
+  });
+  return { ...cart, lines: cartLine };
+};
+
 export const removableLineIds = (cartItem: CartItem[] | undefined, freeProducts: string[]) => {
   const removableCartLines = cartItem?.filter(
     (product) => !freeProducts.includes(product.merchandise.id)
@@ -73,7 +81,8 @@ const getApplicableSubCart = (cart, applicableProducts) => {
   const { totalAmount, totalQuantity } = getCartData({ lines: applicableCart });
   return {
     totalAmount,
-    totalQuantity
+    totalQuantity,
+    applicableCart
   };
 };
 
@@ -94,11 +103,6 @@ export const getApplicableMagicLink = ({ magicKey: key, coupons, cart, collectio
   }
   const { fields } = coupon;
 
-  console.log('coupon', coupon);
-  //check if already added
-  const isAlreadyAdded = cart.lines.some((line) => line.merchandise.id === fields.free_product);
-  if (isAlreadyAdded) return null;
-
   //check if applicable collection
   let applicableProducts = [];
   if (fields.applicable_collection) {
@@ -113,6 +117,7 @@ export const getApplicableMagicLink = ({ magicKey: key, coupons, cart, collectio
       if (variants) applicableProducts = variants || [];
     }
   }
+
   //check if applicable product
   if (fields.applicable_products) {
     applicableProducts = [...applicableProducts, ...fields.applicable_products];
@@ -134,7 +139,6 @@ export const getApplicableMagicLink = ({ magicKey: key, coupons, cart, collectio
     fields.total_quantity &&
     Number(fields.total_quantity) <= totalQuantity
   ) {
-    console.log('@@@@', coupon);
     return coupon;
   }
   return null;

@@ -165,7 +165,6 @@ export function GokwikButton(passedData) {
     window.gokwikSdk.initCheckout(window.merchantInfo);
   };
   const isLoading = useAppSelector((state) => state.cart.loading);
-  console.log('isLoading', isLoading);
 
   return (
     <>

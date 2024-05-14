@@ -16,58 +16,79 @@ import { useAppDispatch, useAppSelector } from 'store/hooks';
 import useCoupon from '@/lib/hooks/use-coupon';
 import { debounce, getCartData } from '@/lib/helper/helper';
 import { CartItem } from '@/lib/shopify/types';
-import { setCart, setCartOpen } from '@/store/slices/cart-slice';
+import { setCartOpen, setUpdateCartLoading } from '@/store/slices/cart-slice';
 import { cartActions } from '@/store/actions/cart.action';
 import { GokwikButton } from '../product/go-kwik-button';
+import { v4 as uuidv4 } from 'uuid';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
 };
 
 export default function CartModal() {
-  // const [isOpen, setIsOpen] = useState(false);
-
   const carts = useAppSelector((state) => state.cart.cart);
   const { adjustFreebiesInCart } = useCoupon();
 
   const data = getCartData(carts);
   const { currencyCode, totalAmount } = data;
   const dispatch = useAppDispatch();
-  function increaseItemQuantity({ cart, item, type }: { cart: any; item: CartItem; type: string }) {
-    const updatedCart = JSON.parse(JSON.stringify(cart));
-    updatedCart.totalQuantity++;
+  function increaseItemQuantity({ item, type }: { item: CartItem; type: string }) {
+    const cart = {
+      ...carts,
+      lines: carts.lines.map((line) => {
+        if (line.merchandise.id === item.merchandise.id) {
+          if (type === 'plus') {
+            return {
+              ...line,
+              quantity: line.quantity + 1
+            };
+          } else {
+            return {
+              ...line,
+              quantity: line.quantity - 1
+            };
+          }
+        }
+        return line;
+      })
+    };
 
-    const index = updatedCart.lines.findIndex(
-      (line: any) => line.merchandise.id === item.merchandise.id
-    );
+    const { cartToBeUpdate, itemsToBeAdd, giftProducts } = adjustFreebiesInCart(cart);
+    console.log('cartToBeUpdate', cartToBeUpdate);
+    console.log('itemsToBeAdd', itemsToBeAdd);
+    console.log('giftProducts', giftProducts);
+    const updatedCart = cartToBeUpdate.lines?.map((item: CartItem) => ({
+      id: item.id,
+      merchandiseId: item.merchandise.id,
+      quantity: item.quantity
+    }));
 
-    if (index !== -1) {
-      type === 'plus' ? updatedCart.lines[index].quantity++ : updatedCart.lines[index].quantity--;
+    const _cart = {
+      ...carts,
+      lines: cartToBeUpdate.lines.filter((line) => line.quantity > 0)
+    };
+    dispatch(cartActions.setCart(_cart));
+    dispatch(setUpdateCartLoading(true));
 
-      updatedCart.lines[index].cost.totalAmount.amount =
-        updatedCart.lines[index].cost.amountPerQuantity.amount * updatedCart.lines[index].quantity;
-    }
-
-    dispatch(setCart(updatedCart));
-
-    const payload = updatedCart?.lines
-      ?.filter((item: CartItem) => Number(item.cost.amountPerQuantity.amount) !== 0)
-      ?.map((item: CartItem) => ({
-        id: item.id,
-        merchandiseId: item.merchandise.id,
-        quantity: item.quantity
-      }));
-
-    console.log('Updated', payload);
-    const { removableCartLineIds } = adjustFreebiesInCart(updatedCart);
-    debouncedUpdateItemQuantity(payload, removableCartLineIds);
+    debouncedUpdateItemQuantity(updatedCart, itemsToBeAdd);
   }
+
   const debouncedUpdateItemQuantity = useMemo(
     () =>
-      debounce((payload, removableCartLineIds) => {
-        dispatch(cartActions.updateCart(payload));
-        if (removableCartLineIds?.length > 0)
-          dispatch(cartActions.removeCart({ lineIds: removableCartLineIds }));
+      debounce((updatedCart, itemsToBeAdd) => {
+        dispatch(cartActions.updateCart(updatedCart));
+        if (itemsToBeAdd.length)
+          itemsToBeAdd.forEach((item: any) => {
+            dispatch(
+              cartActions.addToCart({
+                selectedVariantId: item.variantId,
+                product: item.product,
+                tempId: uuidv4()
+              })
+            );
+          });
+
+        // if (carts?.id) dispatch(cartActions.attemptGetCarts({ cartId: carts.id }));
       }, 1000),
     [dispatch]
   );
@@ -183,11 +204,7 @@ export default function CartModal() {
                               <div className="ml-auto flex h-9 flex-row items-center  border border-neutral-200 ">
                                 <EditItemQuantityButton
                                   onClick={() => {
-                                    if (item.quantity > 1) {
-                                      increaseItemQuantity({ cart: carts, item, type: 'minus' });
-                                    } else {
-                                      dispatch(cartActions.removeCart({ lineIds: [item.id] }));
-                                    }
+                                    increaseItemQuantity({ item, type: 'minus' });
                                   }}
                                   type="minus"
                                 />
@@ -196,9 +213,7 @@ export default function CartModal() {
                                   <span className="w-full text-sm">{item.quantity}</span>
                                 </p>
                                 <EditItemQuantityButton
-                                  onClick={() =>
-                                    increaseItemQuantity({ cart: carts, item, type: 'plus' })
-                                  }
+                                  onClick={() => increaseItemQuantity({ item, type: 'plus' })}
                                   type="plus"
                                 />
                               </div>
