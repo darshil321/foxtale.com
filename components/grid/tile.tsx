@@ -9,6 +9,7 @@ export function GridTileImage({
   product,
   active,
   label,
+  index = 0,
   alt = 'image',
   ...props
 }: {
@@ -16,6 +17,7 @@ export function GridTileImage({
   active?: boolean;
   product?: any;
   alt?: string;
+  index?: number;
   label?: {
     title: string;
     amount: string;
@@ -54,6 +56,7 @@ export function GridTileImage({
                     height={300}
                     alt={alt}
                     quality={75}
+                    loading={index < 3 ? 'eager' : 'lazy'}
                     sizes="(max-width: 640px) 200px, 300px"
                     {...props}
                   />
