@@ -115,7 +115,6 @@ const EmblaHeroCarousel: React.FC<PropType> = (props) => {
                     src={`/Images/banner.png`}
                     sizes="(max-width: 768px) 70vw"
                     alt="Your alt text"
-                    loading="eager"
                     quality={80}
                   />
                 </div>
