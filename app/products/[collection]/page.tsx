@@ -73,6 +73,7 @@ export default async function CategoryPage({
   );
 
   const productsByCollection = await Promise.all(promises);
+  console.log('data in server >>>>>>>>>>>>>>>', productsByCollection);
 
   return (
     <>
