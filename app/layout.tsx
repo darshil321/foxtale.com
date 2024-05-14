@@ -7,7 +7,7 @@ import WrapperContainer from 'components/layout/wrapper-container';
 import Provider from '../store/store-provider';
 import Banner from 'components/layout/navbar/banner';
 import { Poppins } from 'next/font/google';
-import { getMetaObjects, getProducts } from '@/lib/shopify';
+import { getMetaObjects } from '@/lib/shopify';
 import dynamic from 'next/dynamic';
 const InitialData = dynamic(() => import('@/components/initial-data'), { ssr: false });
 
@@ -47,8 +47,8 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const promises = [
     getMetaObjects('gifts'),
     getMetaObjects('freebies'),
-    getMetaObjects('magic_link'),
-    getProducts()
+    getMetaObjects('magic_link')
+    // getProducts()
   ];
 
   const results = await Promise.allSettled(promises);
@@ -56,7 +56,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const giftsCoupon = results[0]?.status === 'fulfilled' ? results[0].value : null;
   const freebieCoupons = results[1]?.status === 'fulfilled' ? results[1].value : null;
   const magicLinks = results[2]?.status === 'fulfilled' ? results[2].value : null;
-  const products = results[3]?.status === 'fulfilled' ? results[3].value : null;
+  // const products = results[3]?.status === 'fulfilled' ? results[3].value : null;
   // console.log('products', products);
 
   return (
@@ -74,7 +74,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
               giftsCoupon={giftsCoupon}
               freebieCoupons={freebieCoupons}
               magicLinks={magicLinks}
-              products={products}
+              // products={products}
             />
           </Suspense>
           <main className={poppins.className}>{children}</main>
