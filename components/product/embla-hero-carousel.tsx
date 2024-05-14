@@ -96,7 +96,7 @@ const EmblaHeroCarousel: React.FC<PropType> = (props) => {
               <div className="hero_embla__parallax">
                 <div className="hero_embla__parallax__layer ">
                   <Image
-                    loading="eager"
+                    priority
                     fill
                     objectFit="cover"
                     className="hero_embla__slide__img embla__parallax__img"
