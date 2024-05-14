@@ -5,8 +5,6 @@ import { ChevronUpIcon } from '@heroicons/react/20/solid';
 
 export default function Accordion({ product }: { product: Product }) {
   const filteredDataByKey = product?.metafields?.find((item: any) => item?.key === 'faq-section');
-  const parser = new DOMParser();
-  const htmlDocument = parser.parseFromString(filteredDataByKey?.value, 'text/html');
 
   function extractQuestionsAndAnswersFromHTML(html: any) {
     const faqItemsArray: any = [];
@@ -33,7 +31,8 @@ export default function Accordion({ product }: { product: Product }) {
     return faqItemsArray;
   }
 
-  const FaqItems = extractQuestionsAndAnswersFromHTML(htmlDocument);
+  const FaqItems = extractQuestionsAndAnswersFromHTML(filteredDataByKey?.value);
+  console.log('FaqItems', FaqItems);
 
   return (
     <div className="w-full px-4 py-8 md:py-16">
