@@ -12,13 +12,16 @@ import { EditItemQuantityButton } from './edit-item-quantity-button';
 import OpenCart from './open-cart';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-
+import '../../assets/styles/embla-products-carousel.css';
 import useCoupon from '@/lib/hooks/use-coupon';
 import { debounce, getCartData } from '@/lib/helper/helper';
 import { CartItem } from '@/lib/shopify/types';
 import { setCart, setCartOpen } from '@/store/slices/cart-slice';
 import { cartActions } from '@/store/actions/cart.action';
 import { GokwikButton } from '../product/go-kwik-button';
+
+import { EmblaOptionsType } from 'embla-carousel';
+import EmblaCartSlider from '../common/gift-cart-slider';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -79,6 +82,8 @@ export default function CartModal() {
   useEffect(() => {
     setIsOpen(isCartOpen);
   }, [isCartOpen]);
+
+  const OPTIONS: EmblaOptionsType = { dragFree: false };
 
   return (
     <>
@@ -210,6 +215,9 @@ export default function CartModal() {
                         </li>
                       );
                     })}
+                    <div className="max-h-60 w-full">
+                      <EmblaCartSlider slides={carts.lines} options={OPTIONS} />
+                    </div>
                   </ul>
                   <div className="py-4 text-sm text-neutral-500 ">
                     <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1">
