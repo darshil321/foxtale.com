@@ -68,8 +68,9 @@ export default async function CategoryPage({
   ];
 
   // Fetch products for all collections simultaneously
-  const promises = collections.map((collection) =>
-    getCollectionProducts({ collection: collection.handle, sortKey, reverse })
+  const promises = collections.map(
+    async (collection) =>
+      await getCollectionProducts({ collection: collection.handle, sortKey, reverse })
   );
 
   const productsByCollection = await Promise.all(promises);

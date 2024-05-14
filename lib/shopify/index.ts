@@ -61,7 +61,7 @@ const endpoint = `${domain}${SHOPIFY_GRAPHQL_API_ENDPOINT}`;
 const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
 
 export async function shopifyFetch<T>({
-  cache = 'force-cache',
+  // cache = 'force-cache',
   headers,
   query,
   tags,
@@ -85,8 +85,8 @@ export async function shopifyFetch<T>({
         ...(query && { query }),
         ...(variables && { variables })
       }),
-      cache,
-      ...(tags && { next: { tags } })
+      // cache,
+      ...(tags && { next: { revalidate: 120 } })
     });
 
     const body = await result.json();
