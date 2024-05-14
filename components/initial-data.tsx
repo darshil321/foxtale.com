@@ -13,7 +13,7 @@ interface Props {
   products?: any;
 }
 
-export const InitialData: React.FC<Props> = ({
+const InitialData: React.FC<Props> = ({
   giftsCoupon,
   freebieCoupons,
   magicLinks,
@@ -38,3 +38,5 @@ export const InitialData: React.FC<Props> = ({
 
   return <></>;
 };
+
+export default InitialData;

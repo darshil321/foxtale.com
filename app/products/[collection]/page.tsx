@@ -2,7 +2,13 @@ import { getCollection, getCollectionProducts } from 'lib/shopify';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { defaultSort, sorting } from 'lib/constants';
-import CollectionProductsContainer from '@/components/layout/search/collection-products';
+import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
+import Loading from '../loading';
+
+const CollectionProductsContainer = dynamic(
+  () => import('@/components/layout/search/collection-products')
+);
 
 // export const generateStaticParams = async () => {
 //   const collections = await getCollections();
@@ -72,12 +78,14 @@ export default async function CategoryPage({
     <>
       <div className="h-full w-full gap-4 space-y-6 ">
         {productsByCollection?.map((products, index) => (
-          <CollectionProductsContainer
-            key={index}
-            index={index}
-            collections={collections}
-            products={products}
-          />
+          <Suspense key={index} fallback={<Loading />}>
+            <CollectionProductsContainer
+              key={index}
+              index={index}
+              collections={collections}
+              products={products}
+            />
+          </Suspense>
         ))}
       </div>
     </>

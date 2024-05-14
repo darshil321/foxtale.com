@@ -1,5 +1,8 @@
-import Collections from 'components/layout/search/collections';
-import HeroBannerSlider from 'components/product/hero-banner-slider';
+import dynamic from 'next/dynamic';
+
+const HeroBannerSlider = dynamic(() => import('@/components/product/hero-banner-slider'));
+const Collections = dynamic(() => import('@/components/layout/search/collections'));
+
 // import FilterList from 'components/layout/search/filter';
 // import { sorting } from 'lib/constants';
 

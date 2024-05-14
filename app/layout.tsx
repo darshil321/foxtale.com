@@ -1,6 +1,6 @@
 import Navbar from 'components/layout/navbar';
 import { ensureStartsWith } from 'lib/utils';
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 import './globals.css';
 import Footer from 'components/layout/footer';
 import WrapperContainer from 'components/layout/wrapper-container';
@@ -8,7 +8,8 @@ import Provider from '../store/store-provider';
 import Banner from 'components/layout/navbar/banner';
 import { Poppins } from 'next/font/google';
 import { getMetaObjects, getCollections } from '@/lib/shopify';
-import { InitialData } from '@/components/initial-data';
+import dynamic from 'next/dynamic';
+const InitialData = dynamic(() => import('@/components/initial-data'), { ssr: false });
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -67,12 +68,14 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <WrapperContainer>
             <Navbar />
           </WrapperContainer>
-          <InitialData
-            giftsCoupon={giftsCoupon}
-            freebieCoupons={freebieCoupons}
-            magicLinks={magicLinks}
-            collections={collections}
-          />
+          <Suspense fallback={null}>
+            <InitialData
+              giftsCoupon={giftsCoupon}
+              freebieCoupons={freebieCoupons}
+              magicLinks={magicLinks}
+              collections={collections}
+            />
+          </Suspense>
           <main className={poppins.className}>{children}</main>
           <Footer />
         </Provider>
