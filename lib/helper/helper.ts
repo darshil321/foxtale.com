@@ -2,7 +2,7 @@
 
 import { Metaobject } from '@shopify/hydrogen-react/storefront-api-types';
 import axios from 'axios';
-import { Cart, CartItem } from '../shopify/types';
+import { Cart, CartItem, Connection } from '../shopify/types';
 import { cloneDeep } from '@apollo/client/utilities';
 
 interface Field {
@@ -252,5 +252,5 @@ export function getReformedCoupons(metaObjects: any) {
 }
 
 export const removeEdgesAndNodes = (array: Connection<any>) => {
-  return array.edges.map((edge) => edge?.node);
+  return array.edges.map((edge: any) => edge?.node);
 };

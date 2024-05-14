@@ -50,8 +50,8 @@ export interface CartState {
   error: any;
   metaObjects: any;
   giftCoupons?: GiftCoupon;
-  freebieCoupons: FreebieCoupon;
-  magicLinkCoupons: MagicLinkCoupon;
+  freebieCoupons?: FreebieCoupon;
+  magicLinkCoupons?: MagicLinkCoupon;
   isCartOpen: boolean;
 }
 

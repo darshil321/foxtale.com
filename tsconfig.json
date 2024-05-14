@@ -19,6 +19,7 @@
       "@/components/*": ["components/*"],
       "@/app/*": ["app/*"],
       "@/lib/*": ["lib/*"],
+      "@/pages/*": ["pages/*"],
       "@/store/*":["store/*"],
       "@/assets/*": ["assets/*"],
     },

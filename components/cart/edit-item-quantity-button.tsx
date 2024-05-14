@@ -3,7 +3,6 @@ import React from 'react';
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import LoadingDots from 'components/loading-dots';
-import { useFormStatus } from 'react-dom';
 
 function SubmitButton({
   type,
@@ -13,7 +12,7 @@ function SubmitButton({
   type: 'plus' | 'minus';
   // eslint-disable-next-line no-unused-vars
   onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  pending: boolean;
+  pending?: boolean;
 }) {
   return (
     <button
@@ -48,8 +47,6 @@ export function EditItemQuantityButton({
   // eslint-disable-next-line no-unused-vars
   type: 'plus' | 'minus';
 }) {
-  const { pending } = useFormStatus();
-
   return (
     <form onSubmit={(e) => e.preventDefault()}>
       <SubmitButton
@@ -57,7 +54,6 @@ export function EditItemQuantityButton({
         onClick={() => {
           onClick();
         }}
-        pending={pending}
       />
     </form>
   );

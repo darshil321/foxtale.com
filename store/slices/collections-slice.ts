@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export interface collectionState {
-  collections: any;
+  collections: any[];
   error: any;
 }
 
@@ -16,7 +16,7 @@ export const collectionsSlice = createSlice({
 
   reducers: {
     setCollections: (state, action) => {
-      state.collections = action.payload;
+      state.collections = action?.payload;
     }
   }
 });

@@ -1,10 +1,11 @@
-import GetRequiredData from '@/components/common/get-required-data';
 import { appendReviewAndRating } from '@/lib/helper/helper';
 import dynamic from 'next/dynamic';
 const Grid = dynamic(() => import('components/grid'));
 const ProductGridItems = dynamic(() => import('components/layout/product-grid-items'));
 import { defaultSort, sorting } from 'lib/constants';
 import { getProducts } from 'lib/shopify';
+import { Suspense } from 'react';
+import Loading from './loading';
 
 export const metadata = {
   title: 'Search',
@@ -24,7 +25,6 @@ export default async function SearchPage({
   const resultsText = products.length > 1 ? 'results' : 'result';
   return (
     <div className="rounded-md bg-white ">
-      <GetRequiredData />
       {searchValue ? (
         <p className="mx-2 pt-2 text-base md:mx-4 ">
           {products.length === 0
@@ -35,9 +35,11 @@ export default async function SearchPage({
       ) : null}
       {products.length > 0 ? (
         <div className=" rounded-md bg-white px-1.5 py-2 md:order-none md:px-4 md:py-6">
-          <Grid className=" grid-cols-2 place-items-center py-2 sm:grid-cols-2 md:py-7 lg:grid-cols-4">
-            <ProductGridItems products={products} />
-          </Grid>
+          <Suspense fallback={<Loading />}>
+            <Grid className=" grid-cols-2 place-items-center py-2 sm:grid-cols-2 md:py-7 lg:grid-cols-4">
+              <ProductGridItems products={products} />
+            </Grid>
+          </Suspense>
         </div>
       ) : null}
     </div>

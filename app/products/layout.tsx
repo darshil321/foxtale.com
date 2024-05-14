@@ -1,34 +1,14 @@
-import InitialData from '@/components/initial-data';
-import { getCollections, getMetaObjects, getProducts } from '@/lib/shopify';
-import Collections from 'components/layout/search/collections';
-import HeroBannerSlider from 'components/product/hero-banner-slider';
+import dynamic from 'next/dynamic';
+
+const HeroBannerSlider = dynamic(() => import('@/components/product/hero-banner-slider'));
+const Collections = dynamic(() => import('@/components/layout/search/collections'));
+
+// import FilterList from 'components/layout/search/filter';
+// import { sorting } from 'lib/constants';
 
 export default async function SearchLayout({ children }: { children: React.ReactNode }) {
-  const promises = [
-    getMetaObjects('gifts'),
-    getMetaObjects('freebies'),
-    getMetaObjects('magic_link'),
-    getCollections(),
-    getProducts()
-  ];
-
-  const results = await Promise.allSettled(promises);
-
-  const giftsCoupon = results[0]?.status === 'fulfilled' ? results[0].value : null;
-  const freebieCoupons = results[1]?.status === 'fulfilled' ? results[1].value : null;
-  const magicLinks = results[2]?.status === 'fulfilled' ? results[2].value : null;
-  const collections = results[3]?.status === 'fulfilled' ? results[3].value : null;
-  const products = results[4]?.status === 'fulfilled' ? results[4].value : null;
-
   return (
     <div className="bg-[#E4E4E4]">
-      <InitialData
-        giftsCoupon={giftsCoupon}
-        freebieCoupons={freebieCoupons}
-        magicLinks={magicLinks}
-        collections={collections}
-        products={products}
-      />
       <div className="w-full p-1.5 md:p-8">
         <HeroBannerSlider />
       </div>

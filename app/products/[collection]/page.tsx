@@ -1,22 +1,31 @@
-import { getCollection, getCollectionProducts, getCollections } from 'lib/shopify';
+import { getCollection, getCollectionProducts } from 'lib/shopify';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { defaultSort, sorting } from 'lib/constants';
 import dynamic from 'next/dynamic';
+// import { Suspense } from 'react';
+// import Loading from '../loading';
 
 const CollectionProductsContainer = dynamic(
-  () => import('@/components/layout/search/collection-products'),
-  { ssr: false }
+  () => import('@/components/layout/search/collection-products')
 );
 
-export const fetchCache = 'force-cache';
+// export const generateStaticParams = async () => {
+//   const collections = await getCollections();
+
+//   return collections?.map((collection: any) => ({
+//     collection: collection?.handle === '' ? 'all' : collection?.handle
+//   }));
+// };
+
+// export const fetchCache = 'force-cache';
 
 export const generateStaticParams = async () => {
-  const collections = await getCollections();
-
-  return collections?.map((collection: any) => ({
-    collection: collection?.handle === '' ? 'all' : collection?.handle
-  }));
+  return [
+    {
+      collection: 'all'
+    }
+  ];
 };
 
 export async function generateMetadata({
@@ -59,15 +68,16 @@ export default async function CategoryPage({
   ];
 
   // Fetch products for all collections simultaneously
-  const promises = collections.map((collection) =>
-    getCollectionProducts({ collection: collection.handle, sortKey, reverse })
+  const promises = collections.map(
+    async (collection) =>
+      await getCollectionProducts({ collection: collection.handle, sortKey, reverse })
   );
 
   const productsByCollection = await Promise.all(promises);
+  console.log('data in server >>>>>>>>>>>>>>>', productsByCollection);
 
   return (
     <>
-      {/* <GetRequiredData /> */}
       <div className="h-full w-full gap-4 space-y-6 ">
         {productsByCollection?.map((products, index) => (
           <CollectionProductsContainer

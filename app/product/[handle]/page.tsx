@@ -6,10 +6,10 @@ import Link from 'next/link';
 import { GridTileImage } from '@/components/grid/tile';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import dynamic from 'next/dynamic';
-import { ProductSlider } from '@/components/product/product-slider';
-import OfferSection from '@/components/product/offers-section';
-import ProductsRatings from '@/components/product/products-rating';
 
+const ProductSlider = dynamic(() => import('@/components/product/product-slider'));
+const OfferSection = dynamic(() => import('@/components/product/offers-section'));
+const ProductsRatings = dynamic(() => import('@/components/product/products-rating'));
 const ProductDescription = dynamic(() => import('@/components/product/product-description'));
 const ProductCarouselSlider = dynamic(() => import('@/components/product/product-carousel'));
 const ProductDetailsTabs = dynamic(() => import('@/components/product/product-details-tabs'));
