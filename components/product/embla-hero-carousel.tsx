@@ -100,7 +100,7 @@ const EmblaHeroCarousel: React.FC<PropType> = (props) => {
                     fill
                     objectFit="cover"
                     className="hero_embla__slide__img embla__parallax__img"
-                    src={'/Images/banner.png'}
+                    src={'https://foxtale.in/cdn/shop/files/banners_30_off-02.jpg'}
                     sizes="(max-width: 768px) 70vw"
                     alt="Your alt text"
                     quality={80}
