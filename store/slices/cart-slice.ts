@@ -80,9 +80,12 @@ export const cartSlice = createSlice({
     },
     removeCart: (state, action) => {
       const cart = current(state.cart);
+      const lineIds = action.payload.lineIds;
+      console.log('lineIds', lineIds);
+
       state.cart = {
         ...cart,
-        lines: cart?.lines.filter((item: any) => item.id !== action.payload.lineId)
+        lines: cart?.lines.filter((item: any) => !lineIds?.includes(item.id))
       };
     },
     addToCart: (state, action) => {
@@ -134,6 +137,8 @@ export const cartSlice = createSlice({
 
       const _state = current(state);
       if (_state.loading && fromSaga) return;
+      console.log('fromSaga', fromSaga, action.payload);
+
       const { tempId, ...res } = action.payload;
 
       const cartLines: CartItem[] = res?.lines.map((cartItem: CartItem) => {
@@ -144,12 +149,6 @@ export const cartSlice = createSlice({
       });
       // const filteredCartLines = cartLines.filter((cartItem) => cartItem.quantity > 0);
       state.cart = { ...res, lines: cartLines as CartItem[] };
-    },
-
-    updateCartItemQuantity: (state, action) => {
-      const { itemId, newQuantity } = action.payload;
-      if (!state.quantities) state.quantities = {};
-      state.quantities[itemId] = newQuantity;
     },
 
     setMetaObject: (state, action) => {
@@ -179,7 +178,6 @@ export const {
   setCart,
   getCartFailed,
   attemptGetCarts,
-  updateCartItemQuantity,
   setMetaObject,
   setGiftCoupons,
   setFreebieCoupons,

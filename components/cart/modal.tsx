@@ -5,7 +5,7 @@ import { DEFAULT_OPTION } from 'lib/constants';
 import { createUrl } from 'lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useMemo } from 'react';
 import CloseCart from './close-cart';
 import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
@@ -25,19 +25,10 @@ type MerchandiseSearchParams = {
 };
 
 export default function CartModal() {
-  const [isOpen, setIsOpen] = useState(false);
-  console.warn('isOpen', isOpen);
-
-  const test = useCoupon();
-  console.warn('test', test);
+  // const [isOpen, setIsOpen] = useState(false);
 
   const carts = useAppSelector((state) => state.cart.cart);
-
-  const loading = useAppSelector((state) => state.cart.loading);
-
-  useEffect(() => {
-    console.log('loading', loading);
-  }, [loading]);
+  const { adjustFreebiesInCart } = useCoupon();
 
   const data = getCartData(carts);
   const { currencyCode, totalAmount } = data;
@@ -58,27 +49,33 @@ export default function CartModal() {
     }
 
     dispatch(setCart(updatedCart));
-    const payload = updatedCart?.lines?.map((item: any) => {
-      return {
+
+    const payload = updatedCart?.lines
+      ?.filter((item: CartItem) => Number(item.cost.amountPerQuantity.amount) !== 0)
+      ?.map((item: CartItem) => ({
         id: item.id,
         merchandiseId: item.merchandise.id,
         quantity: item.quantity
-      };
-    });
-    debouncedUpdateItemQuantity(payload);
+      }));
+
+    console.log('Updated', payload);
+    const { removableCartLineIds } = adjustFreebiesInCart(updatedCart);
+    debouncedUpdateItemQuantity(payload, removableCartLineIds);
   }
   const debouncedUpdateItemQuantity = useMemo(
     () =>
-      debounce((payload) => {
+      debounce((payload, removableCartLineIds) => {
         dispatch(cartActions.updateCart(payload));
+        if (removableCartLineIds?.length > 0)
+          dispatch(cartActions.removeCart({ lineIds: removableCartLineIds }));
       }, 1000),
     [dispatch]
   );
 
   const { isCartOpen } = useAppSelector((state) => state.cart);
-  useEffect(() => {
-    setIsOpen(isCartOpen);
-  }, [isCartOpen]);
+  // useEffect(() => {
+  // setIsOpen(isCartOpen);
+  // }, [isCartOpen]);
 
   return (
     <>
@@ -189,7 +186,7 @@ export default function CartModal() {
                                     if (item.quantity > 1) {
                                       increaseItemQuantity({ cart: carts, item, type: 'minus' });
                                     } else {
-                                      dispatch(cartActions.removeCart({ lineId: item.id }));
+                                      dispatch(cartActions.removeCart({ lineIds: [item.id] }));
                                     }
                                   }}
                                   type="minus"

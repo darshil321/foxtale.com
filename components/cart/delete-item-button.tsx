@@ -16,7 +16,7 @@ function SubmitButton({ removeIcon, item }: { removeIcon?: boolean; item?: CartI
       type="submit"
       onClick={(e: React.FormEvent<HTMLButtonElement>) => {
         if (pending) e.preventDefault();
-        dispatch(cartActions.removeCart({ lineId: item?.id }));
+        dispatch(cartActions.removeCart({ lineIds: [item?.id] }));
       }}
       aria-label="Remove cart item"
       aria-disabled={pending}
@@ -42,9 +42,6 @@ export function DeleteItemButton({ item, removeIcon }: { item: CartItem; removeI
   return (
     <>
       <SubmitButton removeIcon={removeIcon} item={item} />
-      <p aria-live="polite" className="sr-only" role="status">
-        {/* {message} */}
-      </p>
     </>
   );
 }

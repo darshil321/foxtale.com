@@ -37,13 +37,12 @@ export function* addToCartSaga(action: {
 
 export function* updateCartSaga(action: {
   type: string;
-  payload: { lineId: string; variantId: string; quantity: number }[];
+  payload: { id: string; merchandiseId: string; quantity: number }[];
 }): Generator<any, void, any> {
   try {
-    console.log(1111);
     yield put(setCartLoading(true));
     const { payload } = action;
-    const data = yield call({ fn: updateItemQuantity, context: null }, null, payload);
+    const data = yield call({ fn: updateItemQuantity, context: null }, payload);
 
     yield put(setCartLoading(false));
     yield put(cartActions.setCart({ data, fromSaga: true }));
@@ -53,14 +52,14 @@ export function* updateCartSaga(action: {
 }
 export function* removeCartSaga(action: {
   type: string;
-  payload: { lineId: string };
+  payload: { lineIds: string[] };
 }): Generator<any, void, any> {
   try {
     const {
-      payload: { lineId }
+      payload: { lineIds }
     } = action;
 
-    const data = yield call({ fn: removeItem, context: null }, null, lineId);
+    const data = yield call({ fn: removeItem, context: null }, lineIds);
 
     yield put(cartActions.setCart(data));
   } catch (error) {

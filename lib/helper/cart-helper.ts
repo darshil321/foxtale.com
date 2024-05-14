@@ -1,7 +1,9 @@
+import { Cart, CartItem, Product } from '../shopify/types';
 import { getCartData, removeEdgesAndNodes } from './helper';
 
 export const getApplicableCoupon = (coupon, cart) => {
   if (!coupon.length) return null;
+  console.log('getApplicableCoupon', coupon, cart);
 
   let minDifference = Infinity;
   const applicableCoupon = coupon.reduce((acc, coupon) => {
@@ -29,10 +31,36 @@ export const getApplicableCoupon = (coupon, cart) => {
 
   return applicableCoupon;
 };
+export const isFreeProductExistInCart = (cart: any, freeProduct: string | string[]) => {
+  const { lines } = cart;
+  if (Array.isArray(freeProduct)) {
+    return freeProduct.some((product: string) =>
+      lines.some((line: any) => line.merchandise.id === product)
+    );
+  } else {
+    return lines.some((line: any) => line.merchandise.id === freeProduct);
+  }
+};
+export const getFreeProduct = (products: Product[], freeProduct: string) => {
+  return products.find((product: Product) =>
+    product.variants.some((variant: { id: string }) => variant.id === freeProduct)
+  );
+};
+export const getFreeProductCartLines = (cart: Cart) => {
+  const { lines } = cart;
+  return lines?.filter((line: CartItem) => Number(line.cost.amountPerQuantity.amount) === 0);
+};
+
+export const removableLineIds = (cartItem: CartItem[] | undefined, freeProducts: string[]) => {
+  const removableCartLines = cartItem?.filter(
+    (product) => !freeProducts.includes(product.merchandise.id)
+  );
+  return removableCartLines?.map((line) => line.id);
+};
 
 const getApplicableSubCart = (cart, applicableProducts) => {
   if (!applicableProducts) return null;
-  const applicableCart = cart.lines.filter((cartItem) => {
+  const applicableCart = cart?.lines?.filter((cartItem) => {
     const product = applicableProducts.find((item) => {
       return item === cartItem.merchandise.id;
     });
@@ -53,10 +81,7 @@ export const getMagicKey = () => {
   const url = window.location.href;
   const searchParams = new URLSearchParams(new URL(url).search);
   const magicKey = searchParams.get('magicKey');
-
-  console.log('m', magicKey);
-
-  return '234567';
+  return magicKey;
 };
 
 export const getApplicableMagicLink = ({ magicKey: key, coupons, cart, collections }) => {
