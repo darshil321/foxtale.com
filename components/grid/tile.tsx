@@ -46,7 +46,7 @@ export function GridTileImage({
           <div className="flex h-full w-full flex-col">
             <div className="relative">
               <div className=" h-full w-full overflow-hidden object-cover">
-                <Link href={`/product/${product?.handle}`}>
+                <Link href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}>
                   <Image
                     className={clsx(
                       ' relative aspect-square h-full min-h-[200px] w-full object-cover  md:min-h-[300px]',

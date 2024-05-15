@@ -24,7 +24,8 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
   return (
     <li className="mt-2 flex h-full w-full items-center justify-center gap-2 text-black">
       <div
-        className={`relative flex flex-col items-center justify-center gap-1 md:gap-2
+        onClick={handleClick}
+        className={`relative flex h-full cursor-pointer flex-col items-center justify-center gap-1 md:gap-2
       `}
       >
         <Image
@@ -38,13 +39,12 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
           sizes="(max-width: 640px) 80px, 80px"
           height={100}
         />
-        <button
-          className={`line-clamp-1 text-ellipsis text-wrap text-center text-xs md:text-sm `}
-          onClick={handleClick}
-        >
+        <button className={`line-clamp-1 text-ellipsis text-wrap text-center text-xs md:text-sm `}>
           {item.title}
         </button>
-        {active && <div className="h-[2px] rounded-full bg-black md:h-[2px]  md:w-[138px]"></div>}
+        <div
+          className={`h-[2px] w-[78px] rounded-full ${active ? 'bg-black' : ''}  transition-colors duration-300 ease-in-out md:w-[138px]`}
+        ></div>
       </div>
     </li>
   );

@@ -18,6 +18,13 @@ export default function VariantSelector({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const isOnlyColorOption = options?.length === 1 && options[0]?.name.toLowerCase() === 'color';
+
+  if (isOnlyColorOption) {
+    return;
+  }
+
   const hasNoOptionsOrJustOneOption =
     !options?.length || (options?.length === 1 && options[0]?.values?.length === 1);
 
@@ -139,13 +146,15 @@ export default function VariantSelector({
         );
       })}
       {/* Text strip */}
-      <div
-        ref={textStripRef}
-        className="absolute bottom-6 bg-green-500 text-center text-[7px] text-white md:text-[10px]"
-        style={{ left: 0, width: '100%' }} // This will be overridden by useEffect logic
-      >
-        Save Extra
-      </div>
+      {options.length >= 1 && (
+        <div
+          ref={textStripRef}
+          className="absolute bottom-6 bg-green-500 text-center text-[7px] text-white md:text-[10px]"
+          style={{ left: 0, width: '100%' }}
+        >
+          Save Extra
+        </div>
+      )}
     </div>
   );
 }

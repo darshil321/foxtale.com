@@ -1,6 +1,3 @@
-// import Link from 'next/link';
-// import LogoSquare from 'components/logo-square';
-// import { getMenu } from 'lib/shopify';
 import FooterMenu from 'components/layout/footer-menu';
 import { Suspense } from 'react';
 import { Menu } from 'lib/shopify/types';
@@ -25,21 +22,21 @@ export default async function Footer() {
   // Initialize the array with 9 objects of type Menu
   const OrderSupport: MenuArray = [
     { title: 'Order & Support', path: '/' },
-    { title: 'Track My Order', path: '/track-order' },
-    { title: 'Order Cancellation', path: '/about' }
+    { title: 'Track My Order', path: 'https://foxtalein.shiprocket.co/tracking' },
+    { title: 'Order Cancellation', path: 'https://foxtale.in/pages/order-cancellation-request' }
   ];
 
   const Information: MenuArray = [
     { title: 'Information', path: '/' },
-    { title: 'Shipping & Returns', path: '/careers' },
-    { title: 'Privacy Policy', path: '/careers' },
-    { title: 'Terms of Service', path: '/faq' }
+    { title: 'Shipping & Returns', path: 'https://foxtale.in/pages/return-policy' },
+    { title: 'Privacy Policy', path: 'https://foxtale.in/pages/privacy-policy' },
+    { title: 'Terms of Service', path: 'https://foxtale.in/pages/terms-of-service' }
   ];
 
   const ContactUs: MenuArray = [
     { title: 'Contact Us', path: '/' },
-    { title: 'Get in touch', path: '/get' },
-    { title: 'Store Locator', path: '/careers' }
+    { title: 'Get in touch', path: 'https://foxtale.in/pages/contact' },
+    { title: 'Store Locator', path: 'https://foxtale.in/pages/store-locator' }
   ];
 
   return (
