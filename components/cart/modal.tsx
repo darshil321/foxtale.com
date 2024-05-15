@@ -5,7 +5,7 @@ import { DEFAULT_OPTION } from 'lib/constants';
 import { createUrl } from 'lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import CloseCart from './close-cart';
 import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
@@ -18,9 +18,10 @@ import { getCartData } from '@/lib/helper/helper';
 import { CartItem } from '@/lib/shopify/types';
 import { setCartOpen } from '@/store/slices/cart-slice';
 import { GokwikButton } from '../product/go-kwik-button';
-
 import { EmblaOptionsType } from 'embla-carousel';
-import EmblaCartSlider from '../common/gift-cart-slider';
+
+import { cartActions } from '@/store/actions/cart.action';
+import EmblaProductSlider from '../common/recommended-product-slider';
 import LoadingOverlay from '../common/loading';
 
 type MerchandiseSearchParams = {
@@ -32,6 +33,9 @@ export default function CartModal() {
   const carts = useAppSelector((state) => state.cart.cart);
   const { giftFreeProducts } = useAppSelector((state) => state.cart);
   const { loading } = useAppSelector((state) => state.cart);
+  const RecommendedProducts = useAppSelector((state) => state.cart.recommendedProducts);
+
+  console.log('carts', carts);
   const { adjustCart } = useCoupon();
 
   const data = getCartData(carts);
@@ -62,6 +66,22 @@ export default function CartModal() {
 
     adjustCart(cart);
   }
+  console.log('carts', carts);
+
+  useEffect(() => {
+    // if (Array.isArray(carts) && carts.length > 0 && carts[0].merchandise) {
+    //   productId = carts[0].merchandise.product.id;
+    // } else if (Array.isArray(carts.lines) && carts.lines.length > 0 && carts.lines[0].merchandise) {
+    if (carts && carts?.lines?.length > 0) {
+      const productId = carts?.lines[0].merchandise.product.id;
+      // }
+
+      // if (productId) {
+      dispatch(cartActions.setRecommendedProduct({ productId }));
+    }
+
+    // }
+  }, [carts, dispatch]);
 
   const { isCartOpen } = useAppSelector((state) => state.cart);
 
@@ -112,7 +132,7 @@ export default function CartModal() {
                 </div>
               ) : (
                 <div className="bg-gray flex h-full flex-col justify-between overflow-hidden">
-                  <ul className="flex-grow overflow-auto border border-white bg-grey p-2 py-1 shadow-sm ">
+                  <ul className="flex-grow overflow-auto bg-grey p-2 py-1 ">
                     {carts?.lines?.map((item: any, i: number) => {
                       const merchandiseSearchParams = {} as MerchandiseSearchParams;
 
@@ -132,11 +152,11 @@ export default function CartModal() {
                       return (
                         <li key={i} className="flex w-full flex-col bg-white ">
                           <div className="relative flex w-full flex-row justify-between rounded-sm px-1 py-1 ">
-                            <div className="absolute z-10  -mt-2 ml-[55px]">
+                            <div className="absolute z-40 -mt-2 ml-[55px]">
                               <DeleteItemButton item={item} removeIcon={false} />
                             </div>
 
-                            <div className="flex w-full items-center justify-between">
+                            <div className="flex h-full w-full items-center justify-between">
                               <Link
                                 href={merchandiseUrl}
                                 onClick={() => dispatch(setCartOpen(false))}
@@ -185,9 +205,8 @@ export default function CartModal() {
                                   </div>
                                 </div>
                               </Link>
-
-                              <div className="flex h-16 flex-col justify-between">
-                                <div className="ml-auto flex h-9 flex-row items-center  border border-neutral-200 ">
+                              <div className="flex h-full flex-col items-center justify-between">
+                                <div className="ml-auto flex h-6 w-full flex-row items-center border border-neutral-200 ">
                                   {item.quantity > 1 && (
                                     <EditItemQuantityButton
                                       onClick={() => {
@@ -204,7 +223,6 @@ export default function CartModal() {
                                       type="trash"
                                     />
                                   )}
-
                                   <p className="w-6 text-center">
                                     <span className="w-full text-sm">{item.quantity}</span>
                                   </p>
@@ -219,29 +237,45 @@ export default function CartModal() {
                         </li>
                       );
                     })}
-                    {/* <div className="mt-4 max-h-60 w-full rounded-md border border-white bg-white p-2 shadow-sm">
-                      <div className="mb-3 font-medium ">Complete Your Routine With</div>
-                      <EmblaCartSlider slides={carts.lines} options={OPTIONS} />
-                    </div> */}
-                    <div className="mt-4 max-h-60 w-full rounded-md border border-white bg-white p-2 shadow-sm">
-                      <div className="mb-3 font-medium ">Gift Products</div>
-                      <EmblaCartSlider slides={giftFreeProducts} options={OPTIONS} />
-                    </div>
+                    {RecommendedProducts &&
+                      RecommendedProducts.length > 0 &&
+                      carts?.lines?.length > 0 && (
+                        <div className="mt-4 max-h-60 w-full rounded-md border border-white bg-white p-2 shadow-sm">
+                          <div className="mb-3 font-medium ">Recommended Products</div>
+                          <EmblaProductSlider
+                            slides={RecommendedProducts}
+                            options={OPTIONS}
+                            type={'product'}
+                          />
+                        </div>
+                      )}
+                    {console.log('giftFreeProducts', giftFreeProducts)}
+                    {giftFreeProducts && giftFreeProducts?.length > 0 && (
+                      <div className="mt-4 max-h-60 w-full rounded-md border border-white bg-white p-2 shadow-sm">
+                        <div className="mb-3 font-medium ">Gift Products</div>
+                        <EmblaProductSlider
+                          slides={giftFreeProducts}
+                          options={OPTIONS}
+                          type={'gift'}
+                        />
+                      </div>
+                    )}
                   </ul>
 
                   <div>
                     {totalCartQuantity > minimumCartItems && (
                       <div className="bg-[#ffe1d7] p-2 text-xs">
-                        <p className="flex flex-row">
+                        <p className="flex flex-row gap-1">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 60 60"
-                            width="30px"
-                            height="30px"
+                            viewBox="0 0 30 30"
+                            width="16px"
+                            height="16px"
+                            className="flex items-center"
                           >
                             <path d="M15,3C8.373,3,3,8.373,3,15c0,6.627,5.373,12,12,12s12-5.373,12-12C27,8.373,21.627,3,15,3z M16,21h-2v-7h2V21z M15,11.5 c-0.828,0-1.5-0.672-1.5-1.5s0.672-1.5,1.5-1.5s1.5,0.672,1.5,1.5S15.828,11.5,15,11.5z" />
                           </svg>
-                          <span>
+                          <span className="text-xs">
                             {' Use Code: '}
                             {couponDescriptionLine}
                             {' at checkout to unlock the De-Tan Scrub'}

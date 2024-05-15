@@ -22,7 +22,7 @@ function SubmitButton({
       aria-label={type === 'plus' ? 'Increase item quantity' : 'Reduce item quantity'}
       aria-disabled={pending}
       className={clsx(
-        'ease flex h-full min-w-[36px] max-w-[36px] flex-none items-center justify-center rounded-full px-2 transition-all duration-200 hover:border-neutral-800 hover:opacity-80',
+        'ease flex h-full min-w-[28px] max-w-[32px] flex-none items-center justify-center rounded-full px-1 transition-all duration-200 hover:border-neutral-800 hover:opacity-80',
         {
           'cursor-not-allowed': pending,
           'ml-auto': type === 'minus'
@@ -37,7 +37,7 @@ function SubmitButton({
         <Image src="/Images/trash.svg" alt="trash Icon" height={12} width={12} />
       ) : (
         <svg
-          className="h-4 h-4"
+          className="h-4 w-3"
           xmlns="http://www.w3.org/2000/svg"
           width="8"
           height="2"

@@ -10,5 +10,6 @@ export const cartActions = {
   removeCart: createAction<{}>('cart/removeCart'),
   setCart: createAction<{}>('cart/setCart'),
   setMetaObject: createAction<{}>('cart/setMetaObject'),
-  createCart: createAction('cart/createCart')
+  createCart: createAction('cart/createCart'),
+  setRecommendedProduct: createAction<{}>('cart/getRecommendedProducts')
 };

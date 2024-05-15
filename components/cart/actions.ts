@@ -21,10 +21,11 @@ export async function createCartIfNotExists() {
 export async function addItem(selectedVariantId: string) {
   let cartId = cookies().get('cartId')?.value || null;
   let cart;
+  console.log('selectedVariantId', selectedVariantId);
 
   if (!selectedVariantId) {
     console.log('Missing product variant ID');
-    return 'Missing product variant ID';
+    return null;
   }
   if (cartId) cart = await getCart(cartId);
 
@@ -40,8 +41,8 @@ export async function addItem(selectedVariantId: string) {
     revalidateTag(TAGS.cart);
     return data;
   } catch (e) {
-    console.log('e', e);
-    return 'Error adding item to cart';
+    console.log('error adding cart', e);
+    return null;
   }
 }
 export async function addItems(items: { quantity: number; merchandiseId: string }[]) {
