@@ -118,7 +118,7 @@ function useCoupon() {
     return res;
   };
 
-  const debouncedUpdateItemQuantity = (updatedCart, itemsToBeAdd) => {
+  const debouncedUpdateItemQuantity = (updatedCart: any, itemsToBeAdd: any) => {
     dispatch(cartActions.updateCart(updatedCart));
     if (itemsToBeAdd.length)
       itemsToBeAdd.forEach((item: any) => {

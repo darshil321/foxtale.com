@@ -36,7 +36,7 @@ function SubmitButton({
     );
   }
 
-  const updateCart = (tempId) => {
+  const updateCart = (tempId: string) => {
     const variant = getDefaultVariant(product, selectedVariantId);
     if (!variant) {
       return;
