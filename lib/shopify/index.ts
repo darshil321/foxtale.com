@@ -61,7 +61,7 @@ const endpoint = `${domain}${SHOPIFY_GRAPHQL_API_ENDPOINT}`;
 const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
 
 export async function shopifyFetch<T>({
-  // cache = 'force-cache',
+  cache = 'force-cache',
   headers,
   query,
   tags,
@@ -85,7 +85,7 @@ export async function shopifyFetch<T>({
         ...(query && { query }),
         ...(variables && { variables })
       }),
-      // cache,
+      cache,
       ...(tags && { next: { revalidate: 120 } })
     });
 
@@ -436,7 +436,7 @@ export async function getProducts({
     });
 
     const products = reshapeProducts(removeEdgesAndNodes(res.body.data.products));
-    return products.map((p) => ({
+    return products.map((p: any) => ({
       ...p,
       collections: removeEdgesAndNodes(p.collections).map((c) => c.id)
     }));

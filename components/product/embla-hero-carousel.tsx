@@ -21,11 +21,6 @@ const EmblaHeroCarousel: React.FC<PropType> = (props) => {
   const tweenFactor = useRef(0);
   const tweenNodes = useRef<HTMLElement[]>([]);
 
-  // const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
-
-  // const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } =
-  //   usePrevNextButtons(emblaApi);
-
   const setTweenNodes = useCallback((emblaApi: EmblaCarouselType): void => {
     tweenNodes.current = emblaApi.slideNodes().map((slideNode) => {
       return slideNode.querySelector('.hero_embla__parallax__layer') as HTMLElement;
@@ -111,25 +106,6 @@ const EmblaHeroCarousel: React.FC<PropType> = (props) => {
           ))}
         </div>
       </div>
-
-      {/* <div className="hero_embla__controls ">
-        <div className="hero_embla__buttons">
-          <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
-          <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
-        </div>
-
-        <div className="hero_embla__dots">
-          {scrollSnaps.map((_, index) => (
-            <DotButton
-              key={index}
-              onClick={() => onDotButtonClick(index)}
-              className={'hero_embla__dot'.concat(
-                index === selectedIndex ? ' hero_embla__dot--selected' : ''
-              )}
-            />
-          ))}
-        </div>
-      </div> */}
     </div>
   );
 };

@@ -18,6 +18,7 @@ const productFragment = /* GraphQL */ `
         { key: "routinename1", namespace: "custom" }
         { key: "routinename2", namespace: "custom" }
         { key: "product-sub-title", namespace: "global" }
+        { key: "product_tag", namespace: "custom" }
       ]
     ) {
       description
@@ -54,6 +55,7 @@ const productFragment = /* GraphQL */ `
         node {
           id
           title
+          weight
           availableForSale
           selectedOptions {
             name

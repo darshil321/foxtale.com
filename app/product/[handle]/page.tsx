@@ -94,6 +94,11 @@ export default async function ProductPage({
     }
   };
 
+  const filteredDataByKey = product?.metafields?.find(
+    (item: any) => item?.key === 'product-sub-title'
+  );
+  const decodedHtml = filteredDataByKey?.value || '';
+
   return (
     <div>
       <script
@@ -108,10 +113,12 @@ export default async function ProductPage({
             <div className="mb-2 flex items-end gap-2 md:gap-3">
               <h1 className=" text-2xl font-medium leading-7">
                 {product.title}{' '}
-                <span className="text-center text-xs text-[#bcbec0]"> Size -30 ml</span>
+                <span className="text-center text-xs text-[#bcbec0]">
+                  Size - {product?.variants[0]?.weight} ml
+                </span>
               </h1>
             </div>
-            <h5 className="text-[#6d6e71]">Treats hyperpigmentation and dark spots</h5>
+            <div className="text-[#6d6e71]" dangerouslySetInnerHTML={{ __html: decodedHtml }} />
             <ProductsRatings product={product} />
           </div>
           <div className="h-full w-full basis-full lg:basis-3/6">

@@ -23,15 +23,17 @@ export default function ProductDescription({
   );
   const decodedHtml = filteredDataByKey?.value || '';
 
-  console.log('filteredDataBddffyKey', decodedHtml);
-
   return (
     <>
       <div className=" flex flex-col gap-1 pb-1 md:pb-3 ">
         <div className=" hidden flex-col gap-1 md:flex ">
           <div className="flex flex-col items-center gap-0 md:flex-row md:gap-3">
-            <h1 className="mb-2 text-2xl font-medium leading-6">{product.title}</h1>
-            <span className="text-center text-xs text-neutral-400"> Size -30 ml</span>
+            <h1 className="mb-2 text-2xl font-medium leading-6">
+              {product.title}
+              <span className="pl-2 text-center text-xs text-neutral-400">
+                Size - {product?.variants[0]?.weight} ml
+              </span>
+            </h1>
           </div>
           <div className="text-[#6d6e71]" dangerouslySetInnerHTML={{ __html: decodedHtml }} />
           <ProductsRatings product={product} />

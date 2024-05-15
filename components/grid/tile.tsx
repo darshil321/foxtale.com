@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { AddToCartButton } from '@/components/cart/add-to-cart-button';
+import ProductTag from '../elements/product-tag';
 
 export function GridTileImage({
   isInteractive = true,
@@ -27,8 +28,6 @@ export function GridTileImage({
   };
 } & React.ComponentProps<typeof Image>) {
   if (!product) return null;
-  console.log('product', product);
-  // console.log('product.options', product.variants);
   const productDescription = product?.metafields?.find((item: any) => item?.key === 'hp_excerpt');
 
   return (
@@ -63,9 +62,7 @@ export function GridTileImage({
                     sizes="(max-width: 640px) 200px, 300px"
                     {...props}
                   />
-                  <div className="absolute right-2 top-2 rounded-md bg-white p-1 text-xs font-bold uppercase text-orange-400 text-white">
-                    SELLING FAST
-                  </div>
+                  <ProductTag product={product} />
                 </Link>
               </div>
 
@@ -98,8 +95,8 @@ export function GridTileImage({
                     {label?.title}
                   </h3>
                 </Link>
-                <p className="text-[10px] leading-7 text-[#6e6e6e]  md:text-xs">
-                  {productDescription.value}
+                <p className="line-clamp-1 text-[10px] leading-7 text-[#6e6e6e]  md:text-xs">
+                  {productDescription?.value}
                 </p>
               </div>
               <span className="">
@@ -122,7 +119,7 @@ export function GridTileImage({
                     variants={product.variants}
                     availableForSale={product?.availableForSale || false}
                     buttonClasses={
-                      'relative flex  flex-1 text-sm hover:text-purple-400  items-center justify-center text-base bg-black border border-black text-white  md:px-8 uppercase tracking-wide font-normal md:font-semibold'
+                      'relative flex flex-1 text-sm hover:text-purple-400  items-center justify-center text-base bg-black border border-black text-white  md:px-8 uppercase tracking-wide font-normal md:font-semibold'
                     }
                   />
                 </Suspense>
