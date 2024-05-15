@@ -5,19 +5,17 @@ import { DEFAULT_OPTION } from 'lib/constants';
 import { createUrl } from 'lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment, useMemo } from 'react';
+import { Fragment } from 'react';
 import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
 import OpenCart from './open-cart';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import '../../assets/styles/embla-products-carousel.css';
 import useCoupon from '@/lib/hooks/use-coupon';
-import { debounce, getCartData } from '@/lib/helper/helper';
+import { getCartData } from '@/lib/helper/helper';
 import { CartItem } from '@/lib/shopify/types';
-import { setCartOpen, setUpdateCartLoading } from '@/store/slices/cart-slice';
-import { cartActions } from '@/store/actions/cart.action';
+import { setCartOpen } from '@/store/slices/cart-slice';
 import { GokwikButton } from '../product/go-kwik-button';
-import { v4 as uuidv4 } from 'uuid';
 
 import { EmblaOptionsType } from 'embla-carousel';
 import EmblaCartSlider from '../common/gift-cart-slider';
@@ -28,7 +26,7 @@ type MerchandiseSearchParams = {
 
 export default function CartModal() {
   const carts = useAppSelector((state) => state.cart.cart);
-  const { adjustFreebiesInCart } = useCoupon();
+  const { adjustCart } = useCoupon();
 
   const data = getCartData(carts);
   const { currencyCode, totalAmount } = data;
@@ -54,47 +52,10 @@ export default function CartModal() {
       })
     };
 
-    const { cartToBeUpdate, itemsToBeAdd, giftProducts } = adjustFreebiesInCart(cart);
-    console.log('cartToBeUpdate', cartToBeUpdate);
-    console.log('itemsToBeAdd', itemsToBeAdd);
-    console.log('giftProducts', giftProducts);
-    const updatedCart = cartToBeUpdate.lines?.map((item: CartItem) => ({
-      id: item.id,
-      merchandiseId: item.merchandise.id,
-      quantity: item.quantity
-    }));
-
-    const _cart = {
-      ...carts,
-      lines: cartToBeUpdate.lines.filter((line) => line.quantity > 0)
-    };
-    dispatch(cartActions.setCart(_cart));
-    dispatch(setUpdateCartLoading(true));
-
-    debouncedUpdateItemQuantity(updatedCart, itemsToBeAdd);
+    adjustCart(cart);
   }
 
-  const debouncedUpdateItemQuantity = useMemo(
-    () =>
-      debounce((updatedCart, itemsToBeAdd) => {
-        dispatch(cartActions.updateCart(updatedCart));
-        if (itemsToBeAdd.length)
-          itemsToBeAdd.forEach((item: any) => {
-            dispatch(
-              cartActions.addToCart({
-                selectedVariantId: item.variantId,
-                product: item.product,
-                tempId: uuidv4()
-              })
-            );
-          });
-
-        // if (carts?.id) dispatch(cartActions.attemptGetCarts({ cartId: carts.id }));
-      }, 1000),
-    [dispatch]
-  );
-
-  const { isCartOpen } = useAppSelector((state) => state.cart);
+  const { isCartOpen, giftFreeProducts } = useAppSelector((state) => state.cart);
   // useEffect(() => {
   // setIsOpen(isCartOpen);
   // }, [isCartOpen]);
@@ -231,7 +192,7 @@ export default function CartModal() {
                       );
                     })}
                     <div className="max-h-60 w-full">
-                      <EmblaCartSlider slides={carts.lines} options={OPTIONS} />
+                      <EmblaCartSlider slides={giftFreeProducts} options={OPTIONS} />
                     </div>
                   </ul>
                   <div className="py-4 text-sm text-neutral-500 ">

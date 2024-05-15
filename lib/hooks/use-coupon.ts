@@ -10,13 +10,22 @@ import {
   isFreeProductExistInCart,
   removableLineIds
 } from '../helper/cart-helper';
+import { useDispatch } from 'react-redux';
+import { cartActions } from '@/store/actions/cart.action';
+import { setGiftFreeProducts, setUpdateCartLoading } from '@/store/slices/cart-slice';
+import { useMemo } from 'react';
+import { debounce } from '../helper/helper';
+import { v4 as uuidv4 } from 'uuid';
 
 function useCoupon() {
   const freebies = useAppSelector((state) => state.cart.freebieCoupons) || [];
+  const cartState = useAppSelector((state) => state.cart.cart);
+
   const gifts = useAppSelector((state) => state.cart.giftCoupons) || [];
   const magicLinks = useAppSelector((state) => state.cart.magicLinkCoupons) || [];
   const products = useAppSelector((state) => state.products.products) || [];
 
+  const dispatch = useDispatch();
   const getUpdatedCart = (freeProducts: any, cart: any) => {
     const addedFreeProducts = getFreeProductCartLines(cart);
     let updatedCart = { ...cart };
@@ -75,6 +84,7 @@ function useCoupon() {
     };
     const { freebieCoupon, giftCoupon, magicLinkCoupon } = getFreeProductsByCoupon(cart);
 
+    console.log('magicLinkCoupon', magicLinkCoupon);
     if (!freebieCoupon && !giftCoupon && !magicLinkCoupon)
       return { ...res, cartToBeUpdate: getCartWithoutFreeProduct(cart) };
 
@@ -101,19 +111,57 @@ function useCoupon() {
       if (giftCoupon) {
         const { fields } = giftCoupon;
         if (fields.free_products) {
-          const giftProducts = fields.free_products.map((product: any) =>
-            findVariant(products, product)
-          );
-
-          res.giftProducts = giftProducts.filter(Boolean);
+          const giftProducts = fields.free_products.map((product: any) => ({
+            product: findVariant(products, product),
+            variantId: product
+          }));
+          res.giftProducts = giftProducts.filter((item: any) => Boolean(item.product));
         }
       }
     }
     return res;
   };
 
+  const adjustCart = (cart: any) => {
+    const { cartToBeUpdate, itemsToBeAdd, giftProducts } = adjustFreebiesInCart(cart);
+
+    dispatch(setGiftFreeProducts(giftProducts));
+    const updatedCart = cartToBeUpdate.lines?.map((item: CartItem) => ({
+      id: item.id,
+      merchandipseId: item.merchandise.id,
+      quantity: item.quantity
+    }));
+
+    const _cart = {
+      ...cartState,
+      lines: cartToBeUpdate.lines.filter((line) => line.quantity > 0)
+    };
+    dispatch(cartActions.setCart(_cart));
+    dispatch(setUpdateCartLoading(true));
+
+    debouncedUpdateItemQuantity(updatedCart, itemsToBeAdd);
+  };
+
+  const debouncedUpdateItemQuantity = useMemo(
+    () =>
+      debounce((updatedCart, itemsToBeAdd) => {
+        dispatch(cartActions.updateCart(updatedCart));
+        if (itemsToBeAdd.length)
+          itemsToBeAdd.forEach((item: any) => {
+            dispatch(
+              cartActions.addToCart({
+                selectedVariantId: item.variantId,
+                product: item.product,
+                tempId: uuidv4()
+              })
+            );
+          });
+      }, 1000),
+    [dispatch]
+  );
   return {
-    adjustFreebiesInCart
+    adjustFreebiesInCart,
+    adjustCart
   };
 }
 
