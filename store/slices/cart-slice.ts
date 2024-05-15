@@ -101,7 +101,6 @@ export const cartSlice = createSlice({
         payload: { product, selectedVariantId, tempId }
       } = action;
       const variant = getDefaultVariant(product, selectedVariantId);
-
       if (!variant) {
         return;
       }
