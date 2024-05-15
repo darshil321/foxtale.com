@@ -32,7 +32,8 @@ const EmblaCartSlider: React.FC<PropType> = (props) => {
       cartActions.addToCart({
         selectedVariantId: item.variantId,
         product: item.product,
-        tempId: uuidv4()
+        tempId: uuidv4(),
+        isLoading: true
       })
     );
   };

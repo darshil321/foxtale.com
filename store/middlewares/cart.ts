@@ -30,18 +30,15 @@ export function* getCartSaga(action: {
 
 export function* addToCartSaga(action: {
   type: string;
-  payload: { selectedVariantId: string; product: any; tempId: string };
+  payload: { selectedVariantId: string; product: any; tempId: string; blockReducer?: boolean };
 }): Generator<any, void, any> {
   try {
+    const { selectedVariantId, blockReducer } = action.payload;
     yield put(setAddToCartLoading(true));
-
-    const { selectedVariantId, tempId } = action.payload;
-    console.log('selectedVariantId', selectedVariantId, tempId);
-
     const data = yield call({ fn: addItem, context: null }, selectedVariantId);
-    yield put(setAddToCartLoading(false));
 
-    yield put(cartActions.setCart(data));
+    yield put(setAddToCartLoading(false));
+    if (!blockReducer) yield put(cartActions.setCart(data));
   } catch (error) {
     yield put(cartActions.getCartFailed());
   }

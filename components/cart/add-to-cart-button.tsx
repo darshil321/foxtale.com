@@ -4,11 +4,12 @@ import clsx from 'clsx';
 // import { addItem } from 'components/cart/actions';
 import { Product, ProductVariant } from 'lib/shopify/types';
 import { useSearchParams } from 'next/navigation';
-import { useAppDispatch } from 'store/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { cartActions } from 'store/actions/cart.action';
 import { v4 as uuidv4 } from 'uuid';
-import { getDefaultVariant } from '@/lib/helper/helper';
+import { getCartItem, getDefaultVariant } from '@/lib/helper/helper';
 import { setCartOpen } from '@/store/slices/cart-slice';
+import useCoupon from '@/lib/hooks/use-coupon';
 
 function SubmitButton({
   availableForSale,
@@ -22,6 +23,8 @@ function SubmitButton({
   product: Product;
 }) {
   const dispatch = useAppDispatch();
+  const cart = useAppSelector((state) => state.cart.cart) || {};
+  const { adjustCart } = useCoupon();
 
   const disabledClasses = 'cursor-not-allowed  hover:opacity-80';
 
@@ -33,18 +36,62 @@ function SubmitButton({
     );
   }
 
+  const updateCart = (tempId) => {
+    const variant = getDefaultVariant(product, selectedVariantId);
+    if (!variant) {
+      return;
+    }
+    const productArray = cart?.lines || [];
+    const productFound = productArray?.find((item: any) => item.merchandise.id === variant.id);
+
+    let cartLines;
+    if (productFound) {
+      cartLines = productArray?.map((line: any) => {
+        if (line.id === productFound.id) {
+          return {
+            ...productFound,
+            quantity: productFound.quantity + 1
+          };
+        } else {
+          return line;
+        }
+      });
+    } else {
+      const cartItem = getCartItem(tempId, product, variant);
+      cartLines = [...productArray, cartItem];
+    }
+    console.log('@', cart);
+    if (!cart || cart?.lines) {
+      return { lines: cartLines, totalQuantity: 1 };
+    } else {
+      return {
+        ...cart.cart,
+        lines: cartLines,
+        totalQuantity: cart?.totalQuantity + 1
+      };
+    }
+  };
+
   return (
     <button
       onClick={(e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
         dispatch(setCartOpen(true));
+        const tempId = uuidv4();
         dispatch(
           cartActions.addToCart({
             selectedVariantId: selectedVariantId,
             product: product,
-            tempId: uuidv4()
+            tempId,
+            blockReducer: true
           })
         );
+
+        const cart = updateCart(tempId);
+
+        console.log('@@@@', cart);
+        adjustCart(cart);
+        dispatch(cartActions.setCart(cart));
       }}
       aria-label="Add to cart"
       className={clsx(buttonClasses, {

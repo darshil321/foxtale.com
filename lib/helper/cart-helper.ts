@@ -78,8 +78,6 @@ const getApplicableSubCart = (cart: any, applicableProducts: any) => {
     return false;
   });
 
-  console.log('applicableCart', applicableCart);
-
   const { totalAmount, totalQuantity } = getCartData({ lines: applicableCart } as any);
   return {
     totalAmount,
