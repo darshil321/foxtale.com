@@ -52,6 +52,7 @@ export interface CartState {
   giftCoupons?: GiftCoupon;
   freebieCoupons?: FreebieCoupon;
   magicLinkCoupons?: MagicLinkCoupon;
+  recommendedProducts?: Product[];
   isCartOpen: boolean;
   giftFreeProducts?: { product: Product; variantId: string }[];
 }
@@ -141,7 +142,9 @@ export const cartSlice = createSlice({
     setCart: (state, action) => {
       state.cart = action.payload;
     },
-
+    setRecommendedProduct: (state, action) => {
+      state.recommendedProducts = action.payload;
+    },
     setMetaObject: (state, action) => {
       state.metaObjects = action.payload;
     },
@@ -183,6 +186,7 @@ export const {
   setCartOpen,
   removeCart,
   addToCart,
+  setRecommendedProduct,
   setMagicLinkCoupons,
   setAddToCartLoading,
   setUpdateCartLoading,

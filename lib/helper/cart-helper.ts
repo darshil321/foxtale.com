@@ -42,7 +42,7 @@ export const isFreeProductExistInCart = (cart: any, freeProduct: string | string
 };
 export const findVariant = (products: Product[], freeProduct: string) => {
   return products.find((product: Product) =>
-    product.variants.some((variant: { id: string }) => variant.id === freeProduct)
+    product?.variants?.some((variant: { id: string }) => variant.id === freeProduct)
   );
 };
 export const getFreeProductCartLines = (cart: Cart) => {

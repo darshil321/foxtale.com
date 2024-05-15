@@ -108,9 +108,10 @@ function useCoupon() {
       if (giftCoupon) {
         const { fields } = giftCoupon;
         if (fields.free_products) {
-          const giftProducts = fields.free_products.map((product: any) =>
-            findVariant(products, product)
-          );
+          const giftProducts = fields.free_products.map((product: any) => ({
+            product: findVariant(products, product),
+            variantId: product
+          }));
 
           res.giftProducts = giftProducts.filter(Boolean);
         }
@@ -148,7 +149,6 @@ function useCoupon() {
       quantity: item.quantity
     }));
 
-    console.log('updatedCart', updatedCart);
     const _cart = {
       ...cart,
       lines: cartToBeUpdate.lines.filter((line: any) => line.quantity > 0)

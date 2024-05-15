@@ -254,3 +254,11 @@ export function getReformedCoupons(metaObjects: any) {
 export const removeEdgesAndNodes = (array: Connection<any>) => {
   return array.edges.map((edge: any) => edge?.node);
 };
+
+function isProductIdInArray(product: any, productList: any) {
+  if (!product || !productList) {
+    return false;
+  }
+
+  return productList.some((p: any) => p.id === product.id);
+}

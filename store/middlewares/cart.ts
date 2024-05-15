@@ -3,10 +3,12 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { cartActions } from 'store/actions/cart.action';
 import {
   setAddToCartLoading,
+  setRecommendedProduct,
   setRemoveCartLoading,
   setUpdateCartLoading
 } from '../slices/cart-slice';
-import { getCart } from '@/lib/shopify';
+import { getCart, getProductRecommendations } from '@/lib/shopify';
+import { getDefaultVariant } from '@/lib/helper/helper';
 
 // fetches all products
 export function* getCartSaga(action: {
@@ -25,6 +27,26 @@ export function* getCartSaga(action: {
     yield put(cartActions.setCart(data));
   } catch (error) {
     yield put(cartActions.getCartFailed());
+  }
+}
+export function* getRecommendedProductsSaga(action: {
+  type: string;
+  payload: {
+    productId: string;
+  };
+}): Generator<any, void, any> {
+  try {
+    const { productId } = action.payload;
+    console.log('frgg', productId);
+
+    const data = yield call({ fn: getProductRecommendations, context: null }, productId);
+    console.log('products data setting', data);
+
+    const res = data && data.map((p: any) => ({ product: p, variantId: getDefaultVariant(p).id }));
+
+    yield put(setRecommendedProduct(res));
+  } catch (error) {
+    console.log('error', error);
   }
 }
 
@@ -82,4 +104,5 @@ export function* cartSagaWatchers() {
   yield takeLatest(cartActions.addToCart, addToCartSaga);
   yield takeLatest(cartActions.updateCart, updateCartSaga);
   yield takeLatest(cartActions.removeCart, removeCartSaga);
+  yield takeLatest(cartActions.setRecommendedProduct, getRecommendedProductsSaga);
 }
