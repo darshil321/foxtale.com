@@ -1,4 +1,4 @@
-import { getReformedCoupons } from '@/lib/helper/helper';
+import { getCartItem, getDefaultVariant, getReformedCoupons } from '@/lib/helper/helper';
 import { createSlice, current } from '@reduxjs/toolkit';
 import { Cart, Product } from 'lib/shopify/types';
 interface Giftfield {
@@ -93,43 +93,43 @@ export const cartSlice = createSlice({
         lines: cart?.lines.filter((item: any) => !lineIds?.includes(item.id))
       };
     },
-    // addToCart: (state, action) => {
-    //   const {
-    //     payload: { product, selectedVariantId, tempId }
-    //   } = action;
-    //   const variant = getDefaultVariant(product, selectedVariantId);
-    //   if (!variant) {
-    //     return;
-    //   }
+    addToCart: (state, action) => {
+      const {
+        payload: { product, selectedVariantId, tempId }
+      } = action;
+      const variant = getDefaultVariant(product, selectedVariantId);
+      if (!variant) {
+        return;
+      }
 
-    //   const cart = current(state);
+      const cart = current(state);
 
-    //   const productArray = cart.cart?.lines || [];
-    //   const productFound = productArray?.find((item: any) => item.merchandise.id === variant.id);
+      const productArray = cart.cart?.lines || [];
+      const productFound = productArray?.find((item: any) => item.merchandise.id === variant.id);
 
-    //   let cartLines;
-    //   if (productFound) {
-    //     cartLines = productArray?.map((line: any) => {
-    //       if (line.id === productFound.id) {
-    //         return {
-    //           ...productFound,
-    //           quantity: productFound.quantity + 1
-    //         };
-    //       } else {
-    //         return line;
-    //       }
-    //     });
-    //   } else {
-    //     const cartItem = getCartItem(tempId, product, variant);
-    //     cartLines = [...productArray, cartItem];
-    //   }
+      let cartLines;
+      if (productFound) {
+        cartLines = productArray?.map((line: any) => {
+          if (line.id === productFound.id) {
+            return {
+              ...productFound,
+              quantity: productFound.quantity + 1
+            };
+          } else {
+            return line;
+          }
+        });
+      } else {
+        const cartItem = getCartItem(tempId, product, variant);
+        cartLines = [...productArray, cartItem];
+      }
 
-    //   if (!cart.cart) {
-    //     state.cart = { lines: cartLines, totalQuantity: 1 };
-    //   } else {
-    //     state.cart = { ...cart.cart, lines: cartLines, totalQuantity: cart.cart.totalQuantity + 1 };
-    //   }
-    // },
+      if (!cart.cart) {
+        state.cart = { lines: cartLines, totalQuantity: 1 };
+      } else {
+        state.cart = { ...cart.cart, lines: cartLines, totalQuantity: cart.cart.totalQuantity + 1 };
+      }
+    },
 
     attemptGetCart: () => {
       //loading true
@@ -175,7 +175,7 @@ export const {
   setCartOpen,
   removeCart,
   setLoading,
-  // addToCart,
+  addToCart,
   setMagicLinkCoupons,
 
   setGiftFreeProducts

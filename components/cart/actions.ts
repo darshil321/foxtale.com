@@ -4,6 +4,20 @@ import { addToCart, createCart, getCart, removeFromCart, updateCart } from 'lib/
 import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 
+export async function createCartIfNotExists() {
+  let cartId = cookies().get('cartId')?.value || null;
+  let cart;
+
+  console.log('cartId', cartId);
+  if (!cartId) {
+    cart = await createCart();
+    cartId = cart.id;
+    console.log('p', cartId);
+
+    cookies().set('cartId', cartId);
+  }
+}
+
 export async function addItem(selectedVariantId: string) {
   let cartId = cookies().get('cartId')?.value || null;
   let cart;
@@ -30,6 +44,38 @@ export async function addItem(selectedVariantId: string) {
     return 'Error adding item to cart';
   }
 }
+export async function addItems(items: { quantity: number; merchandiseId: string }[]) {
+  const cartId = cookies().get('cartId')?.value ?? '';
+  console.log('adding', cartId);
+  console.log('addingitem', items);
+
+  try {
+    const cartData = await getCart(cartId);
+    console.log('cartData.id', cartData);
+
+    const lineIds =
+      cartData?.lines?.map((line) => {
+        return line.id;
+      }) || [];
+    console.log('lineIds', lineIds);
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    await removeItem(lineIds);
+
+    const createdCart = await createCart();
+
+    const data = await addToCart(createdCart.id, items);
+    // console.log('data', data);
+
+    revalidateTag(TAGS.cart);
+    return data;
+  } catch (e) {
+    console.log('e', e);
+    return 'Error adding item to cart';
+  }
+  // Your function implementation here
+}
 
 export async function removeItem(lineIds: string[]) {
   const cartId = cookies().get('cartId')?.value;
@@ -40,6 +86,7 @@ export async function removeItem(lineIds: string[]) {
 
   try {
     const data = await removeFromCart(cartId, lineIds);
+
     revalidateTag(TAGS.cart);
     return data;
   } catch (e) {

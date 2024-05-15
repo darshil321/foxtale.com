@@ -86,6 +86,7 @@ function SubmitButton({
             blockReducer: true
           })
         );
+        dispatch(cartActions.createCart());
 
         const cart = updateCart(tempId);
 
