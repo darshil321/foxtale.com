@@ -1,4 +1,5 @@
 'use client';
+import useCoupon from '@/lib/hooks/use-coupon';
 import { getProducts } from '@/lib/shopify';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setFreebieCoupons, setGiftCoupons, setMagicLinkCoupons } from '@/store/slices/cart-slice';
@@ -15,7 +16,9 @@ interface Props {
 
 const InitialData: React.FC<Props> = ({ giftsCoupon, freebieCoupons, magicLinks }) => {
   const products = useAppSelector((state) => state.products.products) || [];
+  const cart = useAppSelector((state) => state.cart.cart);
   const dispatch = useAppDispatch();
+  const { adjustCart } = useCoupon();
 
   const getProductsData = async () => {
     const res = await getProducts({});
@@ -28,8 +31,15 @@ const InitialData: React.FC<Props> = ({ giftsCoupon, freebieCoupons, magicLinks 
     if (magicLinks) dispatch(setMagicLinkCoupons(magicLinks));
 
     if (!products || !products.length) getProductsData();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (cart && cart.lines) {
+      adjustCart(cart);
+    }
+  }, [cart, adjustCart]);
 
   return <></>;
 };
