@@ -7,9 +7,9 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 import { EmblaOptionsType } from 'embla-carousel';
 import { Product } from '@/lib/shopify/types';
-import { useAppDispatch } from '@/store/hooks';
-import { cartActions } from '@/store/actions/cart.action';
-import { v4 as uuidv4 } from 'uuid';
+// import { useAppDispatch } from '@/store/hooks';
+// import { cartActions } from '@/store/actions/cart.action';
+// import { v4 as uuidv4 } from 'uuid';
 
 type PropType = {
   slides: { product: Product; variantId: string }[] | undefined;
@@ -19,7 +19,7 @@ type PropType = {
 const EmblaCartSlider: React.FC<PropType> = (props) => {
   const { slides, options } = props;
   const [emblaRef] = useEmblaCarousel(options, [Autoplay()]);
-  const dispatch = useAppDispatch();
+  //   const dispatch = useAppDispatch();
   // const getVariant = (product: Product, variantId: string) => {
   //   return {
   //     ...product,
@@ -39,25 +39,36 @@ const EmblaCartSlider: React.FC<PropType> = (props) => {
   };
   if (!slides) return <></>;
   return (
-    <section className="embla_product">
+    <section className="embla_product ">
       <div className="embla_product__viewport " ref={emblaRef}>
         <div className="embla_product__container h-full w-full">
-          {slides.map(({ product, variantId }, index) => (
-            <div className="embla_cart__slide flex flex-row justify-between gap-2" key={index}>
-              <Image
-                className=" aspect-square h-[80px] w-[80px] object-cover "
-                width={80}
-                height={80}
-                alt={product?.images[0]?.altText || product?.title}
-                src={product?.images[0]?.url as string}
-                quality={80}
-              />
+          {slides.map((product, index) => (
+            <div key={index} className="embla_cart__slide ">
+              <div className=" mr-2 flex flex-row justify-between gap-2 rounded-sm border p-2 ">
+                <Image
+                  className="aspect-square h-[80px] w-[80px] rounded-sm object-cover "
+                  width={80}
+                  height={80}
+                  alt={product?.images[0]?.altText || product?.title}
+                  src={product?.images[0]?.url as string}
+                  quality={80}
+                />
+                <div className="flex flex-col gap-1 py-4">
+                  <span className="text-sm leading-tight">
+                    {product?.title?.substring(0, 15)}
+                    {product?.title?.length > 15 && '...'}
+                  </span>
 
-              <button onClick={() => onClick({ product, variantId })}>add </button>
-              <div className="flex flex-col">
-                <h4 className="text-sm">{product?.title}</h4>
-
-                {/* <p> {getVariant(product, variantId)?.variant.price.amount}</p> */}
+                  <p className="text-sm"> ₹ 99</p>
+                </div>
+                <div className="flex flex-col items-center justify-center">
+                  <button
+                    onClick={() => onClick(product)}
+                    className="bg-black px-4 py-1 text-white"
+                  >
+                    Add
+                  </button>
+                </div>
               </div>
             </div>
           ))}

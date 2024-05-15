@@ -1,3 +1,4 @@
+import Footer from '@/components/layout/footer';
 import dynamic from 'next/dynamic';
 
 const HeroBannerSlider = dynamic(() => import('@/components/product/hero-banner-slider'));
@@ -21,6 +22,7 @@ export default async function SearchLayout({ children }: { children: React.React
           <FilterList list={sorting} title="Sort by" />
         </div> */}
       </div>
+      <Footer />
     </div>
   );
 }

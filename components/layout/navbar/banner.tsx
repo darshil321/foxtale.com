@@ -6,6 +6,7 @@ const Banner = () => {
   const closingBracket = ' ]';
 
   const result = staticPart + dynamicValue + closingBracket;
+
   return (
     <div>
       <div className="bg-black bg-gradient-to-r text-white ">

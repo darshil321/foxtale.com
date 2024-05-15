@@ -107,7 +107,7 @@ export default async function ProductPage({
           __html: JSON.stringify(productJsonLd)
         }}
       />
-      <div className="mx-auto max-w-screen-2xl  pt-4  md:pt-8">
+      <div className="mx-auto max-w-screen-2xl pt-4  md:pt-8">
         <div className="flex flex-col rounded-lg  lg:flex-row lg:gap-8 ">
           <div className="flex flex-col px-4 pb-2 md:hidden">
             <div className="mb-2 flex items-end gap-2 md:gap-3">
@@ -153,10 +153,10 @@ export default async function ProductPage({
         </Suspense>
         <ProductDetailsTabs product={product} />
         <Accordion product={product} />
-        <ProductDescFooter product={product} />
         <Suspense fallback={null}>
           <RelatedProducts id={product.id} />
         </Suspense>
+        <ProductDescFooter product={product} />
       </div>
     </div>
   );

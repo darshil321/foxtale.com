@@ -21,7 +21,7 @@ const ProductDescFooter = ({ product }: { product: any }) => {
   const selectedVariantId = variant?.id || defaultVariantId;
 
   return (
-    <div className="fixed bottom-0 left-0 z-50 w-screen ">
+    <div className="fixed bottom-0 left-0 z-50 w-screen">
       <div className="flex w-full justify-center border-t bg-white px-4 py-3 md:justify-between  md:px-[140px] md:py-4">
         <div className="hidden md:block">
           <Suspense fallback={null}>
