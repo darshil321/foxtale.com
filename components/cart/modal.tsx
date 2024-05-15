@@ -207,21 +207,22 @@ export default function CartModal() {
                                         {item.merchandise.title}
                                       </p>
                                     ) : null}
-                                    <div className="t4s-product-price text-base font-medium">
+                                    {/* <div className="t4s-product-price text-base font-medium">
                                       <span className="font-poppins text-xs">
                                         {' '}
                                         ₹{' '}
                                         {item?.quantity *
                                           Number(item?.cost?.amountPerQuantity?.amount)}
                                       </span>
-                                    </div>
-                                    {/* <Price
-                                    className="flex justify-end space-y-2 text-right text-sm"
-                                    amount={(
-                                      item?.quantity * Number(item?.cost?.amountPerQuantity?.amount)
-                                    ).toString()}
-                                    currencyCode={item?.cost?.totalAmount?.currencyCode}
-                                  /> */}
+                                    </div> */}
+                                    <Price
+                                      className="flex justify-end space-y-2 text-right text-sm"
+                                      amount={(
+                                        item?.quantity *
+                                        Number(item?.cost?.amountPerQuantity?.amount)
+                                      ).toString()}
+                                      currencyCode={item?.cost?.totalAmount?.currencyCode}
+                                    />
                                   </div>
                                 </div>
                               </Link>

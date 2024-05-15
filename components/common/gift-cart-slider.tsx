@@ -39,6 +39,7 @@ const EmblaCartSlider: React.FC<PropType> = (props) => {
                     {product.merchandise.product.title.substring(0, 15)}
                     {product.merchandise.product.title?.length > 15 && '...'}
                   </span>
+
                   <p className="text-sm"> ₹ {product.merchandise.price.amount}</p>
                 </div>
                 <div className="flex flex-col items-center justify-center">
