@@ -64,11 +64,6 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     <html lang="en">
       <link rel="preconnect" href={process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN} />{' '}
       <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN} />
-      <link
-        rel="preload"
-        href="https://foxtale.in/cdn/shop/files/banners_30_off-02.jpg"
-        as="image"
-      />
       <body>
         <Provider>
           <Banner />

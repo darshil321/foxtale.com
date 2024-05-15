@@ -14,13 +14,12 @@ type PropType = {
 
 const EmblaCartSlider: React.FC<PropType> = (props) => {
   const { slides, options } = props;
-  console.log('slides', slides);
   const [emblaRef] = useEmblaCarousel(options, [Autoplay()]);
 
   return (
     <section className="embla_product">
       <div className="embla_product__viewport " ref={emblaRef}>
-        <div className="embla_product__container h-full">
+        <div className="embla_product__container h-full w-full">
           {slides.map((product, index) => (
             <div className="embla_cart__slide flex flex-row justify-between gap-2" key={index}>
               <Image
@@ -28,10 +27,10 @@ const EmblaCartSlider: React.FC<PropType> = (props) => {
                 width={80}
                 height={80}
                 alt={
-                  product?.merchandise?.product?.images?.edges[0].node.altText ||
+                  product?.merchandise?.product?.images?.edges[0]?.node?.altText ||
                   product?.merchandise?.product?.title
                 }
-                src={product.merchandise.product.images.edges[0].node.url as string}
+                src={product?.merchandise?.product?.images?.edges[0]?.node?.url as string}
                 quality={80}
               />
 

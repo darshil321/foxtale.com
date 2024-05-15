@@ -22,7 +22,7 @@ function FilterItemList({ list }: { list: ListItem[] }) {
 export default function FilterList({ list }: { list: ListItem[]; title?: string }) {
   return (
     <>
-      <nav className=" sticky top-0 z-auto">
+      <nav className=" sticky top-0">
         <ul className=" h-[125px] items-center   justify-center rounded-md bg-white transition-all   delay-100 md:flex  md:h-[170px] ">
           <Suspense fallback={null}>
             <FilterItemList list={list} />
