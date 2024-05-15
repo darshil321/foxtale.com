@@ -99,7 +99,10 @@ export default function ProductDetailsTabs({ product }: Props) {
               {post.contentType === 'image' ? (
                 <div className="h-full w-full">
                   <Image
-                    src={post?.contentImageMobile || ''}
+                    src={
+                      post?.contentImageMobile ||
+                      'https://cdn.shopify.com/s/files/1/0609/6096/4855/files/Starlet-05.jpg'
+                    }
                     alt={post.category}
                     className="object-cover md:hidden"
                     height={470}

@@ -33,7 +33,10 @@ const ResultsSection = ({ product }: Props) => {
         <div className="h-full w-full basis-full lg:basis-3/6">
           <Image
             className="h-full w-full"
-            src={imageSources[0] as string}
+            src={
+              imageSources[0] ||
+              'https://cdn.shopify.com/s/files/1/0609/6096/4855/files/Starlet-02.jpg'
+            }
             alt="Foxtale"
             width={570}
             quality={80}

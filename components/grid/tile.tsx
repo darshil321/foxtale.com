@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { AddToCartButton } from '@/components/cart/add-to-cart-button';
+import ProductTag from '../elements/product-tag';
 
 export function GridTileImage({
   isInteractive = true,
@@ -27,7 +28,8 @@ export function GridTileImage({
   };
 } & React.ComponentProps<typeof Image>) {
   if (!product) return null;
-  // console.log('product.options', product.options);
+  const productDescription = product?.metafields?.find((item: any) => item?.key === 'hp_excerpt');
+
   return (
     <div
       className={clsx(
@@ -60,6 +62,7 @@ export function GridTileImage({
                     sizes="(max-width: 640px) 200px, 300px"
                     {...props}
                   />
+                  <ProductTag product={product} />
                 </Link>
               </div>
 
@@ -85,16 +88,16 @@ export function GridTileImage({
                 </div>
               )}
             </div>
-            <div className="product-info p-2">
+            <div className=" px-2 pt-2">
               <div className="">
                 <Link href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}>
                   <h3 className=" leading-2 line-clamp-1 cursor-pointer text-[12px] transition-all hover:text-purple-400 md:text-base md:leading-6">
                     {label?.title}
                   </h3>
                 </Link>
-                {/* <p className="text-[10px] leading-7 text-[#6e6e6e]  md:text-xs">
-                  {label?.description?.slice(0, 40)}
-                </p> */}
+                <p className="line-clamp-1 text-[10px] leading-7 text-[#6e6e6e]  md:text-xs">
+                  {productDescription?.value}
+                </p>
               </div>
               <span className="">
                 <div className="t4s-product-price text-base font-medium">
@@ -103,19 +106,25 @@ export function GridTileImage({
               </span>
             </div>
           </div>
-          <div className="flex w-full items-center justify-center overflow-hidden rounded-b-sm bg-black p-2 md:p-4">
-            <span className=" flex self-center text-center text-[8px] font-semibold uppercase text-white md:text-xs">
-              <Suspense fallback={null}>
-                <AddToCartButton
-                  product={product}
-                  variants={product.variants}
-                  availableForSale={product?.availableForSale || false}
-                  buttonClasses={
-                    'relative flex  flex-1 text-sm hover:text-purple-400  items-center justify-center text-base bg-black border border-black text-white  md:px-8 uppercase tracking-wide font-normal md:font-semibold'
-                  }
-                />
-              </Suspense>
-            </span>
+          <div>
+            <div className=" flex flex-row justify-between px-2 pb-1 text-xs">
+              <p className="bottom-leftext text-[#008325]">B2G2</p>
+              <p className="bottom-rightext text-red-400">Free Gift</p>
+            </div>
+            <div className="flex w-full items-center justify-center overflow-hidden rounded-b-sm bg-black p-2 md:p-4">
+              <span className=" flex self-center text-center text-[8px] font-semibold uppercase text-white md:text-xs">
+                <Suspense fallback={null}>
+                  <AddToCartButton
+                    product={product}
+                    variants={product.variants}
+                    availableForSale={product?.availableForSale || false}
+                    buttonClasses={
+                      'relative flex flex-1 text-sm hover:text-purple-400  items-center justify-center text-base bg-black border border-black text-white  md:px-8 uppercase tracking-wide font-normal md:font-semibold'
+                    }
+                  />
+                </Suspense>
+              </span>
+            </div>
           </div>
         </div>
       ) : null}
