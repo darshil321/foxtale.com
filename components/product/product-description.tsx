@@ -18,6 +18,13 @@ export default function ProductDescription({
     (variant) => variant.title === searchParams?.option
   )?.price.amount;
 
+  const filteredDataByKey = product?.metafields?.find(
+    (item: any) => item?.key === 'product-sub-title'
+  );
+  const decodedHtml = filteredDataByKey?.value || '';
+
+  console.log('filteredDataBddffyKey', decodedHtml);
+
   return (
     <>
       <div className=" flex flex-col gap-1 pb-1 md:pb-3 ">
@@ -26,7 +33,7 @@ export default function ProductDescription({
             <h1 className="mb-2 text-2xl font-medium leading-6">{product.title}</h1>
             <span className="text-center text-xs text-neutral-400"> Size -30 ml</span>
           </div>
-          <h5>Treats hyperpigmentation and dark spots</h5>
+          <div className="text-[#6d6e71]" dangerouslySetInnerHTML={{ __html: decodedHtml }} />
           <ProductsRatings product={product} />
         </div>
         <div className="mr-auto text-2xl font-semibold text-black">
