@@ -119,8 +119,8 @@ export const getApplicableMagicLink = ({
   //check if applicable collection
   let applicableProducts = [] as any;
   if (fields.applicable_collection) {
-    const applicableCart = cart.lines.filter((line) => {
-      const _product = findVariant(products, line.merchandise.id);
+    const applicableCart = cart.lines.filter((line: any) => {
+      const _product = findVariant(products, line.merchandise.id) as any;
       console.log('_product', _product);
       if (
         _product &&
@@ -130,7 +130,7 @@ export const getApplicableMagicLink = ({
         return true;
       }
     });
-    applicableProducts = applicableCart.map((c) => c.merchandise.id);
+    applicableProducts = applicableCart.map((c: any) => c.merchandise.id);
   }
 
   //check if applicable product

@@ -34,7 +34,7 @@ export default function CartModal() {
   function increaseItemQuantity({ item, type }: { item: CartItem; type: string }) {
     const cart = {
       ...carts,
-      lines: carts.lines.map((line) => {
+      lines: carts.lines.map((line: any) => {
         if (line.merchandise.id === item.merchandise.id) {
           if (type === 'plus') {
             return {

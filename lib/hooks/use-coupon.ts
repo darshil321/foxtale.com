@@ -126,7 +126,7 @@ function useCoupon() {
     const { cartToBeUpdate, itemsToBeAdd, giftProducts } = adjustFreebiesInCart(cart);
 
     dispatch(setGiftFreeProducts(giftProducts));
-    const updatedCart = cartToBeUpdate.lines?.map((item: CartItem) => ({
+    const updatedCart = cartToBeUpdate.lines?.map((item: any) => ({
       id: item.id,
       merchandipseId: item.merchandise.id,
       quantity: item.quantity
@@ -134,7 +134,7 @@ function useCoupon() {
 
     const _cart = {
       ...cartState,
-      lines: cartToBeUpdate.lines.filter((line) => line.quantity > 0)
+      lines: cartToBeUpdate.lines.filter((line: any) => line.quantity > 0)
     };
     dispatch(cartActions.setCart(_cart));
     dispatch(setUpdateCartLoading(true));
