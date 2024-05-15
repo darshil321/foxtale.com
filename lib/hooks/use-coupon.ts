@@ -66,7 +66,6 @@ function useCoupon() {
       });
     } else {
       //freebie
-
       freebieCoupon = getApplicableCoupon(freebies, cart);
 
       //gift
@@ -82,6 +81,7 @@ function useCoupon() {
       itemsToBeAdd: [] as any,
       giftProducts: []
     };
+
     const { freebieCoupon, giftCoupon, magicLinkCoupon } = getFreeProductsByCoupon(cart);
 
     console.log('magicLinkCoupon', magicLinkCoupon);

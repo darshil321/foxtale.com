@@ -78,6 +78,8 @@ const getApplicableSubCart = (cart: any, applicableProducts: any) => {
     return false;
   });
 
+  console.log('applicableCart', applicableCart);
+
   const { totalAmount, totalQuantity } = getCartData({ lines: applicableCart } as any);
   return {
     totalAmount,
@@ -113,17 +115,22 @@ export const getApplicableMagicLink = ({
   }
   const { fields } = coupon;
 
+  console.log('coupon', coupon);
   //check if applicable collection
   let applicableProducts = [] as any;
   if (fields.applicable_collection) {
     const applicableCart = cart.lines.filter((line) => {
       const _product = findVariant(products, line.merchandise.id);
-
-      if (_product && _product.collections.includes(fields.applicable_collection)) {
+      console.log('_product', _product);
+      if (
+        _product &&
+        _product?.collections?.length &&
+        _product.collections.includes(fields.applicable_collection)
+      ) {
         return true;
       }
     });
-    applicableProducts = applicableCart;
+    applicableProducts = applicableCart.map((c) => c.merchandise.id);
   }
 
   //check if applicable product
@@ -133,15 +140,6 @@ export const getApplicableMagicLink = ({
 
   const { totalAmount, totalQuantity }: any = getApplicableSubCart(cart, applicableProducts);
 
-  console.log(
-    'first',
-    fields.cart_total,
-    Number(fields.cart_total),
-    totalAmount,
-    fields.total_quantity,
-    Number(fields.total_quantity),
-    totalQuantity
-  );
   if (
     (!fields.cart_total || Number(fields.cart_total) <= totalAmount) &&
     fields.total_quantity &&
