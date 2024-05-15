@@ -1,12 +1,10 @@
-import { addItem, removeItem, updateItemQuantity } from '@/components/cart/actions';
+import { addItems, createCartIfNotExists } from '@/components/cart/actions';
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { cartActions } from 'store/actions/cart.action';
-import {
-  setAddToCartLoading,
-  setRemoveCartLoading,
-  setUpdateCartLoading
-} from '../slices/cart-slice';
-import { getCart } from '@/lib/shopify';
+import { setRecommendedProduct } from '../slices/cart-slice';
+import { getCart, getProductRecommendations } from '@/lib/shopify';
+import { getDefaultVariant } from '@/lib/helper/helper';
+import { setLoading } from '../slices/cart-slice';
 
 // fetches all products
 export function* getCartSaga(action: {
@@ -27,37 +25,75 @@ export function* getCartSaga(action: {
     yield put(cartActions.getCartFailed());
   }
 }
-
-export function* addToCartSaga(action: {
+export function* getRecommendedProductsSaga(action: {
   type: string;
-  payload: { selectedVariantId: string; product: any; tempId: string };
+  payload: {
+    productId: string;
+  };
 }): Generator<any, void, any> {
   try {
-    yield put(setAddToCartLoading(true));
+    const { productId } = action.payload;
+    console.log('frgg', productId);
 
-    const { selectedVariantId, tempId } = action.payload;
-    console.log('selectedVariantId', selectedVariantId, tempId);
+    const data = yield call({ fn: getProductRecommendations, context: null }, productId);
+    console.log('products data setting', data);
 
-    const data = yield call({ fn: addItem, context: null }, selectedVariantId);
-    yield put(setAddToCartLoading(false));
+    const res = data && data.map((p: any) => ({ product: p, variantId: getDefaultVariant(p).id }));
 
-    yield put(cartActions.setCart(data));
+    yield put(setRecommendedProduct(res));
+  } catch (error) {
+    console.log('error', error);
+  }
+}
+
+export function* addToCartSaga(): Generator<any, void, any> {
+  // action: {
+  // type: string;
+  // payload: { selectedVariantId: string; product: any; tempId: string; blockReducer?: boolean };
+  // }
+  try {
+    // const { selectedVariantId } = action.payload;
+
+    // if (!blockReducer) yield put(setLoading(true));
+    // yield call({ fn: addItem, context: null }, selectedVariantId);
+    // yield put(cartActions.setCart(res));
+    // const state = yield select();
+    // const data = {
+    //   ...state?.cart?.cart,
+    //   lines: [
+    //     ...state?.cart?.cart?.lines.filter((v) => v.id !== tempId),
+    //     res.lines.find((v) => v.merchandise.id === selectedVariantId)
+    //   ]
+    // };
+
+    yield put(setLoading(false));
+  } catch (error) {
+    yield put(cartActions.getCartFailed());
+  }
+}
+export function* addToCartsSaga(action: {
+  type: string;
+  payload: { merchandiseId: string; quantity: number }[];
+}): Generator<any, void, any> {
+  try {
+    const items = action.payload;
+
+    yield call({ fn: addItems, context: null }, items);
+
+    yield put(setLoading(false));
   } catch (error) {
     yield put(cartActions.getCartFailed());
   }
 }
 
-export function* updateCartSaga(action: {
-  type: string;
-  payload: { id: string; merchandiseId: string; quantity: number }[];
-}): Generator<any, void, any> {
+export function* updateCartSaga(): Generator<any, void, any> {
+  // action: {
+  // type: string;
+  // payload: { id: string; merchandiseId: string; quantity: number }[];
+  // }
   try {
-    yield put(setUpdateCartLoading(true));
-    const { payload } = action;
-
-    yield call({ fn: updateItemQuantity, context: null }, payload);
-
-    yield put(setUpdateCartLoading(false));
+    // const { payload } = action;
+    // yield call({ fn: updateItemQuantity, context: null }, payload);
   } catch (error) {
     yield put(cartActions.getCartFailed());
   }
@@ -68,13 +104,17 @@ export function* removeCartSaga(action: {
 }): Generator<any, void, any> {
   try {
     const {
-      payload: { lineIds }
+      // payload: { lineIds }
     } = action;
-    yield put(setRemoveCartLoading(true));
 
-    yield call({ fn: removeItem, context: null }, lineIds);
-
-    yield put(setRemoveCartLoading(false));
+    // yield call({ fn: removeItem, context: null }, lineIds);
+  } catch (error) {
+    yield put(cartActions.getCartFailed());
+  }
+}
+export function* createCartSaga(): Generator<any, void, any> {
+  try {
+    yield call({ fn: createCartIfNotExists, context: null });
   } catch (error) {
     yield put(cartActions.getCartFailed());
   }
@@ -83,6 +123,9 @@ export function* removeCartSaga(action: {
 export function* cartSagaWatchers() {
   yield takeLatest(cartActions.attemptGetCarts, getCartSaga);
   yield takeLatest(cartActions.addToCart, addToCartSaga);
+  yield takeLatest(cartActions.addToCarts, addToCartsSaga);
   yield takeLatest(cartActions.updateCart, updateCartSaga);
   yield takeLatest(cartActions.removeCart, removeCartSaga);
+  yield takeLatest(cartActions.createCart, createCartSaga);
+  yield takeLatest(cartActions.setRecommendedProduct, getRecommendedProductsSaga);
 }

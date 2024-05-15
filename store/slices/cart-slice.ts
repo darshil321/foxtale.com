@@ -42,9 +42,8 @@ interface MagicLinkCoupon {
 }
 export interface CartState {
   getCartLoading: boolean;
-  addToCartLoading: boolean;
-  updateCartLoading: boolean;
-  removeCartLoading: boolean;
+  loading: boolean;
+
   cart: Cart | any;
   quantities: any;
   error: any;
@@ -52,16 +51,15 @@ export interface CartState {
   giftCoupons?: GiftCoupon;
   freebieCoupons?: FreebieCoupon;
   magicLinkCoupons?: MagicLinkCoupon;
+  recommendedProducts?: Product[];
   isCartOpen: boolean;
   giftFreeProducts?: { product: Product; variantId: string }[];
+  remoteCart?: Cart;
 }
 
 export const initialState: CartState = {
   getCartLoading: false,
-  addToCartLoading: false,
-  updateCartLoading: false,
-  removeCartLoading: false,
-
+  loading: false,
   cart: null,
   error: null,
   quantities: {},
@@ -139,31 +137,11 @@ export const cartSlice = createSlice({
     },
 
     setCart: (state, action) => {
-      console.log('setCart', action.payload);
-
       state.cart = action.payload;
-      // const _state = current(state);
-
-      // const { tempId, ...rest } = action.payload;
-      // console.log('rest', action.payload);
-
-      // const res = rest.data;
-      // console.log('res', action);
-
-      // let cartLines = res?.lines;
-      // if (tempId) {
-      //   cartLines = res?.lines.map((cartItem: CartItem) => {
-      //     if (cartItem.id === tempId) {
-      //       return { ...res };
-      //     }
-      //     return cartItem;
-      //   });
-      // }
-
-      // state.cart = { ...res, lines: cartLines as CartItem[] };
-      // console.log('state.cart', state.cart);
     },
-
+    setRecommendedProduct: (state, action) => {
+      state.recommendedProducts = action.payload;
+    },
     setMetaObject: (state, action) => {
       state.metaObjects = action.payload;
     },
@@ -179,15 +157,10 @@ export const cartSlice = createSlice({
     setCartOpen: (state, action) => {
       state.isCartOpen = action.payload;
     },
-    setAddToCartLoading: (state, action) => {
-      state.addToCartLoading = action.payload;
+    setLoading: (state, action) => {
+      state.loading = action.payload;
     },
-    setUpdateCartLoading: (state, action) => {
-      state.updateCartLoading = action.payload;
-    },
-    setRemoveCartLoading: (state, action) => {
-      state.removeCartLoading = action.payload;
-    },
+
     setGiftFreeProducts: (state, action) => {
       state.giftFreeProducts = action.payload;
     }
@@ -204,11 +177,11 @@ export const {
   setFreebieCoupons,
   setCartOpen,
   removeCart,
+  setRecommendedProduct,
+  setLoading,
   addToCart,
   setMagicLinkCoupons,
-  setAddToCartLoading,
-  setUpdateCartLoading,
-  setRemoveCartLoading,
+
   setGiftFreeProducts
 } = cartSlice.actions;
 export default cartSlice.reducer;

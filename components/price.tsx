@@ -1,7 +1,7 @@
 const Price = ({
   amount,
   className,
-  currencyCode = 'USD',
+  currencyCode = 'INR',
   text = 'Inclusive of all tax'
 }: {
   amount: string;

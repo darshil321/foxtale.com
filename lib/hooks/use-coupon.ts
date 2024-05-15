@@ -12,20 +12,16 @@ import {
 } from '../helper/cart-helper';
 import { useDispatch } from 'react-redux';
 import { cartActions } from '@/store/actions/cart.action';
-import { setGiftFreeProducts, setUpdateCartLoading } from '@/store/slices/cart-slice';
-import { useMemo } from 'react';
-import { debounce } from '../helper/helper';
+import { setGiftFreeProducts } from '@/store/slices/cart-slice';
 import { v4 as uuidv4 } from 'uuid';
 
 function useCoupon() {
   const freebies = useAppSelector((state) => state.cart.freebieCoupons) || [];
-  const cartState = useAppSelector((state) => state.cart.cart);
-
   const gifts = useAppSelector((state) => state.cart.giftCoupons) || [];
   const magicLinks = useAppSelector((state) => state.cart.magicLinkCoupons) || [];
   const products = useAppSelector((state) => state.products.products) || [];
-
   const dispatch = useDispatch();
+
   const getUpdatedCart = (freeProducts: any, cart: any) => {
     const addedFreeProducts = getFreeProductCartLines(cart);
     let updatedCart = { ...cart };
@@ -66,6 +62,7 @@ function useCoupon() {
       });
     } else {
       //freebie
+
       freebieCoupon = getApplicableCoupon(freebies, cart);
 
       //gift
@@ -81,11 +78,8 @@ function useCoupon() {
       itemsToBeAdd: [] as any,
       giftProducts: []
     };
-
     const { freebieCoupon, giftCoupon, magicLinkCoupon } = getFreeProductsByCoupon(cart);
-    console.log('freebieCoupon', freebieCoupon);
 
-    console.log('magicLinkCoupon', magicLinkCoupon);
     if (!freebieCoupon && !giftCoupon && !magicLinkCoupon)
       return { ...res, cartToBeUpdate: getCartWithoutFreeProduct(cart) };
 
@@ -116,50 +110,65 @@ function useCoupon() {
             product: findVariant(products, product),
             variantId: product
           }));
-          res.giftProducts = giftProducts.filter((item: any) => Boolean(item.product));
+
+          res.giftProducts = giftProducts.filter(Boolean);
         }
       }
     }
     return res;
   };
 
+  const debouncedUpdateItemQuantity = (updatedCart, itemsToBeAdd) => {
+    dispatch(cartActions.updateCart(updatedCart));
+    if (itemsToBeAdd.length)
+      itemsToBeAdd.forEach((item: any) => {
+        dispatch(
+          cartActions.addToCart({
+            selectedVariantId: item.variantId,
+            product: item.product,
+            tempId: uuidv4()
+          })
+        );
+      });
+  };
+  // const debouncedUpdateItemQuantity = useMemo(
+  //   () =>
+  //     debounce((updatedCart, itemsToBeAdd) => {
+  //       dispatch(cartActions.updateCart(updatedCart));
+  //       if (itemsToBeAdd.length)
+  //         itemsToBeAdd.forEach((item: any) => {
+  //           dispatch(
+  //             cartActions.addToCart({
+  //               selectedVariantId: item.variantId,
+  //               product: item.product,
+  //               tempId: uuidv4()
+  //             })
+  //           );
+  //         });
+  //     }, 1000),
+  //   [dispatch]
+  // );
+
   const adjustCart = (cart: any) => {
     const { cartToBeUpdate, itemsToBeAdd, giftProducts } = adjustFreebiesInCart(cart);
 
-    dispatch(setGiftFreeProducts(giftProducts));
     const updatedCart = cartToBeUpdate.lines?.map((item: any) => ({
       id: item.id,
-      merchandipseId: item.merchandise.id,
+      merchandiseId: item.merchandise.id,
       quantity: item.quantity
     }));
 
     const _cart = {
-      ...cartState,
+      ...cart,
       lines: cartToBeUpdate.lines.filter((line: any) => line.quantity > 0)
     };
+
     dispatch(cartActions.setCart(_cart));
-    dispatch(setUpdateCartLoading(true));
+    dispatch(setGiftFreeProducts(giftProducts));
 
     debouncedUpdateItemQuantity(updatedCart, itemsToBeAdd);
   };
 
-  const debouncedUpdateItemQuantity = useMemo(
-    () =>
-      debounce((updatedCart, itemsToBeAdd) => {
-        dispatch(cartActions.updateCart(updatedCart));
-        if (itemsToBeAdd.length)
-          itemsToBeAdd.forEach((item: any) => {
-            dispatch(
-              cartActions.addToCart({
-                selectedVariantId: item.variantId,
-                product: item.product,
-                tempId: uuidv4()
-              })
-            );
-          });
-      }, 1000),
-    [dispatch]
-  );
   return {
     adjustFreebiesInCart,
     adjustCart

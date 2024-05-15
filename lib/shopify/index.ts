@@ -260,8 +260,8 @@ export async function getCart(cartId: string): Promise<Cart | undefined> {
   const res = await shopifyFetch<ShopifyCartOperation>({
     query: getCartQuery,
     variables: { cartId },
-    tags: [TAGS.cart],
-    cache: 'no-store'
+    tags: [TAGS.cart]
+    // cache: 'no-store'
   });
 
   // Old carts becomes `null` when you checkout.

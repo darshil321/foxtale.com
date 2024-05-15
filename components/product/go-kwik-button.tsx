@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { gokwikConfig } from '../../lib/shopify/gokwik.config';
 import { createCart, getCart } from '@/lib/shopify';
-import { addItem } from '../cart/actions';
+import { addItem, addItems } from '../cart/actions';
 import { useAppSelector } from '@/store/hooks';
 
 const integrationUrls = {
@@ -31,7 +31,8 @@ const integrationUrls = {
 // };
 
 export function GokwikButton(passedData) {
-  const cartId = useAppSelector((state) => state.cart.cart?.id);
+  // const cartId = useAppSelector((state) => state.cart.cart?.id);
+  const cart = useAppSelector((state) => state.cart.cart);
 
   let buyNowRun = false;
   useEffect(() => {
@@ -69,9 +70,23 @@ export function GokwikButton(passedData) {
         });
       });
     } else {
-      getCart(cartId).then((data) => {
+      console.log('passedData', passedData);
+
+      const items = cart?.lines.map((item) => {
+        return {
+          merchandiseId: item.merchandise.id,
+          quantity: item.quantity
+        };
+      });
+      addItems(items).then((data) => {
+        console.log('dataadd', data);
+
         triggerGokwikCheckout(data);
       });
+
+      // getCart(cartId).then((data) => {
+      //   triggerGokwikCheckout(data);
+      // });
     }
   };
 
@@ -151,12 +166,14 @@ export function GokwikButton(passedData) {
   // };
 
   const triggerGokwikCheckout = async (cart?) => {
+    console.log('cartss', cart);
+
     if (cart) {
       window.merchantInfo.cart = cart;
       buyNowRun = true;
       // logEvent('gk_buy_now_button_clicked', 'onGkClick');
     } else {
-      const apiResponse = await getCart(updatedCart.id);
+      const apiResponse = await getCart(cart.id);
       window.merchantInfo.cart = apiResponse.data ? apiResponse.data.cart : null;
       buyNowRun = false;
       // logEvent('gokwik-button-clicked', 'onGkClick');
@@ -164,15 +181,15 @@ export function GokwikButton(passedData) {
 
     window.gokwikSdk.initCheckout(window.merchantInfo);
   };
-  const isLoading = useAppSelector((state) => state.cart.loading);
+  const loading = useAppSelector((state) => state.cart.loading);
 
   return (
     <>
       {!passedData.hideButton && (
         <button
-          disabled={isLoading}
-          aria-disabled={isLoading}
-          className={`relative flex items-center justify-center border border-black  bg-black px-6 py-3 text-sm font-normal uppercase tracking-wide  text-white  hover:text-purple-400 md:flex-none md:px-12 md:text-sm ${isLoading ? 'cursor-not-allowed' : ''}`}
+          disabled={loading}
+          aria-disabled={loading}
+          className={`relative flex items-center justify-center border border-black  bg-black px-6 py-2 text-sm font-normal uppercase tracking-wide  text-white  hover:text-purple-400 md:flex-none md:px-12 md:text-sm ${loading ? 'cursor-not-allowed' : ''}`}
           onClick={(event) => {
             event.preventDefault();
             passedData.buyNowButton ? triggerBuyNow(passedData) : triggerGokwikCheckout();
