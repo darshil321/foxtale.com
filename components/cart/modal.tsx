@@ -21,6 +21,7 @@ import { GokwikButton } from '../product/go-kwik-button';
 
 import { EmblaOptionsType } from 'embla-carousel';
 import EmblaCartSlider from '../common/gift-cart-slider';
+import LoadingOverlay from '../common/loading';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -30,7 +31,7 @@ const minimumCartItems = 3;
 export default function CartModal() {
   const carts = useAppSelector((state) => state.cart.cart);
   const { giftFreeProducts } = useAppSelector((state) => state.cart);
-  const { addToCartLoading } = useAppSelector((state) => state.cart);
+  const { loading } = useAppSelector((state) => state.cart);
   const { adjustCart } = useCoupon();
 
   const data = getCartData(carts);
@@ -41,7 +42,7 @@ export default function CartModal() {
   function increaseItemQuantity({ item, type }: { item: CartItem; type: string }) {
     const cart = {
       ...carts,
-      lines: carts.lines.map((line) => {
+      lines: carts.lines.map((line: any) => {
         if (line.merchandise.id === item.merchandise.id) {
           if (type === 'plus') {
             return {
@@ -63,13 +64,8 @@ export default function CartModal() {
   }
 
   const { isCartOpen } = useAppSelector((state) => state.cart);
-  // useEffect(() => {
-  // setIsOpen(isCartOpen);
-  // }, [isCartOpen]);
 
   const OPTIONS: EmblaOptionsType = { dragFree: false };
-
-  console.log('addToCartLoading', addToCartLoading);
 
   return (
     <>
@@ -77,7 +73,7 @@ export default function CartModal() {
         <OpenCart quantity={data?.totalQuantity} />
       </button>
       <Transition show={!!isCartOpen}>
-        <Dialog onClose={() => dispatch(setCartOpen(false))} className="relative z-50">
+        <Dialog onClose={() => dispatch(setCartOpen(false))} className="relative z-50 ">
           <Transition.Child
             as={Fragment}
             enter="transition-all ease-in-out duration-300"
@@ -107,7 +103,8 @@ export default function CartModal() {
                 </button>
               </div>
               <p className="bg-grey px-2 py-2 text-xs">Free Shipping + Free Sachet</p>
-              {addToCartLoading && <>@@@@@</>}
+
+              {loading && <LoadingOverlay isLoading={loading} />}
               {!carts || carts?.lines?.length === 0 ? (
                 <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
                   <ShoppingBagIcon className="h-16" />
@@ -135,7 +132,7 @@ export default function CartModal() {
                       return (
                         <li key={i} className="flex w-full flex-col bg-white ">
                           <div className="relative flex w-full flex-row justify-between rounded-sm px-1 py-1 ">
-                            <div className="absolute z-40 -mt-2 ml-[55px]">
+                            <div className="absolute z-10  -mt-2 ml-[55px]">
                               <DeleteItemButton item={item} removeIcon={false} />
                             </div>
 
@@ -143,7 +140,7 @@ export default function CartModal() {
                               <Link
                                 href={merchandiseUrl}
                                 onClick={() => dispatch(setCartOpen(false))}
-                                className="z-30 flex flex-row space-x-4"
+                                className=" flex flex-row space-x-4"
                               >
                                 <div className="relative h-16 w-16 cursor-pointer overflow-hidden rounded-md  border border-neutral-300 bg-neutral-300 ">
                                   <Image

@@ -20,7 +20,7 @@ function SubmitButton({ removeIcon, item }: { removeIcon?: boolean; item?: CartI
       aria-label="Remove cart item"
       aria-disabled={pending}
       className={clsx(
-        'ease flex h-[17px] w-[17px] items-center justify-center rounded-full bg-neutral-500 transition-all duration-200',
+        'ease z-10 flex h-[17px] w-[17px] items-center justify-center rounded-full bg-neutral-500 transition-all duration-200',
         {
           'cursor-not-allowed px-0': pending
         }

@@ -164,15 +164,15 @@ export function GokwikButton(passedData) {
 
     window.gokwikSdk.initCheckout(window.merchantInfo);
   };
-  const isLoading = useAppSelector((state) => state.cart.loading);
+  const loading = useAppSelector((state) => state.cart.loading);
 
   return (
     <>
       {!passedData.hideButton && (
         <button
-          disabled={isLoading}
-          aria-disabled={isLoading}
-          className={`relative flex items-center justify-center border border-black  bg-black px-6 py-2 text-sm font-normal uppercase tracking-wide  text-white  hover:text-purple-400 md:flex-none md:px-12 md:text-sm ${isLoading ? 'cursor-not-allowed' : ''}`}
+          disabled={loading}
+          aria-disabled={loading}
+          className={`relative flex items-center justify-center border border-black  bg-black px-6 py-2 text-sm font-normal uppercase tracking-wide  text-white  hover:text-purple-400 md:flex-none md:px-12 md:text-sm ${loading ? 'cursor-not-allowed' : ''}`}
           onClick={(event) => {
             event.preventDefault();
             passedData.buyNowButton ? triggerBuyNow(passedData) : triggerGokwikCheckout();

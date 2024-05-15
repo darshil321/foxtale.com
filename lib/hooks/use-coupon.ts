@@ -12,10 +12,8 @@ import {
 } from '../helper/cart-helper';
 import { useDispatch } from 'react-redux';
 import { cartActions } from '@/store/actions/cart.action';
-import { setGiftFreeProducts, setUpdateCartLoading } from '@/store/slices/cart-slice';
-import { useMemo } from 'react';
+import { setGiftFreeProducts } from '@/store/slices/cart-slice';
 import { v4 as uuidv4 } from 'uuid';
-import { debounce } from '../helper/helper';
 
 function useCoupon() {
   const freebies = useAppSelector((state) => state.cart.freebieCoupons) || [];
@@ -119,25 +117,36 @@ function useCoupon() {
     return res;
   };
 
-  const debouncedUpdateItemQuantity = useMemo(
-    () =>
-      debounce((updatedCart, itemsToBeAdd) => {
-        dispatch(cartActions.updateCart(updatedCart));
-        if (itemsToBeAdd.length)
-          itemsToBeAdd.forEach((item: any) => {
-            dispatch(
-              cartActions.addToCart({
-                selectedVariantId: item.variantId,
-                product: item.product,
-                tempId: uuidv4()
-              })
-            );
-          });
-
-        // if (carts?.id) dispatch(cartActions.attemptGetCarts({ cartId: carts.id }));
-      }, 1000),
-    [dispatch]
-  );
+  const debouncedUpdateItemQuantity = (updatedCart, itemsToBeAdd) => {
+    dispatch(cartActions.updateCart(updatedCart));
+    if (itemsToBeAdd.length)
+      itemsToBeAdd.forEach((item: any) => {
+        dispatch(
+          cartActions.addToCart({
+            selectedVariantId: item.variantId,
+            product: item.product,
+            tempId: uuidv4()
+          })
+        );
+      });
+  };
+  // const debouncedUpdateItemQuantity = useMemo(
+  //   () =>
+  //     debounce((updatedCart, itemsToBeAdd) => {
+  //       dispatch(cartActions.updateCart(updatedCart));
+  //       if (itemsToBeAdd.length)
+  //         itemsToBeAdd.forEach((item: any) => {
+  //           dispatch(
+  //             cartActions.addToCart({
+  //               selectedVariantId: item.variantId,
+  //               product: item.product,
+  //               tempId: uuidv4()
+  //             })
+  //           );
+  //         });
+  //     }, 1000),
+  //   [dispatch]
+  // );
 
   const adjustCart = (cart: any) => {
     const { cartToBeUpdate, itemsToBeAdd, giftProducts } = adjustFreebiesInCart(cart);
@@ -148,14 +157,12 @@ function useCoupon() {
       quantity: item.quantity
     }));
 
-    console.log('updatedCart', updatedCart);
     const _cart = {
       ...cart,
       lines: cartToBeUpdate.lines.filter((line: any) => line.quantity > 0)
     };
 
     dispatch(cartActions.setCart(_cart));
-    dispatch(setUpdateCartLoading(true));
     dispatch(setGiftFreeProducts(giftProducts));
 
     debouncedUpdateItemQuantity(updatedCart, itemsToBeAdd);

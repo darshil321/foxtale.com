@@ -42,9 +42,8 @@ interface MagicLinkCoupon {
 }
 export interface CartState {
   getCartLoading: boolean;
-  addToCartLoading: boolean;
-  updateCartLoading: boolean;
-  removeCartLoading: boolean;
+  loading: boolean;
+
   cart: Cart | any;
   quantities: any;
   error: any;
@@ -54,14 +53,12 @@ export interface CartState {
   magicLinkCoupons?: MagicLinkCoupon;
   isCartOpen: boolean;
   giftFreeProducts?: { product: Product; variantId: string }[];
+  remoteCart?: Cart;
 }
 
 export const initialState: CartState = {
   getCartLoading: false,
-  addToCartLoading: false,
-  updateCartLoading: false,
-  removeCartLoading: false,
-
+  loading: false,
   cart: null,
   error: null,
   quantities: {},
@@ -157,15 +154,10 @@ export const cartSlice = createSlice({
     setCartOpen: (state, action) => {
       state.isCartOpen = action.payload;
     },
-    setAddToCartLoading: (state, action) => {
-      state.addToCartLoading = action.payload;
+    setLoading: (state, action) => {
+      state.loading = action.payload;
     },
-    setUpdateCartLoading: (state, action) => {
-      state.updateCartLoading = action.payload;
-    },
-    setRemoveCartLoading: (state, action) => {
-      state.removeCartLoading = action.payload;
-    },
+
     setGiftFreeProducts: (state, action) => {
       state.giftFreeProducts = action.payload;
     }
@@ -182,11 +174,10 @@ export const {
   setFreebieCoupons,
   setCartOpen,
   removeCart,
-  addToCart,
+  setLoading,
+  // addToCart,
   setMagicLinkCoupons,
-  setAddToCartLoading,
-  setUpdateCartLoading,
-  setRemoveCartLoading,
+
   setGiftFreeProducts
 } = cartSlice.actions;
 export default cartSlice.reducer;
