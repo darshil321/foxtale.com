@@ -41,8 +41,8 @@ export default async function Footer() {
   ];
 
   return (
-    <footer className="w-full font-poppins text-sm text-neutral-500 ">
-      <div className=" w-full bg-[#f3bf97] px-2 py-4 text-sm md:flex-row md:gap-20 md:px-4 md:py-12">
+    <footer className="w-full font-poppins text-sm text-neutral-500">
+      <div className=" w-full bg-[#D8C7EA] px-2 py-4 text-sm md:flex-row md:gap-20 md:px-4 md:py-12">
         <div className="mx-2 flex flex-col-reverse items-start justify-between gap-6 border-b border-black pb-6 md:mx-32 lg:flex-row">
           <div className="flex flex-col gap-8 md:flex-row md:gap-20">
             <Suspense
@@ -82,7 +82,7 @@ export default async function Footer() {
               exclusive offers and sale information
             </p>
 
-            <CustomInputBtn text="Enter your email address" type="email" buttonText="Subscribe" />
+            <CustomInputBtn text="Your email address" type="email" buttonText="Subscribe" />
           </div>
         </div>
         <div className=" mx-2 flex flex-col  items-center justify-center space-y-2 pt-6 md:mx-32">
