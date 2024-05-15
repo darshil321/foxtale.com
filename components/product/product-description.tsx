@@ -30,9 +30,11 @@ export default function ProductDescription({
           <div className="flex flex-col items-center gap-0 md:flex-row md:gap-3">
             <h1 className="mb-2 text-2xl font-medium leading-6">
               {product.title}
-              <span className="pl-2 text-center text-xs text-neutral-400">
-                Size - {product?.variants[0]?.weight} ml
-              </span>
+              {product?.variants[0]?.weight === 0 ? null : (
+                <span className="text-center text-xs text-[#bcbec0]">
+                  Size - {product?.variants[0]?.weight} ml
+                </span>
+              )}
             </h1>
           </div>
           <div className="text-[#6d6e71]" dangerouslySetInnerHTML={{ __html: decodedHtml }} />
