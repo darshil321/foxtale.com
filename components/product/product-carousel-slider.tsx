@@ -37,17 +37,16 @@ const EmblaCarouselSlider: React.FC<PropType> = (props) => {
     <section className="embla_product relative pl-4 md:px-0">
       <div className="embla_product__viewport " ref={emblaRef}>
         <div className="embla_product__container">
-          {slides.map((image, index) => (
+          {slides.map((product, index) => (
             <div className="embla_product__slide" key={index}>
               <Image
-                className="  aspect-square h-[344px] w-[344px] object-cover md:min-h-[475px]  md:w-full  md:max-w-[470px]"
+                className=" aspect-square h-[344px] w-[344px] object-cover md:min-h-[475px]  md:w-full  md:max-w-[470px]"
                 width={400}
                 height={400}
-                alt={image.altText as string}
-                src={image?.url as string}
-                priority={true}
+                alt={product.altText as string}
+                src={product?.url as string}
+                priority
                 quality={80}
-                loading="eager"
               />
             </div>
           ))}

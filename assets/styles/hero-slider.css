@@ -22,7 +22,9 @@
 }
 .hero_embla__slide__img {
   display: block;
-  height: var(--slide-height);
+  /* height: var(--slide-height); */
+  height: auto;
+  min-height: 240px;
   width: 100%;
   object-fit: cover;
 }
@@ -113,7 +115,7 @@
 }
 .hero_embla__parallax__layer {
   position: relative;
-  height: 100%;
+  height: var(--slide-height);
   width: 100%;
   border-radius: 8px;
   display: flex;
@@ -138,5 +140,6 @@
   .hero_embla__parallax__layer,
   .hero_embla__slide__img {
     border-radius: 4px;
+    height: 240px;
   }
 }

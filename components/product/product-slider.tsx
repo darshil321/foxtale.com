@@ -5,10 +5,12 @@ import EmblaCarouselSlider from './product-carousel-slider';
 
 const OPTIONS: EmblaOptionsType = { align: 'start' };
 
-export const ProductSlider = ({ images }: { images: any[] }) => {
+const ProductSlider = ({ images }: { images: any[] }) => {
   return (
     <>
       <EmblaCarouselSlider slides={images} options={OPTIONS} />
     </>
   );
 };
+
+export default ProductSlider;

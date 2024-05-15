@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 
 export const cartActions = {
-  attemptGetCarts: createAction<{}>('cart/attemptGetcarts'),
+  attemptGetCarts: createAction<{}>('cart/attemptGetcart'),
   getCartFailed: createAction('cart/getCartFailed'),
   getCartSuccess: createAction('cart/getCartSuccess'),
 
@@ -10,5 +10,4 @@ export const cartActions = {
   removeCart: createAction<{}>('cart/removeCart'),
   setCart: createAction<{}>('cart/setCart'),
   setMetaObject: createAction<{}>('cart/setMetaObject')
-  // gid://shopify/ProductVariant/46638240530715
 };

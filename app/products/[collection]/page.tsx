@@ -2,9 +2,13 @@ import { getCollection, getCollectionProducts } from 'lib/shopify';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { defaultSort, sorting } from 'lib/constants';
-import CollectionProductsContainer from '@/components/layout/search/collection-products';
+import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
+import Loading from '../loading';
 
-export const fetchCache = 'force-cache';
+const CollectionProductsContainer = dynamic(
+  () => import('@/components/layout/search/collection-products')
+);
 
 // export const generateStaticParams = async () => {
 //   const collections = await getCollections();
@@ -13,6 +17,16 @@ export const fetchCache = 'force-cache';
 //     collection: collection?.handle === '' ? 'all' : collection?.handle
 //   }));
 // };
+
+// export const fetchCache = 'force-cache';
+
+export const generateStaticParams = async () => {
+  return [
+    {
+      collection: 'all'
+    }
+  ];
+};
 
 export async function generateMetadata({
   params
@@ -54,22 +68,26 @@ export default async function CategoryPage({
   ];
 
   // Fetch products for all collections simultaneously
-  const promises = collections.map((collection) =>
-    getCollectionProducts({ collection: collection.handle, sortKey, reverse })
+  const promises = collections.map(
+    async (collection) =>
+      await getCollectionProducts({ collection: collection.handle, sortKey, reverse })
   );
 
   const productsByCollection = await Promise.all(promises);
+  console.log('data in server >>>>>>>>>>>>>>>', productsByCollection);
 
   return (
     <>
       <div className="h-full w-full gap-4 space-y-6 ">
         {productsByCollection?.map((products, index) => (
-          <CollectionProductsContainer
-            key={index}
-            index={index}
-            collections={collections}
-            products={products}
-          />
+          <Suspense fallback={<Loading />} key={index}>
+            <CollectionProductsContainer
+              key={index}
+              index={index}
+              collections={collections}
+              products={products}
+            />
+          </Suspense>
         ))}
       </div>
     </>

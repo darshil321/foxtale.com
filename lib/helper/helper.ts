@@ -3,6 +3,7 @@
 import { Metaobject } from '@shopify/hydrogen-react/storefront-api-types';
 import axios from 'axios';
 import { Cart, CartItem, Connection } from '../shopify/types';
+import { cloneDeep } from '@apollo/client/utilities';
 
 interface Field {
   [key: string]: string;
@@ -236,7 +237,12 @@ export function getReformedCoupons(metaObjects: any) {
     metaObject?.fields?.forEach((field: any) => {
       fieldsObject[field.key ?? ''] = field.value ?? '';
 
-      if ((field.key === 'applicable_products' || field.key === 'gift') && field.value) {
+      if (
+        (field.key === 'applicable_products' ||
+          field.key === 'free_products' ||
+          field.key === 'gift') &&
+        field.value
+      ) {
         fieldsObject[field.key ?? ''] = JSON.parse(field.value) ?? '';
       }
     });

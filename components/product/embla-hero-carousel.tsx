@@ -97,15 +97,13 @@ const EmblaHeroCarousel: React.FC<PropType> = (props) => {
                 <div className="hero_embla__parallax__layer ">
                   <Image
                     priority
-                    width={1200}
-                    height={800}
+                    fill
                     objectFit="cover"
                     className="hero_embla__slide__img embla__parallax__img"
-                    src={`/Images/banner.png`}
+                    src={'https://foxtale.in/cdn/shop/files/banners_30_off-02.jpg'}
+                    sizes="(max-width: 768px) 70vw"
                     alt="Your alt text"
-                    loading="eager"
-                    sizes="(max-width: 768px) 378px, (min-width:1200px) 1200px"
-                    quality={75} // Lower quality for smaller file size
+                    quality={80}
                   />
                 </div>
               </div>

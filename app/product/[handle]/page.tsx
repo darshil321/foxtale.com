@@ -6,10 +6,10 @@ import Link from 'next/link';
 import { GridTileImage } from '@/components/grid/tile';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import dynamic from 'next/dynamic';
-import { ProductSlider } from '@/components/product/product-slider';
-import OfferSection from '@/components/product/offers-section';
-import ProductsRatings from '@/components/product/products-rating';
 
+const ProductSlider = dynamic(() => import('@/components/product/product-slider'));
+const OfferSection = dynamic(() => import('@/components/product/offers-section'));
+const ProductsRatings = dynamic(() => import('@/components/product/products-rating'));
 const ProductDescription = dynamic(() => import('@/components/product/product-description'));
 const ProductCarouselSlider = dynamic(() => import('@/components/product/product-carousel'));
 const ProductDetailsTabs = dynamic(() => import('@/components/product/product-details-tabs'));
@@ -169,7 +169,10 @@ async function RelatedProducts({ id }: { id: string }) {
             key={product.handle}
             className=" w-1/2 flex-none min-[475px]:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5"
           >
-            <Link className="relative h-full w-full" href={`/product/${product.handle}`}>
+            <Link
+              className="relative h-full w-full"
+              href={`/product/${product.handle}/${product.options[0]?.name}`}
+            >
               <GridTileImage
                 product={product}
                 alt={product.title}

@@ -4,10 +4,9 @@ import { Dialog, Transition } from '@headlessui/react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { Fragment, Suspense, useEffect, useState } from 'react';
-
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Menu } from 'lib/shopify/types';
 import Search, { SearchSkeleton } from './search';
+import Image from 'next/image';
 
 export default function MobileMenu({ menu }: { menu: Menu[] }) {
   const pathname = usePathname();
@@ -37,7 +36,22 @@ export default function MobileMenu({ menu }: { menu: Menu[] }) {
         aria-label="Open mobile menu"
         className="w-22 h-22 flex items-center justify-center rounded-md  text-black transition-colors md:hidden "
       >
-        <Bars3Icon className="h-10" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          aria-hidden="true"
+          data-slot="icon"
+          className="h-10"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+          ></path>
+        </svg>
       </button>
       <Transition show={isOpen}>
         <Dialog onClose={closeMobileMenu} className="relative z-50">
@@ -68,7 +82,13 @@ export default function MobileMenu({ menu }: { menu: Menu[] }) {
                   onClick={closeMobileMenu}
                   aria-label="Close mobile menu"
                 >
-                  <XMarkIcon className="h-10" />
+                  <Image
+                    src="/Images/close.svg"
+                    className="h-10"
+                    width={25}
+                    height={25}
+                    alt="logo"
+                  />
                 </button>
 
                 <div className="mb-4 w-full">

@@ -14,26 +14,24 @@ export async function addItem(selectedVariantId: string) {
   }
   if (cartId) cart = await getCart(cartId);
 
-  // Create cart
   if (!cartId || !cart) {
     cart = await createCart();
-    console.log('@@', cart);
     cartId = cart.id;
     cookies().set('cartId', cartId);
   }
 
-  console.log('cart', selectedVariantId);
-
   try {
     const data = await addToCart(cartId, [{ merchandiseId: selectedVariantId, quantity: 1 }]);
+
     revalidateTag(TAGS.cart);
     return data;
   } catch (e) {
+    console.log('e', e);
     return 'Error adding item to cart';
   }
 }
 
-export async function removeItem(prevState: any, lineId: string) {
+export async function removeItem(lineIds: string[]) {
   const cartId = cookies().get('cartId')?.value;
 
   if (!cartId) {
@@ -41,7 +39,7 @@ export async function removeItem(prevState: any, lineId: string) {
   }
 
   try {
-    const data = await removeFromCart(cartId, [lineId]);
+    const data = await removeFromCart(cartId, lineIds);
     revalidateTag(TAGS.cart);
     return data;
   } catch (e) {
@@ -50,7 +48,6 @@ export async function removeItem(prevState: any, lineId: string) {
 }
 
 export async function updateItemQuantity(
-  prevState: any,
   payload: {
     id: string;
     merchandiseId: string;

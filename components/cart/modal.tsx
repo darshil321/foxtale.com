@@ -5,80 +5,101 @@ import { DEFAULT_OPTION } from 'lib/constants';
 import { createUrl } from 'lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment, useEffect, useMemo, useState } from 'react';
-import CloseCart from './close-cart';
+import { Fragment, useMemo } from 'react';
 import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
 import OpenCart from './open-cart';
-import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-
+import '../../assets/styles/embla-products-carousel.css';
 import useCoupon from '@/lib/hooks/use-coupon';
 import { debounce, getCartData } from '@/lib/helper/helper';
 import { CartItem } from '@/lib/shopify/types';
-import { setCart, setCartOpen } from '@/store/slices/cart-slice';
+import { setCartOpen, setUpdateCartLoading } from '@/store/slices/cart-slice';
 import { cartActions } from '@/store/actions/cart.action';
 import { GokwikButton } from '../product/go-kwik-button';
+import { v4 as uuidv4 } from 'uuid';
+
+import { EmblaOptionsType } from 'embla-carousel';
+import EmblaCartSlider from '../common/gift-cart-slider';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
 };
 
 export default function CartModal() {
-  const [isOpen, setIsOpen] = useState(false);
-  console.log('isOpen', isOpen);
-
-  const test = useCoupon();
-  console.log('test', test);
-
   const carts = useAppSelector((state) => state.cart.cart);
-
-  const loading = useAppSelector((state) => state.cart.loading);
-
-  useEffect(() => {
-    console.log('loading', loading);
-  }, [loading]);
+  const { adjustFreebiesInCart } = useCoupon();
 
   const data = getCartData(carts);
   const { currencyCode, totalAmount } = data;
   const dispatch = useAppDispatch();
-  function increaseItemQuantity({ cart, item, type }: { cart: any; item: CartItem; type: string }) {
-    const updatedCart = JSON.parse(JSON.stringify(cart));
-    updatedCart.totalQuantity++;
+  function increaseItemQuantity({ item, type }: { item: CartItem; type: string }) {
+    const cart = {
+      ...carts,
+      lines: carts.lines.map((line) => {
+        if (line.merchandise.id === item.merchandise.id) {
+          if (type === 'plus') {
+            return {
+              ...line,
+              quantity: line.quantity + 1
+            };
+          } else {
+            return {
+              ...line,
+              quantity: line.quantity - 1
+            };
+          }
+        }
+        return line;
+      })
+    };
 
-    const index = updatedCart.lines.findIndex(
-      (line: any) => line.merchandise.id === item.merchandise.id
-    );
+    const { cartToBeUpdate, itemsToBeAdd, giftProducts } = adjustFreebiesInCart(cart);
+    console.log('cartToBeUpdate', cartToBeUpdate);
+    console.log('itemsToBeAdd', itemsToBeAdd);
+    console.log('giftProducts', giftProducts);
+    const updatedCart = cartToBeUpdate.lines?.map((item: CartItem) => ({
+      id: item.id,
+      merchandiseId: item.merchandise.id,
+      quantity: item.quantity
+    }));
 
-    if (index !== -1) {
-      type === 'plus' ? updatedCart.lines[index].quantity++ : updatedCart.lines[index].quantity--;
+    const _cart = {
+      ...carts,
+      lines: cartToBeUpdate.lines.filter((line) => line.quantity > 0)
+    };
+    dispatch(cartActions.setCart(_cart));
+    dispatch(setUpdateCartLoading(true));
 
-      updatedCart.lines[index].cost.totalAmount.amount =
-        updatedCart.lines[index].cost.amountPerQuantity.amount * updatedCart.lines[index].quantity;
-    }
-
-    dispatch(setCart(updatedCart));
-    const payload = updatedCart?.lines?.map((item: any) => {
-      return {
-        id: item.id,
-        merchandiseId: item.merchandise.id,
-        quantity: item.quantity
-      };
-    });
-    debouncedUpdateItemQuantity(payload);
+    debouncedUpdateItemQuantity(updatedCart, itemsToBeAdd);
   }
+
   const debouncedUpdateItemQuantity = useMemo(
     () =>
-      debounce((payload) => {
-        dispatch(cartActions.updateCart(payload));
+      debounce((updatedCart, itemsToBeAdd) => {
+        dispatch(cartActions.updateCart(updatedCart));
+        if (itemsToBeAdd.length)
+          itemsToBeAdd.forEach((item: any) => {
+            dispatch(
+              cartActions.addToCart({
+                selectedVariantId: item.variantId,
+                product: item.product,
+                tempId: uuidv4()
+              })
+            );
+          });
+
+        // if (carts?.id) dispatch(cartActions.attemptGetCarts({ cartId: carts.id }));
       }, 1000),
     [dispatch]
   );
 
   const { isCartOpen } = useAppSelector((state) => state.cart);
-  useEffect(() => {
-    setIsOpen(isCartOpen);
-  }, [isCartOpen]);
+  // useEffect(() => {
+  // setIsOpen(isCartOpen);
+  // }, [isCartOpen]);
+
+  const OPTIONS: EmblaOptionsType = { dragFree: false };
 
   return (
     <>
@@ -112,13 +133,18 @@ export default function CartModal() {
                 <p className="text-lg font-semibold">My Cart</p>
 
                 <button aria-label="Close carts" onClick={() => dispatch(setCartOpen(false))}>
-                  <CloseCart />
+                  <Image src="/Images/close.svg" alt="close" width={24} height={24} />
                 </button>
               </div>
 
               {!carts || carts?.lines?.length === 0 ? (
                 <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
-                  <ShoppingBagIcon className="h-16" />
+                  <Image
+                    src="/Images/Shopping-cart.svg"
+                    alt="empty-cart"
+                    width={100}
+                    height={100}
+                  />
                   <p className="mt-6 text-center text-2xl font-bold">Your cart is empty.</p>
                 </div>
               ) : (
@@ -186,11 +212,7 @@ export default function CartModal() {
                               <div className="ml-auto flex h-9 flex-row items-center  border border-neutral-200 ">
                                 <EditItemQuantityButton
                                   onClick={() => {
-                                    if (item.quantity > 1) {
-                                      increaseItemQuantity({ cart: carts, item, type: 'minus' });
-                                    } else {
-                                      dispatch(cartActions.removeCart({ lineId: item.id }));
-                                    }
+                                    increaseItemQuantity({ item, type: 'minus' });
                                   }}
                                   type="minus"
                                 />
@@ -199,9 +221,7 @@ export default function CartModal() {
                                   <span className="w-full text-sm">{item.quantity}</span>
                                 </p>
                                 <EditItemQuantityButton
-                                  onClick={() =>
-                                    increaseItemQuantity({ cart: carts, item, type: 'plus' })
-                                  }
+                                  onClick={() => increaseItemQuantity({ item, type: 'plus' })}
                                   type="plus"
                                 />
                               </div>
@@ -210,6 +230,9 @@ export default function CartModal() {
                         </li>
                       );
                     })}
+                    <div className="max-h-60 w-full">
+                      <EmblaCartSlider slides={carts.lines} options={OPTIONS} />
+                    </div>
                   </ul>
                   <div className="py-4 text-sm text-neutral-500 ">
                     <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1">
