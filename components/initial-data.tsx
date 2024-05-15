@@ -11,10 +11,9 @@ interface Props {
   freebieCoupons?: any;
   magicLinks?: any;
   collections?: any;
-  products?: any;
 }
 
-const InitialData: React.FC<Props> = ({ giftsCoupon, freebieCoupons, magicLinks, products }) => {
+const InitialData: React.FC<Props> = ({ giftsCoupon, freebieCoupons, magicLinks }) => {
   const products = useAppSelector((state) => state.products.products) || [];
   const dispatch = useAppDispatch();
 
