@@ -113,6 +113,7 @@ export const getApplicableMagicLink = ({
     console.log('magic link not valid');
     return null;
   }
+
   const { fields } = coupon;
 
   console.log('coupon', coupon);
@@ -121,11 +122,10 @@ export const getApplicableMagicLink = ({
   if (fields.applicable_collection) {
     const applicableCart = cart.lines.filter((line) => {
       const _product = findVariant(products, line.merchandise.id);
-      console.log('_product', _product);
       if (
         _product &&
         _product?.collections?.length &&
-        _product.collections.includes(fields.applicable_collection)
+        _product?.collections.includes(fields.applicable_collection)
       ) {
         return true;
       }

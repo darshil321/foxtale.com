@@ -83,6 +83,7 @@ function useCoupon() {
     };
 
     const { freebieCoupon, giftCoupon, magicLinkCoupon } = getFreeProductsByCoupon(cart);
+    console.log('freebieCoupon', freebieCoupon);
 
     console.log('magicLinkCoupon', magicLinkCoupon);
     if (!freebieCoupon && !giftCoupon && !magicLinkCoupon)
