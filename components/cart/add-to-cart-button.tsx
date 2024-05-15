@@ -89,7 +89,6 @@ function SubmitButton({
 
         const cart = updateCart(tempId);
 
-        console.log('@@@@', cart);
         adjustCart(cart);
         dispatch(cartActions.setCart(cart));
       }}

@@ -19,9 +19,10 @@ import { CartItem } from '@/lib/shopify/types';
 import { setCartOpen } from '@/store/slices/cart-slice';
 import { GokwikButton } from '../product/go-kwik-button';
 import { EmblaOptionsType } from 'embla-carousel';
-import LoadingOverlay from '../common/loading-overlay';
+
 import { cartActions } from '@/store/actions/cart.action';
 import EmblaProductSlider from '../common/recommended-product-slider';
+import LoadingOverlay from '../common/loading';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -31,7 +32,7 @@ const minimumCartItems = 3;
 export default function CartModal() {
   const carts = useAppSelector((state) => state.cart.cart);
   const { giftFreeProducts } = useAppSelector((state) => state.cart);
-  const { addToCartLoading } = useAppSelector((state) => state.cart);
+  const { loading } = useAppSelector((state) => state.cart);
   const RecommendedProducts = useAppSelector((state) => state.cart.recommendedProducts);
 
   console.log('carts', carts);
@@ -123,7 +124,7 @@ export default function CartModal() {
               </div>
               <p className="bg-grey px-2 py-2 text-xs">Free Shipping + Free Sachet</p>
 
-              {addToCartLoading && <LoadingOverlay isLoading={true} />}
+              {loading && <LoadingOverlay isLoading={loading} />}
               {!carts || carts?.lines?.length === 0 ? (
                 <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
                   <ShoppingBagIcon className="h-16" />
@@ -149,9 +150,9 @@ export default function CartModal() {
                       );
 
                       return (
-                        <li key={i} className="flex w-full flex-col rounded-md bg-white ">
-                          <div className="relative flex w-full flex-row justify-between  p-2 ">
-                            <div className="absolute z-20 -mt-2 ml-[55px]">
+                        <li key={i} className="flex w-full flex-col bg-white ">
+                          <div className="relative flex w-full flex-row justify-between rounded-sm px-1 py-1 ">
+                            <div className="absolute z-40 -mt-2 ml-[55px]">
                               <DeleteItemButton item={item} removeIcon={false} />
                             </div>
 

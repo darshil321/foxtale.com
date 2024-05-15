@@ -67,31 +67,39 @@ const getProductId = (id: string): string => {
 };
 
 async function getReviews() {
-  const reviewApiOptions = {
-    method: 'GET',
-    url: 'https://api.fera.ai/v3/private/reviews',
-    headers: {
-      accept: 'application/json',
-      'SECRET-KEY': process.env.FERA_FOXTALE_SECRET_KEY
-    }
-  };
-  const response = await axios.request(reviewApiOptions);
-  const reviews = response.data.data;
-  return reviews;
+  try {
+    const reviewApiOptions = {
+      method: 'GET',
+      url: 'https://api.fera.ai/v3/private/reviews',
+      headers: {
+        accept: 'application/json',
+        'SECRET-KEY': process.env.FERA_FOXTALE_SECRET_KEY
+      }
+    };
+    const response = await axios.request(reviewApiOptions);
+    const reviews = response.data.data;
+    return reviews;
+  } catch (e) {
+    console.log('e', e);
+  }
 }
 
 async function getRatings() {
-  const ratingApiOptions = {
-    method: 'GET',
-    url: 'https://api.fera.ai/v3/private/ratings',
-    headers: {
-      accept: 'application/json',
-      'SECRET-KEY': process.env.FERA_FOXTALE_SECRET_KEY
-    }
-  };
-  const response = await axios.request(ratingApiOptions);
-  const ratings = response.data.data;
-  return ratings;
+  try {
+    const ratingApiOptions = {
+      method: 'GET',
+      url: 'https://api.fera.ai/v3/private/ratings',
+      headers: {
+        accept: 'application/json',
+        'SECRET-KEY': process.env.FERA_FOXTALE_SECRET_KEY
+      }
+    };
+    const response = await axios.request(ratingApiOptions);
+    const ratings = response.data.data;
+    return ratings;
+  } catch (e) {
+    console.log('e', e);
+  }
 }
 
 export function getCoupon(metaObjects: any, cart: any, type: string, magic_key: any) {
