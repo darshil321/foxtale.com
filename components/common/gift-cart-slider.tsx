@@ -37,12 +37,13 @@ const EmblaCartSlider: React.FC<PropType> = (props) => {
       })
     );
   };
+  console.log('slides', slides);
   if (!slides) return <></>;
   return (
     <section className="embla_product ">
       <div className="embla_product__viewport " ref={emblaRef}>
         <div className="embla_product__container h-full w-full">
-          {slides.map((product, index) => (
+          {slides.map(({ product, variantId }, index) => (
             <div key={index} className="embla_cart__slide ">
               <div className=" mr-2 flex flex-row justify-between gap-2 rounded-sm border p-2 ">
                 <Image
@@ -63,7 +64,7 @@ const EmblaCartSlider: React.FC<PropType> = (props) => {
                 </div>
                 <div className="flex flex-col items-center justify-center">
                   <button
-                    onClick={() => onClick(product)}
+                    onClick={() => onClick({ product, variantId })}
                     className="bg-black px-4 py-1 text-white"
                   >
                     Add

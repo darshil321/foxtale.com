@@ -29,7 +29,7 @@ const couponDescriptionLine = <b>FOX1099</b>;
 const minimumCartItems = 3;
 export default function CartModal() {
   const carts = useAppSelector((state) => state.cart.cart);
-  // const { giftFreeProducts } = useAppSelector((state) => state.cart);
+  const { giftFreeProducts } = useAppSelector((state) => state.cart);
   const { addToCartLoading } = useAppSelector((state) => state.cart);
   const { adjustCart } = useCoupon();
 
@@ -222,13 +222,13 @@ export default function CartModal() {
                         </li>
                       );
                     })}
-                    <div className="mt-4 max-h-60 w-full rounded-md border border-white bg-white p-2 shadow-sm">
+                    {/* <div className="mt-4 max-h-60 w-full rounded-md border border-white bg-white p-2 shadow-sm">
                       <div className="mb-3 font-medium ">Complete Your Routine With</div>
                       <EmblaCartSlider slides={carts.lines} options={OPTIONS} />
-                    </div>
+                    </div> */}
                     <div className="mt-4 max-h-60 w-full rounded-md border border-white bg-white p-2 shadow-sm">
                       <div className="mb-3 font-medium ">Gift Products</div>
-                      <EmblaCartSlider slides={carts.lines} options={OPTIONS} />
+                      <EmblaCartSlider slides={giftFreeProducts} options={OPTIONS} />
                     </div>
                   </ul>
 
