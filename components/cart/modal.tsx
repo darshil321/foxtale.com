@@ -6,11 +6,9 @@ import { createUrl } from 'lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment, useMemo } from 'react';
-import CloseCart from './close-cart';
 import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
 import OpenCart from './open-cart';
-import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import '../../assets/styles/embla-products-carousel.css';
 import useCoupon from '@/lib/hooks/use-coupon';
@@ -135,13 +133,18 @@ export default function CartModal() {
                 <p className="text-lg font-semibold">My Cart</p>
 
                 <button aria-label="Close carts" onClick={() => dispatch(setCartOpen(false))}>
-                  <CloseCart />
+                  <Image src="/Images/close.svg" alt="close" width={24} height={24} />
                 </button>
               </div>
 
               {!carts || carts?.lines?.length === 0 ? (
                 <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
-                  <ShoppingBagIcon className="h-16" />
+                  <Image
+                    src="/Images/Shopping-cart.svg"
+                    alt="empty-cart"
+                    width={100}
+                    height={100}
+                  />
                   <p className="mt-6 text-center text-2xl font-bold">Your cart is empty.</p>
                 </div>
               ) : (

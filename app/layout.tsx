@@ -8,8 +8,10 @@ import Provider from '../store/store-provider';
 import Banner from 'components/layout/navbar/banner';
 import { Poppins } from 'next/font/google';
 import { getMetaObjects } from '@/lib/shopify';
-import dynamic from 'next/dynamic';
-const InitialData = dynamic(() => import('@/components/initial-data'), { ssr: false });
+import InitialData from '@/components/initial-data';
+// import { getMetaObjects, getProducts } from '@/lib/shopify';
+// import dynamic from 'next/dynamic';
+// const InitialData = dynamic(() => import('@/components/initial-data'), { ssr: false });
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -20,6 +22,7 @@ const { TWITTER_CREATOR, TWITTER_SITE, SITE_NAME } = process.env;
 const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
   : 'http://localhost:3000';
+
 const twitterCreator = TWITTER_CREATOR ? ensureStartsWith(TWITTER_CREATOR, '@') : undefined;
 const twitterSite = TWITTER_SITE ? ensureStartsWith(TWITTER_SITE, 'https://') : undefined;
 

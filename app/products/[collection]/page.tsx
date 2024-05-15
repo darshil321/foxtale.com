@@ -3,8 +3,8 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { defaultSort, sorting } from 'lib/constants';
 import dynamic from 'next/dynamic';
-// import { Suspense } from 'react';
-// import Loading from '../loading';
+import { Suspense } from 'react';
+import Loading from '../loading';
 
 const CollectionProductsContainer = dynamic(
   () => import('@/components/layout/search/collection-products')
@@ -80,12 +80,14 @@ export default async function CategoryPage({
     <>
       <div className="h-full w-full gap-4 space-y-6 ">
         {productsByCollection?.map((products, index) => (
-          <CollectionProductsContainer
-            key={index}
-            index={index}
-            collections={collections}
-            products={products}
-          />
+          <Suspense fallback={<Loading />} key={index}>
+            <CollectionProductsContainer
+              key={index}
+              index={index}
+              collections={collections}
+              products={products}
+            />
+          </Suspense>
         ))}
       </div>
     </>
