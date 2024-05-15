@@ -130,7 +130,7 @@ export const getApplicableMagicLink = ({
         return true;
       }
     });
-    applicableProducts = applicableCart.map((c) => c.merchandise.id);
+    applicableProducts = applicableCart.map((c: any) => c.merchandise.id);
   }
 
   //check if applicable product

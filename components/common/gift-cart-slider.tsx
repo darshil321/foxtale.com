@@ -12,7 +12,7 @@ import { cartActions } from '@/store/actions/cart.action';
 import { v4 as uuidv4 } from 'uuid';
 
 type PropType = {
-  slides: { product: Product; variantId: string }[];
+  slides: { product: Product; variantId: string }[] | undefined;
   options?: EmblaOptionsType;
 };
 
@@ -36,6 +36,7 @@ const EmblaCartSlider: React.FC<PropType> = (props) => {
       })
     );
   };
+  if (!slides) return <></>;
   return (
     <section className="embla_product">
       <div className="embla_product__viewport " ref={emblaRef}>

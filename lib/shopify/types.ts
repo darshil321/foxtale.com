@@ -125,6 +125,7 @@ export type ShopifyProduct = {
   availableForSale: boolean;
   title: string;
   description: string;
+  collections: Connection<object[]>;
   metafields: MetaField[];
   descriptionHtml: string;
   options: ProductOption[];
