@@ -1,8 +1,8 @@
 const Price = ({
   amount,
   className,
-  currencyCode = 'USD',
-  text = 'Inclusive of all tax'
+  currencyCode = 'ISD'
+  // text = 'Inclusive of all tax'
 }: {
   amount: string;
   className?: string;
@@ -17,7 +17,7 @@ const Price = ({
         currencyDisplay: 'narrowSymbol'
       }).format(parseFloat(amount))}`}
     </p>
-    <span className="text-xs text-[#bcbec0] ">({text})</span>
+    {/* <span className="text-xs text-[#bcbec0] ">({text})</span> */}
   </div>
 );
 

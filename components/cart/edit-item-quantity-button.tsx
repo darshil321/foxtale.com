@@ -10,7 +10,7 @@ function SubmitButton({
   onClick,
   pending
 }: {
-  type: 'plus' | 'minus';
+  type: 'plus' | 'minus' | 'trash';
   // eslint-disable-next-line no-unused-vars
   onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   pending?: boolean;
@@ -33,6 +33,8 @@ function SubmitButton({
         <LoadingDots className="bg-black" />
       ) : type === 'plus' ? (
         <Image src="/Images/plus.svg" alt="Plus Icon" height={12} width={12} />
+      ) : type === 'trash' ? (
+        <Image src="/Images/trash.svg" alt="trash Icon" height={12} width={12} />
       ) : (
         <svg
           className="h-4 h-4"
@@ -58,7 +60,7 @@ export function EditItemQuantityButton({
 }: {
   onClick: () => void;
   // eslint-disable-next-line no-unused-vars
-  type: 'plus' | 'minus';
+  type: 'plus' | 'minus' | 'trash';
 }) {
   return (
     <form onSubmit={(e) => e.preventDefault()}>

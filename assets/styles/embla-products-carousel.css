@@ -1,8 +1,9 @@
 .embla_product {
-  max-width: 48rem;
+  max-width: 45rem;
   margin: auto;
   --slide-height: 19rem;
   --slide-spacing: 1.8rem;
+  --cart-slide-spacing: 1.2rem;
   --slide-size: 80%;
 }
 .embla_product__viewport {
@@ -21,8 +22,8 @@
 }
 .embla_cart__slide {
   flex: 0 0 var(--slide-size);
-  min-width: 0;
-  padding-left: 1.2rem;
+  min-width: 95%;
+  padding-left: 1.8rem;
 }
 
 .embla_product__controls {
