@@ -1,6 +1,6 @@
 import { getCartItem, getDefaultVariant, getReformedCoupons } from '@/lib/helper/helper';
 import { createSlice, current } from '@reduxjs/toolkit';
-import { Cart } from 'lib/shopify/types';
+import { Cart, Product } from 'lib/shopify/types';
 interface Giftfield {
   applicable_product: string[];
   buy_x_quantity: string;
@@ -53,6 +53,7 @@ export interface CartState {
   freebieCoupons?: FreebieCoupon;
   magicLinkCoupons?: MagicLinkCoupon;
   isCartOpen: boolean;
+  giftFreeProducts?: { product: Product; variantId: string }[];
 }
 
 export const initialState: CartState = {
@@ -100,7 +101,6 @@ export const cartSlice = createSlice({
         payload: { product, selectedVariantId, tempId }
       } = action;
       const variant = getDefaultVariant(product, selectedVariantId);
-
       if (!variant) {
         return;
       }
@@ -187,6 +187,9 @@ export const cartSlice = createSlice({
     },
     setRemoveCartLoading: (state, action) => {
       state.removeCartLoading = action.payload;
+    },
+    setGiftFreeProducts: (state, action) => {
+      state.giftFreeProducts = action.payload;
     }
   }
 });
@@ -205,6 +208,7 @@ export const {
   setMagicLinkCoupons,
   setAddToCartLoading,
   setUpdateCartLoading,
-  setRemoveCartLoading
+  setRemoveCartLoading,
+  setGiftFreeProducts
 } = cartSlice.actions;
 export default cartSlice.reducer;

@@ -14,7 +14,7 @@ export const getProductsQuery = /* GraphQL */ `
     products(sortKey: $sortKey, reverse: $reverse, query: $query, first: 250) {
       edges {
         node {
-          collections(first: 20) {
+          collections(first: 150) {
             edges {
               node {
                 id

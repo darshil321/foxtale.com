@@ -1,4 +1,5 @@
 'use client';
+
 import { getProducts } from '@/lib/shopify';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setFreebieCoupons, setGiftCoupons, setMagicLinkCoupons } from '@/store/slices/cart-slice';
@@ -28,6 +29,7 @@ const InitialData: React.FC<Props> = ({ giftsCoupon, freebieCoupons, magicLinks 
     if (magicLinks) dispatch(setMagicLinkCoupons(magicLinks));
 
     if (!products || !products.length) getProductsData();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
