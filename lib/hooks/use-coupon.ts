@@ -1,10 +1,10 @@
 import { useAppSelector } from '@/store/hooks';
 
 import {
+  findVariant,
   getApplicableCoupon,
   getApplicableMagicLink,
   getCartWithoutFreeProduct,
-  getFreeProduct,
   getFreeProductCartLines,
   getMagicKey,
   isFreeProductExistInCart,
@@ -15,17 +15,14 @@ function useCoupon() {
   const freebies = useAppSelector((state) => state.cart.freebieCoupons) || [];
   const gifts = useAppSelector((state) => state.cart.giftCoupons) || [];
   const magicLinks = useAppSelector((state) => state.cart.magicLinkCoupons) || [];
-  const collections = useAppSelector((state) => state.collections.collections) || [];
   const products = useAppSelector((state) => state.products.products) || [];
 
   const getUpdatedCart = (freeProducts: any, cart: any) => {
     const addedFreeProducts = getFreeProductCartLines(cart);
     let updatedCart = { ...cart };
     const itemsToBeAdd = [] as any;
-    console.log('freeProducts', freeProducts);
     const removableCartLineIds = removableLineIds(addedFreeProducts, freeProducts);
 
-    console.log('removableCartLineIds', removableCartLineIds);
     const cartLines = cart.lines.map((line: any) => {
       if (removableCartLineIds?.includes(line.merchandise.id)) {
         return { ...line, quantity: 0 };
@@ -38,7 +35,7 @@ function useCoupon() {
       freeProducts.forEach((product: any) => {
         const isAlreadyAdded = isFreeProductExistInCart(cart, product);
         if (!isAlreadyAdded) {
-          const _product = getFreeProduct(products, product);
+          const _product = findVariant(products, product);
           if (_product) itemsToBeAdd.push({ product: _product, variantId: product });
         }
       });
@@ -56,7 +53,7 @@ function useCoupon() {
         magicKey,
         coupons: magicLinks,
         cart,
-        collections
+        products
       });
     } else {
       //freebie
@@ -105,7 +102,7 @@ function useCoupon() {
         const { fields } = giftCoupon;
         if (fields.free_products) {
           const giftProducts = fields.free_products.map((product: any) =>
-            getFreeProduct(products, product)
+            findVariant(products, product)
           );
 
           res.giftProducts = giftProducts.filter(Boolean);

@@ -435,7 +435,11 @@ export async function getProducts({
       }
     });
 
-    return reshapeProducts(removeEdgesAndNodes(res.body.data.products));
+    const products = reshapeProducts(removeEdgesAndNodes(res.body.data.products));
+    return products.map((p) => ({
+      ...p,
+      collections: removeEdgesAndNodes(p.collections).map((c) => c.id)
+    }));
   } catch (e) {}
 }
 

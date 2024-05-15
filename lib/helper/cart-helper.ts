@@ -1,5 +1,5 @@
 import { Cart, CartItem, Product } from '../shopify/types';
-import { getCartData, removeEdgesAndNodes } from './helper';
+import { getCartData } from './helper';
 
 export const getApplicableCoupon = (coupon: any, cart: any) => {
   if (!coupon.length) return null;
@@ -40,7 +40,7 @@ export const isFreeProductExistInCart = (cart: any, freeProduct: string | string
     return lines.some((line: any) => line.merchandise.id === freeProduct);
   }
 };
-export const getFreeProduct = (products: Product[], freeProduct: string) => {
+export const findVariant = (products: Product[], freeProduct: string) => {
   return products.find((product: Product) =>
     product.variants.some((variant: { id: string }) => variant.id === freeProduct)
   );
@@ -97,12 +97,12 @@ export const getApplicableMagicLink = ({
   magicKey: key,
   coupons,
   cart,
-  collections
+  products
 }: {
   magicKey: string;
   coupons: any;
   cart: any;
-  collections: any;
+  products: any;
 }) => {
   if (!key || !coupons.length || !cart) return null;
 
@@ -114,18 +114,16 @@ export const getApplicableMagicLink = ({
   const { fields } = coupon;
 
   //check if applicable collection
-  let applicableProducts = [];
+  let applicableProducts = [] as any;
   if (fields.applicable_collection) {
-    const collection = collections?.find((c: any) => c.id === fields.applicable_collection);
-    if (collection) {
-      const _products = removeEdgesAndNodes(collection.products);
-      if (!_products.length) return null;
-      const variants = _products
-        ?.map((p) => removeEdgesAndNodes(p.variants).map((v) => v.id))
-        .flat();
+    const applicableCart = cart.lines.filter((line) => {
+      const _product = findVariant(products, line.merchandise.id);
 
-      if (variants) applicableProducts = variants || [];
-    }
+      if (_product && _product.collections.includes(fields.applicable_collection)) {
+        return true;
+      }
+    });
+    applicableProducts = applicableCart;
   }
 
   //check if applicable product
