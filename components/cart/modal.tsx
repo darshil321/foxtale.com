@@ -5,17 +5,21 @@ import { DEFAULT_OPTION } from 'lib/constants';
 import { createUrl } from 'lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment } from 'react';
+import { Fragment, useMemo } from 'react';
+import CloseCart from './close-cart';
 import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
 import OpenCart from './open-cart';
+import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import '../../assets/styles/embla-products-carousel.css';
 import useCoupon from '@/lib/hooks/use-coupon';
-import { getCartData } from '@/lib/helper/helper';
+import { debounce, getCartData } from '@/lib/helper/helper';
 import { CartItem } from '@/lib/shopify/types';
-import { setCartOpen } from '@/store/slices/cart-slice';
+import { setCartOpen, setUpdateCartLoading } from '@/store/slices/cart-slice';
+import { cartActions } from '@/store/actions/cart.action';
 import { GokwikButton } from '../product/go-kwik-button';
+import { v4 as uuidv4 } from 'uuid';
 
 import { EmblaOptionsType } from 'embla-carousel';
 import EmblaCartSlider from '../common/gift-cart-slider';
@@ -26,7 +30,8 @@ type MerchandiseSearchParams = {
 
 export default function CartModal() {
   const carts = useAppSelector((state) => state.cart.cart);
-  const { adjustCart } = useCoupon();
+  const { giftFreeProducts } = useAppSelector((state) => state.cart);
+  const { adjustFreebiesInCart } = useCoupon();
 
   const data = getCartData(carts);
   const { currencyCode, totalAmount } = data;
@@ -34,7 +39,7 @@ export default function CartModal() {
   function increaseItemQuantity({ item, type }: { item: CartItem; type: string }) {
     const cart = {
       ...carts,
-      lines: carts.lines.map((line: any) => {
+      lines: carts.lines.map((line) => {
         if (line.merchandise.id === item.merchandise.id) {
           if (type === 'plus') {
             return {
@@ -52,10 +57,47 @@ export default function CartModal() {
       })
     };
 
-    adjustCart(cart);
+    const { cartToBeUpdate, itemsToBeAdd, giftProducts } = adjustFreebiesInCart(cart);
+    console.log('cartToBeUpdate', cartToBeUpdate);
+    console.log('itemsToBeAdd', itemsToBeAdd);
+    console.log('giftProducts', giftProducts);
+    const updatedCart = cartToBeUpdate.lines?.map((item: CartItem) => ({
+      id: item.id,
+      merchandiseId: item.merchandise.id,
+      quantity: item.quantity
+    }));
+
+    const _cart = {
+      ...carts,
+      lines: cartToBeUpdate.lines.filter((line) => line.quantity > 0)
+    };
+    dispatch(cartActions.setCart(_cart));
+    dispatch(setUpdateCartLoading(true));
+
+    debouncedUpdateItemQuantity(updatedCart, itemsToBeAdd);
   }
 
-  const { isCartOpen, giftFreeProducts } = useAppSelector((state) => state.cart);
+  const debouncedUpdateItemQuantity = useMemo(
+    () =>
+      debounce((updatedCart, itemsToBeAdd) => {
+        dispatch(cartActions.updateCart(updatedCart));
+        if (itemsToBeAdd.length)
+          itemsToBeAdd.forEach((item: any) => {
+            dispatch(
+              cartActions.addToCart({
+                selectedVariantId: item.variantId,
+                product: item.product,
+                tempId: uuidv4()
+              })
+            );
+          });
+
+        // if (carts?.id) dispatch(cartActions.attemptGetCarts({ cartId: carts.id }));
+      }, 1000),
+    [dispatch]
+  );
+
+  const { isCartOpen } = useAppSelector((state) => state.cart);
   // useEffect(() => {
   // setIsOpen(isCartOpen);
   // }, [isCartOpen]);
@@ -94,18 +136,13 @@ export default function CartModal() {
                 <p className="text-lg font-semibold">My Cart</p>
 
                 <button aria-label="Close carts" onClick={() => dispatch(setCartOpen(false))}>
-                  <Image src="/Images/close.svg" alt="close" width={24} height={24} />
+                  <CloseCart />
                 </button>
               </div>
 
               {!carts || carts?.lines?.length === 0 ? (
                 <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
-                  <Image
-                    src="/Images/Shopping-cart.svg"
-                    alt="empty-cart"
-                    width={100}
-                    height={100}
-                  />
+                  <ShoppingBagIcon className="h-16" />
                   <p className="mt-6 text-center text-2xl font-bold">Your cart is empty.</p>
                 </div>
               ) : (
@@ -195,6 +232,7 @@ export default function CartModal() {
                       <EmblaCartSlider slides={giftFreeProducts} options={OPTIONS} />
                     </div>
                   </ul>
+
                   <div className="py-4 text-sm text-neutral-500 ">
                     <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1">
                       <p>Total</p>

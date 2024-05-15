@@ -54,7 +54,7 @@ const EmblaCartSlider: React.FC<PropType> = (props) => {
 
               <button onClick={() => onClick({ product, variantId })}>add </button>
               <div className="flex flex-col">
-                <h4 className="text-sm">{product.title}</h4>
+                <h4 className="text-sm">{product?.title}</h4>
 
                 {/* <p> {getVariant(product, variantId)?.variant.price.amount}</p> */}
               </div>
