@@ -12,7 +12,7 @@ const HeroBannerSlider = () => {
   return (
     <div>
       {/* <EmblaHeroCarousel slides={SLIDES} options={OPTIONS} /> */}{' '}
-      <div className=" h-auto  w-full rounded-md">
+      <div className=" h-auto  max-h-[460px] w-full rounded-md">
         <Image
           priority
           height={475}
