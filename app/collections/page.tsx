@@ -1,31 +1,29 @@
-import { appendReviewAndRating } from '@/lib/helper/helper';
-import dynamic from 'next/dynamic';
-const Grid = dynamic(() => import('components/grid'));
-const ProductGridItems = dynamic(() => import('components/layout/product-grid-items'));
-import { defaultSort, sorting } from 'lib/constants';
-import { getProducts } from 'lib/shopify';
-import { Suspense } from 'react';
-import Loading from './loading';
+// import { appendReviewAndRating } from '@/lib/helper/helper';
+// import dynamic from 'next/dynamic';
+// const Grid = dynamic(() => import('components/grid'));
+// const ProductGridItems = dynamic(() => import('components/layout/product-grid-items'));
+// import { defaultSort, sorting } from 'lib/constants';
+// import { getProducts } from 'lib/shopify';
+// import { Suspense } from 'react';
+// import Loading from './loading';
 
 export const metadata = {
   title: 'Search',
   description: 'Search for products in the store.'
 };
 
-export default async function SearchPage({
-  searchParams
-}: {
+export default async function SearchPage({}: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const { sort, q: searchValue } = searchParams as { [key: string]: string };
-  const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
+  // const { sort, q: searchValue } = searchParams as { [key: string]: string };
+  // const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
 
-  const _products = await getProducts({ sortKey, reverse, query: searchValue });
-  const products = await appendReviewAndRating(_products);
-  const resultsText = products.length > 1 ? 'results' : 'result';
+  // const _products = await getProducts({ sortKey, reverse, query: searchValue });
+  // const products = await appendReviewAndRating(_products);
+  // const resultsText = products.length > 1 ? 'results' : 'result';
   return (
     <div className="rounded-md bg-white ">
-      {searchValue ? (
+      {/* {searchValue ? (
         <p className="mx-2 pt-2 text-base md:mx-4 ">
           {products.length === 0
             ? 'There are no products that match'
@@ -41,7 +39,7 @@ export default async function SearchPage({
             </Grid>
           </Suspense>
         </div>
-      ) : null}
+      ) : null} */}
     </div>
   );
 }
