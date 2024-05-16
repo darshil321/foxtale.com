@@ -45,9 +45,7 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
             const productDescription = product?.metafields?.find(
               (item: any) => item?.key === 'hp_excerpt'
             );
-            const isInCart = cart?.lines.some(
-              (cartItem: any) => cartItem.merchandise.id === product.id
-            );
+
             console.log('itemdff', product);
             return (
               <div key={index} className="embla_cart__slide ">
@@ -80,11 +78,10 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
 
                   <div className="flex flex-col items-center justify-center">
                     <button
-                      disabled={isInCart}
                       onClick={() => onClick({ product, variantId })}
                       className="bg-black px-4 py-1 text-white"
                     >
-                      {isInCart ? 'Added' : 'Add'}
+                      Add
                     </button>
                   </div>
                 </div>
