@@ -7,7 +7,6 @@ import { EmblaOptionsType } from 'embla-carousel';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { cartActions } from '@/store/actions/cart.action';
 import { v4 as uuidv4 } from 'uuid';
-import { getDefaultVariant } from '@/lib/helper/helper';
 
 type PropType = {
   slides: any[] | undefined;
@@ -20,13 +19,10 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
   const [emblaRef] = useEmblaCarousel(options);
   const dispatch = useAppDispatch();
   const cart = useAppSelector((state) => state.cart.cart);
-
+  console.log('cartfdf', cart);
   const onClick = (item: any) => {
-    const isInCart = cart?.lines.some(
-      (cartItem: any) =>
-        getDefaultVariant(cartItem.merchandise.product) ===
-        getDefaultVariant(item.product, item.variantId)
-    );
+    const isInCart = cart?.lines.some((cartItem: any) => cartItem.merchandise.id === item.id);
+    console.log(isInCart);
 
     if (!isInCart) {
       dispatch(
@@ -49,10 +45,10 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
             const productDescription = product?.metafields?.find(
               (item: any) => item?.key === 'hp_excerpt'
             );
-            const isInCart = cart?.lines?.some(
-              (cartItem: any) => cartItem.selectedVariantId === variantId
+            const isInCart = cart?.lines.some(
+              (cartItem: any) => cartItem.merchandise.id === product.id
             );
-
+            console.log('itemdff', product);
             return (
               <div key={index} className="embla_cart__slide ">
                 <div className=" mr-2 flex flex-row justify-between gap-2 rounded-sm border p-2 ">
