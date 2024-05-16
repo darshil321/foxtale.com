@@ -35,7 +35,6 @@ export default function CartModal() {
   const { loading } = useAppSelector((state) => state.cart);
   const RecommendedProducts = useAppSelector((state) => state.cart.recommendedProducts);
 
-  console.log('carts', carts);
   const { adjustCart } = useCoupon();
 
   const data = getCartData(carts);
@@ -66,7 +65,6 @@ export default function CartModal() {
 
     adjustCart(cart);
   }
-  console.log('carts', carts);
 
   useEffect(() => {
     // if (Array.isArray(carts) && carts.length > 0 && carts[0].merchandise) {
@@ -249,7 +247,6 @@ export default function CartModal() {
                           />
                         </div>
                       )}
-                    {console.log('giftFreeProducts', giftFreeProducts)}
                     {giftFreeProducts && giftFreeProducts?.length > 0 && (
                       <div className="mt-4 max-h-60 w-full rounded-md border border-white bg-white p-2 shadow-sm">
                         <div className="mb-3 font-medium ">Gift Products</div>

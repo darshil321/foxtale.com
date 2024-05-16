@@ -87,7 +87,6 @@ export const cartSlice = createSlice({
     removeCart: (state, action) => {
       const cart = current(state.cart);
       const lineIds = action.payload.lineIds;
-      console.log('lineIds', lineIds);
 
       state.cart = {
         ...cart,

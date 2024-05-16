@@ -60,7 +60,7 @@ function SubmitButton({
       const cartItem = getCartItem(tempId, product, variant);
       cartLines = [...productArray, cartItem];
     }
-    console.log('@', cart);
+
     if (!cart || cart?.lines) {
       return { lines: cartLines, totalQuantity: 1 };
     } else {

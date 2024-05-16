@@ -114,7 +114,6 @@ export const getApplicableMagicLink = ({
 
   const { fields } = coupon;
 
-  console.log('coupon', coupon);
   //check if applicable collection
   let applicableProducts = [] as any;
   if (fields.applicable_collection) {

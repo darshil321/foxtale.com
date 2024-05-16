@@ -70,8 +70,6 @@ export function GokwikButton(passedData) {
         });
       });
     } else {
-      console.log('passedData', passedData);
-
       const items = cart?.lines.map((item) => {
         return {
           merchandiseId: item.merchandise.id,
@@ -79,8 +77,6 @@ export function GokwikButton(passedData) {
         };
       });
       addItems(items).then((data) => {
-        console.log('dataadd', data);
-
         triggerGokwikCheckout(data);
       });
 
@@ -166,8 +162,6 @@ export function GokwikButton(passedData) {
   // };
 
   const triggerGokwikCheckout = async (cart?) => {
-    console.log('cartss', cart);
-
     if (cart) {
       window.merchantInfo.cart = cart;
       buyNowRun = true;

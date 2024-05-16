@@ -22,7 +22,6 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
   const cart = useAppSelector((state) => state.cart.cart);
 
   const onClick = (item: any) => {
-    console.log('item', item);
     const isInCart = cart?.lines.some(
       (cartItem: any) =>
         getDefaultVariant(cartItem.merchandise.product) ===
