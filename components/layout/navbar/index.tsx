@@ -21,7 +21,7 @@ export default async function Navbar() {
         </div> */}
         <div className="flex ">
           <Link
-            href="/products/all"
+            href="/collections/shop-1"
             className="ml-2 mr-2 flex h-[32px] w-[95px] items-center  justify-center md:h-full md:w-auto lg:mr-6"
           >
             <Image

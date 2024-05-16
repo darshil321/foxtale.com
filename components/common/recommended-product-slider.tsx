@@ -59,7 +59,7 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
                       width={80}
                       height={80}
                       alt={product?.images[0]?.altText || product?.title}
-                      src={product?.images[0]?.url || '/Images/default.png'}
+                      src={product?.images[0]?.url}
                       quality={80}
                     />
                     <div
