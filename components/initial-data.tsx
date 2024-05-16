@@ -30,6 +30,8 @@ const InitialData: React.FC<Props> = () => {
     const freebieCoupons = results[1]?.status === 'fulfilled' ? results[1].value : null;
     const magicLinks = results[2]?.status === 'fulfilled' ? results[2].value : null;
 
+    console.log('results', results);
+
     if (freebieCoupons) dispatch(setFreebieCoupons(freebieCoupons));
     if (giftsCoupon) dispatch(setGiftCoupons(giftsCoupon));
     if (magicLinks) dispatch(setMagicLinkCoupons(magicLinks));

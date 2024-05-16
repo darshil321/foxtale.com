@@ -18,8 +18,8 @@ export async function createCartIfNotExists() {
   }
 }
 
-export async function addItem(selectedVariantId: string) {
-  let cartId = cookies().get('cartId')?.value || null;
+export async function addItem(selectedVariantId: string, cartID?: string) {
+  let cartId = !cartID ? cookies().get('cartId')?.value : cartID;
   let cart;
   console.log('selectedVariantId', selectedVariantId);
 

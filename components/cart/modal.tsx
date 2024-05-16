@@ -195,14 +195,16 @@ export default function CartModal() {
                                           Number(item?.cost?.amountPerQuantity?.amount)}
                                       </span>
                                     </div> */}
-                                    <Price
-                                      className="flex justify-end space-y-2 text-right text-sm"
-                                      amount={(
-                                        item?.quantity *
-                                        Number(item?.cost?.amountPerQuantity?.amount)
-                                      ).toString()}
-                                      currencyCode={item?.cost?.totalAmount?.currencyCode}
-                                    />
+                                    {Number(item?.cost?.amountPerQuantity?.amount) != 0 && (
+                                      <Price
+                                        className="flex justify-end space-y-2 text-right text-sm"
+                                        amount={(
+                                          item?.quantity *
+                                          Number(item?.cost?.amountPerQuantity?.amount)
+                                        ).toString()}
+                                        currencyCode={item?.cost?.totalAmount?.currencyCode}
+                                      />
+                                    )}
                                   </div>
                                 </div>
                               </Link>

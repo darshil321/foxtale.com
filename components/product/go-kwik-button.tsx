@@ -65,11 +65,13 @@ export function GokwikButton(passedData) {
   const triggerBuyNow = (passedData: { quantity: number; variantId: string; title: string }) => {
     if (passedData.title === 'Buy Now') {
       createCart().then((data) => {
-        addItem(null, passedData.variantId, data.id).then((data) => {
+        addItem(passedData.variantId, data.id).then((data) => {
           triggerGokwikCheckout(data);
         });
       });
     } else {
+      console.log('passedData', passedData);
+
       const items = cart?.lines.map((item) => {
         return {
           merchandiseId: item.merchandise.id,
@@ -77,6 +79,8 @@ export function GokwikButton(passedData) {
         };
       });
       addItems(items).then((data) => {
+        console.log('dataadd', data);
+
         triggerGokwikCheckout(data);
       });
 
@@ -162,6 +166,8 @@ export function GokwikButton(passedData) {
   // };
 
   const triggerGokwikCheckout = async (cart?) => {
+    console.log('cartss', cart);
+
     if (cart) {
       window.merchantInfo.cart = cart;
       buyNowRun = true;
