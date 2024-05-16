@@ -14,7 +14,7 @@ interface Props {
   collections?: any;
 }
 
-const InitialData: React.FC<Props> = async () => {
+const InitialData: React.FC<Props> = () => {
   const products = useAppSelector((state) => state.products.products) || [];
   const dispatch = useAppDispatch();
 
@@ -29,6 +29,8 @@ const InitialData: React.FC<Props> = async () => {
     const giftsCoupon = results[0]?.status === 'fulfilled' ? results[0].value : null;
     const freebieCoupons = results[1]?.status === 'fulfilled' ? results[1].value : null;
     const magicLinks = results[2]?.status === 'fulfilled' ? results[2].value : null;
+
+    console.log('results', results);
 
     if (freebieCoupons) dispatch(setFreebieCoupons(freebieCoupons));
     if (giftsCoupon) dispatch(setGiftCoupons(giftsCoupon));
