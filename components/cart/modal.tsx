@@ -148,7 +148,7 @@ export default function CartModal() {
                       );
 
                       return (
-                        <li key={i} className="flex w-full flex-col bg-white ">
+                        <li key={i} className="flex w-full flex-col rounded-md  bg-white p-1">
                           <div className="relative flex w-full flex-row justify-between rounded-sm px-1 py-1 ">
                             <div className="absolute z-40 -mt-2 ml-[55px]">
                               <DeleteItemButton item={item} removeIcon={false} />

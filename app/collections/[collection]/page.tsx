@@ -13,7 +13,7 @@ const CollectionProductsContainer = dynamic(
 export const generateStaticParams = async () => {
   return [
     {
-      collection: 'all'
+      collection: 'shop-1'
     }
   ];
 };

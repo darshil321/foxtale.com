@@ -22,7 +22,7 @@ export default async function Navbar() {
         <div className="flex ">
           <Link
             href="/products/all"
-            className="mr-2 flex h-[32px] w-[95px] items-center  justify-center md:h-full md:w-auto lg:mr-6"
+            className="ml-2 mr-2 flex h-[32px] w-[95px] items-center  justify-center md:h-full md:w-auto lg:mr-6"
           >
             <Image
               src={'/foxtalelogo.avif'}

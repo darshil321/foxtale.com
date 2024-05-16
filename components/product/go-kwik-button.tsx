@@ -189,13 +189,16 @@ export function GokwikButton(passedData) {
         <button
           disabled={loading}
           aria-disabled={loading}
-          className={`relative flex items-center justify-center border border-black  bg-black px-6 py-2 text-sm font-normal uppercase tracking-wide  text-white  hover:text-purple-400 md:flex-none md:px-12 md:text-sm ${loading ? 'cursor-not-allowed' : ''}`}
+          className={`relative flex items-center justify-center border border-black  bg-black px-6 py-2 text-sm font-normal uppercase tracking-wide  text-white  hover:text-purple-400 md:flex-none md:px-12 md:text-sm ${loading ? 'cursor' : ''}`}
           onClick={(event) => {
             event.preventDefault();
             passedData.buyNowButton ? triggerBuyNow(passedData) : triggerGokwikCheckout();
           }}
         >
           {passedData.buyNowButton ? passedData.title : 'Pay via UPI/COD'}
+          {true && (
+            <div className="ml-2 h-4 w-4 animate-spin rounded-full border-b-2 border-t-2 border-white md:h-5 md:w-5"></div>
+          )}
         </button>
       )}
     </>

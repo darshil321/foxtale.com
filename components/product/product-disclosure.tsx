@@ -46,8 +46,8 @@ export default function ProductDisclosure({ product }: { product: Product }) {
   return (
     <>
       {disclosureItems && disclosureItems?.length ? (
-        <div className="w-full px-0 py-3 md:px-0 md:py-10">
-          <h2 className="ml-4 text-2xl font-semibold">What makes this unique?</h2>
+        <div className="w-full px-0 py-4 md:px-0 md:py-10">
+          <h2 className="ml-4 text-2xl font-medium leading-7 ">What makes this unique?</h2>
           <div className="w-full pt-2">
             <div className="mx-auto w-full gap-4 space-y-4">
               {disclosureItems?.map((item, index) => (
@@ -66,7 +66,7 @@ export default function ProductDisclosure({ product }: { product: Product }) {
                             className="h-24 w-24 object-cover"
                           />
                           <div className="flex w-full items-center justify-between px-6">
-                            <span className="h-full text-sm font-semibold md:text-lg">
+                            <span className="h-full text-start text-sm font-semibold md:text-lg">
                               {item.title}
                             </span>
                             <ChevronUpIcon
