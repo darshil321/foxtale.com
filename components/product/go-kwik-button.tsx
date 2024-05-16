@@ -194,7 +194,7 @@ export function GokwikButton(passedData) {
           }}
         >
           {passedData.buyNowButton ? passedData.title : 'Pay via UPI/COD'}
-          {true && (
+          {loading && (
             <div className="ml-2 h-4 w-4 animate-spin rounded-full border-b-2 border-t-2 border-white md:h-5 md:w-5"></div>
           )}
         </button>
