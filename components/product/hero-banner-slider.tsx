@@ -7,8 +7,8 @@ const HeroBannerSlider = () => {
       <div className=" h-auto  max-h-[460px] w-full rounded-md">
         <Image
           priority
-          height={575}
-          width={470}
+          height={475}
+          width={570}
           objectFit="cover"
           className="hidden h-auto w-full rounded-md md:block"
           src={`https://foxtale.in/cdn/shop/files/DEKSTOP.jpg?v=1715167462`}
@@ -17,11 +17,11 @@ const HeroBannerSlider = () => {
         />
         <Image
           priority
-          height={240}
+          height={340}
           width={360}
           objectFit="cover"
           className="block h-full w-full rounded-md md:hidden"
-          src={`https://foxtale.in/cdn/shop/files/DEKSTOP.jpg?v=1715167462`}
+          src={`https://foxtale.in/cdn/shop/files/MOBILE_35.jpg?v=1715167461`}
           alt="Your alt text"
         />
       </div>

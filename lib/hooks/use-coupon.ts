@@ -79,6 +79,12 @@ function useCoupon() {
       giftProducts: []
     };
     const { freebieCoupon, giftCoupon, magicLinkCoupon } = getFreeProductsByCoupon(cart);
+    console.log(
+      'freebieCoupon, giftCoupon, magicLinkCoupon',
+      freebieCoupon,
+      giftCoupon,
+      magicLinkCoupon
+    );
 
     if (!freebieCoupon && !giftCoupon && !magicLinkCoupon)
       return { ...res, cartToBeUpdate: getCartWithoutFreeProduct(cart) };
