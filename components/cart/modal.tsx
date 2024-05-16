@@ -180,7 +180,7 @@ export default function CartModal() {
                                       {item.merchandise.product.title?.length > 20 && '...'}
                                     </span>
                                     {Number(item?.cost?.amountPerQuantity?.amount) === 0 && (
-                                      <div className="w-max rounded-md bg-[#86DC61] px-2">free</div>
+                                      <div className="w-max rounded-md bg-[#008000] px-2">free</div>
                                     )}
                                     {item.merchandise.title !== DEFAULT_OPTION ? (
                                       <p className="text-xs text-neutral-500 ">
