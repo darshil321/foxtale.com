@@ -7,6 +7,7 @@ import { EmblaOptionsType } from 'embla-carousel';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { cartActions } from '@/store/actions/cart.action';
 import { v4 as uuidv4 } from 'uuid';
+import { isGiftProductAvailableInCart } from '@/lib/helper/helper';
 
 type PropType = {
   slides: any[] | undefined;
@@ -35,6 +36,9 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
       );
     }
   };
+  const giftVariantIds = slides?.map((item: any) => item.variantId) ?? [];
+  const alreadyAdded = isGiftProductAvailableInCart(cart, giftVariantIds);
+  console.log('alreadyAdded', alreadyAdded);
 
   if (!slides) return <></>;
   return (
@@ -46,7 +50,6 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
               (item: any) => item?.key === 'hp_excerpt'
             );
 
-            console.log('itemdff', product);
             return (
               <div key={index} className="embla_cart__slide ">
                 <div className=" mr-2 flex flex-row justify-between gap-2 rounded-sm border p-2 ">
@@ -78,10 +81,11 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
 
                   <div className="flex flex-col items-center justify-center">
                     <button
+                      disabled={alreadyAdded && type === 'gift'}
                       onClick={() => onClick({ product, variantId })}
-                      className="bg-black px-4 py-1 text-white"
+                      className={`bg-black px-4 py-1 text-white ${alreadyAdded && type === 'gift' ? 'cursor-not-allowed' : ''}`}
                     >
-                      Add
+                      {'Add'}
                     </button>
                   </div>
                 </div>

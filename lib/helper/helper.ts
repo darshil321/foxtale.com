@@ -158,6 +158,11 @@ export const getDefaultVariant = (product: any, variantId?: string) => {
   }
 };
 
+export const isGiftProductAvailableInCart = (cart: Cart, variantIds: string[]) => {
+  const variantIdsInCart = cart.lines?.map((item: CartItem) => item.merchandise.id);
+  return variantIds.some((variantId) => variantIdsInCart?.includes(variantId)) ?? false;
+};
+
 export const findClosestCoupon = (
   metaObjects: MetaObject[],
   updatedCart: Cart | null

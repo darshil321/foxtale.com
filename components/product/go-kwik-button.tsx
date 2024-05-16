@@ -70,8 +70,6 @@ export function GokwikButton(passedData) {
         });
       });
     } else {
-      console.log('passedData', passedData);
-
       const items = cart?.lines.map((item) => {
         return {
           merchandiseId: item.merchandise.id,
