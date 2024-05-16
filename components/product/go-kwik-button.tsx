@@ -5,6 +5,7 @@ import { gokwikConfig } from '../../lib/shopify/gokwik.config';
 import { createCart, getCart } from '@/lib/shopify';
 import { addItem, addItems } from '../cart/actions';
 import { useAppSelector } from '@/store/hooks';
+import { trackEvent } from 'utils/mixpanel';
 
 const integrationUrls = {
   local: 'http://localhost:8080/integration.js',
@@ -192,6 +193,7 @@ export function GokwikButton(passedData) {
           className={`relative flex items-center justify-center border border-black  bg-black px-6 py-2 text-sm font-normal uppercase tracking-wide  text-white  hover:text-purple-400 md:flex-none md:px-12 md:text-sm ${loading ? 'cursor-not-allowed' : ''}`}
           onClick={(event) => {
             event.preventDefault();
+            trackEvent('Checkout Started!');
             passedData.buyNowButton ? triggerBuyNow(passedData) : triggerGokwikCheckout();
           }}
         >
