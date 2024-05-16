@@ -35,7 +35,6 @@ export default function CartModal() {
   const { loading } = useAppSelector((state) => state.cart);
   const RecommendedProducts = useAppSelector((state) => state.cart.recommendedProducts);
 
-  console.log('carts', carts);
   const { adjustCart } = useCoupon();
 
   const data = getCartData(carts);
@@ -66,7 +65,6 @@ export default function CartModal() {
 
     adjustCart(cart);
   }
-  console.log('carts', carts);
 
   useEffect(() => {
     // if (Array.isArray(carts) && carts.length > 0 && carts[0].merchandise) {
@@ -150,7 +148,7 @@ export default function CartModal() {
                       );
 
                       return (
-                        <li key={i} className="flex w-full flex-col bg-white ">
+                        <li key={i} className="flex w-full flex-col rounded-md  bg-white p-1">
                           <div className="relative flex w-full flex-row justify-between rounded-sm px-1 py-1 ">
                             <div className="absolute z-40 -mt-2 ml-[55px]">
                               <DeleteItemButton item={item} removeIcon={false} />
@@ -181,6 +179,9 @@ export default function CartModal() {
                                       {item.merchandise.product.title.substring(0, 20)}
                                       {item.merchandise.product.title?.length > 20 && '...'}
                                     </span>
+                                    {Number(item?.cost?.amountPerQuantity?.amount) === 0 && (
+                                      <div className="w-max rounded-md bg-[#86DC61] px-2">free</div>
+                                    )}
                                     {item.merchandise.title !== DEFAULT_OPTION ? (
                                       <p className="text-xs text-neutral-500 ">
                                         {item.merchandise.title}
@@ -194,43 +195,47 @@ export default function CartModal() {
                                           Number(item?.cost?.amountPerQuantity?.amount)}
                                       </span>
                                     </div> */}
-                                    <Price
-                                      className="flex justify-end space-y-2 text-right text-sm"
-                                      amount={(
-                                        item?.quantity *
-                                        Number(item?.cost?.amountPerQuantity?.amount)
-                                      ).toString()}
-                                      currencyCode={item?.cost?.totalAmount?.currencyCode}
-                                    />
+                                    {Number(item?.cost?.amountPerQuantity?.amount) != 0 && (
+                                      <Price
+                                        className="flex justify-end space-y-2 text-right text-sm"
+                                        amount={(
+                                          item?.quantity *
+                                          Number(item?.cost?.amountPerQuantity?.amount)
+                                        ).toString()}
+                                        currencyCode={item?.cost?.totalAmount?.currencyCode}
+                                      />
+                                    )}
                                   </div>
                                 </div>
                               </Link>
                               <div className="flex h-full flex-col items-center justify-between">
-                                <div className="ml-auto flex h-6 w-full flex-row items-center border border-neutral-200 ">
-                                  {item.quantity > 1 && (
+                                {Number(item?.cost?.amountPerQuantity?.amount) !== 0 && (
+                                  <div className="ml-auto flex h-6 w-full flex-row items-center border border-neutral-200 ">
+                                    {item.quantity > 1 && (
+                                      <EditItemQuantityButton
+                                        onClick={() => {
+                                          increaseItemQuantity({ item, type: 'minus' });
+                                        }}
+                                        type="minus"
+                                      />
+                                    )}
+                                    {item.quantity === 1 && (
+                                      <EditItemQuantityButton
+                                        onClick={() => {
+                                          increaseItemQuantity({ item, type: 'minus' });
+                                        }}
+                                        type="trash"
+                                      />
+                                    )}
+                                    <p className="w-6 text-center">
+                                      <span className="w-full text-sm">{item.quantity}</span>
+                                    </p>
                                     <EditItemQuantityButton
-                                      onClick={() => {
-                                        increaseItemQuantity({ item, type: 'minus' });
-                                      }}
-                                      type="minus"
+                                      onClick={() => increaseItemQuantity({ item, type: 'plus' })}
+                                      type="plus"
                                     />
-                                  )}
-                                  {item.quantity === 1 && (
-                                    <EditItemQuantityButton
-                                      onClick={() => {
-                                        increaseItemQuantity({ item, type: 'minus' });
-                                      }}
-                                      type="trash"
-                                    />
-                                  )}
-                                  <p className="w-6 text-center">
-                                    <span className="w-full text-sm">{item.quantity}</span>
-                                  </p>
-                                  <EditItemQuantityButton
-                                    onClick={() => increaseItemQuantity({ item, type: 'plus' })}
-                                    type="plus"
-                                  />
-                                </div>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -249,7 +254,6 @@ export default function CartModal() {
                           />
                         </div>
                       )}
-                    {console.log('giftFreeProducts', giftFreeProducts)}
                     {giftFreeProducts && giftFreeProducts?.length > 0 && (
                       <div className="mt-4 max-h-60 w-full rounded-md border border-white bg-white p-2 shadow-sm">
                         <div className="mb-3 font-medium ">Gift Products</div>

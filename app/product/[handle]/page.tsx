@@ -113,9 +113,11 @@ export default async function ProductPage({
             <div className="mb-2 flex items-end gap-2 md:gap-3">
               <h1 className=" text-2xl font-medium leading-7">
                 {product.title}{' '}
-                <span className="text-center text-xs text-[#bcbec0]">
-                  Size - {product?.variants[0]?.weight} ml
-                </span>
+                {product?.variants[0]?.weight === 0 ? null : (
+                  <span className="text-center text-xs text-[#bcbec0]">
+                    Size - {product?.variants[0]?.weight} ml
+                  </span>
+                )}
               </h1>
             </div>
             <div className="text-[#6d6e71]" dangerouslySetInnerHTML={{ __html: decodedHtml }} />

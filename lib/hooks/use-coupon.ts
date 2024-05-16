@@ -79,6 +79,12 @@ function useCoupon() {
       giftProducts: []
     };
     const { freebieCoupon, giftCoupon, magicLinkCoupon } = getFreeProductsByCoupon(cart);
+    console.log(
+      'freebieCoupon, giftCoupon, magicLinkCoupon',
+      freebieCoupon,
+      giftCoupon,
+      magicLinkCoupon
+    );
 
     if (!freebieCoupon && !giftCoupon && !magicLinkCoupon)
       return { ...res, cartToBeUpdate: getCartWithoutFreeProduct(cart) };
@@ -111,14 +117,14 @@ function useCoupon() {
             variantId: product
           }));
 
-          res.giftProducts = giftProducts.filter(Boolean);
+          res.giftProducts = giftProducts.filter((item: any) => Boolean(item.product));
         }
       }
     }
     return res;
   };
 
-  const debouncedUpdateItemQuantity = (updatedCart, itemsToBeAdd) => {
+  const debouncedUpdateItemQuantity = (updatedCart: any, itemsToBeAdd: any) => {
     dispatch(cartActions.updateCart(updatedCart));
     if (itemsToBeAdd.length)
       itemsToBeAdd.forEach((item: any) => {

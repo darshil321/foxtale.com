@@ -28,7 +28,7 @@ const ResultsSection = ({ product }: Props) => {
 
   return (
     <div className="w-full px-4 py-3 md:px-0  md:py-10">
-      <h2 className=" mb-3 text-2xl  font-semibold">Real People, Verified Results</h2>
+      <h2 className=" mb-3 text-2xl font-medium leading-7">Real People, Verified Results</h2>
       <div className="flex  flex-col gap-4 rounded-lg bg-grey lg:flex-row lg:gap-0 ">
         <div className="h-full w-full basis-full lg:basis-3/6">
           <Image
@@ -44,7 +44,7 @@ const ResultsSection = ({ product }: Props) => {
             height={370}
           />
         </div>
-        <div className="basis-full px-5 pb-4 pt-5 lg:basis-3/6">
+        <div className="basis-full px-2 pb-4 pt-5 lg:basis-3/6">
           <ResultsTabs />
         </div>
       </div>

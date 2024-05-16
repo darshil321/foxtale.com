@@ -4,9 +4,6 @@ import dynamic from 'next/dynamic';
 const HeroBannerSlider = dynamic(() => import('@/components/product/hero-banner-slider'));
 const Collections = dynamic(() => import('@/components/layout/search/collections'));
 
-// import FilterList from 'components/layout/search/filter';
-// import { sorting } from 'lib/constants';
-
 export default async function SearchLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-[#E4E4E4]">
@@ -18,9 +15,6 @@ export default async function SearchLayout({ children }: { children: React.React
           <Collections />
         </div>
         <div className="h-full min-h-max w-full ">{children}</div>
-        {/* <div className="order-none flex-none md:order-last">
-          <FilterList list={sorting} title="Sort by" />
-        </div> */}
       </div>
       <Footer />
     </div>

@@ -32,12 +32,11 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
           src={item?.image?.url || '/Images/defualt.png'}
           className=" flex min-h-[80px]  min-w-[80px] items-center justify-center  rounded-full md:min-h-[100px] md:min-w-[100px]"
           alt={(item?.title && item?.title + Math.random()) || 'Image'}
-          width={100}
+          width={70}
           loading="lazy"
           objectFit="cover"
           quality={75}
-          sizes="(max-width: 640px) 80px, 80px"
-          height={100}
+          height={70}
         />
         <button className={`line-clamp-1 text-ellipsis text-wrap text-center text-xs md:text-sm `}>
           {item.title}

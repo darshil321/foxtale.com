@@ -1,6 +1,6 @@
 // @ts-nocheck
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { gokwikConfig } from '../../lib/shopify/gokwik.config';
 import { createCart, getCart } from '@/lib/shopify';
 import { addItem, addItems } from '../cart/actions';
@@ -29,8 +29,8 @@ const integrationUrls = {
 //   'qa-rto': 'https://qa-hits.gokwik.co/api/v1/events',
 //   qaone: 'https://qa-hits.gokwik.co/api/v1/events'
 // };
-
 export function GokwikButton(passedData) {
+  const [loading, setLoading] = useState(false);
   // const cartId = useAppSelector((state) => state.cart.cart?.id);
   const cart = useAppSelector((state) => state.cart.cart);
 
@@ -63,15 +63,15 @@ export function GokwikButton(passedData) {
   }, [buyNowRun]);
 
   const triggerBuyNow = (passedData: { quantity: number; variantId: string; title: string }) => {
+    setLoading(true);
     if (passedData.title === 'Buy Now') {
       createCart().then((data) => {
-        addItem(null, passedData.variantId, data.id).then((data) => {
+        addItem(passedData.variantId, data.id).then((data) => {
+          setLoading(false);
           triggerGokwikCheckout(data);
         });
       });
     } else {
-      console.log('passedData', passedData);
-
       const items = cart?.lines.map((item) => {
         return {
           merchandiseId: item.merchandise.id,
@@ -79,8 +79,7 @@ export function GokwikButton(passedData) {
         };
       });
       addItems(items).then((data) => {
-        console.log('dataadd', data);
-
+        setLoading(false);
         triggerGokwikCheckout(data);
       });
 
@@ -181,7 +180,6 @@ export function GokwikButton(passedData) {
 
     window.gokwikSdk.initCheckout(window.merchantInfo);
   };
-  const loading = useAppSelector((state) => state.cart.loading);
 
   return (
     <>
@@ -196,6 +194,9 @@ export function GokwikButton(passedData) {
           }}
         >
           {passedData.buyNowButton ? passedData.title : 'Pay via UPI/COD'}
+          {loading && (
+            <div className="ml-2 h-4 w-4 animate-spin rounded-full border-b-2 border-t-2 border-white md:h-5 md:w-5"></div>
+          )}
         </button>
       )}
     </>

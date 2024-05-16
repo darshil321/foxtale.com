@@ -1,13 +1,13 @@
 'use client';
-// @ts-ignore
 
 import React from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 import { EmblaOptionsType } from 'embla-carousel';
-import { useAppDispatch } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { cartActions } from '@/store/actions/cart.action';
 import { v4 as uuidv4 } from 'uuid';
+import { isGiftProductAvailableInCart } from '@/lib/helper/helper';
 
 type PropType = {
   slides: any[] | undefined;
@@ -19,17 +19,26 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
   const { slides, options, type } = props;
   const [emblaRef] = useEmblaCarousel(options);
   const dispatch = useAppDispatch();
-
+  const cart = useAppSelector((state) => state.cart.cart);
+  console.log('cartfdf', cart);
   const onClick = (item: any) => {
-    dispatch(
-      cartActions.addToCart({
-        selectedVariantId: item.variantId,
-        product: item.product,
-        tempId: uuidv4(),
-        isLoading: true
-      })
-    );
+    const isInCart = cart?.lines.some((cartItem: any) => cartItem.merchandise.id === item.id);
+    console.log(isInCart);
+
+    if (!isInCart) {
+      dispatch(
+        cartActions.addToCart({
+          selectedVariantId: item.variantId,
+          product: item.product,
+          tempId: uuidv4(),
+          isLoading: true
+        })
+      );
+    }
   };
+  const giftVariantIds = slides?.map((item: any) => item.variantId) ?? [];
+  const alreadyAdded = isGiftProductAvailableInCart(cart, giftVariantIds);
+  console.log('alreadyAdded', alreadyAdded);
 
   if (!slides) return <></>;
   return (
@@ -50,7 +59,7 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
                       width={80}
                       height={80}
                       alt={product?.images[0]?.altText || product?.title}
-                      src={product?.images[0]?.url || '/Images/default.png'}
+                      src={product?.images[0]?.url}
                       quality={80}
                     />
                     <div
@@ -65,17 +74,18 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
                       </p>
 
                       {type === 'product' && (
-                        <p className="text-sm">${product?.variants[0]?.price?.amount}</p>
+                        <p className="text-sm">₹{product?.variants[0]?.price?.amount}</p>
                       )}
                     </div>
                   </div>
 
                   <div className="flex flex-col items-center justify-center">
                     <button
+                      disabled={alreadyAdded && type === 'gift'}
                       onClick={() => onClick({ product, variantId })}
-                      className="bg-black px-4 py-1 text-white"
+                      className={`bg-black px-4 py-1 text-white ${alreadyAdded && type === 'gift' ? 'cursor-not-allowed' : ''}`}
                     >
-                      Add
+                      {'Add'}
                     </button>
                   </div>
                 </div>

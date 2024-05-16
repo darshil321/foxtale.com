@@ -33,7 +33,7 @@ export default function SelectCategory({
                 <Listbox.Option
                   key={personIdx}
                   className={({ active }) =>
-                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                    `relative cursor-default select-none px-4 py-2 ${
                       active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
                     }`
                   }
@@ -42,7 +42,7 @@ export default function SelectCategory({
                   {({ selectedCategory }: any) => (
                     <>
                       <span
-                        className={`block truncate ${selectedCategory ? 'font-medium' : 'font-normal'}`}
+                        className={`block truncate text-sm md:text-base ${selectedCategory ? 'font-medium' : 'font-normal'}`}
                       >
                         {person.name}
                       </span>

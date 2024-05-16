@@ -61,14 +61,15 @@ const OfferSection: React.FC = () => {
                   fill="black"
                 ></path>
               </svg>
-              <span
-                className="cursor-pointer text-right text-xs text-primary"
-                onClick={() => copyToClipboard(offer.code)}
-              >
-                CODE: {offer.code}
-              </span>
-              {copiedCodes[offer.code] && (
+              {copiedCodes[offer.code] ? (
                 <span className="text-sm text-green-500">Code Copied</span>
+              ) : (
+                <span
+                  className="cursor-pointer text-right text-xs text-primary"
+                  onClick={() => copyToClipboard(offer.code)}
+                >
+                  CODE: {offer.code}
+                </span>
               )}
             </div>
           </React.Fragment>

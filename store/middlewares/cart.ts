@@ -16,9 +16,7 @@ export function* getCartSaga(action: {
   try {
     const { cartId } = action.payload;
 
-    console.log('setting cart', action);
     const data = yield call({ fn: getCart, context: null }, cartId);
-    console.log('getcart data setting', data);
 
     yield put(cartActions.setCart(data));
   } catch (error) {
@@ -33,10 +31,8 @@ export function* getRecommendedProductsSaga(action: {
 }): Generator<any, void, any> {
   try {
     const { productId } = action.payload;
-    console.log('frgg', productId);
 
     const data = yield call({ fn: getProductRecommendations, context: null }, productId);
-    console.log('products data setting', data);
 
     const res = data && data.map((p: any) => ({ product: p, variantId: getDefaultVariant(p).id }));
 
@@ -77,6 +73,9 @@ export function* addToCartsSaga(action: {
 }): Generator<any, void, any> {
   try {
     const items = action.payload;
+    console.log('items', items);
+
+    yield put(setLoading(true));
 
     yield call({ fn: addItems, context: null }, items);
 

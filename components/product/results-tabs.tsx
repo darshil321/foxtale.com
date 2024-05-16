@@ -26,14 +26,16 @@ export default function ResultsTabs() {
   return (
     <div className="w-full px-2 sm:px-0">
       <Tab.Group>
-        <Tab.List className="flex justify-between p-1 ">
+        <Tab.List className="flex justify-between space-x-3  md:px-2">
           {Object.values(categories).map((result) => (
             <Tab
               key={result.cetegory}
               className={({ selected }) =>
                 classNames(
-                  'w-full rounded-lg py-2.5 text-lg font-medium leading-5',
-                  selected ? 'text-gray-700 underline underline-offset-2' : ' hover:text-black'
+                  'w-full py-2 text-sm font-medium leading-5 md:px-2 md:text-base',
+                  selected
+                    ? 'bg-black text-gray-200 md:bg-transparent md:text-black md:underline md:underline-offset-2 '
+                    : ' hover:text-black'
                 )
               }
             >

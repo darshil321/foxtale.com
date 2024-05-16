@@ -10,20 +10,10 @@ const CollectionProductsContainer = dynamic(
   () => import('@/components/layout/search/collection-products')
 );
 
-// export const generateStaticParams = async () => {
-//   const collections = await getCollections();
-
-//   return collections?.map((collection: any) => ({
-//     collection: collection?.handle === '' ? 'all' : collection?.handle
-//   }));
-// };
-
-// export const fetchCache = 'force-cache';
-
 export const generateStaticParams = async () => {
   return [
     {
-      collection: 'all'
+      collection: 'shop-1'
     }
   ];
 };
@@ -74,7 +64,6 @@ export default async function CategoryPage({
   );
 
   const productsByCollection = await Promise.all(promises);
-  console.log('data in server >>>>>>>>>>>>>>>', productsByCollection);
 
   return (
     <>

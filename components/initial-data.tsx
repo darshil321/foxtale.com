@@ -1,6 +1,6 @@
 'use client';
 
-import { getProducts } from '@/lib/shopify';
+import { getMetaObjects, getProducts } from '@/lib/shopify';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setFreebieCoupons, setGiftCoupons, setMagicLinkCoupons } from '@/store/slices/cart-slice';
 import { setProducts } from '@/store/slices/product-slice';
@@ -14,9 +14,28 @@ interface Props {
   collections?: any;
 }
 
-const InitialData: React.FC<Props> = ({ giftsCoupon, freebieCoupons, magicLinks }) => {
+const InitialData: React.FC<Props> = () => {
   const products = useAppSelector((state) => state.products.products) || [];
   const dispatch = useAppDispatch();
+
+  const promises = [
+    getMetaObjects('gifts'),
+    getMetaObjects('freebies'),
+    getMetaObjects('magic_link')
+  ];
+
+  const getMetaData = async () => {
+    const results = await Promise.allSettled(promises);
+    const giftsCoupon = results[0]?.status === 'fulfilled' ? results[0].value : null;
+    const freebieCoupons = results[1]?.status === 'fulfilled' ? results[1].value : null;
+    const magicLinks = results[2]?.status === 'fulfilled' ? results[2].value : null;
+
+    console.log('results', results);
+
+    if (freebieCoupons) dispatch(setFreebieCoupons(freebieCoupons));
+    if (giftsCoupon) dispatch(setGiftCoupons(giftsCoupon));
+    if (magicLinks) dispatch(setMagicLinkCoupons(magicLinks));
+  };
 
   const getProductsData = async () => {
     const res = await getProducts({});
@@ -24,10 +43,7 @@ const InitialData: React.FC<Props> = ({ giftsCoupon, freebieCoupons, magicLinks 
   };
 
   useEffect(() => {
-    if (freebieCoupons) dispatch(setFreebieCoupons(freebieCoupons));
-    if (giftsCoupon) dispatch(setGiftCoupons(giftsCoupon));
-    if (magicLinks) dispatch(setMagicLinkCoupons(magicLinks));
-
+    getMetaData();
     if (!products || !products.length) getProductsData();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
