@@ -13,7 +13,7 @@ const HeroBannerSlider = () => {
           className="hidden h-auto w-full rounded-md md:block"
           src={`https://foxtale.in/cdn/shop/files/DEKSTOP.jpg?v=1715167462`}
           alt="Your alt text"
-          quality={80}
+          quality={100}
         />
         <Image
           priority
