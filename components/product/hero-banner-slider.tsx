@@ -8,12 +8,11 @@ const HeroBannerSlider = () => {
         <Image
           priority
           height={475}
-          width={470}
+          width={770}
           objectFit="cover"
           className="hidden h-auto w-full rounded-md md:block"
           src={`https://foxtale.in/cdn/shop/files/DEKSTOP.jpg?v=1715167462`}
           alt="Your alt text"
-          quality={80}
         />
         <Image
           priority
