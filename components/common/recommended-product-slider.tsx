@@ -1,13 +1,13 @@
 'use client';
-// @ts-ignore
 
 import React from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 import { EmblaOptionsType } from 'embla-carousel';
-import { useAppDispatch } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { cartActions } from '@/store/actions/cart.action';
 import { v4 as uuidv4 } from 'uuid';
+import { getDefaultVariant } from '@/lib/helper/helper';
 
 type PropType = {
   slides: any[] | undefined;
@@ -19,16 +19,26 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
   const { slides, options, type } = props;
   const [emblaRef] = useEmblaCarousel(options);
   const dispatch = useAppDispatch();
+  const cart = useAppSelector((state) => state.cart.cart);
 
   const onClick = (item: any) => {
-    dispatch(
-      cartActions.addToCart({
-        selectedVariantId: item.variantId,
-        product: item.product,
-        tempId: uuidv4(),
-        isLoading: true
-      })
+    console.log('item', item);
+    const isInCart = cart?.lines.some(
+      (cartItem: any) =>
+        getDefaultVariant(cartItem.merchandise.product) ===
+        getDefaultVariant(item.product, item.variantId)
     );
+
+    if (!isInCart) {
+      dispatch(
+        cartActions.addToCart({
+          selectedVariantId: item.variantId,
+          product: item.product,
+          tempId: uuidv4(),
+          isLoading: true
+        })
+      );
+    }
   };
 
   if (!slides) return <></>;
@@ -39,6 +49,9 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
           {slides.map(({ product, variantId }, index) => {
             const productDescription = product?.metafields?.find(
               (item: any) => item?.key === 'hp_excerpt'
+            );
+            const isInCart = cart?.lines?.some(
+              (cartItem: any) => cartItem.selectedVariantId === variantId
             );
 
             return (
@@ -72,10 +85,11 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
 
                   <div className="flex flex-col items-center justify-center">
                     <button
+                      disabled={isInCart}
                       onClick={() => onClick({ product, variantId })}
                       className="bg-black px-4 py-1 text-white"
                     >
-                      Add
+                      {isInCart ? 'Added' : 'Add'}
                     </button>
                   </div>
                 </div>

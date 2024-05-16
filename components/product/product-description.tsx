@@ -31,7 +31,7 @@ export default function ProductDescription({
             <h1 className="mb-2 text-2xl font-medium leading-6">
               {product.title}
               {product?.variants[0]?.weight === 0 ? null : (
-                <span className="text-center text-xs text-[#bcbec0]">
+                <span className=" pl-2 text-center text-xs text-[#bcbec0]">
                   Size - {product?.variants[0]?.weight} ml
                 </span>
               )}
