@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 
 import Image from 'next/image';
-import Search, { SearchSkeleton } from './search';
+// import Search, { SearchSkeleton } from './search';
 
 export default async function Navbar() {
   const menu = await getMenu('next-js-frontend-header-menu');
@@ -47,11 +47,11 @@ export default async function Navbar() {
             </ul>
           ) : null}
         </div>
-        <div className="hidden justify-center md:flex md:w-1/3">
+        {/* <div className="hidden justify-center md:flex md:w-1/3">
           <Suspense fallback={<SearchSkeleton />}>
             <Search />
           </Suspense>
-        </div>
+        </div> */}
         <div className="flex ">
           <Suspense fallback={<OpenCart />}>
             <Cart />
