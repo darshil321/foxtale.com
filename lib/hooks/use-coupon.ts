@@ -117,7 +117,7 @@ function useCoupon() {
             variantId: product
           }));
 
-          res.giftProducts = giftProducts.filter(Boolean);
+          res.giftProducts = giftProducts.filter((item: any) => Boolean(item.product));
         }
       }
     }
