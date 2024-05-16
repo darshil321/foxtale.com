@@ -73,37 +73,33 @@ function SubmitButton({
   };
 
   return (
-    <div className="flex w-full items-center justify-center overflow-hidden rounded-b-sm bg-black p-2 md:p-4">
-      <span className=" flex self-center text-center text-[8px] font-semibold uppercase text-white md:text-xs">
-        <button
-          onClick={(e: React.FormEvent<HTMLButtonElement>) => {
-            e.preventDefault();
-            dispatch(setCartOpen(true));
-            const tempId = uuidv4();
-            dispatch(
-              cartActions.addToCart({
-                selectedVariantId: selectedVariantId,
-                product: product,
-                tempId,
-                blockReducer: true
-              })
-            );
-            dispatch(cartActions.createCart());
+    <button
+      onClick={(e: React.FormEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        dispatch(setCartOpen(true));
+        const tempId = uuidv4();
+        dispatch(
+          cartActions.addToCart({
+            selectedVariantId: selectedVariantId,
+            product: product,
+            tempId,
+            blockReducer: true
+          })
+        );
+        dispatch(cartActions.createCart());
 
-            const cart = updateCart(tempId);
+        const cart = updateCart(tempId);
 
-            adjustCart(cart);
-            dispatch(cartActions.setCart(cart));
-          }}
-          aria-label="Add to cart"
-          className={clsx(buttonClasses, {
-            'hover:opacity-90': true
-          })}
-        >
-          Add To Cart
-        </button>
-      </span>
-    </div>
+        adjustCart(cart);
+        dispatch(cartActions.setCart(cart));
+      }}
+      aria-label="Add to cart"
+      className={clsx(buttonClasses, {
+        'hover:opacity-90': true
+      })}
+    >
+      Add To Cart
+    </button>
   );
 }
 

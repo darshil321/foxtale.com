@@ -4,11 +4,9 @@ import { getMenu } from 'lib/shopify';
 import { Menu } from 'lib/shopify/types';
 import Link from 'next/link';
 import { Suspense } from 'react';
-import MobileMenu from './mobile-menu';
+
 import Image from 'next/image';
 import Search, { SearchSkeleton } from './search';
-
-// const { SITE_NAME } = process.env;
 
 export default async function Navbar() {
   const menu = await getMenu('next-js-frontend-header-menu');
@@ -16,17 +14,16 @@ export default async function Navbar() {
   return (
     <nav className="relative flex items-center justify-between border-b p-2 shadow-md md:border-none md:shadow-none lg:px-0 lg:py-6">
       <div className="flex w-full items-center justify-between">
-        <div className="block flex-none md:hidden">
+        {/* <div className="block flex-none md:hidden">
           <Suspense fallback={null}>
             <MobileMenu menu={menu} />
           </Suspense>
-        </div>
+        </div> */}
         <div className="flex ">
           <Link
-            href="/"
+            href="/products/all"
             className="mr-2 flex h-[32px] w-[95px] items-center  justify-center md:h-full md:w-auto lg:mr-6"
           >
-            {/* <LogoSquare /> */}
             <Image
               src={'/foxtalelogo.avif'}
               className="w-full"

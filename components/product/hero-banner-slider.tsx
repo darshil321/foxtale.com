@@ -8,12 +8,12 @@ const HeroBannerSlider = () => {
         <Image
           priority
           height={475}
-          width={570}
+          width={470}
           objectFit="cover"
           className="hidden h-auto w-full rounded-md md:block"
           src={`https://foxtale.in/cdn/shop/files/DEKSTOP.jpg?v=1715167462`}
           alt="Your alt text"
-          quality={100}
+          quality={80}
         />
         <Image
           priority
@@ -23,6 +23,7 @@ const HeroBannerSlider = () => {
           className="block h-full w-full rounded-md md:hidden"
           src={`https://foxtale.in/cdn/shop/files/MOBILE_35.jpg?v=1715167461`}
           alt="Your alt text"
+          quality={80}
         />
       </div>
     </div>
