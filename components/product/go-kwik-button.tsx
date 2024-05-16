@@ -1,6 +1,6 @@
 // @ts-nocheck
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { gokwikConfig } from '../../lib/shopify/gokwik.config';
 import { createCart, getCart } from '@/lib/shopify';
 import { addItem, addItems } from '../cart/actions';
@@ -29,8 +29,8 @@ const integrationUrls = {
 //   'qa-rto': 'https://qa-hits.gokwik.co/api/v1/events',
 //   qaone: 'https://qa-hits.gokwik.co/api/v1/events'
 // };
-
 export function GokwikButton(passedData) {
+  const [loading, setLoading] = useState(false);
   // const cartId = useAppSelector((state) => state.cart.cart?.id);
   const cart = useAppSelector((state) => state.cart.cart);
 
@@ -63,9 +63,11 @@ export function GokwikButton(passedData) {
   }, [buyNowRun]);
 
   const triggerBuyNow = (passedData: { quantity: number; variantId: string; title: string }) => {
+    setLoading(true);
     if (passedData.title === 'Buy Now') {
       createCart().then((data) => {
         addItem(passedData.variantId, data.id).then((data) => {
+          setLoading(false);
           triggerGokwikCheckout(data);
         });
       });
@@ -77,8 +79,7 @@ export function GokwikButton(passedData) {
         };
       });
       addItems(items).then((data) => {
-        console.log('dataadd', data);
-
+        setLoading(false);
         triggerGokwikCheckout(data);
       });
 
@@ -179,7 +180,6 @@ export function GokwikButton(passedData) {
 
     window.gokwikSdk.initCheckout(window.merchantInfo);
   };
-  const loading = useAppSelector((state) => state.cart.loading);
 
   return (
     <>
@@ -187,7 +187,7 @@ export function GokwikButton(passedData) {
         <button
           disabled={loading}
           aria-disabled={loading}
-          className={`relative flex items-center justify-center border border-black  bg-black px-6 py-2 text-sm font-normal uppercase tracking-wide  text-white  hover:text-purple-400 md:flex-none md:px-12 md:text-sm ${loading ? 'cursor' : ''}`}
+          className={`relative flex items-center justify-center border border-black  bg-black px-6 py-2 text-sm font-normal uppercase tracking-wide  text-white  hover:text-purple-400 md:flex-none md:px-12 md:text-sm ${loading ? 'cursor-not-allowed' : ''}`}
           onClick={(event) => {
             event.preventDefault();
             passedData.buyNowButton ? triggerBuyNow(passedData) : triggerGokwikCheckout();

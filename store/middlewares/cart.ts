@@ -73,6 +73,9 @@ export function* addToCartsSaga(action: {
 }): Generator<any, void, any> {
   try {
     const items = action.payload;
+    console.log('items', items);
+
+    yield put(setLoading(true));
 
     yield call({ fn: addItems, context: null }, items);
 
