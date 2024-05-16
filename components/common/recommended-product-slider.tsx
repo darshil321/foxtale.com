@@ -73,7 +73,7 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
                       </p>
 
                       {type === 'product' && (
-                        <p className="text-sm">${product?.variants[0]?.price?.amount}</p>
+                        <p className="text-sm">₹{product?.variants[0]?.price?.amount}</p>
                       )}
                     </div>
                   </div>

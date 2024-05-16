@@ -179,6 +179,9 @@ export default function CartModal() {
                                       {item.merchandise.product.title.substring(0, 20)}
                                       {item.merchandise.product.title?.length > 20 && '...'}
                                     </span>
+                                    {Number(item?.cost?.amountPerQuantity?.amount) === 0 && (
+                                      <div className="w-max rounded-md bg-[#86DC61] px-2">free</div>
+                                    )}
                                     {item.merchandise.title !== DEFAULT_OPTION ? (
                                       <p className="text-xs text-neutral-500 ">
                                         {item.merchandise.title}
@@ -204,31 +207,33 @@ export default function CartModal() {
                                 </div>
                               </Link>
                               <div className="flex h-full flex-col items-center justify-between">
-                                <div className="ml-auto flex h-6 w-full flex-row items-center border border-neutral-200 ">
-                                  {item.quantity > 1 && (
+                                {Number(item?.cost?.amountPerQuantity?.amount) !== 0 && (
+                                  <div className="ml-auto flex h-6 w-full flex-row items-center border border-neutral-200 ">
+                                    {item.quantity > 1 && (
+                                      <EditItemQuantityButton
+                                        onClick={() => {
+                                          increaseItemQuantity({ item, type: 'minus' });
+                                        }}
+                                        type="minus"
+                                      />
+                                    )}
+                                    {item.quantity === 1 && (
+                                      <EditItemQuantityButton
+                                        onClick={() => {
+                                          increaseItemQuantity({ item, type: 'minus' });
+                                        }}
+                                        type="trash"
+                                      />
+                                    )}
+                                    <p className="w-6 text-center">
+                                      <span className="w-full text-sm">{item.quantity}</span>
+                                    </p>
                                     <EditItemQuantityButton
-                                      onClick={() => {
-                                        increaseItemQuantity({ item, type: 'minus' });
-                                      }}
-                                      type="minus"
+                                      onClick={() => increaseItemQuantity({ item, type: 'plus' })}
+                                      type="plus"
                                     />
-                                  )}
-                                  {item.quantity === 1 && (
-                                    <EditItemQuantityButton
-                                      onClick={() => {
-                                        increaseItemQuantity({ item, type: 'minus' });
-                                      }}
-                                      type="trash"
-                                    />
-                                  )}
-                                  <p className="w-6 text-center">
-                                    <span className="w-full text-sm">{item.quantity}</span>
-                                  </p>
-                                  <EditItemQuantityButton
-                                    onClick={() => increaseItemQuantity({ item, type: 'plus' })}
-                                    type="plus"
-                                  />
-                                </div>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </div>
