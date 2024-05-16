@@ -6,8 +6,17 @@ import clsx from 'clsx';
 import LoadingDots from 'components/loading-dots';
 import type { CartItem } from 'lib/shopify/types';
 import { useFormStatus } from 'react-dom';
+import { trackEvent } from 'utils/mixpanel';
 
-function SubmitButton({ removeIcon, item }: { removeIcon?: boolean; item?: CartItem }) {
+function SubmitButton({
+  removeIcon,
+  item,
+  product
+}: {
+  removeIcon?: boolean;
+  item?: CartItem;
+  product?: any;
+}) {
   const { pending } = useFormStatus();
   const dispatch = useAppDispatch();
   return (
@@ -16,6 +25,16 @@ function SubmitButton({ removeIcon, item }: { removeIcon?: boolean; item?: CartI
       onClick={(e: React.FormEvent<HTMLButtonElement>) => {
         if (pending) e.preventDefault();
         dispatch(cartActions.removeCart({ lineIds: [item?.id] }));
+        trackEvent('Removed From Cart', {
+          Product_Name: product.title,
+          Product_Url: '',
+          Product_Price: product?.priceRange?.maxVariantPrice?.amount,
+          Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
+          Source: '',
+          Category: '',
+          Tags: product.tags,
+          Variant_SKU: ''
+        });
       }}
       aria-label="Remove cart item"
       aria-disabled={pending}
