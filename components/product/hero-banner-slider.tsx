@@ -4,7 +4,7 @@ import Image from 'next/image';
 const HeroBannerSlider = () => {
   return (
     <div>
-      <div className=" h-auto  max-h-[460px] w-full rounded-md">
+      <div className=" max-w-screen  h-auto max-h-[460px] w-full rounded-md">
         <Image
           priority
           height={475}

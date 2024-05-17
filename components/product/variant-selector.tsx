@@ -83,7 +83,7 @@ export default function VariantSelector({
           <dl className=" mb-6" key={option.id}>
             <dd
               className={clsx('relative flex w-full ', {
-                ' divide-x divide-black border border-black': !isColorOption
+                ' divide-x divide-black border border-[#222]': !isColorOption
               })}
             >
               {option.values.map((value) => {
@@ -110,12 +110,12 @@ export default function VariantSelector({
                       'flex flex-1 cursor-pointer flex-col items-center justify-center gap-0 py-3 text-sm uppercase tracking-wider text-gray-700 md:text-base',
                       {
                         'cursor-default bg-gray-600 bg-opacity-30 font-medium text-black': isActive,
-                        'border-1 cursor-default border-black': isActive && isColorOption,
+                        'border-1 cursor-default border-[#222]': isActive && isColorOption,
                         'ring-1 ring-transparent transition duration-200 ease-in-out hover:text-black':
                           !isActive && isAvailableForSale,
                         'relative z-10 cursor-not-allowed overflow-hidden text-black ring-1 ring-neutral-300 before:absolute before:inset-x-0 before:h-px before:-rotate-45 before:bg-neutral-300 before:transition-transform':
                           !isAvailableForSale,
-                        'mr-2 h-full max-h-8 w-full max-w-[1.5rem] rounded-full border bg-yellow-500':
+                        'mr-2 h-full max-h-8 w-full max-w-[1.5rem] rounded-full border  bg-yellow-500':
                           isColorOption,
                         [`bg-${value.toLowerCase()}`]: isColorOption && isAvailableForSale,
                         'bg-gray-300': isColorOption && !isAvailableForSale

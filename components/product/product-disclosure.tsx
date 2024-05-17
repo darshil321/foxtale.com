@@ -47,9 +47,9 @@ export default function ProductDisclosure({ product }: { product: Product }) {
     <>
       {disclosureItems && disclosureItems?.length ? (
         <div className="w-full px-0 py-4 md:px-0 md:py-10">
-          <h2 className="ml-4 text-2xl font-medium leading-7 ">What makes this unique?</h2>
+          <h2 className="ml-4 text-2xl font-medium leading-8  md:ml-0">What makes this unique?</h2>
           <div className="w-full pt-2">
-            <div className="mx-auto w-full gap-4 space-y-4">
+            <div className="mx-auto w-full gap-4 space-y-4 px-4">
               {disclosureItems?.map((item, index) => (
                 <Disclosure key={index}>
                   {({ open }) => (
