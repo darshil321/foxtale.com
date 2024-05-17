@@ -1,4 +1,6 @@
+'use client';
 import clsx from 'clsx';
+import { trackEvent } from 'utils/mixpanel';
 
 export default function OpenCart({
   className,
@@ -7,8 +9,16 @@ export default function OpenCart({
   className?: string;
   quantity?: number;
 }) {
+  const handleOpenCart = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    trackEvent('Cart Button Clicked', {});
+  };
+
   return (
-    <div className="relative flex h-11 w-11 items-center justify-center rounded-md  text-black transition-colors ">
+    <div
+      onClick={handleOpenCart}
+      className="relative flex h-11 w-11 items-center justify-center rounded-md  text-black transition-colors "
+    >
       {/* <ShoppingCartIcon
         className={clsx('h-7 transition-all ease-in-out hover:scale-110 ', className)}
       /> */}

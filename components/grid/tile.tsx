@@ -1,9 +1,10 @@
+'use client';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { AddToCartButton } from '@/components/cart/add-to-cart-button';
-// import { trackEvent } from 'utils/mixpanel';
+import { trackEvent } from 'utils/mixpanel';
 import ProductTag from '../elements/product-tag';
 
 export function GridTileImage({
@@ -49,18 +50,18 @@ export function GridTileImage({
               <div className=" h-full w-full overflow-hidden object-cover">
                 <Link
                   href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}
-                  // onClick={() => {
-                  //   trackEvent('Product Clicked', {
-                  //     Product_Name: product.title,
-                  //     Product_Url: '',
-                  //     Product_Price: product?.priceRange?.maxVariantPrice?.amount,
-                  //     Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
-                  //     Source: '',
-                  //     Category: '',
-                  //     Tags: product.tags,
-                  //     Variant_SKU: ''
-                  //   });
-                  // }}
+                  onClick={() => {
+                    trackEvent('Product Clicked', {
+                      Product_Name: product.title,
+                      Product_Url: '',
+                      Product_Price: product?.priceRange?.maxVariantPrice?.amount,
+                      Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
+                      Source: '',
+                      Category: '',
+                      Tags: product.tags,
+                      Variant_SKU: ''
+                    });
+                  }}
                 >
                   <Image
                     className={clsx(
