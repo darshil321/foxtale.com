@@ -42,16 +42,16 @@ const InitialData = () => {
     }
 
     window.removeEventListener('mousemove', fetchDataOnInteraction);
-    window.removeEventListener('scroll', fetchDataOnInteraction);
+    // window.removeEventListener('scroll', fetchDataOnInteraction);
   };
 
   useEffect(() => {
     window.addEventListener('mousemove', fetchDataOnInteraction, { once: true });
-    window.addEventListener('scroll', fetchDataOnInteraction, { once: true });
+    // window.addEventListener('scroll', fetchDataOnInteraction, { once: true });
 
     return () => {
       window.removeEventListener('mousemove', fetchDataOnInteraction);
-      window.removeEventListener('scroll', fetchDataOnInteraction);
+      // window.removeEventListener('scroll', fetchDataOnInteraction);
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
