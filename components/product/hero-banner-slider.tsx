@@ -5,13 +5,18 @@ import Image from 'next/image';
 import { trackEvent } from 'utils/mixpanel';
 
 const HeroBannerSlider = () => {
-  const handleCollectionBannerClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    trackEvent('Header Collection Clicked', {});
+  const handleCollectionBannerClick = (url: string) => {
+    trackEvent('Header Collection Clicked', { BannerUrl: url });
   };
   return (
-    <div onClick={handleCollectionBannerClick} className=" h-auto  max-h-[460px] w-full rounded-md">
+    <div className=" h-auto  max-h-[460px] w-full rounded-md">
       <Image
+        onClick={(e: React.MouseEvent<HTMLImageElement>) => {
+          e.preventDefault();
+          handleCollectionBannerClick(
+            'https://foxtale.in/cdn/shop/files/Foxtale_bestsellers_banners-04.jpg?v=1715687265'
+          );
+        }}
         priority
         height={475}
         width={470}
@@ -22,6 +27,12 @@ const HeroBannerSlider = () => {
         quality={80}
       />
       <Image
+        onClick={(e: React.MouseEvent<HTMLImageElement>) => {
+          e.preventDefault();
+          handleCollectionBannerClick(
+            'https://foxtale.in/cdn/shop/files/Foxtale_bestsellers_banners-03.jpg?v=1715687265'
+          );
+        }}
         priority
         height={240}
         width={360}
