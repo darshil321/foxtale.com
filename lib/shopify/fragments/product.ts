@@ -19,6 +19,8 @@ const productFragment = /* GraphQL */ `
         { key: "routinename2", namespace: "custom" }
         { key: "product-sub-title", namespace: "global" }
         { key: "product_tag", namespace: "custom" }
+        { key: "boost_with", namespace: "product_handle" }
+        { key: "pair_best_with", namespace: "product_handle" }
       ]
     ) {
       description

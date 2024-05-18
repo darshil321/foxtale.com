@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { GridTileImage } from '@/components/grid/tile';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import dynamic from 'next/dynamic';
+import { BestSellingCombos } from '@/components/grid/best-selling-combos';
 
 const ProductSlider = dynamic(() => import('@/components/product/product-slider'));
 const OfferSection = dynamic(() => import('@/components/product/offers-section'));
@@ -142,7 +143,6 @@ export default async function ProductPage({
           </div>
         </div>
         <div>{<ProductDisclosure product={product} />}</div>
-
         <ResultsSection product={product} />
         <Suspense
           fallback={
@@ -154,6 +154,9 @@ export default async function ProductPage({
           <ProductCarouselSlider />
         </Suspense>
         <ProductDetailsTabs product={product} />
+
+        <BestSellingCombos product={product} />
+
         <Accordion product={product} />
         <Suspense fallback={null}>
           <RelatedProducts id={product.id} />
