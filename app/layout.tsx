@@ -7,7 +7,6 @@ import Provider from '../store/store-provider';
 import Banner from 'components/layout/navbar/banner';
 import { Poppins } from 'next/font/google';
 import dynamic from 'next/dynamic';
-import { getMetaObjects, getProducts } from '@/lib/shopify';
 const InitialData = dynamic(() => import('@/components/initial-data'));
 
 const poppins = Poppins({
@@ -44,20 +43,17 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
-  const promises = [
-    getMetaObjects('gifts'),
-    getMetaObjects('freebies'),
-    getMetaObjects('magic_link'),
-    getProducts()
-  ];
+  // const promises = [
+  //   getMetaObjects('gifts'),
+  //   getMetaObjects('freebies'),
+  //   getMetaObjects('magic_link')
+  // ];
 
-  const results = await Promise.allSettled(promises);
-  console.log('results', results);
+  // const results = await Promise.allSettled(promises);
 
-  const giftsCoupon = results[0]?.status === 'fulfilled' ? results[0].value : null;
-  const freebieCoupons = results[1]?.status === 'fulfilled' ? results[1].value : null;
-  const magicLinks = results[2]?.status === 'fulfilled' ? results[2].value : null;
-  const products = results[2]?.status === 'fulfilled' ? results[2].value : null;
+  // const giftsCoupon = results[0]?.status === 'fulfilled' ? results[0].value : null;
+  // const freebieCoupons = results[1]?.status === 'fulfilled' ? results[1].value : null;
+  // const magicLinks = results[2]?.status === 'fulfilled' ? results[2].value : null;
 
   return (
     <html lang="en">
@@ -70,12 +66,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             <Navbar />
           </WrapperContainer>
           <Suspense fallback={null}>
-            <InitialData
-              giftsCoupon={giftsCoupon}
-              freebieCoupons={freebieCoupons}
-              magicLinks={magicLinks}
-              products={products}
-            />
+            <InitialData />
           </Suspense>
           <main className={poppins.className}>{children}</main>
         </Provider>
