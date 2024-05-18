@@ -37,10 +37,8 @@ export async function BestSellingCombos({ product }: { product: Product }) {
         Best Selling Combos
       </h2>
       {products?.map((item: string, index: number) => (
-        <BestSellingCombosItem key={index} item={product} handle={item} />
+        <BestSellingCombosItem key={index} handle={item} />
       ))}
-      {/* <BestSellingCombosItem size="full" item={homepageItems[1]} />
-      <BestSellingCombosItem size="full" item={homepageItems[2]} /> */}
     </section>
   );
 }
