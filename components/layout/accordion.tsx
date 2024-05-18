@@ -2,6 +2,7 @@
 import { Product } from '@/lib/shopify/types';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
+import { trackEvent } from 'utils/mixpanel';
 
 export default function Accordion({ product }: { product: Product }) {
   const filteredDataByKey = product?.metafields?.find((item: any) => item?.key === 'faq-section');
@@ -40,7 +41,15 @@ export default function Accordion({ product }: { product: Product }) {
         <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button className="flex h-full w-full  bg-[#f7f7f7] text-sm font-medium text-black hover:bg-[#f7f7f7] focus:outline-none focus-visible:ring-[#f7f7f7]/75 focus-visible:ring-offset-1">
+              <Disclosure.Button
+                className="flex h-full w-full  bg-[#f7f7f7] text-sm font-medium text-black hover:bg-[#f7f7f7] focus:outline-none focus-visible:ring-[#f7f7f7]/75 focus-visible:ring-offset-1"
+                onClick={(e: any) => {
+                  e.preventDefault();
+                  trackEvent('FAQs Clicked', {
+                    FaqsClicked: 'Clicked'
+                  });
+                }}
+              >
                 <div className="flex w-full items-center justify-between p-3 md:p-6">
                   <span className="h-full text-lg font-semibold md:text-2xl">FAQs</span>
                   <ChevronUpIcon

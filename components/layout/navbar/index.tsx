@@ -4,9 +4,8 @@ import { getMenu } from 'lib/shopify';
 import { Menu } from 'lib/shopify/types';
 import Link from 'next/link';
 import { Suspense } from 'react';
-
-import Image from 'next/image';
 import Search, { SearchSkeleton } from './search';
+import LogoSquare from '@/components/logo-square';
 
 export default async function Navbar() {
   const menu = await getMenu('next-js-frontend-header-menu');
@@ -24,13 +23,7 @@ export default async function Navbar() {
             href="/collections/shop-1"
             className="ml-2 mr-2 flex h-[32px] w-[95px] items-center  justify-center md:h-full md:w-auto lg:mr-6"
           >
-            <Image
-              src={'/foxtalelogo.avif'}
-              className="w-full"
-              alt={'Foxtale'}
-              width={96}
-              height={32}
-            />
+            <LogoSquare />
           </Link>
           {menu.length ? (
             <ul className="hidden gap-6 text-sm md:flex md:items-center">

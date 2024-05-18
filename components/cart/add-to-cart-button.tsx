@@ -9,6 +9,7 @@ import { cartActions } from 'store/actions/cart.action';
 import { v4 as uuidv4 } from 'uuid';
 import { getCartItem, getDefaultVariant } from '@/lib/helper/helper';
 import { setCartOpen } from '@/store/slices/cart-slice';
+import { trackEvent } from 'utils/mixpanel';
 import useCoupon from '@/lib/hooks/use-coupon';
 
 function SubmitButton({
@@ -86,6 +87,16 @@ function SubmitButton({
             blockReducer: true
           })
         );
+        trackEvent('Add To Cart', {
+          Product_Name: product.title,
+          Product_Url: '',
+          Product_Price: product?.priceRange?.maxVariantPrice?.amount,
+          Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
+          Source: '',
+          Category: '',
+          Tags: product.tags,
+          Variant_SKU: ''
+        });
         dispatch(cartActions.createCart());
 
         const cart = updateCart(tempId);

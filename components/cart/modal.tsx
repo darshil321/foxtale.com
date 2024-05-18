@@ -23,6 +23,7 @@ import { EmblaOptionsType } from 'embla-carousel';
 import { cartActions } from '@/store/actions/cart.action';
 import EmblaProductSlider from '../common/recommended-product-slider';
 import LoadingOverlay from '../common/loading';
+import { trackEvent } from 'utils/mixpanel';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -84,6 +85,19 @@ export default function CartModal() {
   const { isCartOpen } = useAppSelector((state) => state.cart);
 
   const OPTIONS: EmblaOptionsType = { dragFree: false };
+
+  const handleProductClick = (product: any) => {
+    trackEvent('Product Clicked', {
+      Product_Name: product.title,
+      Product_Url: '',
+      Product_Price: product?.priceRange?.maxVariantPrice?.amount,
+      Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
+      Source: '',
+      Category: '',
+      Tags: product.tags,
+      Variant_SKU: ''
+    });
+  };
 
   return (
     <>
@@ -148,7 +162,14 @@ export default function CartModal() {
                       );
 
                       return (
-                        <li key={i} className="flex w-full flex-col rounded-md  bg-white p-1">
+                        <li
+                          onClick={(e: React.MouseEvent<HTMLLIElement>) => {
+                            e.preventDefault();
+                            handleProductClick(item.merchandise?.product);
+                          }}
+                          key={i}
+                          className="flex w-full flex-col bg-white "
+                        >
                           <div className="relative flex w-full flex-row justify-between rounded-sm px-1 py-1 ">
                             <div className="absolute z-40 -mt-2 ml-[55px]">
                               <DeleteItemButton item={item} removeIcon={false} />
