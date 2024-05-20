@@ -9,7 +9,6 @@ const InitialData = () => {
   const dispatch = useDispatch();
   const [hasDataBeenFetched, setHasDataBeenFetched] = useState(false);
 
-  // Function to fetch metadata
   const getMetaData = async () => {
     const results = await Promise.allSettled([
       getMetaObjects('gifts'),
