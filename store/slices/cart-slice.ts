@@ -1,4 +1,9 @@
-import { getCartItem, getDefaultVariant, getReformedCoupons } from '@/lib/helper/helper';
+import {
+  createCartItem,
+  getDefaultVariant,
+  getReformedCoupons,
+  getTempId
+} from '@/lib/helper/helper';
 import { createSlice, current } from '@reduxjs/toolkit';
 import { Cart, Product } from 'lib/shopify/types';
 interface Giftfield {
@@ -72,67 +77,102 @@ export const cartSlice = createSlice({
   initialState,
 
   reducers: {
-    getCartSuccess: () => {
-      // const { products } = action.payload.body.data;
-      // state.cart = products.edges;
-      // // Initialize quantities with default values or from cart items
-      // products.edges.forEach((item: any) => {
-      //   state.quantities[item.id] = item.quantity; // Assuming each item has an 'id' and 'quantity'
-      // });
-    },
     getCartFailed: (state) => {
       // const data = current(state);
       state.getCartLoading = false;
     },
     removeCart: (state, action) => {
+      const { lineIds } = action.payload;
       const cart = current(state.cart);
-      const lineIds = action.payload.lineIds;
 
       state.cart = {
         ...cart,
         lines: cart?.lines.filter((item: any) => !lineIds?.includes(item.id))
       };
     },
+
     addToCart: (state, action) => {
-      const {
-        payload: { product, selectedVariantId, tempId }
-      } = action;
+      const { product, selectedVariantId } = action.payload;
+
       const variant = getDefaultVariant(product, selectedVariantId);
+
       if (!variant) {
+        console.log('No product found');
         return;
       }
 
-      const cart = current(state);
+      const cart = current(state).cart;
 
-      const productArray = cart.cart?.lines || [];
-      const productFound = productArray?.find((item: any) => item.merchandise.id === variant.id);
+      const existingCartLines = cart?.lines || [];
 
-      let cartLines;
-      if (productFound) {
-        cartLines = productArray?.map((line: any) => {
-          if (line.id === productFound.id) {
-            return {
-              ...productFound,
-              quantity: productFound.quantity + 1
-            };
-          } else {
-            return line;
-          }
-        });
+      // Check if the product variant is already in the cart
+      const productIndex = existingCartLines.findIndex(
+        (item: any) => item.merchandise.id === variant.id
+      );
+
+      let updatedCartLines;
+      if (productIndex !== -1) {
+        // If the product variant is found, update its quantity
+        updatedCartLines = existingCartLines.map((line: any, index: number) =>
+          index === productIndex ? { ...line, quantity: line.quantity + 1 } : line
+        );
       } else {
-        const cartItem = getCartItem(tempId, product, variant);
-        cartLines = [...productArray, cartItem];
+        // If the product variant is not found, add it as a new item
+        const newCartItem = createCartItem(getTempId(), product, variant);
+        updatedCartLines = [...existingCartLines, newCartItem];
       }
 
-      if (!cart.cart) {
-        state.cart = { lines: cartLines, totalQuantity: 1 };
-      } else {
-        state.cart = { ...cart.cart, lines: cartLines, totalQuantity: cart.cart.totalQuantity + 1 };
-      }
+      // Update the cart state with the new lines and total quantity
+      const totalQuantity = (cart?.totalQuantity || 0) + 1;
+      state.cart = { lines: updatedCartLines, totalQuantity };
     },
 
-    attemptGetCart: () => {
-      //loading true
+    updateCartItem: (state, action) => {
+      const { productId, quantity } = action.payload;
+
+      const cart = current(state).cart;
+      if (!cart) {
+        console.log('Cart not found');
+        return;
+      }
+
+      let cartLines = cart.lines || [];
+      const productIndex = cartLines.findIndex((item: any) => item.merchandise.id === productId);
+
+      if (productIndex === -1) {
+        console.log('Product not found');
+        return;
+      }
+
+      if (quantity === 0) {
+        // Remove the item if quantity is zero
+        cartLines = cartLines.filter((item: any) => item.merchandise.id !== productId);
+      } else {
+        // Update the quantity of the product
+        cartLines = cartLines.map((line: any, index: number) =>
+          index === productIndex ? { ...line, quantity } : line
+        );
+      }
+
+      state.cart = { ...cart, lines: cartLines };
+    },
+
+    manageCartSuccess: (state, action) => {
+      const cartRes = action.payload;
+      const cart = current(state).cart;
+
+      if (!cart?.lines?.length) {
+        return;
+      }
+
+      const cartLines = cart?.lines?.map((line: any) => {
+        const isExist = cartRes.lines.find(
+          (cartLine: any) => cartLine.merchandise.id === line.merchandise.id
+        );
+        return isExist ? { ...line, id: isExist.id } : line;
+      });
+
+      state.cart = { ...cart, id: cartRes.id, lines: cartLines };
     },
 
     setCart: (state, action) => {
@@ -167,10 +207,9 @@ export const cartSlice = createSlice({
 });
 
 export const {
-  getCartSuccess,
   setCart,
+  manageCartSuccess,
   getCartFailed,
-  attemptGetCart,
   setMetaObject,
   setGiftCoupons,
   setFreebieCoupons,
@@ -181,6 +220,7 @@ export const {
   addToCart,
   setMagicLinkCoupons,
 
+  updateCartItem,
   setGiftFreeProducts
 } = cartSlice.actions;
 export default cartSlice.reducer;

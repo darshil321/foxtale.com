@@ -50,6 +50,13 @@ export const getFreeProductCartLines = (cart: Cart) => {
   return lines?.filter((line: CartItem) => Number(line.cost.amountPerQuantity.amount) === 0);
 };
 
+export const getFreeCartProduct = (cart: Cart) => {
+  const { lines } = cart;
+  return lines
+    ?.filter((line: CartItem) => Number(line.cost.amountPerQuantity.amount) === 0)
+    .map((p) => p.merchandise.id);
+};
+
 export const getCartWithoutFreeProduct = (cart: Cart) => {
   const { lines } = cart;
   const cartLine = lines?.map((line: CartItem) => {
@@ -59,11 +66,11 @@ export const getCartWithoutFreeProduct = (cart: Cart) => {
   return { ...cart, lines: cartLine };
 };
 
-export const removableLineIds = (cartItem: CartItem[] | undefined, freeProducts: string[]) => {
+export const removableFreeProducts = (cartItem: CartItem[] | undefined, freeProducts: string[]) => {
   const removableCartLines = cartItem?.filter(
     (product) => !freeProducts.includes(product.merchandise.id)
   );
-  return removableCartLines?.map((line) => line.id);
+  return removableCartLines?.map((line) => line.merchandise.id);
 };
 
 const getApplicableSubCart = (cart: any, applicableProducts: any) => {

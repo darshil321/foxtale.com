@@ -20,7 +20,7 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
   const [emblaRef] = useEmblaCarousel(options);
   const dispatch = useAppDispatch();
   const cart = useAppSelector((state) => state.cart.cart);
-  console.log('cartfdf', cart);
+
   const onClick = (item: any) => {
     const isInCart = cart?.lines.some((cartItem: any) => cartItem.merchandise.id === item.id);
     console.log(isInCart);
@@ -38,7 +38,6 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
   };
   const giftVariantIds = slides?.map((item: any) => item.variantId) ?? [];
   const alreadyAdded = isGiftProductAvailableInCart(cart, giftVariantIds);
-  console.log('alreadyAdded', alreadyAdded);
 
   if (!slides) return <></>;
   return (

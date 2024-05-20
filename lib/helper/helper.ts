@@ -3,7 +3,7 @@
 import { Metaobject } from '@shopify/hydrogen-react/storefront-api-types';
 import axios from 'axios';
 import { Cart, CartItem, Connection } from '../shopify/types';
-import { cloneDeep } from '@apollo/client/utilities';
+import { v4 as uuidv4 } from 'uuid';
 
 interface Field {
   [key: string]: string;
@@ -188,7 +188,10 @@ export const findClosestCoupon = (
   return closestObject;
 };
 
-export const getCartItem = (tempId: any, product: any, variant: any) => {
+export const getTempId = () => {
+  return `temp-${uuidv4()}`;
+};
+export const createCartItem = (tempId: any, product: any, variant: any) => {
   return {
     id: tempId,
     cost: {
