@@ -10,12 +10,17 @@ import Image from 'next/image';
 import { useDispatch } from 'react-redux';
 import { setIsUserClicked, setSelectedCollection } from '@/store/slices/product-slice';
 import { useAppSelector } from '@/store/hooks';
+import { trackEvent } from 'utils/mixpanel';
 
 function PathFilterItem({ item }: { item: PathFilterItem }) {
   const dispatch = useDispatch();
   const selectedCollection = useAppSelector((state) => state.products.selectedCollection);
 
   const handleClick = () => {
+    trackEvent('Header Collection Clicked', {
+      collectionName: item.title,
+      BannerUrl: item?.image?.url
+    });
     dispatch(setSelectedCollection(item.handle?.toLowerCase()));
     dispatch(setIsUserClicked(true)); // Reset after action
   };

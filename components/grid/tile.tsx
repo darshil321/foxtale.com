@@ -45,24 +45,24 @@ export function GridTileImage({
     >
       {props.src ? (
         <div className="flex h-full min-h-[320px] w-full flex-col justify-between md:max-h-[100%] md:min-h-[456px]">
-          <div className="flex h-full w-full flex-col">
+          <div
+            onClick={() => {
+              trackEvent('Product Clicked', {
+                Product_Name: product.title,
+                Product_Url: '',
+                Product_Price: product?.priceRange?.maxVariantPrice?.amount,
+                Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
+                Source: '',
+                Category: '',
+                Tags: product.tags,
+                Variant_SKU: ''
+              });
+            }}
+            className="flex h-full w-full flex-col"
+          >
             <div className="relative">
               <div className=" h-full w-full overflow-hidden object-cover">
-                <Link
-                  href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}
-                  onClick={() => {
-                    trackEvent('Product Clicked', {
-                      Product_Name: product.title,
-                      Product_Url: '',
-                      Product_Price: product?.priceRange?.maxVariantPrice?.amount,
-                      Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
-                      Source: '',
-                      Category: '',
-                      Tags: product.tags,
-                      Variant_SKU: ''
-                    });
-                  }}
-                >
+                <Link href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}>
                   <Image
                     className={clsx(
                       ' relative aspect-square h-full min-h-[200px] w-full object-cover  md:min-h-[300px]',
@@ -115,11 +115,9 @@ export function GridTileImage({
                   {productDescription?.value}
                 </p>
               </div>
-              <span className="">
-                <div className="t4s-product-price text-base font-medium">
-                  <span className="font-poppins text-base font-semibold" /> ₹ {label?.amount}
-                </div>
-              </span>
+              <div className="t4s-product-price text-base font-medium">
+                <span className="font-poppins text-base font-semibold" /> ₹ {label?.amount}
+              </div>
             </div>
           </div>
           <div>

@@ -48,6 +48,7 @@ export function GokwikButton(passedData) {
     script.src = integrationUrls[window.merchantInfo.environment];
     document.body.appendChild(script);
 
+    console.log('gokwik script loaded');
     script.onload = () => {
       if (window.gokwikSdk && typeof window.gokwikSdk.init === 'function') {
         window.gokwikSdk.init();

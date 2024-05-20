@@ -7,7 +7,10 @@ import { EmblaOptionsType } from 'embla-carousel';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { cartActions } from '@/store/actions/cart.action';
 import { v4 as uuidv4 } from 'uuid';
-import { isGiftProductAvailableInCart } from '@/lib/helper/helper';
+import {
+  isGiftProductAvailableInCart,
+  isThisGiftProductAvailableInCart
+} from '@/lib/helper/helper';
 
 type PropType = {
   slides: any[] | undefined;
@@ -48,6 +51,9 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
             const productDescription = product?.metafields?.find(
               (item: any) => item?.key === 'hp_excerpt'
             );
+            const isThisClaimed = isThisGiftProductAvailableInCart(cart, variantId);
+            const buttonText =
+              type !== 'gift' ? 'Add' : isThisClaimed && type === 'gift' ? 'Claimed' : 'Claim';
 
             return (
               <div key={index} className="embla_cart__slide ">
@@ -82,9 +88,9 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
                     <button
                       disabled={alreadyAdded && type === 'gift'}
                       onClick={() => onClick({ product, variantId })}
-                      className={`bg-black px-4 py-1 text-white ${alreadyAdded && type === 'gift' ? 'cursor-not-allowed' : ''}`}
+                      className={`bg-black px-4 py-1 text-white ${alreadyAdded && type === 'gift' ? 'cursor-not-allowed bg-gray-500' : ''}`}
                     >
-                      {'Add'}
+                      {buttonText}
                     </button>
                   </div>
                 </div>

@@ -64,15 +64,13 @@ const CollectionProductsContainer = ({
       className="rounded-md bg-white px-1.5 py-2 md:order-none md:px-4 md:py-6"
       key={index}
     >
-      <div>
-        <div className="space-y-1 px-1 pb-2 md:px-5 md:pb-4">
-          <h1 className="text-base md:text-xl">{`Products in ${collections[index]?.handle}`}</h1>
-          <p className="text-xs text-[#6E6E6E] md:text-sm">{`Showing ${products?.length} results`}</p>
-        </div>
-        <Grid className="grid-cols-2 place-items-center gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
-          <ProductGridItems products={products} />
-        </Grid>
+      <div className="space-y-1 px-1 pb-2 md:px-5 md:pb-4">
+        <h1 className="text-base md:text-xl">{`Products in ${collections[index]?.handle}`}</h1>
+        <p className="text-xs text-[#6E6E6E] md:text-sm">{`Showing ${products?.length} results`}</p>
       </div>
+      <Grid className="grid-cols-2 place-items-center gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
+        <ProductGridItems products={products} />
+      </Grid>
     </section>
   );
 };

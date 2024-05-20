@@ -162,6 +162,10 @@ export const isGiftProductAvailableInCart = (cart: Cart, variantIds: string[]) =
   const variantIdsInCart = cart.lines?.map((item: CartItem) => item.merchandise.id);
   return variantIds.some((variantId) => variantIdsInCart?.includes(variantId)) ?? false;
 };
+export const isThisGiftProductAvailableInCart = (cart: Cart, variantId: string) => {
+  const variantIdsInCart = cart.lines?.map((item: CartItem) => item.merchandise.id);
+  return variantIdsInCart?.includes(variantId) ?? false;
+};
 
 export const findClosestCoupon = (
   metaObjects: MetaObject[],
