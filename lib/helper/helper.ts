@@ -29,7 +29,10 @@ export function debounce<F extends (...args: any[]) => any>(
 export async function appendReviewAndRating(products: any) {
   try {
     const reviews = await getReviews();
+    console.log('reviews', reviews);
+
     const ratings = await getRatings();
+    console.log('ratings', ratings);
 
     reviews.forEach((review: any) => {
       const product = products.find((product: any) => {
