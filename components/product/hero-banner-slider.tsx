@@ -19,13 +19,13 @@ const HeroBannerSlider = () => {
         }}
         priority
         height={475}
-        blurDataURL={`https://foxtale.in/cdn/shop/files/Foxtale_bestsellers_banners-04.jpg?v=1715687265`}
+        blurDataURL={`https://foxtale-com-git-plan-a-darshils-projects-1d319060.vercel.app/_next/image?url=https%3A%2F%2Ffoxtale.in%2Fcdn%2Fshop%2Ffiles%2FFoxtale_bestsellers_banners-04.jpg%3Fv%3D1715687265&w=1920&q=20`}
         width={770}
         objectFit="cover"
         className="hidden h-auto w-full rounded-md md:block"
         src={`https://foxtale.in/cdn/shop/files/Foxtale_bestsellers_banners-04.jpg?v=1715687265`}
         alt="foxtale"
-        quality={20}
+        quality={90}
         placeholder="blur"
       />
       <Image
