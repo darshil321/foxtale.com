@@ -109,7 +109,7 @@ export default async function ProductPage({
           __html: JSON.stringify(productJsonLd)
         }}
       />
-      <div className="mx-auto max-w-screen-2xl pt-4  md:pt-8">
+      <div className="mx-auto max-w-screen-2xl animate-fadeIn pt-4 transition-opacity  md:pt-8">
         <div className="flex flex-col rounded-lg  lg:flex-row lg:gap-8 ">
           <div className="flex flex-col px-4 pb-2 md:hidden">
             <div className="mb-2 flex items-end gap-2 md:gap-3">
