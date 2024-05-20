@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { gokwikConfig } from '../../lib/shopify/gokwik.config';
 import { createCart, getCart } from '@/lib/shopify';
-import { addItem, addItems } from '../cart/actions';
+import { addItem } from '../cart/actions';
 import { useAppSelector } from '@/store/hooks';
 import { trackEvent } from 'utils/mixpanel';
 
@@ -73,20 +73,9 @@ export function GokwikButton(passedData) {
         });
       });
     } else {
-      const items = cart?.lines.map((item) => {
-        return {
-          merchandiseId: item.merchandise.id,
-          quantity: item.quantity
-        };
+      getCart(cart.id).then((data) => {
+        console.log('data', data);
       });
-      addItems(items).then((data) => {
-        setLoading(false);
-        triggerGokwikCheckout(data);
-      });
-
-      // getCart(cartId).then((data) => {
-      //   triggerGokwikCheckout(data);
-      // });
     }
   };
 
@@ -166,8 +155,6 @@ export function GokwikButton(passedData) {
   // };
 
   const triggerGokwikCheckout = async (cart?) => {
-    console.log('cartss', cart);
-
     if (cart) {
       window.merchantInfo.cart = cart;
       buyNowRun = true;

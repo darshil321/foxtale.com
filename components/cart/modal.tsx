@@ -5,7 +5,7 @@ import { DEFAULT_OPTION } from 'lib/constants';
 import { createUrl } from 'lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment, useEffect } from 'react';
+import { Fragment } from 'react';
 import CloseCart from './close-cart';
 import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
@@ -13,7 +13,6 @@ import OpenCart from './open-cart';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import '../../assets/styles/embla-products-carousel.css';
-import useCoupon from '@/lib/hooks/use-coupon';
 import { getCartData } from '@/lib/helper/helper';
 import { CartItem } from '@/lib/shopify/types';
 import { setCartOpen } from '@/store/slices/cart-slice';
@@ -36,51 +35,26 @@ export default function CartModal() {
   const { loading } = useAppSelector((state) => state.cart);
   const RecommendedProducts = useAppSelector((state) => state.cart.recommendedProducts);
 
-  const { adjustCart } = useCoupon();
-
   const data = getCartData(carts);
   const totalCartQuantity = data.totalQuantity;
 
   const { currencyCode, totalAmount } = data;
   const dispatch = useAppDispatch();
-  function increaseItemQuantity({ item, type }: { item: CartItem; type: string }) {
-    const cart = {
-      ...carts,
-      lines: carts.lines.map((line: any) => {
-        if (line.merchandise.id === item.merchandise.id) {
-          if (type === 'plus') {
-            return {
-              ...line,
-              quantity: line.quantity + 1
-            };
-          } else {
-            return {
-              ...line,
-              quantity: line.quantity - 1
-            };
-          }
-        }
-        return line;
+  function updateCartItem({ item, type }: { item: CartItem; type: string }) {
+    dispatch(
+      cartActions.updateCartItem({
+        productId: item.merchandise.id,
+        quantity: type === 'plus' ? item.quantity + 1 : item.quantity - 1
       })
-    };
-
-    adjustCart(cart);
+    );
   }
 
-  useEffect(() => {
-    // if (Array.isArray(carts) && carts.length > 0 && carts[0].merchandise) {
-    //   productId = carts[0].merchandise.product.id;
-    // } else if (Array.isArray(carts.lines) && carts.lines.length > 0 && carts.lines[0].merchandise) {
-    if (carts && carts?.lines?.length > 0) {
-      const productId = carts?.lines[0].merchandise.product.id;
-      // }
-
-      // if (productId) {
-      dispatch(cartActions.setRecommendedProduct({ productId }));
-    }
-
-    // }
-  }, [carts, dispatch]);
+  // useEffect(() => {
+  //   if (carts && carts?.lines?.length > 0) {
+  //     const productId = carts?.lines[0].merchandise.product.id;
+  //     dispatch(cartActions.setRecommendedProduct({ productId }));
+  //   }
+  // }, [carts, dispatch]);
 
   const { isCartOpen } = useAppSelector((state) => state.cart);
 
@@ -237,7 +211,7 @@ export default function CartModal() {
                                     {item.quantity > 1 && (
                                       <EditItemQuantityButton
                                         onClick={() => {
-                                          increaseItemQuantity({ item, type: 'minus' });
+                                          updateCartItem({ item, type: 'minus' });
                                         }}
                                         type="minus"
                                       />
@@ -245,7 +219,7 @@ export default function CartModal() {
                                     {item.quantity === 1 && (
                                       <EditItemQuantityButton
                                         onClick={() => {
-                                          increaseItemQuantity({ item, type: 'minus' });
+                                          updateCartItem({ item, type: 'minus' });
                                         }}
                                         type="trash"
                                       />
@@ -254,7 +228,7 @@ export default function CartModal() {
                                       <span className="w-full text-sm">{item.quantity}</span>
                                     </p>
                                     <EditItemQuantityButton
-                                      onClick={() => increaseItemQuantity({ item, type: 'plus' })}
+                                      onClick={() => updateCartItem({ item, type: 'plus' })}
                                       type="plus"
                                     />
                                   </div>

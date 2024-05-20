@@ -5,15 +5,15 @@ import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 
 export async function createCartIfNotExists() {
-  let cartId = cookies().get('cartId')?.value || null;
-  let cart;
+  let cartId = cookies().get('cartId')?.value;
 
   if (!cartId) {
-    cart = await createCart();
+    const cart = await createCart();
     cartId = cart.id;
 
     cookies().set('cartId', cartId);
   }
+  return cartId;
 }
 
 export async function addItem(selectedVariantId: string, cartID?: string) {

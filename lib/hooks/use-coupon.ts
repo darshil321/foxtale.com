@@ -4,41 +4,33 @@ import {
   findVariant,
   getApplicableCoupon,
   getApplicableMagicLink,
-  getCartWithoutFreeProduct,
+  getFreeCartProduct,
   getFreeProductCartLines,
   getMagicKey,
   isFreeProductExistInCart,
-  removableLineIds
+  removableFreeProducts
 } from '../helper/cart-helper';
-import { useDispatch } from 'react-redux';
-import { cartActions } from '@/store/actions/cart.action';
-import { setGiftFreeProducts } from '@/store/slices/cart-slice';
-import { v4 as uuidv4 } from 'uuid';
 
 function useCoupon() {
   const freebies = useAppSelector((state) => state.cart.freebieCoupons) || [];
   const gifts = useAppSelector((state) => state.cart.giftCoupons) || [];
   const magicLinks = useAppSelector((state) => state.cart.magicLinkCoupons) || [];
   const products = useAppSelector((state) => state.products.products) || [];
-  const dispatch = useDispatch();
 
   const getUpdatedCart = (freeProducts: any, cart: any) => {
     const addedFreeProducts = getFreeProductCartLines(cart);
     let updatedCart = { ...cart };
     const itemsToBeAdd = [] as any;
-    const removableCartLineIds = removableLineIds(addedFreeProducts, freeProducts);
+    const removableCartLineIds = removableFreeProducts(addedFreeProducts, freeProducts);
 
-    const cartLines = cart.lines.map((line: any) => {
-      if (removableCartLineIds?.includes(line.merchandise.id)) {
-        return { ...line, quantity: 0 };
-      }
-      return line;
-    });
+    const cartLines = cart.lines.filter(
+      (line: any) => !removableCartLineIds?.includes(line.merchandise.id)
+    );
     updatedCart = { ...cart, lines: cartLines };
 
     if (freeProducts.length) {
       freeProducts.forEach((product: any) => {
-        const isAlreadyAdded = isFreeProductExistInCart(cart, product);
+        const isAlreadyAdded = isFreeProductExistInCart(updatedCart, product);
         if (!isAlreadyAdded) {
           const _product = findVariant(products, product);
           if (_product) itemsToBeAdd.push({ product: _product, variantId: product });
@@ -46,7 +38,7 @@ function useCoupon() {
       });
     }
 
-    return { updatedCart, itemsToBeAdd };
+    return { itemsToBeRemove: removableCartLineIds, itemsToBeAdd };
   };
 
   const getFreeProductsByCoupon = (cart: any) => {
@@ -72,41 +64,38 @@ function useCoupon() {
     return { magicLinkCoupon, freebieCoupon, giftCoupon };
   };
 
-  const adjustFreebiesInCart = (cart: any) => {
+  const adjustCart = (cart: any) => {
     const res = {
-      cartToBeUpdate: cart,
-      itemsToBeAdd: [] as any,
+      freebiesToBeAdd: [],
+      freebiesToBeRemove: [],
       giftProducts: []
     };
     const { freebieCoupon, giftCoupon, magicLinkCoupon } = getFreeProductsByCoupon(cart);
-    console.log(
-      'freebieCoupon, giftCoupon, magicLinkCoupon',
-      freebieCoupon,
-      giftCoupon,
-      magicLinkCoupon
-    );
 
     if (!freebieCoupon && !giftCoupon && !magicLinkCoupon)
-      return { ...res, cartToBeUpdate: getCartWithoutFreeProduct(cart) };
+      return {
+        ...res,
+        freebiesToBeRemove: getFreeCartProduct(cart)
+      };
 
     if (magicLinkCoupon) {
       if (magicLinkCoupon.fields.free_product) {
-        const { updatedCart, itemsToBeAdd } = getUpdatedCart(
+        const { itemsToBeRemove, itemsToBeAdd } = getUpdatedCart(
           [magicLinkCoupon.fields.free_product],
           cart
         );
-        res.cartToBeUpdate = updatedCart;
-        res.itemsToBeAdd = itemsToBeAdd;
+
+        res.freebiesToBeAdd = itemsToBeAdd;
+        res.freebiesToBeRemove = itemsToBeRemove as any;
       }
     } else {
       if (freebieCoupon) {
-        const { updatedCart, itemsToBeAdd } = getUpdatedCart(
+        const { itemsToBeRemove, itemsToBeAdd } = getUpdatedCart(
           [freebieCoupon.fields.free_product],
           cart
         );
-
-        res.cartToBeUpdate = updatedCart;
-        res.itemsToBeAdd = itemsToBeAdd;
+        res.freebiesToBeAdd = itemsToBeAdd;
+        res.freebiesToBeRemove = itemsToBeRemove as any;
       }
 
       if (giftCoupon) {
@@ -124,59 +113,7 @@ function useCoupon() {
     return res;
   };
 
-  const debouncedUpdateItemQuantity = (updatedCart: any, itemsToBeAdd: any) => {
-    dispatch(cartActions.updateCart(updatedCart));
-    if (itemsToBeAdd.length)
-      itemsToBeAdd.forEach((item: any) => {
-        dispatch(
-          cartActions.addToCart({
-            selectedVariantId: item.variantId,
-            product: item.product,
-            tempId: uuidv4()
-          })
-        );
-      });
-  };
-  // const debouncedUpdateItemQuantity = useMemo(
-  //   () =>
-  //     debounce((updatedCart, itemsToBeAdd) => {
-  //       dispatch(cartActions.updateCart(updatedCart));
-  //       if (itemsToBeAdd.length)
-  //         itemsToBeAdd.forEach((item: any) => {
-  //           dispatch(
-  //             cartActions.addToCart({
-  //               selectedVariantId: item.variantId,
-  //               product: item.product,
-  //               tempId: uuidv4()
-  //             })
-  //           );
-  //         });
-  //     }, 1000),
-  //   [dispatch]
-  // );
-
-  const adjustCart = (cart: any) => {
-    const { cartToBeUpdate, itemsToBeAdd, giftProducts } = adjustFreebiesInCart(cart);
-
-    const updatedCart = cartToBeUpdate.lines?.map((item: any) => ({
-      id: item.id,
-      merchandiseId: item.merchandise.id,
-      quantity: item.quantity
-    }));
-
-    const _cart = {
-      ...cart,
-      lines: cartToBeUpdate.lines.filter((line: any) => line.quantity > 0)
-    };
-
-    dispatch(cartActions.setCart(_cart));
-    dispatch(setGiftFreeProducts(giftProducts));
-
-    debouncedUpdateItemQuantity(updatedCart, itemsToBeAdd);
-  };
-
   return {
-    adjustFreebiesInCart,
     adjustCart
   };
 }
