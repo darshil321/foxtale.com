@@ -60,8 +60,8 @@ export default function CartModal() {
 
   const OPTIONS: EmblaOptionsType = { dragFree: false };
 
-  const handleProductClick = (product: any) => {
-    trackEvent('Product Clicked', {
+  const handleProductClick = (product: any, title: string) => {
+    trackEvent(title, {
       Product_Name: product.title,
       Product_Url: '',
       Product_Price: product?.priceRange?.maxVariantPrice?.amount,
@@ -139,20 +139,30 @@ export default function CartModal() {
                         <li
                           onClick={(e: React.MouseEvent<HTMLLIElement>) => {
                             e.preventDefault();
-                            handleProductClick(item.merchandise?.product);
                           }}
                           key={i}
                           className="flex w-full flex-col bg-white "
                         >
                           <div className="relative flex w-full flex-row justify-between rounded-sm px-1 py-1 ">
-                            <div className="absolute z-40 -mt-2 ml-[55px]">
+                            <div
+                              onClick={() => {
+                                handleProductClick(
+                                  item.merchandise?.product,
+                                  'Product removed from cart'
+                                );
+                              }}
+                              className="absolute z-40 -mt-2 ml-[55px]"
+                            >
                               <DeleteItemButton item={item} removeIcon={false} />
                             </div>
 
                             <div className="flex h-full w-full items-center justify-between">
                               <Link
                                 href={merchandiseUrl}
-                                onClick={() => dispatch(setCartOpen(false))}
+                                onClick={() => {
+                                  handleProductClick(item.merchandise?.product, 'product clicked');
+                                  dispatch(setCartOpen(false));
+                                }}
                                 className=" flex flex-row space-x-4"
                               >
                                 <div className="relative h-16 w-16 cursor-pointer overflow-hidden rounded-md  border border-neutral-300 bg-neutral-300 ">
@@ -211,6 +221,11 @@ export default function CartModal() {
                                     {item.quantity > 1 && (
                                       <EditItemQuantityButton
                                         onClick={() => {
+                                          handleProductClick(
+                                            item.merchandise?.product,
+                                            'Quantity decreased'
+                                          );
+
                                           updateCartItem({ item, type: 'minus' });
                                         }}
                                         type="minus"
@@ -219,6 +234,11 @@ export default function CartModal() {
                                     {item.quantity === 1 && (
                                       <EditItemQuantityButton
                                         onClick={() => {
+                                          handleProductClick(
+                                            item.merchandise?.product,
+                                            'Product removed from cart'
+                                          );
+
                                           updateCartItem({ item, type: 'minus' });
                                         }}
                                         type="trash"
@@ -228,7 +248,13 @@ export default function CartModal() {
                                       <span className="w-full text-sm">{item.quantity}</span>
                                     </p>
                                     <EditItemQuantityButton
-                                      onClick={() => updateCartItem({ item, type: 'plus' })}
+                                      onClick={() => {
+                                        handleProductClick(
+                                          item.merchandise?.product,
+                                          'Quantity increased'
+                                        );
+                                        updateCartItem({ item, type: 'plus' });
+                                      }}
                                       type="plus"
                                     />
                                   </div>

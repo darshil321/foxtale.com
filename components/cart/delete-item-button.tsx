@@ -26,13 +26,13 @@ function SubmitButton({
         if (pending) e.preventDefault();
         dispatch(cartActions.removeCart({ lineIds: [item?.id] }));
         trackEvent('Removed From Cart', {
-          Product_Name: product.title,
+          Product_Name: product?.title,
           Product_Url: '',
           Product_Price: product?.priceRange?.maxVariantPrice?.amount,
           Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
           Source: '',
           Category: '',
-          Tags: product.tags,
+          Tags: product?.tags,
           Variant_SKU: ''
         });
       }}
