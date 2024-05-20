@@ -1,31 +1,27 @@
 'use client';
-import React from 'react';
-import '../../assets/styles/hero-slider.css';
 import Image from 'next/image';
+import React from 'react';
 import { trackEvent } from 'utils/mixpanel';
 
-const HeroBannerSlider = () => {
+const BannerImage = (imageUrl: string) => {
   const handleCollectionBannerClick = (url: string) => {
     trackEvent('Header Collection Clicked', { BannerUrl: url });
   };
   return (
-    <div className=" h-auto  max-h-[460px] w-full rounded-md">
+    <div>
       <Image
-        onClick={(e: React.MouseEvent<HTMLImageElement>) => {
+        onClick={(e) => {
           e.preventDefault();
-          handleCollectionBannerClick(
-            'https://foxtale.in/cdn/shop/files/Foxtale_bestsellers_banners-04.jpg?v=1715687265'
-          );
+          handleCollectionBannerClick(imageUrl);
         }}
         priority
         height={475}
-        blurDataURL={`https://foxtale-com-git-plan-a-darshils-projects-1d319060.vercel.app/_next/image?url=https%3A%2F%2Ffoxtale.in%2Fcdn%2Fshop%2Ffiles%2FFoxtale_bestsellers_banners-04.jpg%3Fv%3D1715687265&w=1920&q=20`}
-        width={770}
+        width={920}
         objectFit="cover"
         className="hidden h-auto w-full rounded-md md:block"
-        src={`https://foxtale.in/cdn/shop/files/Foxtale_bestsellers_banners-04.jpg?v=1715687265`}
-        alt="foxtale"
-        quality={90}
+        src={imageUrl}
+        alt="Foxtale"
+        quality={95}
         placeholder="blur"
       />
       <Image
@@ -37,7 +33,6 @@ const HeroBannerSlider = () => {
         }}
         priority
         height={240}
-        blurDataURL={`https://foxtale.in/cdn/shop/files/Foxtale_bestsellers_banners-03.jpg?v=1715687265`}
         width={360}
         objectFit="cover"
         className="block h-full w-full rounded-md md:hidden"
@@ -50,4 +45,4 @@ const HeroBannerSlider = () => {
   );
 };
 
-export default HeroBannerSlider;
+export default BannerImage;
