@@ -10,6 +10,8 @@ const CollectionProductsContainer = dynamic(
   () => import('@/components/layout/search/collection-products')
 );
 
+export const fetchCache = 'force-cache';
+
 export const generateStaticParams = async () => {
   return [
     {
