@@ -428,6 +428,7 @@ export async function getProducts({
     const res = await shopifyFetch<ShopifyProductsOperation>({
       query: getProductsQuery,
       tags: [TAGS.products],
+      cache: 'no-store',
       variables: {
         query,
         reverse,
