@@ -1,4 +1,3 @@
-'use client';
 import React from 'react';
 import Navbar from '../layout/navbar';
 import Banner from '../layout/navbar/banner';
