@@ -2,21 +2,21 @@
 import React from 'react';
 import '../../assets/styles/hero-slider.css';
 import Image from 'next/image';
-// import { trackEvent } from 'utils/mixpanel';
+import { trackEvent } from 'utils/mixpanel';
 
 const HeroBannerSlider = () => {
-  // const handleCollectionBannerClick = (url: string) => {
-  //   trackEvent('Header Collection Clicked', { BannerUrl: url });
-  // };
+  const handleCollectionBannerClick = (url: string) => {
+    trackEvent('Header Collection Clicked', { BannerUrl: url });
+  };
   return (
     <div className=" h-auto  max-h-[460px] w-full rounded-md">
       <Image
-        // onClick={(e: React.MouseEvent<HTMLImageElement>) => {
-        //   e.preventDefault();
-        //   handleCollectionBannerClick(
-        //     'https://foxtale.in/cdn/shop/files/Foxtale_bestsellers_banners-04.jpg?v=1715687265'
-        //   );
-        // }}
+        onClick={(e: React.MouseEvent<HTMLImageElement>) => {
+          e.preventDefault();
+          handleCollectionBannerClick(
+            'https://foxtale.in/cdn/shop/files/Foxtale_bestsellers_banners-04.jpg?v=1715687265'
+          );
+        }}
         priority={false}
         height={475}
         width={770}
@@ -28,12 +28,12 @@ const HeroBannerSlider = () => {
         // placeholder="blur"
       />
       <Image
-        // onClick={(e: React.MouseEvent<HTMLImageElement>) => {
-        //   e.preventDefault();
-        //   handleCollectionBannerClick(
-        //     'https://foxtale.in/cdn/shop/files/Foxtale_bestsellers_banners-03.jpg?v=1715687265'
-        //   );
-        // }}
+        onClick={(e: React.MouseEvent<HTMLImageElement>) => {
+          e.preventDefault();
+          handleCollectionBannerClick(
+            'https://foxtale.in/cdn/shop/files/Foxtale_bestsellers_banners-03.jpg?v=1715687265'
+          );
+        }}
         priority={false}
         height={140}
         width={220}
