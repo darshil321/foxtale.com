@@ -49,4 +49,4 @@ sagaMiddleware.run(rootSaga);
 export type AppStore = ReturnType<typeof configureStore>;
 export type AppDispatch = AppStore['dispatch'];
 
-export { store, persistor };
+export { store };
