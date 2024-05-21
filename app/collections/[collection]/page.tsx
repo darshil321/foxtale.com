@@ -4,8 +4,6 @@ import { notFound } from 'next/navigation';
 
 import CollectionProductsContainer from '@/components/layout/search/collection-products';
 
-export const fetchCache = 'force-cache';
-
 export const generateStaticParams = async () => {
   return [
     {
