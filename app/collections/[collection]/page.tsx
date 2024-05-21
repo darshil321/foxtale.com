@@ -2,13 +2,10 @@ import { getCollection, getCollectionProducts } from 'lib/shopify';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { defaultSort, sorting } from 'lib/constants';
-import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 import Loading from '../loading';
 
-const CollectionProductsContainer = dynamic(
-  () => import('@/components/layout/search/collection-products')
-);
+import CollectionProductsContainer from '@/components/layout/search/collection-products';
 
 export const fetchCache = 'force-cache';
 
