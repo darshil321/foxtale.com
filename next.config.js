@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
-const million = require('million/compiler');
-
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true'
+});
 const nextConfig = {
   eslint: {
     // Disabling on production builds because we're running checks on PRs via GitHub Actions.
@@ -42,13 +43,6 @@ const nextConfig = {
   }
 };
 
-const millionConfig = {
-  auto: {
-    skip: ['useBadHook', /badVariable/g] // default []
-  }
-};
 // module.exports =
 
-module.exports = million.next(nextConfig, millionConfig);
-
-// module.exports = process.env.ANALYZE === 'true' ? withBundleAnalyzer(nextConfig) : nextConfig;
+module.exports = process.env.ANALYZE === 'true' ? withBundleAnalyzer(nextConfig) : nextConfig;

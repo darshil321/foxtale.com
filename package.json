@@ -48,7 +48,6 @@
     "embla-carousel": "^8.0.2",
     "embla-carousel-autoplay": "^8.0.2",
     "embla-carousel-react": "^8.0.2",
-    "million": "^3.0.6",
     "mixpanel-browser": "^2.50.0",
     "next": "^14.3.0-canary.30",
     "react": "18.2.0",
