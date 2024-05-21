@@ -1,29 +1,26 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getMetaObjects, getProducts } from '@/lib/shopify';
 import { setFreebieCoupons, setGiftCoupons, setMagicLinkCoupons } from '@/store/slices/cart-slice';
 import { setProducts } from '@/store/slices/product-slice';
-import { appendReviewAndRating } from '@/lib/helper/helper';
 
-const InitialData = () => {
+const InitialData = ({ giftsCoupon, freebieCoupons, magicLinks, products }: any) => {
   const dispatch = useDispatch();
   const [hasDataBeenFetched, setHasDataBeenFetched] = useState(false);
 
   // Function to fetch metadata
   const getMetaData = async () => {
-    const results = await Promise.allSettled([
-      getMetaObjects('gifts'),
-      getMetaObjects('freebies'),
-      getMetaObjects('magic_link'),
-      appendReviewAndRating(await getProducts({}))
-    ]);
+    // const results = await Promise.allSettled([
+    //   getMetaObjects('gifts'),
+    //   getMetaObjects('freebies'),
+    //   getMetaObjects('magic_link'),
+    //   appendReviewAndRating(await getProducts({}))
+    // ]);
 
-    const giftsCoupon = results[0].status === 'fulfilled' ? results[0].value : null;
-    const freebieCoupons = results[1].status === 'fulfilled' ? results[1].value : null;
-    const magicLinks = results[2].status === 'fulfilled' ? results[2].value : null;
-    const products = results[3].status === 'fulfilled' ? results[3].value : null;
-    console.log('productssss', products);
+    // const giftsCoupon = results[0].status === 'fulfilled' ? results[0].value : null;
+    // const freebieCoupons = results[1].status === 'fulfilled' ? results[1].value : null;
+    // const magicLinks = results[2].status === 'fulfilled' ? results[2].value : null;
+    // const products = results[3].status === 'fulfilled' ? results[3].value : null;
 
     if (freebieCoupons) dispatch(setFreebieCoupons(freebieCoupons));
     if (giftsCoupon) dispatch(setGiftCoupons(giftsCoupon));
@@ -35,7 +32,7 @@ const InitialData = () => {
   const getProductsData = async () => {
     console.log('fetching products');
 
-    const products = await getProducts({});
+    // const products = await getProducts({});
     if (products) dispatch(setProducts(products));
   };
 
