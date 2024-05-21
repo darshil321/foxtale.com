@@ -6,8 +6,7 @@ import WrapperContainer from 'components/layout/wrapper-container';
 import Provider from '../store/store-provider';
 import Banner from 'components/layout/navbar/banner';
 import { Poppins } from 'next/font/google';
-import dynamic from 'next/dynamic';
-const InitialData = dynamic(() => import('@/components/initial-data'));
+import InitialData from '@/components/initial-data';
 
 const poppins = Poppins({
   subsets: ['latin'],

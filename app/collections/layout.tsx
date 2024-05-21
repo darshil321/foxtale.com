@@ -1,9 +1,8 @@
 import Footer from '@/components/layout/footer';
 import HeroBannerSlider from '@/components/product/hero-banner-slider';
-import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 
-const Collections = dynamic(() => import('@/components/layout/search/collections'));
+import Collections from '@/components/layout/search/collections';
 
 export default async function SearchLayout({ children }: { children: React.ReactNode }) {
   return (

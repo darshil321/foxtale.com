@@ -5,21 +5,18 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { GridTileImage } from '@/components/grid/tile';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
-import dynamic from 'next/dynamic';
 import { BestSellingCombos } from '@/components/grid/best-selling-combos';
 import ProductSlider from '@/components/product/product-slider';
 import ProductDisclosure from '@/components/product/product-disclosure';
 
-const OfferSection = dynamic(() => import('@/components/product/offers-section'));
-const ProductsRatings = dynamic(() => import('@/components/product/products-rating'));
-const ProductDescription = dynamic(() => import('@/components/product/product-description'));
-const ProductCarouselSlider = dynamic(() => import('@/components/product/product-carousel'));
-const ProductDetailsTabs = dynamic(() => import('@/components/product/product-details-tabs'));
-
-const ProductDescFooter = dynamic(() => import('@/components/product/pdp-footer'));
-const Accordion = dynamic(() => import('@/components/layout/accordion'));
-const ResultsSection = dynamic(() => import('@/components/product/results-section'));
-
+import OfferSection from '@/components/product/offers-section';
+import ProductsRatings from '@/components/product/products-rating';
+import ProductDescription from '@/components/product/product-description';
+import ProductCarouselSlider from '@/components/product/product-carousel';
+import ProductDetailsTabs from '@/components/product/product-details-tabs';
+import ProductDescFooter from '@/components/product/pdp-footer';
+import Accordion from '@/components/layout/accordion';
+import ResultsSection from '@/components/product/results-section';
 export const generateStaticParams = async () => {
   const products = await getProducts({});
 
@@ -76,6 +73,8 @@ export default async function ProductPage({
   searchParams: any;
 }) {
   const product = await getProduct(params.handle);
+
+  console.log('product', product);
 
   if (!product) return notFound();
 
