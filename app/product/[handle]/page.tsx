@@ -73,6 +73,7 @@ export default async function ProductPage({
   searchParams: any;
 }) {
   const product = await getProduct(params.handle);
+  console.log('pdp');
 
   if (!product) return notFound();
 
