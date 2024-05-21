@@ -1,8 +1,9 @@
+import Cart from 'components/cart';
+import OpenCart from 'components/cart/open-cart';
 import { getMenu } from 'lib/shopify';
 import { Menu } from 'lib/shopify/types';
 import Link from 'next/link';
 import { Suspense } from 'react';
-import Search, { SearchSkeleton } from './search';
 import LogoSquare from '@/components/logo-square';
 
 export default async function Navbar() {
@@ -33,15 +34,11 @@ export default async function Navbar() {
             </ul>
           ) : null}
         </div>
-        <div className="hidden justify-center md:flex md:w-1/3">
-          <Suspense fallback={<SearchSkeleton />}>
-            <Search />
-          </Suspense>
-        </div>
+        <div className="hidden justify-center md:flex md:w-1/3"></div>
         <div className="flex ">
-          {/* <Suspense fallback={<OpenCart />}>
+          <Suspense fallback={<OpenCart />}>
             <Cart />
-          </Suspense> */}
+          </Suspense>
         </div>
       </div>
     </nav>
