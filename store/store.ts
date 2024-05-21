@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { persistStore, persistReducer } from 'redux-persist';
+import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import createSagaMiddleware from 'redux-saga';
 import { productSlice } from './slices/product-slice';
@@ -44,9 +44,8 @@ const store = configureStore({
 sagaMiddleware.run(rootSaga);
 
 // Persisted Store
-const persistor = persistStore(store);
 
 export type AppStore = ReturnType<typeof configureStore>;
 export type AppDispatch = AppStore['dispatch'];
 
-export { store, persistor };
+export { store };
