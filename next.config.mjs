@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const million = require('million/compiler');
+import million from 'million/compiler';
 
 const nextConfig = {
   eslint: {
@@ -43,12 +43,10 @@ const nextConfig = {
 };
 
 const millionConfig = {
-  auto: {
-    skip: ['useBadHook', /badVariable/g] // default []
-  }
+  auto: true
 };
 // module.exports =
 
-module.exports = million.next(nextConfig, millionConfig);
+export default million.next(nextConfig, millionConfig);
 
 // module.exports = process.env.ANALYZE === 'true' ? withBundleAnalyzer(nextConfig) : nextConfig;
