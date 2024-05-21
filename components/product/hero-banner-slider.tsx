@@ -43,7 +43,7 @@ const HeroBannerSlider = () => {
         className="block h-full w-full rounded-md md:hidden"
         src={`https://foxtale.in/cdn/shop/files/Foxtale_bestsellers_banners-03.jpg?v=1715687265`}
         alt="Foxtale"
-        quality={90}
+        quality={40}
         placeholder="blur"
       />
     </div>

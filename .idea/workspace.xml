@@ -5,21 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="91ba569e-7324-4d5b-be1e-59cd35442d9b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/components/cart/actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/components/cart/actions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/cart/add-to-cart-button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/cart/add-to-cart-button.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/cart/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/cart/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/cart/modal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/cart/modal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/common/recommended-product-slider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/common/recommended-product-slider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/initial-data.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/initial-data.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/product/go-kwik-button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/product/go-kwik-button.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/helper/cart-helper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/helper/cart-helper.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/helper/helper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/helper/helper.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/hooks/use-coupon.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/hooks/use-coupon.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/shopify/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/shopify/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/store/actions/cart.action.ts" beforeDir="false" afterPath="$PROJECT_DIR$/store/actions/cart.action.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/store/middlewares/cart.ts" beforeDir="false" afterPath="$PROJECT_DIR$/store/middlewares/cart.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/store/slices/cart-slice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/store/slices/cart-slice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +27,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "Merging plan-A",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "/Users/chiragparmar/Documents/foxtale/foxtale-frontend",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -64,7 +50,7 @@
       <workItem from="1715333736721" duration="106000" />
       <workItem from="1715696597534" duration="419000" />
       <workItem from="1715751578618" duration="2577000" />
-      <workItem from="1716185351929" duration="384000" />
+      <workItem from="1716185351929" duration="881000" />
     </task>
     <servers />
   </component>

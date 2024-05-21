@@ -1,25 +1,25 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getMetaObjects, getProducts } from '@/lib/shopify';
+import { getProducts } from '@/lib/shopify';
 import { setFreebieCoupons, setGiftCoupons, setMagicLinkCoupons } from '@/store/slices/cart-slice';
 import { setProducts } from '@/store/slices/product-slice';
 
-const InitialData = () => {
+const InitialData = ({ giftsCoupon, freebieCoupons, magicLinks }: any) => {
   const dispatch = useDispatch();
   const [hasDataBeenFetched, setHasDataBeenFetched] = useState(false);
 
   // Function to fetch metadata
   const getMetaData = async () => {
-    const results = await Promise.allSettled([
-      getMetaObjects('gifts'),
-      getMetaObjects('freebies'),
-      getMetaObjects('magic_link')
-    ]);
+    // const results = await Promise.allSettled([
+    //   getMetaObjects('gifts'),
+    //   getMetaObjects('freebies'),
+    //   getMetaObjects('magic_link')
+    // ]);
 
-    const giftsCoupon = results[0].status === 'fulfilled' ? results[0].value : null;
-    const freebieCoupons = results[1].status === 'fulfilled' ? results[1].value : null;
-    const magicLinks = results[2].status === 'fulfilled' ? results[2].value : null;
+    // const giftsCoupon = results[0].status === 'fulfilled' ? results[0].value : null;
+    // const freebieCoupons = results[1].status === 'fulfilled' ? results[1].value : null;
+    // const magicLinks = results[2].status === 'fulfilled' ? results[2].value : null;
 
     if (freebieCoupons) dispatch(setFreebieCoupons(freebieCoupons));
     if (giftsCoupon) dispatch(setGiftCoupons(giftsCoupon));
