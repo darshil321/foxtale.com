@@ -1,5 +1,3 @@
-import Cart from 'components/cart';
-import OpenCart from 'components/cart/open-cart';
 import { getMenu } from 'lib/shopify';
 import { Menu } from 'lib/shopify/types';
 import Link from 'next/link';
@@ -13,11 +11,6 @@ export default async function Navbar() {
   return (
     <nav className="relative flex items-center justify-between border-b p-2 shadow-md md:border-none md:shadow-none lg:px-0 lg:py-6">
       <div className="flex w-full items-center justify-between">
-        {/* <div className="block flex-none md:hidden">
-          <Suspense fallback={null}>
-            <MobileMenu menu={menu} />
-          </Suspense>
-        </div> */}
         <div className="flex ">
           <Link
             href="/collections/shop-1"
@@ -46,9 +39,9 @@ export default async function Navbar() {
           </Suspense>
         </div>
         <div className="flex ">
-          <Suspense fallback={<OpenCart />}>
+          {/* <Suspense fallback={<OpenCart />}>
             <Cart />
-          </Suspense>
+          </Suspense> */}
         </div>
       </div>
     </nav>
