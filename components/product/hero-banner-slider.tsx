@@ -8,6 +8,7 @@ const HeroBannerSlider = () => {
   const handleCollectionBannerClick = (url: string) => {
     trackEvent('Header Collection Clicked', { BannerUrl: url });
   };
+
   return (
     <div className=" h-auto  max-h-[460px] w-full rounded-md">
       <Image
