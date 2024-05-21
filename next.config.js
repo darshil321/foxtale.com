@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-const withBundleAnalyzer = require('@next/bundle-analyzer')();
 const million = require('million/compiler');
 
 const nextConfig = {
@@ -45,7 +44,6 @@ const nextConfig = {
 
 const millionConfig = {
   auto: {
-    threshold: 0.05,
     skip: ['useBadHook', /badVariable/g] // default []
   }
 };
