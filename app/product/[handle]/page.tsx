@@ -72,6 +72,8 @@ export default async function ProductPage({
   params: { handle: string };
   searchParams: any;
 }) {
+  console.log('pdpp');
+
   const product = await getProduct(params.handle);
 
   if (!product) return notFound();

@@ -1,9 +1,6 @@
 import { getCollection, getCollectionProducts } from 'lib/shopify';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { defaultSort, sorting } from 'lib/constants';
-import { Suspense } from 'react';
-import Loading from '../loading';
 
 import CollectionProductsContainer from '@/components/layout/search/collection-products';
 
@@ -32,15 +29,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function CategoryPage({
-  searchParams
-}: {
-  params: { collection: string };
+export default async function CategoryPage({}: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const { sort } = searchParams as { [key: string]: string };
-  const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
-
   const collections = [
     {
       handle: 'cleansers'
@@ -55,27 +46,26 @@ export default async function CategoryPage({
       handle: 'serums'
     }
   ];
+  console.log('plppppp');
 
   // Fetch products for all collections simultaneously
   const promises = collections.map(
-    async (collection) =>
-      await getCollectionProducts({ collection: collection.handle, sortKey, reverse })
+    async (collection) => await getCollectionProducts({ collection: collection.handle })
   );
 
   const productsByCollection = await Promise.all(promises);
+  console.log('productsByCollection', productsByCollection, productsByCollection?.length);
 
   return (
     <>
       <div className="h-full w-full gap-4 space-y-6 ">
         {productsByCollection?.map((products, index) => (
-          <Suspense fallback={<Loading />} key={index}>
-            <CollectionProductsContainer
-              key={index}
-              index={index}
-              collections={collections}
-              products={products}
-            />
-          </Suspense>
+          <CollectionProductsContainer
+            key={index}
+            index={index}
+            collections={collections}
+            products={products}
+          />
         ))}
       </div>
     </>
