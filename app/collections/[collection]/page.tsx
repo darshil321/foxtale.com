@@ -44,7 +44,6 @@ export default async function CategoryPage({}: {
       handle: 'serums'
     }
   ];
-  console.log('plppppp');
 
   // Fetch products for all collections simultaneously
   const promises = collections.map(
