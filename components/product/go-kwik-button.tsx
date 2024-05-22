@@ -75,6 +75,7 @@ export function GokwikButton(passedData) {
       });
     } else {
       getCart(cartId).then((data) => {
+        setLoading(false);
         triggerGokwikCheckout(data);
       });
     }
