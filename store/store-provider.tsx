@@ -3,13 +3,12 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './store';
-import LoadingDots from '@/components/loading-dots';
+import Loader from '@/components/elements/loader';
 
 export const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  //  hello world
   return (
     <Provider store={store}>
-      <PersistGate persistor={persistor} loading={<LoadingDots />}>
+      <PersistGate persistor={persistor} loading={<Loader />}>
         {children}
       </PersistGate>
     </Provider>
