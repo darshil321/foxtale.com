@@ -125,20 +125,16 @@ export function GridTileImage({
               <p className="bottom-leftext text-[#008325]">B2G2</p>
               <p className="bottom-rightext text-red-400">Free Gift</p>
             </div>
-            <div className="flex w-full items-center justify-center overflow-hidden rounded-b-sm bg-black p-2 md:p-4">
-              <span className=" flex self-center text-center text-[8px] font-semibold uppercase text-white md:text-xs">
-                <Suspense fallback={null}>
-                  <AddToCartButton
-                    product={product}
-                    variants={product.variants}
-                    availableForSale={product?.availableForSale || false}
-                    buttonClasses={
-                      'relative flex flex-1 text-sm hover:text-purple-400  items-center justify-center text-base bg-black border border-black text-white  md:px-8 uppercase tracking-wide font-normal md:font-semibold'
-                    }
-                  />
-                </Suspense>
-              </span>
-            </div>
+            <Suspense fallback={null}>
+              <AddToCartButton
+                product={product}
+                variants={product.variants}
+                availableForSale={product?.availableForSale || false}
+                buttonClasses={
+                  'p-2 w-full relative flex flex-1 text-sm hover:text-purple-400  items-center justify-center text-base bg-black border border-black text-white  md:px-8 uppercase tracking-wide font-normal md:font-semibold'
+                }
+              />
+            </Suspense>
           </div>
         </div>
       ) : null}
