@@ -33,7 +33,7 @@ const integrationUrls = {
 export function GokwikButton(passedData) {
   const [loading, setLoading] = useState(false);
   // const cartId = useAppSelector((state) => state.cart.cart?.id);
-  const cart = useAppSelector((state) => state.cart.cart);
+  const cartId = useAppSelector((state) => state.cart.cartId);
 
   let buyNowRun = false;
   useEffect(() => {
@@ -74,8 +74,8 @@ export function GokwikButton(passedData) {
         });
       });
     } else {
-      getCart(cart.id).then((data) => {
-        console.log('data', data);
+      getCart(cartId).then((data) => {
+        triggerGokwikCheckout(data);
       });
     }
   };

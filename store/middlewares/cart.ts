@@ -1,7 +1,7 @@
 import { createCartIfNotExists } from '@/components/cart/actions';
-import { call, debounce, put, takeLatest } from 'redux-saga/effects';
+import { call, debounce, put, select, takeLatest } from 'redux-saga/effects';
 import { cartActions } from 'store/actions/cart.action';
-import { setRecommendedProduct } from '../slices/cart-slice';
+import { setCartId, setRecommendedProduct } from '../slices/cart-slice';
 import { addToCart, getCart, getProductRecommendations, updateCart } from '@/lib/shopify';
 import { getDefaultVariant } from '@/lib/helper/helper';
 
@@ -57,6 +57,12 @@ export function* manageCartSaga(action: {
   try {
     const { updatedCart } = action.payload;
     const cartId = yield call({ fn: createCartIfNotExists, context: null });
+    const state = yield select();
+    console.log('cartId', state);
+
+    if (!state.cart.cartId) {
+      yield put(setCartId(cartId));
+    }
 
     if (!cartId) {
       console.log('cartId not found');

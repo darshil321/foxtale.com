@@ -60,6 +60,7 @@ export interface CartState {
   isCartOpen: boolean;
   giftFreeProducts?: { product: Product; variantId: string }[];
   remoteCart?: Cart;
+  cartId?: string;
 }
 
 export const initialState: CartState = {
@@ -202,6 +203,11 @@ export const cartSlice = createSlice({
 
     setGiftFreeProducts: (state, action) => {
       state.giftFreeProducts = action.payload;
+    },
+    setCartId: (state, action) => {
+      console.log('action.payload', action.payload);
+
+      state.cartId = action.payload;
     }
   }
 });
@@ -219,6 +225,7 @@ export const {
   setLoading,
   addToCart,
   setMagicLinkCoupons,
+  setCartId,
 
   updateCartItem,
   setGiftFreeProducts

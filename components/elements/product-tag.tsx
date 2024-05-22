@@ -1,23 +1,31 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const ProductTag = ({ product }: any) => {
-  const productTagMetafield = product?.metafields?.find((item: any) => item?.key === 'product_tag');
+  const [tagText, setTagText] = useState<string | null>(null);
 
-  if (!productTagMetafield) return null;
+  useEffect(() => {
+    const productTagMetafield = product?.metafields?.find(
+      (item: any) => item?.key === 'product_tag'
+    );
 
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(productTagMetafield.value, 'text/html');
-  const tagText = doc?.querySelector('.shop-tag')?.textContent?.trim();
+    if (productTagMetafield) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(productTagMetafield.value, 'text/html');
+      const tagContent = doc?.querySelector('.shop-tag')?.textContent?.trim();
+
+      if (tagContent) {
+        setTagText(tagContent);
+      }
+    }
+  }, [product]);
+
+  if (!tagText) return null;
 
   return (
-    <>
-      {tagText && (
-        <div className="absolute right-2 top-2 rounded-md bg-white p-1 text-xs font-bold uppercase text-orange-400">
-          {tagText}
-        </div>
-      )}
-    </>
+    <div className="absolute right-2 top-2 rounded-md bg-white p-1 text-xs font-bold uppercase text-orange-400">
+      {tagText}
+    </div>
   );
 };
 
