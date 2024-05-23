@@ -15,19 +15,17 @@ const FooterMenuItem = ({ item }: { item: Menu }) => {
   }, [pathname, item.path]);
 
   return (
-    <li>
-      <Link
-        href={item.path}
-        className={clsx(
-          'block p-1 text-sm text-[#2c2c2c] underline-offset-4 hover:text-black hover:underline md:inline-block md:text-sm ',
-          {
-            'text-black ': active
-          }
-        )}
-      >
-        {item.title}
-      </Link>
-    </li>
+    <Link
+      href={item.path}
+      className={clsx(
+        'block p-1 text-sm text-[#2c2c2c] underline-offset-4 hover:text-black hover:underline md:inline-block md:text-sm ',
+        {
+          'text-black ': active
+        }
+      )}
+    >
+      {item.title}
+    </Link>
   );
 };
 
@@ -36,14 +34,12 @@ export default function FooterMenu({ menu }: { menu: Menu[] }) {
 
   return (
     <nav>
-      <ul>
-        <h5 className="block px-1 pb-3 text-sm font-medium leading-7  tracking-widest text-black md:inline-block">
-          {menu.length > 0 ? menu[0]?.title : ''}
-        </h5>
-        {menu?.slice(1, menu.length).map((item: Menu) => {
-          return <FooterMenuItem key={item.title} item={item} />;
-        })}
-      </ul>
+      <span className="block px-1 pb-3 text-sm font-medium leading-7  tracking-widest text-black md:inline-block">
+        {menu.length > 0 ? menu[0]?.title : ''}
+      </span>
+      {menu?.slice(1, menu.length).map((item: Menu) => {
+        return <FooterMenuItem key={item.title} item={item} />;
+      })}
     </nav>
   );
 }
