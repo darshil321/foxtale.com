@@ -14,8 +14,10 @@ export function GridTileImage({
   label,
   index = 0,
   alt = 'image',
+  collectionIndex = -1,
   ...props
 }: {
+  collectionIndex?: number;
   isInteractive?: boolean;
   active?: boolean;
   product?: any;
@@ -31,6 +33,7 @@ export function GridTileImage({
 } & React.ComponentProps<typeof Image>) {
   if (!product) return null;
   const productDescription = product?.metafields?.find((item: any) => item?.key === 'hp_excerpt');
+  const setPriority = collectionIndex === 0 && (index === 0 || index === 1);
 
   return (
     <div
@@ -76,6 +79,7 @@ export function GridTileImage({
                     quality={75}
                     loading={index < 3 ? 'eager' : 'lazy'}
                     sizes="(max-width: 640px) 200px, 300px"
+                    priority={setPriority ? setPriority : false}
                     {...props}
                   />
                   <ProductTag product={product} />
