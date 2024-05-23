@@ -22,12 +22,10 @@ function FilterItemList({ list }: { list: ListItem[] }) {
 export default function FilterList({ list }: { list: ListItem[]; title?: string }) {
   return (
     <>
-      <nav className=" sticky top-0">
-        <ul className=" h-[128px] items-center justify-center rounded-md bg-white transition-all   delay-100 md:flex  md:h-[170px] ">
-          <Suspense fallback={null}>
-            <FilterItemList list={list} />
-          </Suspense>
-        </ul>
+      <nav className=" sticky top-0 h-[128px] items-center justify-center rounded-md bg-white transition-all   delay-100 md:flex  md:h-[170px] ">
+        <Suspense fallback={null}>
+          <FilterItemList list={list} />
+        </Suspense>
         {/* <ul className="md:hidden">
           <Suspense fallback={null}>
             <FilterItemDropdown list={list} />

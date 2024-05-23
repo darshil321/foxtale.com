@@ -65,6 +65,9 @@ export function GokwikButton(passedData) {
   }, [buyNowRun]);
 
   const triggerBuyNow = (passedData: { quantity: number; variantId: string; title: string }) => {
+    const cartIdd = localStorage.getItem('cartId');
+    console.log('cartIdd', cartIdd);
+
     setLoading(true);
     if (passedData.title === 'Buy Now') {
       createCart().then((data) => {
@@ -75,6 +78,7 @@ export function GokwikButton(passedData) {
       });
     } else {
       getCart(cartId).then((data) => {
+        setLoading(false);
         triggerGokwikCheckout(data);
       });
     }
