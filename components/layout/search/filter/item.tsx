@@ -27,30 +27,34 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
   const active = selectedCollection === item?.handle?.toLowerCase();
 
   return (
-    <li className="mt-2 flex h-full w-full items-center justify-center gap-2 text-black">
-      <div
-        onClick={handleClick}
-        className={`relative flex h-full cursor-pointer flex-col items-center justify-center gap-1 md:gap-2
-      `}
-      >
-        <Image
-          src={item?.image?.url || '/Images/defualt.png'}
-          className=" flex min-h-[80px]  min-w-[80px] items-center justify-center  rounded-full md:min-h-[100px] md:min-w-[100px]"
-          alt={(item?.title && item?.title + Math.random()) || 'Image'}
-          width={70}
-          loading="lazy"
-          objectFit="cover"
-          quality={75}
-          height={70}
-        />
-        <button className={`line-clamp-1 text-ellipsis text-wrap text-center text-xs md:text-sm `}>
-          {item.title}
-        </button>
+    <ul>
+      <li className="mt-2 flex h-full w-full items-center justify-center gap-2 text-black">
         <div
-          className={`h-[2px] w-[78px] rounded-full ${active ? 'bg-black' : ''}  transition-colors duration-300 ease-in-out md:w-[138px]`}
-        ></div>
-      </div>
-    </li>
+          onClick={handleClick}
+          className={`relative flex h-full cursor-pointer flex-col items-center justify-center gap-1 md:gap-2
+      `}
+        >
+          <Image
+            src={item?.image?.url || '/Images/defualt.png'}
+            className=" flex min-h-[80px]  min-w-[80px] items-center justify-center  rounded-full md:min-h-[100px] md:min-w-[100px]"
+            alt={(item?.title && item?.title + Math.random()) || 'Image'}
+            width={70}
+            loading="lazy"
+            objectFit="cover"
+            quality={75}
+            height={70}
+          />
+          <button
+            className={`line-clamp-1 text-ellipsis text-wrap text-center text-xs md:text-sm `}
+          >
+            {item.title}
+          </button>
+          <div
+            className={`h-[2px] w-[78px] rounded-full ${active ? 'bg-black' : ''}  transition-colors duration-300 ease-in-out md:w-[138px]`}
+          ></div>
+        </div>
+      </li>
+    </ul>
   );
 }
 
@@ -69,17 +73,19 @@ function SortFilterItem({ item }: { item: SortFilterItem }) {
   const DynamicTag = active ? 'p' : Link;
 
   return (
-    <li className="mt-2 flex text-sm text-black " key={item.title}>
-      <DynamicTag
-        prefetch={!active ? false : undefined}
-        href={href}
-        className={clsx('w-full hover:underline hover:underline-offset-4', {
-          'underline underline-offset-4': active
-        })}
-      >
-        {item.title}
-      </DynamicTag>
-    </li>
+    <ul>
+      <li className="mt-2 flex text-sm text-black " key={item.title}>
+        <DynamicTag
+          prefetch={!active ? false : undefined}
+          href={href}
+          className={clsx('w-full hover:underline hover:underline-offset-4', {
+            'underline underline-offset-4': active
+          })}
+        >
+          {item.title}
+        </DynamicTag>
+      </li>
+    </ul>
   );
 }
 
