@@ -107,9 +107,9 @@ export function GridTileImage({
             <div className=" px-2 pt-2">
               <div className="">
                 <Link href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}>
-                  <h3 className=" leading-2 line-clamp-1 cursor-pointer text-[12px] transition-all hover:text-purple-400 md:text-base md:leading-6">
+                  <p className="leading-2 line-clamp-1 cursor-pointer text-[12px] transition-all hover:text-purple-400 md:text-base md:leading-6">
                     {label?.title}
-                  </h3>
+                  </p>
                 </Link>
                 <p className="line-clamp-1 text-[10px] leading-7 text-[#6e6e6e]  md:text-xs">
                   {productDescription?.value}
