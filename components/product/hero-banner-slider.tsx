@@ -12,13 +12,14 @@ const HeroBannerSlider = () => {
   return (
     <div className=" h-auto  max-h-[460px] w-full rounded-md">
       <Image
+        blurDataURL=""
         onClick={(e: React.MouseEvent<HTMLImageElement>) => {
           e.preventDefault();
           handleCollectionBannerClick(
             'https://foxtale.in/cdn/shop/files/Foxtale_bestsellers_banners-04.jpg?v=1715687265'
           );
         }}
-        priority={false}
+        priority
         height={475}
         width={770}
         objectFit="cover"
@@ -35,7 +36,7 @@ const HeroBannerSlider = () => {
             'https://foxtale.in/cdn/shop/files/Foxtale_bestsellers_banners-03.jpg?v=1715687265'
           );
         }}
-        priority={false}
+        priority
         height={140}
         width={220}
         objectFit="cover"
