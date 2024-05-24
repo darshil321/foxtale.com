@@ -77,7 +77,7 @@ export function GridTileImage({
                     height={300}
                     alt={alt}
                     quality={75}
-                    loading={index < 3 ? 'eager' : 'lazy'}
+                    loading={setPriority ? 'eager' : 'lazy'}
                     sizes="(max-width: 640px) 200px, 300px"
                     priority={setPriority ? setPriority : false}
                     {...props}

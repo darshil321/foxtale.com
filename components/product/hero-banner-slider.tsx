@@ -29,6 +29,7 @@ const HeroBannerSlider = () => {
         alt="foxtale"
         quality={90}
         placeholder="blur"
+        loading="eager"
       />
       <Image
         onClick={(e: React.MouseEvent<HTMLImageElement>) => {
@@ -47,6 +48,7 @@ const HeroBannerSlider = () => {
         quality={90}
         blurDataURL={banner_1}
         placeholder="blur"
+        loading="eager"
       />
     </div>
   );
