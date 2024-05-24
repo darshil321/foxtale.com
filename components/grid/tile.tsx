@@ -77,7 +77,7 @@ export function GridTileImage({
                     height={300}
                     alt={alt}
                     quality={75}
-                    loading={index < 3 ? 'eager' : 'lazy'}
+                    loading={setPriority ? 'eager' : 'lazy'}
                     sizes="(max-width: 640px) 200px, 300px"
                     priority={setPriority ? setPriority : false}
                     {...props}
@@ -85,7 +85,6 @@ export function GridTileImage({
                   <ProductTag product={product} />
                 </Link>
               </div>
-
               {product.ratings && product.ratings.average !== 0 && (
                 <div className="absolute bottom-2 left-2 flex w-max flex-row justify-between  gap-1 rounded-sm bg-white px-1 py-[1px]  text-black">
                   <div data-rating="4.8">

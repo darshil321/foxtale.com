@@ -53,6 +53,8 @@ import {
   ShopifyUpdateCartOperation
 } from './types';
 import { Metaobject } from '@shopify/hydrogen-react/storefront-api-types';
+import { getProductId } from '../helper/helper';
+import axios from 'axios';
 
 const domain = process.env.SHOPIFY_STORE_DOMAIN
   ? ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://')
@@ -492,4 +494,106 @@ export async function getProductsData(first: number): Promise<any> {
   } catch (err) {}
 
   // return reshapeCart(res.body.data.cart);
+}
+export async function appendReviewAndRating(products: any) {
+  try {
+    const reviews = await getReviewsById();
+    const ratings = await getRatingsById();
+
+    reviews.forEach((review: any) => {
+      const product = products.find((product: any) => {
+        const id = getProductId(product.id);
+
+        return id === review.external_product_id;
+      });
+      if (product) {
+        product.reviews = review;
+      }
+    });
+
+    ratings.forEach((rating: any) => {
+      const product = products.find((product: any) => {
+        const id = getProductId(product.id);
+        return id === rating.external_product_id;
+      });
+      if (product) {
+        product.ratings = rating;
+      }
+    });
+
+    return products;
+  } catch (error) {
+    throw error;
+  }
+}
+export async function appendReviewAndRatingInProduct(product: any) {
+  try {
+    const id = getProductId(product.id);
+    // const reviews = await getReviewsById(id);
+    const ratings = await getRatingsById(id);
+    const productRating = ratings.find((rating: any) => rating.subject === 'product');
+
+    // reviews.forEach((review: any) => {
+    //   const product = products.find((product: any) => {
+    //     const id = getProductId(product.id);
+    //     return id === review.external_product_id;
+    //   });
+    //   if (product) {
+    //     product.reviews = review;
+    //   }
+    // });
+
+    product.ratings = productRating;
+
+    return product;
+  } catch (error) {
+    throw error;
+  }
+}
+async function getReviewsById(id?: string) {
+  const productId = id && getProductId(id);
+  const url = productId
+    ? `https://api.fera.ai/v3/private/reviews?external_product_id=${productId}`
+    : 'https://api.fera.ai/v3/private/reviews';
+
+  try {
+    const reviewApiOptions = {
+      method: 'get',
+      url: url,
+      headers: {
+        accept: 'application/json',
+        'SECRET-KEY': process.env.NEXT_PUBLIC_FERA_FOXTALE_SECRET_KEY
+      }
+    };
+    const response = await axios.request(reviewApiOptions);
+    const reviews = response.data.data;
+
+    return reviews;
+  } catch (e) {
+    console.log('e', e);
+  }
+}
+
+async function getRatingsById(id?: string) {
+  const productId = id && getProductId(id);
+  const url = productId
+    ? `https://api.fera.ai/v3/private/ratings?external_product_id=${productId}`
+    : 'https://api.fera.ai/v3/private/ratings';
+
+  try {
+    const ratingApiOptions = {
+      method: 'GET',
+      url: url,
+      headers: {
+        accept: 'application/json',
+        'SECRET-KEY': process.env.NEXT_PUBLIC_FERA_FOXTALE_SECRET_KEY
+      }
+    };
+    const response = await axios.request(ratingApiOptions);
+    const ratings = response.data.data;
+
+    return ratings;
+  } catch (e) {
+    console.log('e', e);
+  }
 }
