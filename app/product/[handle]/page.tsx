@@ -1,10 +1,5 @@
 import type { Metadata } from 'next';
-import {
-  appendReviewAndRatingInProduct,
-  getProduct,
-  getProductRecommendations,
-  getProducts
-} from 'lib/shopify';
+import { getProduct, getProductRecommendations, getProducts } from 'lib/shopify';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -77,8 +72,8 @@ export default async function ProductPage({
   params: { handle: string };
   searchParams: any;
 }) {
-  const productWithoutRating = await getProduct(params.handle);
-  const product = await appendReviewAndRatingInProduct(productWithoutRating);
+  const product = await getProduct(params.handle);
+  // const product = await appendReviewAndRatingInProduct(productWithoutRating);
 
   if (!product) return notFound();
 
