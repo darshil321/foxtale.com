@@ -41,28 +41,59 @@ export default async function CategoryPage({
 
   const collections = [
     {
-      handle: 'cleansers'
+      handle: '399-store'
     },
     {
-      handle: 'Sunscreens'
-    },
-    {
-      handle: 'moisturizers'
-    },
-    {
-      handle: 'serums'
+      handle: '499-store'
     }
   ];
 
+  const collectionsView = [
+    {
+      section: 'Moisturisers',
+      title: 'Moisturisers at 399/-'
+    },
+    {
+      section: 'Sunscreens',
+      title: 'Sunscreens at 499/-'
+    },
+    {
+      section: 'Serums',
+      title: 'Serums at 499/-'
+    },
+    {
+      section: 'Masks',
+      title: 'Masks at 499/-'
+    }
+  ];
   // Fetch products for all collections simultaneously
   const promises = collections.map(
     async (collection) =>
       await getCollectionProducts({ collection: collection.handle, sortKey, reverse })
   );
 
-  const productsByCollection = await Promise.all(promises);
-  // const products = await appendReviewAndRating(productsByCollection);
+  const [products399 = [], products499 = []] = await Promise.all(promises);
+  console.log('products399', products399);
 
+  const productsByCollection = [...products399, ...products499].reduce(
+    (acc: any, cur) => {
+      if (cur.collections.includes('SP: Serums')) {
+        acc[2].push(cur);
+      } else if (cur.collections.includes('SP: Sunscreens')) {
+        acc[1].push(cur);
+      } else if (cur.collections.includes('SP: Masks')) {
+        acc[3].push(cur);
+      } else if (cur.collections.includes('SP: Moisturisers')) {
+        acc[0].push(cur);
+      }
+      return acc;
+    },
+    [[], [], [], []]
+  );
+  console.log('productsByCollection', productsByCollection);
+  // console.log('productsByCollection', productsByCollection);
+
+  // const products = await appendReviewAndRating(productsByCollection);
   return (
     <>
       <div className="h-full w-full gap-4 space-y-6 ">
@@ -71,7 +102,7 @@ export default async function CategoryPage({
             <CollectionProductsContainer
               key={index}
               index={index}
-              collections={collections}
+              collections={collectionsView}
               products={product}
             />
           </Suspense>

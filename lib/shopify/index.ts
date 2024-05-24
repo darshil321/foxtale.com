@@ -304,12 +304,17 @@ export async function getCollectionProducts({
       sortKey: sortKey === 'CREATED_AT' ? 'CREATED' : sortKey
     }
   });
+  console.log('res', res);
 
   if (!res.body.data.collection) {
     return [];
   }
 
-  return reshapeProducts(removeEdgesAndNodes(res.body.data.collection.products));
+  const products = reshapeProducts(removeEdgesAndNodes(res.body.data.collection.products));
+  return products.map((p: any) => ({
+    ...p,
+    collections: removeEdgesAndNodes(p.collections).map((c) => c.title)
+  }));
 }
 
 export async function getCollections(): Promise<Collection[]> {

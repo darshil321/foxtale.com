@@ -214,3 +214,11 @@ function isProductIdInArray(product: any, productList: any) {
 
   return productList.some((p: any) => p.id === product.id);
 }
+export function calculateSavedPrice(num1: string, num2: string): number {
+  const number1 = parseFloat(num1);
+  const number2 = parseFloat(num2);
+
+  const difference = number1 - number2;
+
+  return difference;
+}

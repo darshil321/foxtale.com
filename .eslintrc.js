@@ -2,6 +2,8 @@ module.exports = {
   extends: ['next', 'prettier'],
   plugins: ['unicorn'],
   rules: {
+    'react/no-unescaped-entities': 'off',
+
     'no-unused-vars': [
       'error',
       {

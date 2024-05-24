@@ -29,9 +29,9 @@ export default async function Footer() {
 
   const Information: MenuArray = [
     { title: 'Information', path: '/' },
-    { title: 'Shipping & Returns', path: 'https://foxtale.in/pages/return-policy' },
-    { title: 'Privacy Policy', path: 'https://foxtale.in/pages/privacy-policy' },
-    { title: 'Terms of Service', path: 'https://foxtale.in/pages/terms-of-service' }
+    { title: 'Shipping & Returns', path: '/return-policy' },
+    { title: 'Privacy Policy', path: '/privacy-policy' },
+    { title: 'Terms of Service', path: '/terms-of-service' }
   ];
 
   const ContactUs: MenuArray = [
