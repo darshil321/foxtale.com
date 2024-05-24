@@ -3,7 +3,7 @@ import React from 'react';
 const ProductsRatings = ({ product }: { product?: any }) => {
   return (
     <>
-      {product?.rating?.average && (
+      {product?.ratings?.average && (
         <div className="flex flex-row items-center gap-2 py-2">
           <div className="flex flex-row items-center gap-2">
             <div
@@ -22,9 +22,9 @@ const ProductsRatings = ({ product }: { product?: any }) => {
               data-value="4.8"
               style={{ transformOrigin: '0px 0px', opacity: 1, transform: 'scale(1, 1)' }}
             >
-              {product?.rating?.average}
+              {product?.ratings?.average}
             </span>
-            <span className="sr-only" data-value={194}>
+            <span className="sr-only bg-slate-600" data-value={194}>
               194
             </span>
             <span style={{ display: 'none' }}>194</span>

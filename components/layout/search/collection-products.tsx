@@ -19,17 +19,14 @@ const CollectionProductsContainer = ({
   const dispatch = useDispatch();
   const selectedCollection = useAppSelector((state) => state.products.selectedCollection);
   const isUserClicked = useAppSelector((state) => state.products.isUserClicked);
-
   const sectionRef = useRef<HTMLDivElement>(null);
   const [topBarHeight, setTopBarHeight] = useState(0);
-
   useEffect(() => {
     const topBar = document.querySelector('.sticky.top-0');
     if (topBar) {
       setTopBarHeight(topBar.clientHeight + 20);
     }
   }, []);
-
   useEffect(() => {
     if (selectedCollection === collections[index].handle.toLowerCase() && isUserClicked) {
       const section = sectionRef.current;

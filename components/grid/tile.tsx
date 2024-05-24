@@ -85,7 +85,6 @@ export function GridTileImage({
                   <ProductTag product={product} />
                 </Link>
               </div>
-
               {product.ratings && product.ratings.average !== 0 && (
                 <div className="absolute bottom-2 left-2 flex w-max flex-row justify-between  gap-1 rounded-sm bg-white px-1 py-[1px]  text-black">
                   <div data-rating="4.8">

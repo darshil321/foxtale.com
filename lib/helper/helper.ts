@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
-
 import { Metaobject } from '@shopify/hydrogen-react/storefront-api-types';
-import axios from 'axios';
+
 import { Cart, CartItem, Connection } from '../shopify/types';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -26,84 +25,14 @@ export function debounce<F extends (...args: any[]) => any>(
   };
 }
 
-export async function appendReviewAndRating(products: any) {
-  try {
-    const reviews = await getReviews();
-    console.log('reviews', reviews);
-
-    const ratings = await getRatings();
-    console.log('ratings', ratings);
-
-    reviews.forEach((review: any) => {
-      const product = products.find((product: any) => {
-        const id = getProductId(product.id);
-        return id === review.external_product_id;
-      });
-      if (product) {
-        product.reviews = review;
-      }
-    });
-
-    ratings.forEach((rating: any) => {
-      const product = products.find((product: any) => {
-        const id = getProductId(product.id);
-        return id === rating.external_product_id;
-      });
-      if (product) {
-        product.ratings = rating;
-      }
-    });
-
-    return products;
-  } catch (error) {
-    throw error;
-  }
-}
-
-const getProductId = (id: string): string => {
-  const parts = id.split('/');
+export const getProductId = (id: string): string => {
+  const parts = id?.split('/');
 
   // Extracting the part from the last occurrence of slash till the first occurrence
-  const extractedId = parts.slice(-1)[0];
+  const extractedId = parts?.slice(-1)[0];
 
   return extractedId as string;
 };
-
-async function getReviews() {
-  try {
-    const reviewApiOptions = {
-      method: 'get',
-      url: 'https://api.fera.ai/v3/private/reviews',
-      headers: {
-        accept: 'application/json',
-        'SECRET-KEY': process.env.NEXT_PUBLIC_FERA_FOXTALE_SECRET_KEY
-      }
-    };
-    const response = await axios.request(reviewApiOptions);
-    const reviews = response.data.data;
-    return reviews;
-  } catch (e) {
-    console.log('e', e);
-  }
-}
-
-async function getRatings() {
-  try {
-    const ratingApiOptions = {
-      method: 'GET',
-      url: 'https://api.fera.ai/v3/private/ratings',
-      headers: {
-        accept: 'application/json',
-        'SECRET-KEY': process.env.NEXT_PUBLIC_FERA_FOXTALE_SECRET_KEY
-      }
-    };
-    const response = await axios.request(ratingApiOptions);
-    const ratings = response.data.data;
-    return ratings;
-  } catch (e) {
-    console.log('e', e);
-  }
-}
 
 export function getCoupon(metaObjects: any, cart: any, type: string, magic_key: any) {
   if (type === 'magic_link') {

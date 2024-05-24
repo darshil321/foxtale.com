@@ -61,17 +61,18 @@ export default async function CategoryPage({
   );
 
   const productsByCollection = await Promise.all(promises);
+  // const products = await appendReviewAndRating(productsByCollection);
 
   return (
     <>
       <div className="h-full w-full gap-4 space-y-6 ">
-        {productsByCollection?.map((products, index) => (
+        {productsByCollection?.map((product: any, index: number) => (
           <Suspense fallback={<Loading />} key={index}>
             <CollectionProductsContainer
               key={index}
               index={index}
               collections={collections}
-              products={products}
+              products={product}
             />
           </Suspense>
         ))}
