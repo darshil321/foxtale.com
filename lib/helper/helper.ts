@@ -33,6 +33,9 @@ export const getProductId = (id: string): string => {
 
   return extractedId as string;
 };
+export const getProductIds = (ids: string[]): string => {
+  return ids.map((id: string) => getProductId(id)).join(',');
+};
 
 export function getCoupon(metaObjects: any, cart: any, type: string, magic_key: any) {
   if (type === 'magic_link') {

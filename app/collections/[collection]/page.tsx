@@ -1,4 +1,4 @@
-import { getCollection, getCollectionProducts } from 'lib/shopify';
+import { appendReviewAndRating, getCollection, getCollectionProducts } from 'lib/shopify';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { defaultSort, sorting } from 'lib/constants';
@@ -73,9 +73,10 @@ export default async function CategoryPage({
   );
 
   const [products399 = [], products499 = []] = await Promise.all(promises);
+  const productsWithRating = await appendReviewAndRating([...products399, ...products499]);
 
-  const productsByCollection = [...products399, ...products499].reduce(
-    (acc: any, cur) => {
+  const productsByCollection = productsWithRating.reduce(
+    (acc: any, cur: any) => {
       if (cur.collections.includes('SP: Serums')) {
         acc[2].push(cur);
       } else if (cur.collections.includes('SP: Sunscreens')) {
@@ -89,10 +90,7 @@ export default async function CategoryPage({
     },
     [[], [], [], []]
   );
-  console.log('productsByCollection', productsByCollection);
-  // console.log('productsByCollection', productsByCollection);
 
-  // const products = await appendReviewAndRating(productsByCollection);
   return (
     <>
       <div className="h-full w-full gap-4 space-y-6 ">

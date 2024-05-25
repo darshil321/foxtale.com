@@ -53,7 +53,7 @@ import {
   ShopifyUpdateCartOperation
 } from './types';
 import { Metaobject } from '@shopify/hydrogen-react/storefront-api-types';
-import { getProductId } from '../helper/helper';
+import { getProductId, getProductIds } from '../helper/helper';
 import axios from 'axios';
 
 const domain = process.env.SHOPIFY_STORE_DOMAIN
@@ -503,21 +503,24 @@ export async function getProductsData(first: number): Promise<any> {
 }
 export async function appendReviewAndRating(products: any) {
   try {
-    const reviews = await getReviewsById();
-    const ratings = await getRatingsById();
+    const productIds = products.map((product: any) => product.id);
+    // const reviews = await getReviewsById();
+    const ratings = await getRatingsById(productIds);
 
-    reviews.forEach((review: any) => {
-      const product = products.find((product: any) => {
-        const id = getProductId(product.id);
+    // reviews.forEach((review: any) => {
+    //   const product = products.find((product: any) => {
+    //     const id = getProductId(product.id);
 
-        return id === review.external_product_id;
-      });
-      if (product) {
-        product.reviews = review;
-      }
-    });
+    //     return id === review.external_product_id;
+    //   });
+    //   if (product) {
+    //     product.reviews = review;
+    //   }
+    // });
 
     ratings.forEach((rating: any) => {
+      if (!rating.external_product_id) console.log('rating', rating);
+
       const product = products.find((product: any) => {
         const id = getProductId(product.id);
         return id === rating.external_product_id;
@@ -556,7 +559,7 @@ export async function appendReviewAndRatingInProduct(product: any) {
     throw error;
   }
 }
-async function getReviewsById(id?: string) {
+export async function getReviewsById(id?: string) {
   const productId = id && getProductId(id);
   const url = productId
     ? `https://api.fera.ai/v3/private/reviews?external_product_id=${productId}`
@@ -580,11 +583,15 @@ async function getReviewsById(id?: string) {
   }
 }
 
-async function getRatingsById(id?: string) {
-  const productId = id && getProductId(id);
-  const url = productId
-    ? `https://api.fera.ai/v3/private/ratings?external_product_id=${productId}`
-    : 'https://api.fera.ai/v3/private/ratings';
+async function getRatingsById(id: string | string[]) {
+  let productId;
+
+  if (typeof id === 'string') {
+    productId = getProductId(id);
+  } else {
+    productId = getProductIds(id);
+  }
+  const url = `https://api.fera.ai/v3/private/ratings?page_size=100&external_ids=${productId}`;
 
   try {
     const ratingApiOptions = {
