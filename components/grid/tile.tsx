@@ -6,7 +6,6 @@ import { Suspense } from 'react';
 import { AddToCartButton } from '@/components/cart/add-to-cart-button';
 import { trackEvent } from 'utils/mixpanel';
 import ProductTag from '../elements/product-tag';
-import { Product } from '@/lib/shopify/types';
 import SavePriceTag from '../elements/save-price-tag';
 import { calculateSavedPrice } from '@/lib/helper/helper';
 
@@ -14,7 +13,13 @@ export function GridTileImage({
   isInteractive = true,
   product,
   active,
-  label,
+  label = {
+    title: '',
+    amount: '',
+    description: '',
+    currencyCode: '',
+    position: 'bottom'
+  },
   index = 0,
   alt = 'image',
   collectionIndex = -1,
@@ -23,7 +28,7 @@ export function GridTileImage({
   collectionIndex?: number;
   isInteractive?: boolean;
   active?: boolean;
-  product?: Product;
+  product?: any;
   alt?: string;
   index?: number;
   label?: {

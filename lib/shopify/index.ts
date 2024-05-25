@@ -398,7 +398,7 @@ export async function getMagicLinkMetaObjects(): Promise<Metaobject[]> {
   return removeEdgesAndNodes(res.body.data.metaobjects);
 }
 
-export async function getProduct(handle: string): Promise<Product | undefined> {
+export async function getProduct(handle: string): Promise<Product | undefined | any> {
   const res = await shopifyFetch<ShopifyProductOperation>({
     query: getProductQuery,
     tags: [TAGS.products],
@@ -410,7 +410,7 @@ export async function getProduct(handle: string): Promise<Product | undefined> {
   return reshapeProduct(res.body.data.product, false);
 }
 
-export async function getProductRecommendations(productId: string): Promise<Product[]> {
+export async function getProductRecommendations(productId: string): Promise<Product[] | any> {
   const res = await shopifyFetch<ShopifyProductRecommendationsOperation>({
     query: getProductRecommendationsQuery,
     tags: [TAGS.products],

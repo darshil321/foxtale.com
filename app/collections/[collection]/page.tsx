@@ -73,7 +73,6 @@ export default async function CategoryPage({
   );
 
   const [products399 = [], products499 = []] = await Promise.all(promises);
-  console.log('products399', products399);
 
   const productsByCollection = [...products399, ...products499].reduce(
     (acc: any, cur) => {
