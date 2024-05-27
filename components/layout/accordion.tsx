@@ -5,7 +5,9 @@ import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import { trackEvent } from 'utils/mixpanel';
 
 export default function Accordion({ product }: { product: Product }) {
+  console.log('fswf', product);
   const filteredDataByKey = product?.metafields?.find((item: any) => item?.key === 'faq-section');
+  console.log('filteredDataByKey', filteredDataByKey);
 
   function extractQuestionsAndAnswersFromHTML(html: any) {
     const faqItemsArray: any = [];
@@ -28,11 +30,13 @@ export default function Accordion({ product }: { product: Product }) {
         }
       });
     }
+    console.log('faqItemsArray', faqItemsArray);
 
     return faqItemsArray;
   }
 
   const FaqItems = extractQuestionsAndAnswersFromHTML(filteredDataByKey?.value);
+  console.log('FaqItems', FaqItems);
 
   return (
     <div className="w-full px-4 py-8 md:py-16">
@@ -42,8 +46,7 @@ export default function Accordion({ product }: { product: Product }) {
             <>
               <Disclosure.Button
                 className="flex h-full w-full  bg-[#f7f7f7] text-sm font-medium text-black hover:bg-[#f7f7f7] focus:outline-none focus-visible:ring-[#f7f7f7]/75 focus-visible:ring-offset-1"
-                onClick={(e: any) => {
-                  e.preventDefault();
+                onClick={() => {
                   trackEvent('FAQs Clicked', {
                     FaqsClicked: 'Clicked'
                   });
