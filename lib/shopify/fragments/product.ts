@@ -8,6 +8,14 @@ const productFragment = /* GraphQL */ `
     availableForSale
     title
     description
+    collections(first: 150) {
+      edges {
+        node {
+          id
+          title
+        }
+      }
+    }
     metafields(
       identifiers: [
         { key: "unique", namespace: "custom" }
@@ -64,6 +72,10 @@ const productFragment = /* GraphQL */ `
             value
           }
           price {
+            amount
+            currencyCode
+          }
+          compareAtPrice {
             amount
             currencyCode
           }

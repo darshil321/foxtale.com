@@ -6,12 +6,20 @@ import { Suspense } from 'react';
 import { AddToCartButton } from '@/components/cart/add-to-cart-button';
 import { trackEvent } from 'utils/mixpanel';
 import ProductTag from '../elements/product-tag';
+import SavePriceTag from '../elements/save-price-tag';
+import { calculateSavedPrice } from '@/lib/helper/helper';
 
 export function GridTileImage({
   isInteractive = true,
   product,
   active,
-  label,
+  label = {
+    title: '',
+    amount: '',
+    description: '',
+    currencyCode: '',
+    position: 'bottom'
+  },
   index = 0,
   alt = 'image',
   collectionIndex = -1,
@@ -82,6 +90,14 @@ export function GridTileImage({
                     priority={setPriority ? setPriority : false}
                     {...props}
                   />
+                  {product?.variants[0]?.compareAtPrice && (
+                    <SavePriceTag
+                      savePrice={calculateSavedPrice(
+                        product?.variants[0]?.compareAtPrice.amount,
+                        label?.amount
+                      )}
+                    />
+                  )}
                   <ProductTag product={product} />
                 </Link>
               </div>
@@ -120,6 +136,11 @@ export function GridTileImage({
               </div>
               <div className="t4s-product-price text-base font-medium">
                 <span className="font-poppins text-base font-semibold" /> ₹ {label?.amount}
+                {product?.variants[0]?.compareAtPrice && (
+                  <span className="ml-2 text-[#6e6e6e] line-through">
+                    ₹ {product?.variants[0]?.compareAtPrice.amount}
+                  </span>
+                )}
               </div>
             </div>
           </div>

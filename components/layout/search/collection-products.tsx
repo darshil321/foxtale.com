@@ -16,6 +16,8 @@ const CollectionProductsContainer = ({
   index: number;
   key?: number;
 }) => {
+  console.log('productss', products);
+
   const dispatch = useDispatch();
   const selectedCollection = useAppSelector((state) => state.products.selectedCollection);
   const isUserClicked = useAppSelector((state) => state.products.isUserClicked);
@@ -28,7 +30,9 @@ const CollectionProductsContainer = ({
     }
   }, []);
   useEffect(() => {
-    if (selectedCollection === collections[index].handle.toLowerCase() && isUserClicked) {
+    console.log('ppp', selectedCollection, collections[index].section.toLowerCase(), isUserClicked);
+
+    if (selectedCollection === collections[index].section.toLowerCase() && isUserClicked) {
       const section = sectionRef.current;
       if (section) {
         const y = section.getBoundingClientRect().top + window.pageYOffset - topBarHeight;
@@ -45,7 +49,7 @@ const CollectionProductsContainer = ({
         // Only dispatch if scroll was not triggered by a click
         const rect = sectionRef.current?.getBoundingClientRect();
         if (rect && rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
-          dispatch(setSelectedCollection(collections[index].handle.toLowerCase()));
+          dispatch(setSelectedCollection(collections[index].section.toLowerCase()));
         }
       }
     };
@@ -57,12 +61,12 @@ const CollectionProductsContainer = ({
   return (
     <section
       ref={sectionRef}
-      id={collections[index]?.handle.toLowerCase()}
+      id={collections[index]?.section.toLowerCase()}
       className="rounded-md bg-white px-1.5 py-2 md:order-none md:px-4 md:py-6"
       key={index}
     >
       <div className="space-y-1 px-1 pb-2 md:px-5 md:pb-4">
-        <h1 className="text-base md:text-xl">{`Products in ${collections[index]?.handle}`}</h1>
+        <h1 className="text-base md:text-xl">{`Products in ${collections[index]?.title}`}</h1>
         <p className="text-xs text-[#6E6E6E] md:text-sm">{`Showing ${products?.length} results`}</p>
       </div>
       <Grid className="grid-cols-2 place-items-center gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">

@@ -8,16 +8,16 @@ async function CollectionList() {
 
   const collections = [
     {
-      handle: 'cleansers',
-      title: 'Cleansers',
-      description: 'Discover a range of gentle cleansers for your daily skincare routine.',
+      handle: 'moisturisers',
+      title: 'Moisturisers',
+      description: 'Shop hydrating moisturizers for all skin types and concerns.',
       seo: {
-        description: 'Gentle cleansers for your daily skincare routine',
-        title: 'Cleansers - Shop Gentle Cleansers Online'
+        description: 'Hydrating moisturizers for smooth and supple skin',
+        title: 'Moisturizers - Shop Hydrating Moisturizers Online'
       },
       updatedAt: '2024-05-06T12:10:15Z',
-      image: { url: 'https://foxtale.in/cdn/shop/files/Untitled-2-01_1_105x105.jpg' },
-      path: '/products/cleansers'
+      image: { url: 'https://foxtale.in/cdn/shop/files/Untitled-2-03_1_105x105.jpg' },
+      path: '/products/moisturizers'
     },
     {
       handle: 'Sunscreens',
@@ -32,18 +32,6 @@ async function CollectionList() {
       path: '/products/Sunscreens'
     },
     {
-      handle: 'moisturizers',
-      title: 'Moisturizers',
-      description: 'Shop hydrating moisturizers for all skin types and concerns.',
-      seo: {
-        description: 'Hydrating moisturizers for smooth and supple skin',
-        title: 'Moisturizers - Shop Hydrating Moisturizers Online'
-      },
-      updatedAt: '2024-05-06T12:10:15Z',
-      image: { url: 'https://foxtale.in/cdn/shop/files/Untitled-2-03_1_105x105.jpg' },
-      path: '/products/moisturizers'
-    },
-    {
       handle: 'serums',
       title: 'Serums',
       description: 'Find targeted serums to address various skincare needs and concerns.',
@@ -54,6 +42,18 @@ async function CollectionList() {
       updatedAt: '2024-05-06T12:10:15Z',
       image: { url: 'https://foxtale.in/cdn/shop/files/Untitled-2-04_1_105x105.jpg' },
       path: '/products/serums'
+    },
+    {
+      handle: 'masks',
+      title: 'Masks',
+      description: 'Discover a range of gentle cleansers for your daily skincare routine.',
+      seo: {
+        description: 'Gentle cleansers for your daily skincare routine',
+        title: 'Cleansers - Shop Gentle Cleansers Online'
+      },
+      updatedAt: '2024-05-06T12:10:15Z',
+      image: { url: 'https://foxtale.in/cdn/shop/files/Untitled-2-01_1_105x105.jpg' },
+      path: '/products/cleansers'
     }
   ];
 

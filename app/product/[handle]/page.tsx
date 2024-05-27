@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import {
   appendReviewAndRatingInProduct,
+  getCollectionProducts,
   getProduct,
-  getProductRecommendations,
-  getProducts
+  getProductRecommendations
 } from 'lib/shopify';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
@@ -22,10 +22,23 @@ import ProductDetailsTabs from '@/components/product/product-details-tabs';
 import ProductDescFooter from '@/components/product/pdp-footer';
 import Accordion from '@/components/layout/accordion';
 import ResultsSection from '@/components/product/results-section';
+import { Product } from '@/lib/shopify/types';
 export const generateStaticParams = async () => {
-  const products = await getProducts({});
+  const collections = [
+    {
+      handle: '399-store'
+    },
+    {
+      handle: '499-store'
+    }
+  ];
+  const promises = collections.map(
+    async (collection) => await getCollectionProducts({ collection: collection.handle })
+  );
 
-  return products?.map((product: any) => ({
+  const [products399 = [], products499 = []] = await Promise.all(promises);
+
+  return [...products399, ...products499].map((product: any) => ({
     handle: product?.handle
   }));
 };
@@ -98,7 +111,6 @@ export default async function ProductPage({
       lowPrice: product?.priceRange.minVariantPrice.amount
     }
   };
-
   const filteredDataByKey = product?.metafields?.find(
     (item: any) => item?.key === 'product-sub-title'
   );
@@ -172,7 +184,7 @@ async function RelatedProducts({ id }: { id: string }) {
     <div className="px-4 py-8 md:px-0">
       <h2 className="mb-3 text-2xl font-semibold leading-7">Related Products</h2>
       <ul className="flex w-full gap-4 overflow-x-auto pt-1">
-        {relatedProducts.map((product) => (
+        {relatedProducts.map((product: Product) => (
           <li
             key={product.handle}
             className=" w-1/2 flex-none min-[475px]:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5"

@@ -74,6 +74,7 @@ export type Product = Omit<ShopifyProduct, 'variants' | 'images'> & {
   variants: ProductVariant[];
   metafields: MetaField[];
   images: Image[];
+  collections: string[];
 };
 
 export type ProductOption = {
