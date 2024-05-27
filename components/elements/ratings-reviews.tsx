@@ -17,10 +17,10 @@ const ReviewComponent = ({ reviews }: { reviews: any }) => {
 
   return (
     <div className="mx-auto w-full px-4 py-8">
-      <div className="flex w-full flex-row justify-between pb-8">
-        <div className="flex flex-col">
-          <h2 className="mb-4 text-3xl font-bold">Reviews</h2>
-          <button className="mb-6 w-[231px] max-w-xs rounded bg-black px-4 py-2 text-sm text-white">
+      <div className="flex w-full  flex-col justify-between pb-4 md:flex-row md:pb-8">
+        <div className="flex flex-row justify-between  md:flex-col">
+          <h2 className="mb-4 text-2xl font-semibold md:text-3xl">Reviews</h2>
+          <button className="mb-6 max-w-xs   rounded px-4 py-2  text-xs text-blue-500  underline underline-offset-2 md:w-[231px] md:bg-black md:text-sm md:text-black md:text-white md:no-underline">
             Write a review
           </button>
         </div>
@@ -41,27 +41,30 @@ const ReviewComponent = ({ reviews }: { reviews: any }) => {
       </div>
       <div className="space-y-8">
         {reviews.length > 0 ? (
-          reviews.map((review) => (
+          reviews.map((review: any) => (
             <div key={review.id} className="flex space-x-4 border-b pb-4">
               <div className="flex-shrink-0">
                 <Image
                   width={48}
                   height={48}
                   src={review.customer.avatar_url}
-                  alt={`${review.name}`}
+                  alt={`${review.customer.generated_display_name}`}
                   className="h-12 w-12 rounded-full"
                 />
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold">
-                    {review.customer.generated_display_location}
-                  </h3>
+                  <div>
+                    <h3 className="text-lg font-semibold">
+                      {review.customer.generated_display_name}
+                    </h3>
+                    <p className="text-sm text-gray-500">{review.heading}</p>
+                    <p className="text-gray-500">{review.customer.generated_display_location}</p>
+                  </div>
                   <span className="text-sm text-gray-500">
-                    {calculateMonthsAgo(review.customer.created_at)} months ago
+                    {calculateMonthsAgo(review.created_at)} months ago
                   </span>
                 </div>
-                <p className="text-gray-500">{review.location}</p>
                 <div className="mt-2 flex items-center text-yellow-500">
                   {Array(5)
                     .fill(0)
@@ -69,8 +72,7 @@ const ReviewComponent = ({ reviews }: { reviews: any }) => {
                       <span key={i}>{i < review.rating ? '★' : '☆'}</span>
                     ))}
                 </div>
-                <h4 className="mt-2 text-lg font-bold">{review.body}</h4>
-                <p className="mt-1 text-gray-700">{review.reviewText}</p>
+                <p className="mt-2 text-gray-700">{review.body || review.reviewText}</p>
               </div>
             </div>
           ))
@@ -81,29 +83,36 @@ const ReviewComponent = ({ reviews }: { reviews: any }) => {
                 width={48}
                 height={48}
                 src={reviews.customer.avatar_url}
-                alt={`${reviews.name}`}
+                alt={`${reviews.customer.generated_display_name}`}
                 className="h-12 w-12 rounded-full"
               />
             </div>
             <div className="flex-1">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">
-                  {reviews.customer.generated_display_location}
-                </h3>
+              <div className="flex flex-col md:flex-row md:items-center  md:justify-between">
+                <div className="flex w-full flex-col md:flex-row md:space-x-8 md:pr-6">
+                  <div>
+                    <h3 className="text-lg font-semibold">
+                      {reviews.customer.generated_display_name}
+                    </h3>
+                    <p className="text-xs text-gray-500">
+                      {reviews.customer.generated_display_location}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">{reviews.heading}</p>
+                    <div className="mt-2 flex items-center text-yellow-500">
+                      {Array(5)
+                        .fill(0)
+                        .map((_, i) => (
+                          <span key={i}>{i < reviews.rating ? '★' : '☆'}</span>
+                        ))}
+                    </div>
+                  </div>
+                </div>
                 <span className="text-sm text-gray-500">
-                  {calculateMonthsAgo(reviews.customer.created_at)} months ago
+                  {calculateMonthsAgo(reviews.created_at)} months ago
                 </span>
               </div>
-              <p className="text-gray-500">{reviews.location}</p>
-              <div className="mt-2 flex items-center text-yellow-500">
-                {Array(5)
-                  .fill(0)
-                  .map((_, i) => (
-                    <span key={i}>{i < reviews.rating ? '★' : '☆'}</span>
-                  ))}
-              </div>
-              <h4 className="mt-2 text-lg font-bold">{reviews.body}</h4>
-              <p className="mt-1 text-gray-700">{reviews.reviewText}</p>
             </div>
           </div>
         )}
