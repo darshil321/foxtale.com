@@ -36,8 +36,8 @@ const ReviewForm = ({ product }: { product: Product }) => {
     <ReactModal
       shouldReturnFocusAfterClose={false}
       shouldFocusAfterRender={false}
-      className=" mx-auto my-auto mt-[130px] w-[400px] rounded-md  bg-white font-poppins  shadow-md  "
-      isOpen={true}
+      className=" mx-auto my-auto mt-[130px] w-1/3 rounded-md  bg-white font-poppins  shadow-lg  "
+      isOpen={false}
     >
       <div className="relative flex items-center justify-end rounded-md p-4 text-black transition-colors ">
         <Image src={'/Images/close.svg'} alt={'close'} width={25} height={25} />
