@@ -13,7 +13,6 @@ import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import { BestSellingCombos } from '@/components/grid/best-selling-combos';
 import ProductSlider from '@/components/product/product-slider';
 import ProductDisclosure from '@/components/product/product-disclosure';
-
 import OfferSection from '@/components/product/offers-section';
 import ProductsRatings from '@/components/product/products-rating';
 import ProductDescription from '@/components/product/product-description';
@@ -23,6 +22,7 @@ import ProductDescFooter from '@/components/product/pdp-footer';
 import Accordion from '@/components/layout/accordion';
 import ResultsSection from '@/components/product/results-section';
 import { Product } from '@/lib/shopify/types';
+import ReviewComponent from '@/components/elements/ratings-reviews';
 import ReviewForm from '@/components/review-component/review-form';
 import UserForm from '@/components/review-component/user-form';
 export const generateStaticParams = async () => {
@@ -169,6 +169,7 @@ export default async function ProductPage({
         <ProductDetailsTabs product={product} />
 
         <BestSellingCombos product={product} />
+        <ReviewComponent reviews={product.reviews} />
 
         <Accordion product={product} />
         <Suspense fallback={null}>

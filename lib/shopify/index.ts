@@ -538,9 +538,10 @@ export async function appendReviewAndRating(products: any) {
 export async function appendReviewAndRatingInProduct(product: any) {
   try {
     const id = getProductId(product.id);
-    // const reviews = await getReviewsById(id);
+    const reviews = await getReviewsById(id);
     const ratings = await getRatingsById(id);
     const productRating = ratings.find((rating: any) => rating.subject === 'product');
+    const productReview = reviews.find((rating: any) => rating.subject === 'product');
 
     // reviews.forEach((review: any) => {
     //   const product = products.find((product: any) => {
@@ -553,6 +554,7 @@ export async function appendReviewAndRatingInProduct(product: any) {
     // });
 
     product.ratings = productRating;
+    product.reviews = productReview;
 
     return product;
   } catch (error) {
