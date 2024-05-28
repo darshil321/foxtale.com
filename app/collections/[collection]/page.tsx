@@ -51,19 +51,23 @@ export default async function CategoryPage({
   const collectionsView = [
     {
       section: 'Moisturisers',
-      title: 'Moisturisers at 399/-'
+      title: 'Moisturisers at 399/-',
+      Description: 'Protected skin barrier & a boost of hydration'
     },
     {
       section: 'Sunscreens',
-      title: 'Sunscreens at 499/-'
+      title: 'Sunscreens at 499/-',
+      Description: 'Ultimate protection from UVA & UVB rays'
     },
     {
       section: 'Serums',
-      title: 'Serums at 499/-'
+      title: 'Serums at 499/-',
+      Description: 'Targeted solutions for all skin concerns'
     },
     {
       section: 'Masks',
-      title: 'Masks at 499/-'
+      title: 'Masks at 499/-',
+      Description: 'Targeted solutions for all skin concerns'
     }
   ];
   // Fetch products for all collections simultaneously

@@ -65,9 +65,9 @@ const CollectionProductsContainer = ({
       className="rounded-md bg-white px-1.5 py-2 md:order-none md:px-4 md:py-6"
       key={index}
     >
-      <div className="space-y-1 px-1 pb-2 md:px-5 md:pb-4">
-        <h1 className="text-base md:text-xl">{`Products in ${collections[index]?.title}`}</h1>
-        <p className="text-xs text-[#6E6E6E] md:text-sm">{`Showing ${products?.length} results`}</p>
+      <div className="space-y-1 px-1 pb-2 md:px-3 md:pb-4">
+        <h4 className=" text-base  font-[500] text-[#2C2C2C] md:text-xl">{`${collections[index]?.title}`}</h4>
+        <p className="text-xs text-[#6E6E6E] ">{collections[index]?.Description}</p>
       </div>
       <Grid className="grid-cols-2 place-items-center gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
         <ProductGridItems collectionIndex={index} products={products} />

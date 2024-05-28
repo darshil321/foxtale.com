@@ -123,32 +123,33 @@ export function GridTileImage({
                 </div>
               )}
             </div>
-            <div className=" px-2 pt-2">
+            <div className=" space-y-[4px] px-3 pt-[10px]">
               <div className="">
                 <Link href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}>
-                  <p className="leading-2 line-clamp-1 cursor-pointer text-[12px] transition-all hover:text-purple-400 md:text-base md:leading-6">
+                  <p className="leading-2 line-clamp-1 cursor-pointer text-[12px] font-normal transition-all hover:text-purple-400 md:text-base md:leading-6">
                     {label?.title}
                   </p>
                 </Link>
-                <p className="line-clamp-1 text-[10px] leading-7 text-[#6e6e6e]  md:text-xs">
+                <p className="line-clamp-1 pt-1 text-[10px] leading-7 text-[#6e6e6e]  md:text-xs">
                   {productDescription?.value}
                 </p>
               </div>
               <div className="t4s-product-price text-base font-medium">
-                <span className="font-poppins text-base font-semibold" /> ₹ {label?.amount}
+                <span className="font-poppins text-base font-semibold" /> ₹{' '}
+                {parseInt(label?.amount)}
                 {product?.variants[0]?.compareAtPrice && (
                   <span className="ml-2 text-[#6e6e6e] line-through">
-                    ₹ {product?.variants[0]?.compareAtPrice.amount}
+                    ₹ {parseInt(product?.variants[0]?.compareAtPrice.amount)}
                   </span>
                 )}
               </div>
             </div>
           </div>
           <div>
-            <div className=" flex flex-row justify-between px-2 pb-1 text-xs">
+            {/* <div className=" flex flex-row justify-between px-2 pb-1 text-xs">
               <p className="bottom-leftext text-[#008325]">B2G2</p>
               <p className="bottom-rightext text-red-400">Free Gift</p>
-            </div>
+            </div> */}
             <Suspense fallback={null}>
               <AddToCartButton
                 product={product}

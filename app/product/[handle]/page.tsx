@@ -13,7 +13,7 @@ import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import { BestSellingCombos } from '@/components/grid/best-selling-combos';
 import ProductSlider from '@/components/product/product-slider';
 import ProductDisclosure from '@/components/product/product-disclosure';
-import OfferSection from '@/components/product/offers-section';
+// import OfferSection from '@/components/product/offers-section';
 import ProductsRatings from '@/components/product/products-rating';
 import ProductDescription from '@/components/product/product-description';
 import ProductCarouselSlider from '@/components/product/product-carousel';
@@ -147,7 +147,7 @@ export default async function ProductPage({
             <div className="px-4 pt-3 md:px-2 md:pt-0">
               <ProductDescription product={product} searchParams={searchParams} />
             </div>
-            <OfferSection />
+            {/* <OfferSection /> */}
           </div>
         </div>
         <div>{<ProductDisclosure product={product} />}</div>
