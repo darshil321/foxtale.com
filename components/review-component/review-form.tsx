@@ -87,7 +87,7 @@ const ReviewForm = ({ product }: { product: Product }) => {
           const id = getReviewId(getProductId(product.id), productReviews);
 
           if (!id) {
-            createReview({ ...review, customer_id: feraUser.id }).then((res) => {
+            createReview({ ...review, customer: feraUser }).then((res) => {
               dispatch(setProductReviews({ ...review, id: res.id }));
               dispatch(setReviewFormOpen(false));
             });

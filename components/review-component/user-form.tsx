@@ -48,7 +48,7 @@ const UserForm = () => {
               email: res.email
             };
             const reviewObject = getLastElement(productReviews);
-            const review = { ...reviewObject, customer_id: feraUser.id };
+            const review = { ...reviewObject, customer: feraUser };
             createReview(review).then((res) => {
               dispatch(setProductReviews({ ...review, id: res.id }));
             });
