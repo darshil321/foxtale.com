@@ -15,8 +15,10 @@ const ToastContent: React.FC = () => {
 
   return (
     <div className="flex justify-between">
-      <img height={25} width={25} src="/Images/tick.png" alt="" />
-      Product Added To Cart!
+      <div className="flex">
+        <img height={20} width={20} src="/Images/tick.svg" alt="" />
+        <span className="ml-2">Product Added To Cart!</span>
+      </div>
       <div
         className=" text-blue-600"
         onClick={() => dispatch(setCartOpen(true))}

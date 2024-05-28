@@ -61,7 +61,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN} />
       <body>
         <Provider>
-          <ToastContainer />
+          <ToastContainer style={{ width: '350px' }} />
           <Banner />
           <WrapperContainer>
             <Navbar />
