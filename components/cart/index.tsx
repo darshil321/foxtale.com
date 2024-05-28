@@ -21,10 +21,6 @@ export default function Cart() {
     if (cart && cart.lines) {
       const { freebiesToBeAdd, freebiesToBeRemove, giftProducts } = adjustCart(cart);
 
-      console.log('freebiesToBeAdd', freebiesToBeAdd);
-      console.log('freebiesToBeRemove', freebiesToBeRemove);
-      console.log('giftProducts', giftProducts);
-
       const updatedCart = {
         ...cart,
         lines: [

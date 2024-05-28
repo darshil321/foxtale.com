@@ -13,7 +13,7 @@ import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import { BestSellingCombos } from '@/components/grid/best-selling-combos';
 import ProductSlider from '@/components/product/product-slider';
 import ProductDisclosure from '@/components/product/product-disclosure';
-import OfferSection from '@/components/product/offers-section';
+// import OfferSection from '@/components/product/offers-section';
 import ProductsRatings from '@/components/product/products-rating';
 import ProductDescription from '@/components/product/product-description';
 import ProductCarouselSlider from '@/components/product/product-carousel';
@@ -23,6 +23,9 @@ import Accordion from '@/components/layout/accordion';
 import ResultsSection from '@/components/product/results-section';
 import { Product } from '@/lib/shopify/types';
 import ReviewComponent from '@/components/elements/ratings-reviews';
+import LimitedStockBanner from '@/components/elements/limited-stock-banner';
+import ReviewForm from '@/components/review-component/review-form';
+import UserForm from '@/components/review-component/user-form';
 export const generateStaticParams = async () => {
   const collections = [
     {
@@ -143,11 +146,15 @@ export default async function ProductPage({
           <div className="h-full w-full basis-full lg:basis-3/6">
             <ProductSlider images={product.images} />
           </div>
+          <ReviewForm product={product} />
+          <UserForm />
+
           <div className="basis-full  lg:basis-3/6">
             <div className="px-4 pt-3 md:px-2 md:pt-0">
               <ProductDescription product={product} searchParams={searchParams} />
             </div>
-            <OfferSection />
+            <LimitedStockBanner />
+            {/* <OfferSection /> */}
           </div>
         </div>
         <div>{<ProductDisclosure product={product} />}</div>
@@ -164,7 +171,7 @@ export default async function ProductPage({
         <ProductDetailsTabs product={product} />
 
         <BestSellingCombos product={product} />
-        <ReviewComponent reviews={product.reviews} />
+        <ReviewComponent reviews={product.reviews} product={product} />
 
         <Accordion product={product} />
         <Suspense fallback={null}>

@@ -16,8 +16,6 @@ const CollectionProductsContainer = ({
   index: number;
   key?: number;
 }) => {
-  console.log('productss', products);
-
   const dispatch = useDispatch();
   const selectedCollection = useAppSelector((state) => state.products.selectedCollection);
   const isUserClicked = useAppSelector((state) => state.products.isUserClicked);
@@ -30,8 +28,6 @@ const CollectionProductsContainer = ({
     }
   }, []);
   useEffect(() => {
-    console.log('ppp', selectedCollection, collections[index].section.toLowerCase(), isUserClicked);
-
     if (selectedCollection === collections[index].section.toLowerCase() && isUserClicked) {
       const section = sectionRef.current;
       if (section) {
@@ -65,9 +61,9 @@ const CollectionProductsContainer = ({
       className="rounded-md bg-white px-1.5 py-2 md:order-none md:px-4 md:py-6"
       key={index}
     >
-      <div className="space-y-1 px-1 pb-2 md:px-5 md:pb-4">
-        <h1 className="text-base md:text-xl">{`Products in ${collections[index]?.title}`}</h1>
-        <p className="text-[11px] text-[#6E6E6E] md:text-xs">{`Showing ${products?.length} results`}</p>
+      <div className="space-y-1 px-1 pb-2 sm:px-3 md:px-5 md:pb-4">
+        <h4 className=" text-base  font-[500] text-[#2C2C2C] md:text-xl">{`${collections[index]?.title}`}</h4>
+        <p className="text-xs text-[#6E6E6E] ">{collections[index]?.Description}</p>
       </div>
       <Grid className="grid-cols-2 place-items-center gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
         <ProductGridItems collectionIndex={index} products={products} />
