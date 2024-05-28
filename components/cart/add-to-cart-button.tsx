@@ -10,17 +10,18 @@ import { trackEvent } from 'utils/mixpanel';
 import { toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from 'react-redux';
+import Image from 'next/image';
 const ToastContent: React.FC = () => {
   const dispatch = useDispatch();
 
   return (
-    <div className="flex justify-between">
-      <img height={25} width={25} src="/Images/tick.png" alt="" />
+    <div className="flex items-center justify-between text-[13px]">
+      <Image height={25} width={25} src="/Images/tick.png" alt="" />
       Product Added To Cart!
       <div
-        className=" text-blue-600"
+        className="text-[15px] font-semibold capitalize text-[#1877f2]"
         onClick={() => dispatch(setCartOpen(true))}
-        style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
+        style={{ cursor: 'pointer', textDecoration: 'underline' }}
       >
         View Cart
       </div>
