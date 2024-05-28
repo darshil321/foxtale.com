@@ -694,28 +694,21 @@ export async function createCustomer(body: any) {
     throw e; // Optional: rethrow the error to handle it outside the function
   }
 }
-export async function uploadMedia(body: any) {
+export async function uploadMedia(formData: FormData) {
   const url = `https://api.fera.ai/v3/private/media`;
 
   try {
-    const user = {
-      method: 'POST',
-      url: url,
+    const response = await axios.post(url, formData, {
       headers: {
         accept: 'application/json',
-        'SECRET-KEY': process.env.NEXT_PUBLIC_FERA_FOXTALE_SECRET_KEY,
-        'Content-Type': 'application/json'
-      },
-      data: {
-        ...body
+        'SECRET-KEY': process.env.NEXT_PUBLIC_FERA_FOXTALE_SECRET_KEY
+        // 'Content-Type': 'multipart/form-data' // Do not set Content-Type manually
       }
-    };
-    const response = await axios.request(user);
+    });
     const media = response.data;
-
     return media;
-  } catch (e) {
-    console.log('Error:', e);
-    throw e; // Optional: rethrow the error to handle it outside the function
+  } catch (error) {
+    console.log('Error:', error);
+    throw error;
   }
 }

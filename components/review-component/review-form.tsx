@@ -16,9 +16,21 @@ import ReactStars from 'react-rating-stars-component';
 // import { GokwikButton } from 'components/elements/gokwik-button';
 
 const ReviewForm = ({ product }: { product: Product }) => {
+  const [file, setFile] = useState('');
   const handleFileChange = (e: any) => {
-    uploadMedia({ file: e.target.value });
+    const file = e.target.files[0];
+
+    setFile(file.name);
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    uploadMedia(formData).then((res) => {
+      setReview({ ...review, media: res.url });
+    });
   };
+  console.log('file', file);
+
   const isReviewFormOpen = useAppSelector((state) => state.products.isReviewFormOpen);
 
   const handleButtonClick = () => {
@@ -29,7 +41,8 @@ const ReviewForm = ({ product }: { product: Product }) => {
     heading: '',
     rating: 0,
     external_product_id: getProductId(product.id),
-    customer_id: ''
+    customer_id: '',
+    media: ''
   });
 
   const ratingChanged = (newRating: number) => {
@@ -161,7 +174,8 @@ const ReviewForm = ({ product }: { product: Product }) => {
               className="rounded  py-6 text-center text-black"
               onClick={handleButtonClick}
             >
-              Click here to upload photos and/or videos
+              {!file && 'Click here to upload photos and/or videos'}
+              {file && file}
             </button>
           </div>
           <div className="mt-4 flex justify-center">
