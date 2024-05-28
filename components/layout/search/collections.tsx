@@ -16,7 +16,7 @@ async function CollectionList() {
         title: 'Moisturizers - Shop Hydrating Moisturizers Online'
       },
       updatedAt: '2024-05-06T12:10:15Z',
-      image: { url: '/images/MOISTURISER.png' },
+      image: { url: '/Images/MOISTURISER.png' },
       path: '/products/moisturizers'
     },
     {
