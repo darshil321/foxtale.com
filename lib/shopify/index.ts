@@ -610,3 +610,60 @@ async function getRatingsById(id: string | string[]) {
     console.log('e', e);
   }
 }
+
+export async function createReview(body: any) {
+  const url = `https://api.fera.ai/v3/private/reviews`;
+
+  try {
+    const reviewApiOptions = {
+      method: 'POST',
+      url: url,
+      headers: {
+        accept: 'application/json',
+        'SECRET-KEY': process.env.NEXT_PUBLIC_FERA_FOXTALE_SECRET_KEY,
+        'Content-Type': 'application/json'
+      },
+      data: {
+        ...body
+      }
+    };
+    const response = await axios.request(reviewApiOptions);
+    const reviews = response.data;
+
+    return reviews;
+  } catch (e) {
+    console.log('Error:', e);
+    throw e; // Optional: rethrow the error to handle it outside the function
+  }
+}
+export async function createCustomer(body: any) {
+  const url = `https://api.fera.ai/v3/private/customers`;
+
+  try {
+    const user = {
+      method: 'POST',
+      url: url,
+      headers: {
+        accept: 'application/json',
+        'SECRET-KEY': process.env.NEXT_PUBLIC_FERA_FOXTALE_SECRET_KEY,
+        'Content-Type': 'application/json'
+      },
+      data: {
+        ...body
+      }
+    };
+    const response = await axios.request(user);
+    const userData = response.data;
+    const feraUser = {
+      id: userData.id,
+      name: userData.name,
+      email: userData.email
+    };
+    console.log('feraUser', feraUser);
+
+    return userData;
+  } catch (e) {
+    console.log('Error:', e);
+    throw e; // Optional: rethrow the error to handle it outside the function
+  }
+}

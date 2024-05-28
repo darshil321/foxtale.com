@@ -24,6 +24,7 @@ import Accordion from '@/components/layout/accordion';
 import ResultsSection from '@/components/product/results-section';
 import { Product } from '@/lib/shopify/types';
 import ReviewForm from '@/components/review-component/review-form';
+import UserForm from '@/components/review-component/user-form';
 export const generateStaticParams = async () => {
   const collections = [
     {
@@ -144,7 +145,9 @@ export default async function ProductPage({
           <div className="h-full w-full basis-full lg:basis-3/6">
             <ProductSlider images={product.images} />
           </div>
-          <ReviewForm />
+          <ReviewForm product={product} />
+          <UserForm />
+
           <div className="basis-full  lg:basis-3/6">
             <div className="px-4 pt-3 md:px-2 md:pt-0">
               <ProductDescription product={product} searchParams={searchParams} />

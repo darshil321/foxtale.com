@@ -1,4 +1,7 @@
 'use client';
+import { getProductId } from '@/lib/helper/helper';
+import { createReview } from '@/lib/shopify';
+import { Product } from '@shopify/hydrogen-react/storefront-api-types';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import ReactModal from 'react-modal';
@@ -6,17 +9,19 @@ import ReactStars from 'react-rating-stars-component';
 
 // import { GokwikButton } from 'components/elements/gokwik-button';
 
-const ReviewForm = ({}: {}) => {
-  const [file, setFile] = useState(null);
-  console.log(file);
-
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-  };
+const ReviewForm = ({ product }: { product: Product }) => {
+  const handleFileChange = () => {};
 
   const handleButtonClick = () => {
-    document.getElementById('file').click();
+    document.getElementById('file')?.click();
   };
+  const [review, setReview] = useState({
+    media: '',
+    body: '',
+    heading: '',
+    rating: 0,
+    external_product_id: getProductId(product.id)
+  });
 
   // const handleSubmit = (event) => {
   //   event.preventDefault();
@@ -24,24 +29,33 @@ const ReviewForm = ({}: {}) => {
   //   console.log('Submitted file:', file);
   // };
   const ratingChanged = (newRating: number) => {
-    console.log(newRating);
+    setReview({ ...review, rating: newRating });
   };
+
   return (
     <ReactModal
       shouldReturnFocusAfterClose={false}
       shouldFocusAfterRender={false}
-      className=" mx-auto my-auto mt-[130px] w-1/3 rounded-md  bg-white font-poppins  shadow-lg  "
+      className=" mx-auto my-auto mt-[130px] w-[400px] rounded-md  bg-white font-poppins  shadow-md  "
       isOpen={true}
     >
-      <form onSubmit={() => {}}>
-        <h1 className="mt-6 pt-6 text-center text-2xl">Write a Review</h1>
+      <div className="relative flex items-center justify-end rounded-md p-4 text-black transition-colors ">
+        <Image src={'/Images/close.svg'} alt={'close'} width={25} height={25} />
+      </div>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          createReview(review);
+        }}
+      >
+        <h1 className="  text-center text-2xl">Write a Review</h1>
         <div className="p-8 text-gray-500">
           <div className="grid grid-cols-3">
             <p>Product:</p>
-            <p className="col-span-2 text-black">Rapid Spot Reduction Drops</p>
+            <p className="col-span-2 text-black">{product.title}</p>
           </div>
-          <div className=" mt-2 grid grid-cols-3 items-center">
-            <label htmlFor="name">Rating:</label>
+          <div className="mt-2 grid grid-cols-3 items-center">
+            <label htmlFor="rating">Rating:</label>
             <div className="col-span-2 flex items-center">
               <ReactStars
                 className=" space-x-4"
@@ -55,8 +69,8 @@ const ReviewForm = ({}: {}) => {
           <div className="grid grid-cols-3 items-center">
             <label htmlFor="name">Summary:</label>
             <input
-              className="col-span-2"
-              placeholder="Enter your name"
+              className=" col-span-2"
+              placeholder="I dig it!"
               style={{
                 border: '1px solid #ccc',
                 borderRadius: '8px',
@@ -66,12 +80,12 @@ const ReviewForm = ({}: {}) => {
               type="text"
               id="name"
               name="name"
-              onChange={(e) => console.log(e)}
+              onChange={(e) => setReview({ ...review, heading: e.target.value })}
             />
           </div>
 
           <div className="grid grid-cols-3 items-center">
-            <label htmlFor="name">More Info:</label>
+            <label htmlFor="more-info">More Info:</label>
 
             <input
               className="col-span-2"
@@ -83,9 +97,9 @@ const ReviewForm = ({}: {}) => {
                 margin: '8px 0'
               }}
               type="text"
-              id="name"
-              name="name"
-              onChange={(e) => console.log(e)}
+              id="more-info"
+              name="more-info"
+              onChange={(e) => setReview({ ...review, body: e.target.value })}
             />
           </div>
           <div className="mt-2 flex justify-center rounded-md border border-dashed border-gray-400 bg-[#F2F2FF]">
@@ -96,7 +110,13 @@ const ReviewForm = ({}: {}) => {
               name="file"
               onChange={handleFileChange}
             />
-            <Image className="mr-2" src="/images/import.svg" alt="upload" width={40} height={40} />
+            <Image
+              className="pl-4 pr-2"
+              src="/images/import.svg"
+              alt="upload"
+              width={60}
+              height={60}
+            />
 
             <button
               type="button"

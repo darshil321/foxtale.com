@@ -11,6 +11,8 @@ export interface ProductsState {
   error: any;
   frequency: any;
   product: any;
+  isReviewFormOpen: boolean;
+  isUserFormOpen: boolean;
 }
 
 export const initialState: ProductsState = {
@@ -23,7 +25,9 @@ export const initialState: ProductsState = {
   errorByCategory: {},
   loading: false,
   frequency: '',
-  product: {}
+  product: {},
+  isReviewFormOpen: false,
+  isUserFormOpen: false
 };
 
 export const productSlice = createSlice({
@@ -34,6 +38,12 @@ export const productSlice = createSlice({
     getProductSuccess: (state, action) => {
       const { products } = action.payload.body.data;
       state.products = products.edges;
+    },
+    setReviewFormOpen: (state, action) => {
+      state.isReviewFormOpen = action.payload;
+    },
+    setUserFormOpen: (state, action) => {
+      state.isUserFormOpen = action.payload;
     },
 
     getProductFailed: (state) => {
@@ -62,6 +72,8 @@ export const {
   attemptGetProducts,
   setSelectedCollection,
   setIsUserClicked,
-  setProducts
+  setProducts,
+  setReviewFormOpen,
+  setUserFormOpen
 } = productSlice.actions;
 export default productSlice.reducer;
