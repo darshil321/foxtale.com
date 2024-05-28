@@ -1,6 +1,12 @@
 'use client';
 import { getProductId } from '@/lib/helper/helper';
-import { createReview } from '@/lib/shopify';
+import { createReview, updateReview, uploadMedia } from '@/lib/shopify';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import {
+  setProductReviews,
+  setReviewFormOpen,
+  setUserFormOpen
+} from '@/store/slices/product-slice';
 import { Product } from '@shopify/hydrogen-react/storefront-api-types';
 import Image from 'next/image';
 import React, { useState } from 'react';
@@ -10,42 +16,74 @@ import ReactStars from 'react-rating-stars-component';
 // import { GokwikButton } from 'components/elements/gokwik-button';
 
 const ReviewForm = ({ product }: { product: Product }) => {
-  const handleFileChange = () => {};
+  const handleFileChange = (e: any) => {
+    uploadMedia({ file: e.target.value });
+  };
+  const isReviewFormOpen = useAppSelector((state) => state.products.isReviewFormOpen);
 
   const handleButtonClick = () => {
     document.getElementById('file')?.click();
   };
   const [review, setReview] = useState({
-    media: '',
     body: '',
     heading: '',
     rating: 0,
-    external_product_id: getProductId(product.id)
+    external_product_id: getProductId(product.id),
+    customer_id: ''
   });
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   // Handle form submission
-  //   console.log('Submitted file:', file);
-  // };
   const ratingChanged = (newRating: number) => {
     setReview({ ...review, rating: newRating });
   };
+  const getReviewId = (productId: string, productReviews: any[]): string | null => {
+    const review = productReviews.find((r) => r.external_product_id === productId);
+    return review ? review.id : null;
+  };
+
+  const dispatch = useAppDispatch();
+  const feraUser = useAppSelector((state) => state.user.feraUser);
+  const productReviews = useAppSelector((state) => state.products.productReviews);
+  console.log('REVIEW', productReviews);
 
   return (
     <ReactModal
       shouldReturnFocusAfterClose={false}
       shouldFocusAfterRender={false}
       className=" mx-auto my-auto mt-[130px] w-[400px] rounded-md  bg-white font-poppins  shadow-md  "
-      isOpen={true}
+      isOpen={isReviewFormOpen}
     >
-      <div className="relative flex items-center justify-end rounded-md p-4 text-black transition-colors ">
+      <div
+        onClick={() => {
+          dispatch(setReviewFormOpen(false));
+        }}
+        className="relative flex cursor-pointer items-center justify-end rounded-md p-4 text-black transition-colors "
+      >
         <Image src={'/Images/close.svg'} alt={'close'} width={25} height={25} />
       </div>
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          createReview(review);
+
+          dispatch(setProductReviews(review));
+          if (!feraUser) {
+            dispatch(setReviewFormOpen(false));
+            dispatch(setUserFormOpen(true));
+            return;
+          }
+
+          const id = getReviewId(getProductId(product.id), productReviews);
+
+          if (!id) {
+            createReview({ ...review, customer_id: feraUser.id }).then((res) => {
+              dispatch(setProductReviews({ ...review, id: res.id }));
+              dispatch(setReviewFormOpen(false));
+            });
+          } else {
+            updateReview({ ...review, customer_id: feraUser.id }, id).then((res) => {
+              dispatch(setProductReviews({ ...review, id: res.id }));
+              dispatch(setReviewFormOpen(false));
+            });
+          }
         }}
       >
         <h1 className="  text-center text-2xl">Write a Review</h1>

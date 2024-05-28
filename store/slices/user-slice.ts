@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-interface InitialStateType {
+interface UserState {
   isAuthenticated: boolean;
   loading: boolean;
   error: any;
@@ -11,7 +11,7 @@ interface InitialStateType {
   } | null;
 }
 
-export const initialState: InitialStateType = {
+export const initialState: UserState = {
   isAuthenticated: false,
   loading: false,
   error: null,

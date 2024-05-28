@@ -1,26 +1,43 @@
 'use client';
-import { createCustomer } from '@/lib/shopify';
-import { useAppDispatch } from '@/store/hooks';
+import { createCustomer, createReview } from '@/lib/shopify';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { setProductReviews, setUserFormOpen } from '@/store/slices/product-slice';
 import { setFeraUser } from '@/store/slices/user-slice';
 import React, { useState } from 'react';
 import ReactModal from 'react-modal';
+import Image from 'next/image';
 
 // import { GokwikButton } from 'components/elements/gokwik-button';
 
 const UserForm = () => {
+  function getLastElement(array: any[]) {
+    if (array.length === 0) {
+      return null;
+    }
+    return array[array.length - 1];
+  }
   const [user, setUser] = useState({
     name: '',
     email: ''
   });
   const dispatch = useAppDispatch();
-
+  const isUserFormOpen = useAppSelector((state) => state.products.isUserFormOpen);
+  const productReviews = useAppSelector((state) => state.products.productReviews);
   return (
     <ReactModal
       shouldReturnFocusAfterClose={false}
       shouldFocusAfterRender={false}
       className=" mx-auto my-auto mt-[130px] w-[400px] rounded-md  bg-white font-poppins  shadow-md  "
-      isOpen={false}
+      isOpen={isUserFormOpen}
     >
+      <div
+        onClick={() => {
+          dispatch(setUserFormOpen(false));
+        }}
+        className="relative flex cursor-pointer items-center justify-end rounded-md p-4 text-black transition-colors "
+      >
+        <Image src={'/Images/close.svg'} alt={'close'} width={25} height={25} />
+      </div>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -30,7 +47,14 @@ const UserForm = () => {
               name: res.name,
               email: res.email
             };
+            const reviewObject = getLastElement(productReviews);
+            const review = { ...reviewObject, customer_id: feraUser.id };
+            createReview(review).then((res) => {
+              dispatch(setProductReviews({ ...review, id: res.id }));
+            });
+
             dispatch(setFeraUser(feraUser));
+            dispatch(setUserFormOpen(false));
           });
         }}
       >
