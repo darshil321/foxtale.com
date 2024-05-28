@@ -61,10 +61,7 @@ export const productSlice = createSlice({
         (r) => r.external_product_id === review.external_product_id
       );
 
-      console.log('state.productReviewwww0', existingReviews, reviewIndex);
       if (reviewIndex !== -1 && reviewIndex !== undefined) {
-        console.log('state.productReviewwww1', existingReviews, reviewIndex);
-
         const reviews = existingReviews?.map((r, i) =>
           i === reviewIndex ? { ...r, ...review } : r
         );

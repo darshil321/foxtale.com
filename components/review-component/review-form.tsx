@@ -56,7 +56,6 @@ const ReviewForm = ({ product }: { product: Product }) => {
   const dispatch = useAppDispatch();
   const feraUser = useAppSelector((state) => state.user.feraUser);
   const productReviews = useAppSelector((state) => state.products.productReviews);
-  console.log('productReviews', productReviews);
 
   return (
     <ReactModal
