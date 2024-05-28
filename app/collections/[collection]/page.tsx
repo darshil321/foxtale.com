@@ -67,7 +67,7 @@ export default async function CategoryPage({
     {
       section: 'Masks',
       title: 'Masks at 499/-',
-      Description: 'Targeted solutions for all skin concerns'
+      Description: ''
     }
   ];
   // Fetch products for all collections simultaneously

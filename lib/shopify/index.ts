@@ -519,8 +519,6 @@ export async function appendReviewAndRating(products: any) {
     // });
 
     ratings.forEach((rating: any) => {
-      if (!rating.external_product_id) console.log('rating', rating);
-
       const product = products.find((product: any) => {
         const id = getProductId(product.id);
         return id === rating.external_product_id;
@@ -541,20 +539,17 @@ export async function appendReviewAndRatingInProduct(product: any) {
     const reviews = await getReviewsById(id);
     const ratings = await getRatingsById(id);
     const productRating = ratings.find((rating: any) => rating.subject === 'product');
-    const productReview = reviews.find((rating: any) => rating.subject === 'product');
-
-    // reviews.forEach((review: any) => {
-    //   const product = products.find((product: any) => {
-    //     const id = getProductId(product.id);
-    //     return id === review.external_product_id;
-    //   });
-    //   if (product) {
-    //     product.reviews = review;
-    //   }
-    // });
+    const productReviews = reviews?.data
+      .filter((rating: any) => rating.subject === 'product')
+      .filter((reviews: any) => reviews.is_anonymous !== true)
+      .filter(
+        (reviews: any) =>
+          reviews.customer.generated_display_name !== '' ||
+          reviews.customer.generated_display_name !== null
+      );
 
     product.ratings = productRating;
-    product.reviews = productReview;
+    product.reviews = productReviews;
 
     return product;
   } catch (error) {
@@ -610,5 +605,104 @@ async function getRatingsById(id: string | string[]) {
     return ratings;
   } catch (e) {
     console.log('e', e);
+  }
+}
+export async function createReview(body: any) {
+  const url = `https://api.fera.ai/v3/private/reviews`;
+
+  try {
+    const reviewApiOptions = {
+      method: 'POST',
+      url: url,
+      headers: {
+        accept: 'application/json',
+        'SECRET-KEY': process.env.NEXT_PUBLIC_FERA_FOXTALE_SECRET_KEY,
+        'Content-Type': 'application/json'
+      },
+      data: {
+        ...body
+      }
+    };
+    const response = await axios.request(reviewApiOptions);
+    const reviews = response.data;
+
+    return reviews;
+  } catch (e) {
+    console.log('Error:', e);
+    throw e;
+  }
+}
+export async function updateReview(body: any, id: string) {
+  const url = `https://api.fera.ai/v3/private/reviews/${id}`;
+
+  try {
+    const reviewApiOptions = {
+      method: 'PUT',
+      url: url,
+      headers: {
+        accept: 'application/json',
+        'SECRET-KEY': process.env.NEXT_PUBLIC_FERA_FOXTALE_SECRET_KEY,
+        'Content-Type': 'application/json'
+      },
+      data: {
+        ...body
+      }
+    };
+    const response = await axios.request(reviewApiOptions);
+    const reviews = response.data;
+
+    return reviews;
+  } catch (e) {
+    console.log('Error:', e);
+    throw e;
+  }
+}
+export async function createCustomer(body: any) {
+  const url = `https://api.fera.ai/v3/private/customers`;
+
+  try {
+    const user = {
+      method: 'POST',
+      url: url,
+      headers: {
+        accept: 'application/json',
+        'SECRET-KEY': process.env.NEXT_PUBLIC_FERA_FOXTALE_SECRET_KEY,
+        'Content-Type': 'application/json'
+      },
+      data: {
+        ...body
+      }
+    };
+    const response = await axios.request(user);
+    const userData = response.data;
+    const feraUser = {
+      id: userData.id,
+      name: userData.name,
+      email: userData.email
+    };
+    console.log('feraUser', feraUser);
+
+    return userData;
+  } catch (e) {
+    console.log('Error:', e);
+    throw e; // Optional: rethrow the error to handle it outside the function
+  }
+}
+export async function uploadMedia(formData: FormData) {
+  const url = `https://api.fera.ai/v3/private/media`;
+
+  try {
+    const response = await axios.post(url, formData, {
+      headers: {
+        accept: 'application/json',
+        'SECRET-KEY': process.env.NEXT_PUBLIC_FERA_FOXTALE_SECRET_KEY
+        // 'Content-Type': 'multipart/form-data' // Do not set Content-Type manually
+      }
+    });
+    const media = response.data;
+    return media;
+  } catch (error) {
+    console.log('Error:', error);
+    throw error;
   }
 }
