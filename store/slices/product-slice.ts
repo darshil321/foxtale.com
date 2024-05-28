@@ -13,6 +13,7 @@ export interface ProductsState {
   product: any;
   isReviewFormOpen: boolean;
   isUserFormOpen: boolean;
+  isSuccessModalOpen: boolean;
   productReviews: any[];
 }
 
@@ -29,6 +30,7 @@ export const initialState: ProductsState = {
   product: {},
   isReviewFormOpen: false,
   isUserFormOpen: false,
+  isSuccessModalOpen: false,
   productReviews: []
 };
 
@@ -91,6 +93,9 @@ export const productSlice = createSlice({
 
     setProducts: (state, action) => {
       state.products = action.payload;
+    },
+    setSuccessModal: (state, action) => {
+      state.isSuccessModalOpen = action.payload;
     }
   }
 });
@@ -103,6 +108,7 @@ export const {
   setProducts,
   setReviewFormOpen,
   setUserFormOpen,
-  setProductReviews
+  setProductReviews,
+  setSuccessModal
 } = productSlice.actions;
 export default productSlice.reducer;

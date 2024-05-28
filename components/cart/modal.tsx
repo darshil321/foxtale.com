@@ -21,7 +21,6 @@ import { EmblaOptionsType } from 'embla-carousel';
 
 import { cartActions } from '@/store/actions/cart.action';
 import EmblaProductSlider from '../common/recommended-product-slider';
-import LoadingOverlay from '../common/loading';
 import { trackEvent } from 'utils/mixpanel';
 
 type MerchandiseSearchParams = {
@@ -32,7 +31,6 @@ const minimumCartItems = 3;
 export default function CartModal() {
   const carts = useAppSelector((state) => state.cart.cart);
   const { giftFreeProducts } = useAppSelector((state) => state.cart);
-  const { loading } = useAppSelector((state) => state.cart);
   const RecommendedProducts = useAppSelector((state) => state.cart.recommendedProducts);
 
   const data = getCartData(carts);
@@ -110,7 +108,6 @@ export default function CartModal() {
               </div>
               <p className="bg-grey px-2 py-2 text-xs">Free Shipping + Free Sachet</p>
 
-              {loading && <LoadingOverlay isLoading={loading} />}
               {!carts || carts?.lines?.length === 0 ? (
                 <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
                   <ShoppingBagIcon className="h-16" />

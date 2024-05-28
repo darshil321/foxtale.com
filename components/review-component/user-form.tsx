@@ -1,7 +1,7 @@
 'use client';
 import { createCustomer, createReview } from '@/lib/shopify';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setProductReviews, setUserFormOpen } from '@/store/slices/product-slice';
+import { setProductReviews, setSuccessModal, setUserFormOpen } from '@/store/slices/product-slice';
 import { setFeraUser } from '@/store/slices/user-slice';
 import React, { useState } from 'react';
 import ReactModal from 'react-modal';
@@ -25,6 +25,12 @@ const UserForm = () => {
   const productReviews = useAppSelector((state) => state.products.productReviews);
   return (
     <ReactModal
+      style={{
+        overlay: {
+          boxShadow: '0px 3px 20px rgba(0, 0, 0, 0.2)',
+          backgroundColor: 'rgba(186, 186, 186, 0.5)'
+        }
+      }}
       shouldReturnFocusAfterClose={false}
       shouldFocusAfterRender={false}
       className=" mx-auto my-auto mt-[130px] w-[400px] rounded-md  bg-white font-poppins  shadow-md  "
@@ -34,7 +40,7 @@ const UserForm = () => {
         onClick={() => {
           dispatch(setUserFormOpen(false));
         }}
-        className="relative flex cursor-pointer items-center justify-end rounded-md p-4 text-black transition-colors "
+        className="relative flex cursor-pointer items-center justify-end rounded-md p-2 text-black transition-colors "
       >
         <Image src={'/Images/close.svg'} alt={'close'} width={25} height={25} />
       </div>
@@ -55,6 +61,7 @@ const UserForm = () => {
 
             dispatch(setFeraUser(feraUser));
             dispatch(setUserFormOpen(false));
+            dispatch(setSuccessModal(true));
           });
         }}
       >
