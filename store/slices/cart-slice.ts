@@ -226,7 +226,6 @@ export const {
   addToCart,
   setMagicLinkCoupons,
   setCartId,
-
   updateCartItem,
   setGiftFreeProducts
 } = cartSlice.actions;

@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
   setProductReviews,
   setReviewFormOpen,
+  setSuccessModal,
   setUserFormOpen
 } from '@/store/slices/product-slice';
 import { Product } from '@shopify/hydrogen-react/storefront-api-types';
@@ -59,16 +60,22 @@ const ReviewForm = ({ product }: { product: Product }) => {
 
   return (
     <ReactModal
+      style={{
+        overlay: {
+          boxShadow: '0px 3px 20px rgba(0, 0, 0, 0.2)',
+          backgroundColor: 'rgba(186, 186, 186, 0.5)'
+        }
+      }}
       shouldReturnFocusAfterClose={false}
       shouldFocusAfterRender={false}
-      className=" mx-auto my-auto mt-[130px] w-[400px] rounded-md  bg-white font-poppins  shadow-md  "
+      className=" mx-auto my-auto mt-[130px] w-[420px] rounded-md  bg-white font-poppins  shadow-md  "
       isOpen={isReviewFormOpen}
     >
       <div
         onClick={() => {
           dispatch(setReviewFormOpen(false));
         }}
-        className="relative flex cursor-pointer items-center justify-end rounded-md p-4 text-black transition-colors "
+        className="relative flex cursor-pointer items-center justify-end rounded-md p-2 text-black transition-colors "
       >
         <Image src={'/Images/close.svg'} alt={'close'} width={25} height={25} />
       </div>
@@ -91,11 +98,13 @@ const ReviewForm = ({ product }: { product: Product }) => {
             createReview({ ...review, customer: feraUser }).then((res) => {
               dispatch(setProductReviews({ ...review, id: res.id }));
               dispatch(setReviewFormOpen(false));
+              dispatch(setSuccessModal(true));
             });
           } else {
             updateReview({ ...review, customer_id: feraUser.id }, id).then((res) => {
               dispatch(setProductReviews({ ...review, id: res.id }));
               dispatch(setReviewFormOpen(false));
+              dispatch(setSuccessModal(true));
             });
           }
         }}

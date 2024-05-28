@@ -26,6 +26,7 @@ import ReviewComponent from '@/components/elements/ratings-reviews';
 import LimitedStockBanner from '@/components/elements/limited-stock-banner';
 import ReviewForm from '@/components/review-component/review-form';
 import UserForm from '@/components/review-component/user-form';
+import SuccessModal from '@/components/review-component/success-modal';
 export const generateStaticParams = async () => {
   const collections = [
     {
@@ -148,6 +149,7 @@ export default async function ProductPage({
           </div>
           <ReviewForm product={product} />
           <UserForm />
+          <SuccessModal />
 
           <div className="basis-full  lg:basis-3/6">
             <div className="px-4 pt-3 md:px-2 md:pt-0">
