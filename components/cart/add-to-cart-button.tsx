@@ -20,9 +20,9 @@ const ToastContent: React.FC = () => {
         <span className="ml-2">Product Added To Cart!</span>
       </div>
       <div
-        className=" text-blue-600"
+        className="text-[15px] font-semibold capitalize text-[#1877f2]"
         onClick={() => dispatch(setCartOpen(true))}
-        style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
+        style={{ cursor: 'pointer', textDecoration: 'underline' }}
       >
         View Cart
       </div>
