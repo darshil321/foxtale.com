@@ -36,7 +36,7 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
         >
           <Image
             src={item?.image?.url || '/Images/defualt.png'}
-            className=" flex min-h-[80px]  min-w-[80px] items-center justify-center  rounded-full md:min-h-[100px] md:min-w-[100px]"
+            className=" flex min-h-[8px]  min-w-[80px] items-center justify-center  rounded-full md:min-h-[105px] md:min-w-[105px]"
             alt={(item?.title && item?.title + Math.random()) || 'Image'}
             width={70}
             loading="lazy"
