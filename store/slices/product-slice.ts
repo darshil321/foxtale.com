@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 
 export interface ProductsState {
   products: any;
@@ -13,6 +13,7 @@ export interface ProductsState {
   product: any;
   isReviewFormOpen: boolean;
   isUserFormOpen: boolean;
+  productReviews: any[];
 }
 
 export const initialState: ProductsState = {
@@ -27,7 +28,8 @@ export const initialState: ProductsState = {
   frequency: '',
   product: {},
   isReviewFormOpen: false,
-  isUserFormOpen: false
+  isUserFormOpen: false,
+  productReviews: []
 };
 
 export const productSlice = createSlice({
@@ -49,6 +51,24 @@ export const productSlice = createSlice({
     getProductFailed: (state) => {
       // const data = current(state);
       state.loading = false;
+    },
+    setProductReviews: (state, action) => {
+      const review = action.payload;
+      const currentState = current(state);
+
+      const existingReviews = currentState.productReviews;
+      const reviewIndex = existingReviews.findIndex(
+        (r) => r.external_product_id === review.external_product_id
+      );
+
+      if (reviewIndex !== -1) {
+        const reviews = existingReviews.map((r, i) =>
+          i === reviewIndex ? { ...r, ...review } : r
+        );
+        state.productReviews = reviews;
+      } else {
+        state.productReviews = [...existingReviews, review];
+      }
     },
 
     attemptGetProducts: () => {
@@ -74,6 +94,7 @@ export const {
   setIsUserClicked,
   setProducts,
   setReviewFormOpen,
-  setUserFormOpen
+  setUserFormOpen,
+  setProductReviews
 } = productSlice.actions;
 export default productSlice.reducer;

@@ -541,12 +541,12 @@ export async function appendReviewAndRatingInProduct(product: any) {
     const reviews = await getReviewsById(id, 1, 10);
     const ratings = await getRatingsById(id);
     const productRating = ratings.find((rating: any) => rating.subject === 'product');
-    const productReview = reviews?.data
+    const productReviews = reviews?.data
       .filter((rating: any) => rating.subject === 'product')
       .filter((reviews: any) => reviews.is_anonymous !== true);
 
     product.ratings = productRating;
-    product.reviews = productReview;
+    product.reviews = productReviews;
 
     return product;
   } catch (error) {
@@ -635,7 +635,32 @@ export async function createReview(body: any) {
     return reviews;
   } catch (e) {
     console.log('Error:', e);
-    throw e; // Optional: rethrow the error to handle it outside the function
+    throw e;
+  }
+}
+export async function updateReview(body: any, id: string) {
+  const url = `https://api.fera.ai/v3/private/reviews/${id}`;
+
+  try {
+    const reviewApiOptions = {
+      method: 'PUT',
+      url: url,
+      headers: {
+        accept: 'application/json',
+        'SECRET-KEY': process.env.NEXT_PUBLIC_FERA_FOXTALE_SECRET_KEY,
+        'Content-Type': 'application/json'
+      },
+      data: {
+        ...body
+      }
+    };
+    const response = await axios.request(reviewApiOptions);
+    const reviews = response.data;
+
+    return reviews;
+  } catch (e) {
+    console.log('Error:', e);
+    throw e;
   }
 }
 export async function createCustomer(body: any) {
@@ -664,6 +689,31 @@ export async function createCustomer(body: any) {
     console.log('feraUser', feraUser);
 
     return userData;
+  } catch (e) {
+    console.log('Error:', e);
+    throw e; // Optional: rethrow the error to handle it outside the function
+  }
+}
+export async function uploadMedia(body: any) {
+  const url = `https://api.fera.ai/v3/private/media`;
+
+  try {
+    const user = {
+      method: 'POST',
+      url: url,
+      headers: {
+        accept: 'application/json',
+        'SECRET-KEY': process.env.NEXT_PUBLIC_FERA_FOXTALE_SECRET_KEY,
+        'Content-Type': 'application/json'
+      },
+      data: {
+        ...body
+      }
+    };
+    const response = await axios.request(user);
+    const media = response.data;
+
+    return media;
   } catch (e) {
     console.log('Error:', e);
     throw e; // Optional: rethrow the error to handle it outside the function

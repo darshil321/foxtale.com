@@ -1,4 +1,6 @@
 'use client';
+import { useAppDispatch } from '@/store/hooks';
+import { setReviewFormOpen } from '@/store/slices/product-slice';
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { getReviewsById } from '@/lib/shopify';
@@ -39,6 +41,7 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10); // Set your page size
   const [totalReviews, setTotalReviews] = useState(0);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -66,7 +69,10 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
       <div className="flex w-full flex-col justify-between pb-4 md:flex-row md:pb-8">
         <div className="flex flex-row justify-between md:flex-col">
           <h2 className="mb-4 text-2xl font-semibold md:text-3xl">Reviews</h2>
-          <button className="mb-6 max-w-xs rounded px-4 py-2 text-xs text-blue-500 underline underline-offset-2 md:w-[231px] md:bg-black md:text-sm md:text-black md:text-white md:no-underline">
+          <button
+            onClick={() => dispatch(setReviewFormOpen(true))}
+            className="mb-6 max-w-xs rounded px-4 py-2 text-xs text-blue-500 underline underline-offset-2 md:w-[231px] md:bg-black md:text-sm md:text-black md:text-white md:no-underline"
+          >
             Write a review
           </button>
         </div>
