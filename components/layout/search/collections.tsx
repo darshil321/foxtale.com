@@ -16,7 +16,7 @@ async function CollectionList() {
         title: 'Moisturizers - Shop Hydrating Moisturizers Online'
       },
       updatedAt: '2024-05-06T12:10:15Z',
-      image: { url: 'https://foxtale.in/cdn/shop/files/Untitled-2-03_1_105x105.jpg' },
+      image: { url: '/Images/MOISTURISER.png' },
       path: '/products/moisturizers'
     },
     {
@@ -28,8 +28,8 @@ async function CollectionList() {
         title: 'Sunscreens - Shop Sun Protection Online'
       },
       updatedAt: '2024-05-06T12:10:15Z',
-      image: { url: 'https://foxtale.in/cdn/shop/files/Untitled-2-02_1_105x105.jpg' },
-      path: '/products/Sunscreens'
+      image: { url: '/Images/SUNSCREEN.png' },
+      path: '/products/SUNSCREEN.PNG'
     },
     {
       handle: 'serums',
@@ -40,7 +40,7 @@ async function CollectionList() {
         title: 'Serums - Shop Targeted Skincare Serums Online'
       },
       updatedAt: '2024-05-06T12:10:15Z',
-      image: { url: 'https://foxtale.in/cdn/shop/files/Untitled-2-04_1_105x105.jpg' },
+      image: { url: '/Images/SERUMS.png' },
       path: '/products/serums'
     },
     {
@@ -52,7 +52,7 @@ async function CollectionList() {
         title: 'Cleansers - Shop Gentle Cleansers Online'
       },
       updatedAt: '2024-05-06T12:10:15Z',
-      image: { url: 'https://foxtale.in/cdn/shop/files/Untitled-2-01_1_105x105.jpg' },
+      image: { url: '/Images/MASKS.png' },
       path: '/products/cleansers'
     }
   ];
