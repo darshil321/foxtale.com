@@ -56,6 +56,7 @@ const ReviewForm = ({ product }: { product: Product }) => {
   const dispatch = useAppDispatch();
   const feraUser = useAppSelector((state) => state.user.feraUser);
   const productReviews = useAppSelector((state) => state.products.productReviews);
+  console.log('productReviews', productReviews);
 
   return (
     <ReactModal
@@ -82,11 +83,13 @@ const ReviewForm = ({ product }: { product: Product }) => {
             dispatch(setUserFormOpen(true));
             return;
           }
+          console.log('feraUser', feraUser, productReviews);
 
           const id = getReviewId(getProductId(product.id), productReviews);
+          console.log('id', id);
 
           if (!id) {
-            createReview({ ...review, customer_id: feraUser.id }).then((res) => {
+            createReview({ ...review, customer: feraUser }).then((res) => {
               dispatch(setProductReviews({ ...review, id: res.id }));
               dispatch(setReviewFormOpen(false));
             });

@@ -11,7 +11,9 @@ export interface ProductsState {
   error: any;
   frequency: any;
   product: any;
-  productReviews: any;
+  isReviewFormOpen: boolean;
+  isUserFormOpen: boolean;
+  productReviews: any[];
 }
 
 export const initialState: ProductsState = {
@@ -25,6 +27,8 @@ export const initialState: ProductsState = {
   loading: false,
   frequency: '',
   product: {},
+  isReviewFormOpen: false,
+  isUserFormOpen: false,
   productReviews: []
 };
 
@@ -36,6 +40,12 @@ export const productSlice = createSlice({
     getProductSuccess: (state, action) => {
       const { products } = action.payload.body.data;
       state.products = products.edges;
+    },
+    setReviewFormOpen: (state, action) => {
+      state.isReviewFormOpen = action.payload;
+    },
+    setUserFormOpen: (state, action) => {
+      state.isUserFormOpen = action.payload;
     },
 
     getProductFailed: (state) => {
@@ -51,14 +61,22 @@ export const productSlice = createSlice({
         (r) => r.external_product_id === review.external_product_id
       );
 
-      if (reviewIndex !== -1) {
+      console.log('state.productReviewwww0', existingReviews, reviewIndex);
+      if (reviewIndex !== -1 && reviewIndex !== undefined) {
+        console.log('state.productReviewwww1', existingReviews, reviewIndex);
+
         const reviews = existingReviews?.map((r, i) =>
           i === reviewIndex ? { ...r, ...review } : r
         );
+        console.log('reviews', reviews);
+
         state.productReviews = reviews;
       } else {
+        console.log('state.productReviewww2');
+
         state.productReviews = [...existingReviews, review];
       }
+      console.log('state.productReviews', state.productReviews, action.payload);
     },
 
     attemptGetProducts: () => {
@@ -82,6 +100,9 @@ export const {
   attemptGetProducts,
   setSelectedCollection,
   setIsUserClicked,
-  setProducts
+  setProducts,
+  setReviewFormOpen,
+  setUserFormOpen,
+  setProductReviews
 } = productSlice.actions;
 export default productSlice.reducer;

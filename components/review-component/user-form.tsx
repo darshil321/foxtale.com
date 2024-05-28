@@ -41,7 +41,6 @@ const UserForm = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          console.log('firsdddt');
           createCustomer(user).then((res) => {
             const feraUser = {
               id: res.id,
@@ -49,15 +48,12 @@ const UserForm = () => {
               email: res.email
             };
             const reviewObject = getLastElement(productReviews);
-            const review = { ...reviewObject, customer_id: feraUser.id };
-            console.log('fdfff', review);
+            const review = { ...reviewObject, customer: feraUser };
             createReview(review).then((res) => {
               dispatch(setProductReviews({ ...review, id: res.id }));
             });
-            console.log('firsw22t');
 
             dispatch(setFeraUser(feraUser));
-            console.log('first');
             dispatch(setUserFormOpen(false));
           });
         }}

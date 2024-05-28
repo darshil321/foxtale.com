@@ -536,7 +536,7 @@ export async function appendReviewAndRating(products: any) {
 export async function appendReviewAndRatingInProduct(product: any) {
   try {
     const id = getProductId(product.id);
-    const reviews = await getReviewsById(id);
+    const reviews = await getReviewsById(id, 1, 10);
     const ratings = await getRatingsById(id);
     const productRating = ratings.find((rating: any) => rating.subject === 'product');
     const productReviews = reviews?.data
@@ -556,11 +556,15 @@ export async function appendReviewAndRatingInProduct(product: any) {
     throw error;
   }
 }
-export async function getReviewsById(id?: string) {
+export async function getReviewsById(id?: string, page = 1, pageSize = 10) {
   const productId = id && getProductId(id);
+
+  const offset = (page - 1) * pageSize;
+  const limit = pageSize;
+
   const url = productId
-    ? `https://api.fera.ai/v3/private/reviews?external_product_id=${productId}`
-    : 'https://api.fera.ai/v3/private/reviews';
+    ? `https://api.fera.ai/v3/private/reviews?external_product_id=${productId}&limit=${limit}&offset=${offset}`
+    : `https://api.fera.ai/v3/private/reviews?limit=${limit}&offset=${offset}`;
 
   try {
     const reviewApiOptions = {
@@ -573,10 +577,14 @@ export async function getReviewsById(id?: string) {
     };
     const response = await axios.request(reviewApiOptions);
     const reviews = response.data.data;
+    console.log('reviewssss', reviews);
 
-    return reviews;
+    return {
+      data: reviews,
+      total: response.data.meta.total
+    };
   } catch (e) {
-    console.log('e', e);
+    console.log('Error fetching reviews:', e);
   }
 }
 

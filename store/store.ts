@@ -11,7 +11,7 @@ import { collectionsSlice } from './slices/collections-slice';
 
 const rootReducer = combineReducers({
   [productSlice.name]: productSlice.reducer,
-  [userSlice.name]: (userSlice as any).reducer,
+  [userSlice.name]: userSlice.reducer,
   [cartSlice.name]: cartSlice.reducer,
   [collectionsSlice.name]: collectionsSlice.reducer,
   [metaObjectSlice.name]: (metaObjectSlice as any).reducer
