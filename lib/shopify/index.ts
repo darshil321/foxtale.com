@@ -519,8 +519,6 @@ export async function appendReviewAndRating(products: any) {
     // });
 
     ratings.forEach((rating: any) => {
-      if (!rating.external_product_id) console.log('rating', rating);
-
       const product = products.find((product: any) => {
         const id = getProductId(product.id);
         return id === rating.external_product_id;
