@@ -41,7 +41,7 @@ const ReviewComponent = ({ reviews }: { reviews: any }) => {
       </div>
       <div className="space-y-8">
         {reviews.length > 0 ? (
-          reviews.map((review) => (
+          reviews.map((review: any) => (
             <div key={review.id} className="flex space-x-4 border-b pb-4">
               <div className="flex-shrink-0">
                 <Image
