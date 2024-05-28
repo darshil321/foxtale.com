@@ -16,8 +16,6 @@ const CollectionProductsContainer = ({
   index: number;
   key?: number;
 }) => {
-  console.log('productss', products);
-
   const dispatch = useDispatch();
   const selectedCollection = useAppSelector((state) => state.products.selectedCollection);
   const isUserClicked = useAppSelector((state) => state.products.isUserClicked);
@@ -30,8 +28,6 @@ const CollectionProductsContainer = ({
     }
   }, []);
   useEffect(() => {
-    console.log('ppp', selectedCollection, collections[index].section.toLowerCase(), isUserClicked);
-
     if (selectedCollection === collections[index].section.toLowerCase() && isUserClicked) {
       const section = sectionRef.current;
       if (section) {

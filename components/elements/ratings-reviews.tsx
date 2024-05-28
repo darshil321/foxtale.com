@@ -13,8 +13,6 @@ const calculateMonthsAgo = (date: any) => {
 };
 
 const ReviewComponent = ({ reviews }: { reviews: any }) => {
-  console.log('reviews', reviews);
-
   return (
     <div className="mx-auto w-full px-4 py-8">
       <div className="flex w-full flex-row justify-between pb-8">
