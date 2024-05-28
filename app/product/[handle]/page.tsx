@@ -23,6 +23,7 @@ import Accordion from '@/components/layout/accordion';
 import ResultsSection from '@/components/product/results-section';
 import { Product } from '@/lib/shopify/types';
 import ReviewComponent from '@/components/elements/ratings-reviews';
+import LimitedStockBanner from '@/components/elements/limited-stock-banner';
 export const generateStaticParams = async () => {
   const collections = [
     {
@@ -147,6 +148,7 @@ export default async function ProductPage({
             <div className="px-4 pt-3 md:px-2 md:pt-0">
               <ProductDescription product={product} searchParams={searchParams} />
             </div>
+            <LimitedStockBanner />
             {/* <OfferSection /> */}
           </div>
         </div>
