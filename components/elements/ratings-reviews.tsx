@@ -40,7 +40,8 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10); // Set your page size
-  const [totalReviews, setTotalReviews] = useState(0);
+  const [totalReviews, setTotalReviews] = useState(product?.reviewsCount || 0);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -58,7 +59,6 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
   }, [product.id, page, pageSize]);
 
   const totalPages = Math.max(1, Math.ceil(totalReviews / pageSize));
-  console.log('totalPages', totalPages);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -93,8 +93,11 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
       <div className="space-y-8">
         {reviews.length > 0 ? (
           reviews.map((review: any) => (
-            <div key={review.id} className="flex space-x-4 border-b pb-4">
-              <div className="flex-shrink-0">
+            <div
+              key={review.id}
+              className="flex flex-col space-y-2  border-b pb-4 md:flex-row md:space-x-4 "
+            >
+              <div className="flex  flex-shrink-0 flex-row md:w-[250px]">
                 <Image
                   width={48}
                   height={48}
@@ -102,27 +105,50 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
                   alt={`${review.customer.generated_display_name}`}
                   className="h-12 w-12 rounded-full"
                 />
+                <div className="flex flex-col  pl-2">
+                  <h3 className="text-base font-semibold underline">
+                    {review.customer.generated_display_name}
+                  </h3>
+
+                  <p className="text-[10px] text-gray-500">
+                    {review.customer.generated_display_location}
+                  </p>
+                </div>
               </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-lg font-semibold">
-                      {review.customer.generated_display_name}
-                    </h3>
-                    <p className="text-gray-500">{review.customer.generated_display_location}</p>
+              <div className="flex-1 space-y-2 ">
+                <div className="flex justify-between">
+                  <div className=" flex items-center text-black ">
+                    {Array(5)
+                      .fill(0)
+                      .map((_, i) => (
+                        <span key={i}>{i < review.rating ? '★' : '☆'}</span>
+                      ))}
                   </div>
                   <span className="text-sm text-gray-500">
                     {calculateMonthsAgo(review.created_at)} months ago
                   </span>
                 </div>
-                <div className="mt-2 flex items-center text-yellow-500">
-                  {Array(5)
-                    .fill(0)
-                    .map((_, i) => (
-                      <span key={i}>{i < review.rating ? '★' : '☆'}</span>
-                    ))}
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-base font-semibold  ">{review.heading}</p>
+                  </div>
                 </div>
-                <p className="mt-2 text-gray-700">{review.body || review.reviewText}</p>
+                <p className="mt-2 text-xs text-gray-600">{review.body || review.reviewText}</p>
+                {review.media && review.media.length > 0 && (
+                  <div className="mt-2 flex space-x-2">
+                    {review.media.map((mediaItem: any, index: any) => (
+                      <Image
+                        width={100}
+                        height={100}
+                        key={index}
+                        src={mediaItem.url}
+                        alt={`media-${index}`}
+                        className="h-16 w-16 rounded-lg"
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           ))
@@ -130,7 +156,7 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
           <p>No reviews available.</p>
         )}
       </div>
-      <Pagination currentPage={page} totalPages={10} onPageChange={handlePageChange} />
+      <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
     </div>
   );
 };

@@ -34,6 +34,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'people.pic1.co',
         pathname: '**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'app-uploads-cdn.fera.ai',
+        pathname: '**'
       }
     ]
   },

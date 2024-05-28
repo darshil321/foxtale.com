@@ -550,6 +550,7 @@ export async function appendReviewAndRatingInProduct(product: any) {
 
     product.ratings = productRating;
     product.reviews = productReviews;
+    product.reviewsCount = reviews?.total;
 
     return product;
   } catch (error) {
@@ -581,7 +582,7 @@ export async function getReviewsById(id?: string, page = 1, pageSize = 10) {
 
     return {
       data: reviews,
-      total: response.data.meta.total
+      total: response.data.meta.total_count
     };
   } catch (e) {
     console.log('Error fetching reviews:', e);
