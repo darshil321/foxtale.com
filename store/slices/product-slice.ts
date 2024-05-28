@@ -58,7 +58,7 @@ export const productSlice = createSlice({
       const review = action.payload;
       const currentState = current(state);
 
-      const existingReviews = currentState.productReviews;
+      const existingReviews = currentState.productReviews ?? [];
       const reviewIndex = existingReviews?.findIndex(
         (r) => r.external_product_id === review.external_product_id
       );
