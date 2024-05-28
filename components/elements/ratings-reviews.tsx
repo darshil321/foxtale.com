@@ -34,6 +34,7 @@ interface Product {
   ratings: {
     average: number;
   };
+  reviewsCount: number;
 }
 
 const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {

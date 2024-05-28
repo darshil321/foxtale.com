@@ -173,7 +173,7 @@ export default async function ProductPage({
         <ProductDetailsTabs product={product} />
 
         <BestSellingCombos product={product} />
-        <ReviewComponent reviews={product.reviews} product={product} />
+        <ReviewComponent product={product} />
 
         <Accordion product={product} />
         <Suspense fallback={null}>
