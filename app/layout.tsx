@@ -7,6 +7,7 @@ import Provider from '../store/store-provider';
 import Banner from 'components/layout/navbar/banner';
 import { Poppins } from 'next/font/google';
 import InitialData from '@/components/initial-data';
+import { ToastContainer } from 'react-toastify';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -60,6 +61,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN} />
       <body>
         <Provider>
+          <ToastContainer />
           <Banner />
           <WrapperContainer>
             <Navbar />
