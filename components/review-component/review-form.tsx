@@ -173,7 +173,7 @@ const ReviewForm = ({ product }: { product: Product }) => {
             />
             <Image
               className="pl-4 pr-2"
-              src="/images/import.svg"
+              src="/Images/import.svg"
               alt="upload"
               width={60}
               height={60}
