@@ -8,6 +8,7 @@ import Banner from 'components/layout/navbar/banner';
 import { Poppins } from 'next/font/google';
 import InitialData from '@/components/initial-data';
 import { ToastContainer } from 'react-toastify';
+import Script from 'next/script';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -71,6 +72,17 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           </Suspense>
           <main className={poppins.className}>{children}</main>
         </Provider>
+        <Script
+          id="adz_rum"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(() => {
+                const s = document.createElement("script");
+                s.src = "https://rum.auditzy.com/IqMuiumz-foxtale-poc.vercel.app.js";
+                document.head.appendChild(s);
+              })()`
+          }}
+        />
       </body>
     </html>
   );
