@@ -12,7 +12,7 @@ const LimitedStockBanner = () => {
         layout="responsive"
         className="h-12 max-h-14 w-12 max-w-14 rounded-full border object-cover p-1"
       />
-      <h4 className="mt-2 pl-8 text-center text-xl font-medium">
+      <h4 className="mt-2 pl-6 text-center text-sm font-medium md:pl-8 md:text-xl">
         Limited stocks left at this price!
       </h4>
     </div>

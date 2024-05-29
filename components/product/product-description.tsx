@@ -39,11 +39,17 @@ export default function ProductDescription({
           <div className="text-[#6d6e71]" dangerouslySetInnerHTML={{ __html: decodedHtml }} />
           <ProductsRatings product={product} />
         </div>
-        <div className="mr-auto text-2xl font-semibold text-black">
+        <div
+          className="mr-auto flex items-center text-2xl
+         font-semibold text-black"
+        >
           <Price
-            amount={selectedVariantPrice ?? product.priceRange.maxVariantPrice.amount}
+            amount={parseInt(
+              selectedVariantPrice ?? product.priceRange.maxVariantPrice.amount
+            ).toString()}
             currencyCode={product.priceRange.maxVariantPrice.currencyCode}
             text={'Inclusive of all tax'}
+            comparePrice={parseInt(product?.variants[0]?.compareAtPrice?.amount || '').toString()}
           />
         </div>
       </div>
