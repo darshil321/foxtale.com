@@ -14,22 +14,19 @@ import React, { useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 import ReactStars from 'react-rating-stars-component';
 
-// import { GokwikButton } from 'components/elements/gokwik-button';
-
 const ReviewForm = ({ product }: { product: Product }) => {
   const [file, setFile] = useState('');
+
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const droppedFile = e.dataTransfer.files?.[0];
-    console.log('droppedFile', droppedFile);
-
     if (droppedFile) {
-      setFile(droppedFile.name);
+      handleFileChange({ target: { files: [droppedFile] } });
     }
   };
+
   const handleFileChange = (e: any) => {
     const file = e.target.files[0];
-
     setFile(file.name);
 
     const formData = new FormData();
@@ -39,13 +36,13 @@ const ReviewForm = ({ product }: { product: Product }) => {
       setReview({ ...review, media: res.url });
     });
   };
-  console.log('file', file);
 
   const isReviewFormOpen = useAppSelector((state) => state.products.isReviewFormOpen);
 
   const handleButtonClick = () => {
     document.getElementById('file')?.click();
   };
+
   const [review, setReview] = useState({
     body: '',
     heading: '',
@@ -58,33 +55,40 @@ const ReviewForm = ({ product }: { product: Product }) => {
   const ratingChanged = (newRating: number) => {
     setReview({ ...review, rating: newRating });
   };
+
   const getReviewId = (productId: string, productReviews: any[]): string | null => {
     const review = productReviews?.find((r) => r.external_product_id === productId);
     return review ? review.id : null;
   };
+
   const [loading, setLoading] = useState(false);
 
   const dispatch = useAppDispatch();
   const feraUser = useAppSelector((state) => state.user.feraUser);
   const productReviews = useAppSelector((state) => state.products.productReviews);
-  const ratingToSummaryMap = {
-    1: 'No thanks.',
-    2: 'Nah.',
-    3: 'Pretty ok.',
-    4: 'I dig it!',
-    5: 'Fantastic!'
+
+  const ratingToSummaryMap: { [key: string]: string } = {
+    '1': 'No thanks.',
+    '2': 'Nah.',
+    '3': 'Pretty ok.',
+    '4': 'I dig it!',
+    '5': 'Fantastic!'
   };
-  console.log('review', review);
 
   useEffect(() => {
-    setReview({ ...review, heading: ratingToSummaryMap[Number(review['rating'])] });
+    setReview({
+      ...review,
+      heading: ratingToSummaryMap[review.rating as keyof typeof ratingToSummaryMap] ?? ''
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [review.rating]);
+
   const labelStyles = {
     color: '#6C757D',
     fontWeight: 500,
     marginBottom: '8px'
   };
+
   const headingStyles = {
     fontSize: '25px',
     fontWeight: 300,
@@ -105,31 +109,28 @@ const ReviewForm = ({ product }: { product: Product }) => {
       }}
       shouldReturnFocusAfterClose={false}
       shouldFocusAfterRender={false}
-      className=" mx-auto my-auto mt-[130px] w-[380] rounded-md bg-white  font-poppins shadow-md  md:w-[420px]  "
+      className="mx-auto my-auto mt-[130px] w-[380px] rounded-md bg-white font-poppins shadow-md md:w-[420px]"
       isOpen={isReviewFormOpen}
     >
       <div
         onClick={() => {
           dispatch(setReviewFormOpen(false));
         }}
-        className="relative flex cursor-pointer items-center justify-end rounded-md p-2 text-black transition-colors "
+        className="relative flex cursor-pointer items-center justify-end rounded-md p-2 text-black transition-colors"
       >
         <Image src={'/Images/close.svg'} alt={'close'} width={25} height={25} />
       </div>
       <form
         onSubmit={(e) => {
           e.preventDefault();
-
           dispatch(setProductReviews(review));
           if (!feraUser) {
             dispatch(setReviewFormOpen(false));
             dispatch(setUserFormOpen(true));
             return;
           }
-          console.log('feraUser', feraUser, productReviews);
 
           const id = getReviewId(getProductId(product.id), productReviews);
-          console.log('id', id);
           setLoading(true);
           if (!id) {
             createReview({ ...review, customer: feraUser }).then((res) => {
@@ -141,7 +142,6 @@ const ReviewForm = ({ product }: { product: Product }) => {
           } else {
             updateReview({ ...review, customer_id: feraUser.id }, id).then((res) => {
               setLoading(false);
-
               dispatch(setProductReviews({ ...review, id: res.id }));
               dispatch(setReviewFormOpen(false));
               dispatch(setSuccessModal(true));
@@ -149,7 +149,7 @@ const ReviewForm = ({ product }: { product: Product }) => {
           }
         }}
       >
-        <h1 style={headingStyles} className="  text-center text-2xl">
+        <h1 style={headingStyles} className="text-center text-2xl">
           Write a Review
         </h1>
         <div className="p-8 text-gray-500">
@@ -166,7 +166,7 @@ const ReviewForm = ({ product }: { product: Product }) => {
             <div className="col-span-2 flex items-center">
               <ReactStars
                 value={review.rating}
-                className=" space-x-4"
+                className="space-x-4"
                 onChange={ratingChanged}
                 size={24}
                 activeColor="#000000"
@@ -178,7 +178,7 @@ const ReviewForm = ({ product }: { product: Product }) => {
               Summary:
             </label>
             <input
-              className=" col-span-2"
+              className="col-span-2"
               style={{
                 border: '1px solid #ccc',
                 borderRadius: '8px',
@@ -192,12 +192,10 @@ const ReviewForm = ({ product }: { product: Product }) => {
               onChange={(e) => setReview({ ...review, heading: e.target.value })}
             />
           </div>
-
           <div className="grid grid-cols-3 items-center">
             <label style={labelStyles} htmlFor="more-info">
               More Info:
             </label>
-
             <input
               className="col-span-2"
               placeholder="What did you like it about?"
@@ -232,10 +230,9 @@ const ReviewForm = ({ product }: { product: Product }) => {
               width={60}
               height={60}
             />
-
             <button
               type="button"
-              className="rounded  py-6 text-center text-black"
+              className="rounded py-6 text-center text-black"
               onClick={handleButtonClick}
             >
               {!file && 'Drag and drop or click here to upload photos and/or videos'}
