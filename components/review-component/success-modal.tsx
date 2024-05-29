@@ -14,13 +14,14 @@ const SuccessModal = () => {
     <ReactModal
       style={{
         overlay: {
+          zIndex: 9999,
           boxShadow: '0px 3px 20px rgba(0, 0, 0, 0.2)',
           backgroundColor: 'rgba(186, 186, 186, 0.5)'
         }
       }}
       shouldReturnFocusAfterClose={false}
       shouldFocusAfterRender={false}
-      className=" mx-auto my-auto mt-[130px] w-[400px] rounded-md  bg-white font-poppins  shadow-md  "
+      className=" mx-auto my-auto mt-[130px] w-[380] rounded-md bg-white  font-poppins shadow-md  md:w-[420px]  "
       isOpen={isSuccessModal}
     >
       <div

@@ -23,17 +23,19 @@ const UserForm = () => {
   const dispatch = useAppDispatch();
   const isUserFormOpen = useAppSelector((state) => state.products.isUserFormOpen);
   const productReviews = useAppSelector((state) => state.products.productReviews);
+  const [loading, setLoading] = useState(false);
   return (
     <ReactModal
       style={{
         overlay: {
+          zIndex: 9999,
           boxShadow: '0px 3px 20px rgba(0, 0, 0, 0.2)',
           backgroundColor: 'rgba(186, 186, 186, 0.5)'
         }
       }}
       shouldReturnFocusAfterClose={false}
       shouldFocusAfterRender={false}
-      className=" mx-auto my-auto mt-[130px] w-[400px] rounded-md  bg-white font-poppins  shadow-md  "
+      className=" mx-auto my-auto mt-[130px] w-[380] rounded-md bg-white  font-poppins shadow-md  md:w-[420px]  "
       isOpen={isUserFormOpen}
     >
       <div
@@ -48,6 +50,7 @@ const UserForm = () => {
         onSubmit={(e) => {
           e.preventDefault();
           console.log('firsdddt');
+          setLoading(true);
           createCustomer(user).then((res) => {
             const feraUser = {
               id: res.id,
@@ -57,6 +60,7 @@ const UserForm = () => {
             const reviewObject = getLastElement(productReviews);
             const review = { ...reviewObject, customer: feraUser };
             createReview(review).then((res) => {
+              setLoading(false);
               dispatch(setProductReviews({ ...review, id: res.id }));
             });
             console.log('firsw22t');
@@ -110,7 +114,16 @@ const UserForm = () => {
           </div>
 
           <div className="mt-4 flex justify-center">
-            <button className="rounded-md bg-black px-4 py-2 text-white">Submit</button>
+            <button
+              disabled={loading}
+              aria-disabled={loading}
+              className={`flex rounded-md bg-black px-4 py-2 text-white  ${loading ? 'cursor-not-allowed' : ''}`}
+            >
+              Submit
+              {loading && (
+                <div className="ml-2 h-4 w-4 animate-spin rounded-full border-b-2 border-t-2 border-white md:h-5 md:w-5"></div>
+              )}
+            </button>
           </div>
         </div>
       </form>

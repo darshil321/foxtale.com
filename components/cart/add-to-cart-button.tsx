@@ -66,7 +66,6 @@ function SubmitButton({
         onClick={(e) => {
           e.preventDefault();
           notify();
-          // dispatch(setCartOpen(true));
           dispatch(
             cartActions.addToCart({
               selectedVariantId: selectedVariantId,
