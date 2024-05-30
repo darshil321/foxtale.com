@@ -138,5 +138,5 @@ export function* manageCartSaga(action: {
 export function* cartSagaWatchers() {
   yield takeLatest(cartActions.createCart, createCartSaga);
   yield takeLatest(cartActions.setRecommendedProduct, getRecommendedProductsSaga);
-  yield debounce(800, cartActions.manageCart, manageCartSaga);
+  yield debounce(400, cartActions.manageCart, manageCartSaga);
 }
