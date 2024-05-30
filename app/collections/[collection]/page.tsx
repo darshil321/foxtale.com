@@ -41,10 +41,16 @@ export default async function CategoryPage({
 
   const collections = [
     {
-      handle: '399-store'
+      handle: 'sp-moisturisers'
     },
     {
-      handle: '499-store'
+      handle: 'sp-sunscreens'
+    },
+    {
+      handle: 'sp-serums'
+    },
+    {
+      handle: 'sp-masks'
     }
   ];
 
@@ -71,29 +77,16 @@ export default async function CategoryPage({
     }
   ];
   // Fetch products for all collections simultaneously
-  const promises = collections.map(
-    async (collection) =>
-      await getCollectionProducts({ collection: collection.handle, sortKey, reverse })
-  );
+  const promises = collections.map(async (collection) => {
+    const res = (await getCollectionProducts({
+      collection: collection.handle,
+      sortKey,
+      reverse
+    })) as any;
+    return appendReviewAndRating(res);
+  });
 
-  const [products399 = [], products499 = []] = await Promise.all(promises);
-  const productsWithRating = await appendReviewAndRating([...products399, ...products499]);
-
-  const productsByCollection = productsWithRating.reduce(
-    (acc: any, cur: any) => {
-      if (cur.collections.includes('SP: Serums')) {
-        acc[2].push(cur);
-      } else if (cur.collections.includes('SP: Sunscreens')) {
-        acc[1].push(cur);
-      } else if (cur.collections.includes('SP: Masks')) {
-        acc[3].push(cur);
-      } else if (cur.collections.includes('SP: Moisturisers')) {
-        acc[0].push(cur);
-      }
-      return acc;
-    },
-    [[], [], [], []]
-  );
+  const productsByCollection = await Promise.all(promises);
 
   return (
     <>
