@@ -31,9 +31,27 @@ const integrationUrls = {
 //   qaone: 'https://qa-hits.gokwik.co/api/v1/events'
 // };
 export function GokwikButton(passedData) {
-  const [loading, setLoading] = useState(false);
-  // const cartId = useAppSelector((state) => state.cart.cart?.id);
   const cartId = useAppSelector((state) => state.cart.cartId);
+
+  window.addEventListener('message', (e) => {
+    console.log('e.data', e.data);
+
+    if (e.data.type === 'modal_close_hydrogen') {
+      const checkoutToken = e.data.body.cart_token;
+      console.log('event handled', checkoutToken);
+
+      getCart(cartId).then((data) => {
+        const lineIds = data?.lines?.map((line) => {
+          return line.id;
+        });
+        console.log('clearing cart', lineIds, cartId);
+
+        removeItem(lineIds);
+      });
+    }
+  });
+  const [loading, setLoading] = useState(false);
+  const cartLoading = useAppSelector((state) => state.cart.loading);
 
   let buyNowRun = false;
   useEffect(() => {
@@ -76,7 +94,6 @@ export function GokwikButton(passedData) {
     } else {
       getCart(cartId).then((data) => {
         setLoading(false);
-
         triggerGokwikCheckout(data);
       });
     }
@@ -176,9 +193,9 @@ export function GokwikButton(passedData) {
     <>
       {!passedData.hideButton && (
         <button
-          disabled={loading}
-          aria-disabled={loading}
-          className={`relative flex items-center justify-center border border-black  bg-black px-10 py-2 text-sm font-normal uppercase tracking-wide  text-white  hover:text-purple-400 md:flex-none md:px-12 md:text-sm ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+          disabled={loading || cartLoading}
+          aria-disabled={loading || cartLoading}
+          className={`relative flex items-center justify-center border border-black  bg-black px-10 py-2 text-sm font-normal uppercase tracking-wide  text-white  hover:text-purple-400 md:flex-none md:px-12 md:text-sm ${loading || cartLoading ? 'cursor-not-allowed' : ''}`}
           onClick={(event) => {
             event.preventDefault();
             trackEvent('Checkout Started!');

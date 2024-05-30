@@ -7,6 +7,7 @@ export const cartActions = {
   addToCart: createAction<{}>('cart/addToCart'),
   updateCart: createAction<{}>('cart/updateCart'),
   removeCart: createAction<{}>('cart/removeCart'),
+  getCart: createAction<{}>('cart/getCart'),
   setCart: createAction<{}>('cart/setCart'),
   manageCartSuccess: createAction<{}>('cart/manageCartSuccess'),
   setMetaObject: createAction<{}>('cart/setMetaObject'),

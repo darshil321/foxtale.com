@@ -8,6 +8,7 @@ import Banner from 'components/layout/navbar/banner';
 import { Poppins } from 'next/font/google';
 import InitialData from '@/components/initial-data';
 import { ToastContainer } from 'react-toastify';
+import { cookies } from 'next/headers';
 import Script from 'next/script';
 
 const poppins = Poppins({
@@ -55,11 +56,17 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   // const giftsCoupon = results[0]?.status === 'fulfilled' ? results[0].value : null;
   // const freebieCoupons = results[1]?.status === 'fulfilled' ? results[1].value : null;
   // const magicLinks = results[2]?.status === 'fulfilled' ? results[2].value : null;
+  const cartId = cookies().get('cartId')?.value;
 
   return (
     <html lang="en">
       <link rel="preconnect" href={process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN} />{' '}
       <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN} />
+      <link
+        rel="icon"
+        type="image/png"
+        href="https://foxtale.in/cdn/shop/files/Favicon-01_1_1.png?v=1678945973&width=32"
+      />
       <body>
         <Provider>
           <ToastContainer
@@ -76,7 +83,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             <Navbar />
           </WrapperContainer>
           <Suspense fallback={null}>
-            <InitialData />
+            <InitialData cartId={cartId} />
           </Suspense>
           <main className={poppins.className}>{children}</main>
         </Provider>

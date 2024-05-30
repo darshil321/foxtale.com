@@ -29,6 +29,7 @@ export async function generateMetadata({
       collection.seo?.description || collection.description || `${collection.title} products`
   };
 }
+export const revalidate = 60;
 
 export default async function CategoryPage({
   searchParams

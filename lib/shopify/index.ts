@@ -89,7 +89,8 @@ export async function shopifyFetch<T>({
       }),
       cache,
       next: {
-        ...(tags && { tags })
+        ...(tags && { tags }),
+        revalidate: 10
       }
     });
 
@@ -297,13 +298,14 @@ export async function getCollectionProducts({
   reverse?: boolean;
   sortKey?: string;
 }): Promise<Product[]> {
+  console.log(sortKey);
+
   const res = await shopifyFetch<ShopifyCollectionProductsOperation>({
     query: getCollectionProductsQuery,
     tags: [TAGS.collections, TAGS.products],
     variables: {
       handle: collection,
-      reverse,
-      sortKey: sortKey === 'CREATED_AT' ? 'CREATED' : sortKey
+      reverse
     }
   });
   console.log('res', res);

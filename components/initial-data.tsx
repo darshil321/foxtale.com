@@ -4,8 +4,9 @@ import { useDispatch } from 'react-redux';
 import { getMetaObjects, getProducts } from '@/lib/shopify';
 import { setFreebieCoupons, setGiftCoupons, setMagicLinkCoupons } from '@/store/slices/cart-slice';
 import { setProducts } from '@/store/slices/product-slice';
+import { cartActions } from '@/store/actions/cart.action';
 
-const InitialData = () => {
+const InitialData = ({ cartId }: { cartId?: string }) => {
   const dispatch = useDispatch();
   const [hasDataBeenFetched, setHasDataBeenFetched] = useState(false);
 
@@ -15,6 +16,8 @@ const InitialData = () => {
       getMetaObjects('freebies'),
       getMetaObjects('magic_link')
     ]);
+
+    cartId && dispatch(cartActions.getCart({ cartId: cartId }));
 
     const giftsCoupon = results[0].status === 'fulfilled' ? results[0].value : null;
     const freebieCoupons = results[1].status === 'fulfilled' ? results[1].value : null;
