@@ -10,7 +10,7 @@ const HeroBannerSlider = () => {
   };
 
   return (
-    <div className=" h-auto  max-h-[460px] w-full rounded-md">
+    <div className=" h-auto max-h-[460px]  w-full   rounded-md lg:max-h-[800px]  xl:max-h-[1200px]">
       <Image
         // blurDataURL={banner_1}
         onClick={(e: React.MouseEvent<HTMLImageElement>) => {
@@ -26,7 +26,7 @@ const HeroBannerSlider = () => {
         className="hidden h-auto w-full rounded-md md:block"
         src={`https://foxtale.in/cdn/shop/files/The_nine-nine_store-_banners_v2-02.jpg?v=1715766369`}
         alt="foxtale"
-        quality={90}
+        quality={100}
         // placeholder="blur"
         loading="eager"
       />
@@ -44,7 +44,7 @@ const HeroBannerSlider = () => {
         className="block h-full w-full rounded-md md:hidden"
         src={`https://foxtale.in/cdn/shop/files/The_nine-nine_store-_banners_v2-01.jpg?v=1715766369`}
         alt="Foxtale"
-        quality={90}
+        quality={100}
         // blurDataURL={banner_1}
         // placeholder="blur"
         loading="eager"
