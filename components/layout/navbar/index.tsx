@@ -12,7 +12,7 @@ export default async function Navbar() {
       <div className="flex w-full items-center justify-between">
         <div className="flex ">
           <Link
-            href="/collections/shop-1"
+            href="/collections/99-store"
             className="ml-2 mr-2 flex h-[32px] w-max items-center  justify-center md:h-full md:w-auto lg:mr-6"
           >
             <LogoSquare />
