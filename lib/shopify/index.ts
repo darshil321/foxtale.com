@@ -507,10 +507,9 @@ export async function getProductsData(first: number): Promise<any> {
 export async function appendReviewAndRating(products: any) {
   try {
     const productIds = products.map((product: any) => product.id);
-    console.log('productIds', productIds);
     // const reviews = await getReviewsById();
     const ratings = await getRatingsById(productIds);
-    console.log('ratings ', ratings);
+
     // reviews.forEach((review: any) => {
     //   const product = products.find((product: any) => {
     //     const id = getProductId(product.id);
