@@ -26,15 +26,15 @@ import { trackEvent } from 'utils/mixpanel';
 type MerchandiseSearchParams = {
   [key: string]: string;
 };
-const couponDescriptionLine = <b>FOX1099</b>;
-const minimumCartItems = 3;
+// const couponDescriptionLine = <b>FOX1099</b>;
+// const minimumCartItems = 3;
 export default function CartModal() {
   const carts = useAppSelector((state) => state.cart.cart);
   const { giftFreeProducts } = useAppSelector((state) => state.cart);
   const RecommendedProducts = useAppSelector((state) => state.cart.recommendedProducts);
 
   const data = getCartData(carts);
-  const totalCartQuantity = data.totalQuantity;
+  // const totalCartQuantity = data.totalQuantity;
 
   const { currencyCode, totalAmount } = data;
   const dispatch = useAppDispatch();
@@ -286,7 +286,7 @@ export default function CartModal() {
                     )}
                   </ul>
 
-                  <div>
+                  {/* <div>
                     {totalCartQuantity > minimumCartItems && (
                       <div className="bg-[#ffe1d7] p-2 text-xs">
                         <p className="flex flex-row gap-1">
@@ -307,7 +307,7 @@ export default function CartModal() {
                         </p>
                       </div>
                     )}
-                  </div>
+                  </div> */}
                   <div className="items-cener flex flex-col p-2">
                     <div className="py-1 text-lg">
                       <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1">
