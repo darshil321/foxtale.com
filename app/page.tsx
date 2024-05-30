@@ -7,7 +7,7 @@ export default function HomePage() {
   const router = useRouter();
 
   useEffect(() => {
-    router.replace('/collections/shop-1');
+    router.replace('/collections/99-store');
   }, [router]);
 
   return null;
