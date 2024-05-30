@@ -24,7 +24,8 @@ function SubmitButton({
       type="submit"
       onClick={(e: React.FormEvent<HTMLButtonElement>) => {
         if (pending) e.preventDefault();
-        dispatch(cartActions.removeCart({ lineIds: [item?.id] }));
+
+        dispatch(cartActions.removeCart({ lineIds: [item?.merchandise.id] }));
         trackEvent('Removed From Cart', {
           Product_Name: product?.title,
           Product_Url: '',
