@@ -88,7 +88,10 @@ export async function shopifyFetch<T>({
         ...(variables && { variables })
       }),
       cache,
-      ...(tags && { next: { tags } })
+      next: {
+        ...(tags && { tags }),
+        revalidate: 10
+      }
     });
 
     const body = await result.json();
