@@ -26,7 +26,6 @@ import { trackEvent } from 'utils/mixpanel';
 type MerchandiseSearchParams = {
   [key: string]: string;
 };
-// const couponDescriptionLine = <b>FOX1099</b>;
 // const minimumCartItems = 3;
 export default function CartModal() {
   const carts = useAppSelector((state) => state.cart.cart);
@@ -311,7 +310,9 @@ export default function CartModal() {
                   <div className="items-cener flex flex-col p-2">
                     <div className="py-1 text-lg">
                       <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1">
-                        <p className="font-bold">Subtotal:</p>
+                        <p className="font-bold" id="test123">
+                          Subtotal:
+                        </p>
                         <Price
                           className="text-right text-base text-black "
                           amount={totalAmount?.toString() || '0'}
