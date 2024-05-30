@@ -187,14 +187,15 @@ export function GokwikButton(passedData) {
 
     window.gokwikSdk.initCheckout(window.merchantInfo);
   };
+  const goKwikButtonLoad = loading || (cartLoading && passedData.title !== 'Buy Now');
 
   return (
     <>
       {!passedData.hideButton && (
         <button
-          disabled={loading || cartLoading}
-          aria-disabled={loading || cartLoading}
-          className={`relative flex items-center justify-center border border-black  bg-black px-10 py-2 text-sm font-normal uppercase tracking-wide  text-white  hover:text-purple-400 md:flex-none md:px-12 md:text-sm ${loading || cartLoading ? 'cursor-not-allowed opacity-70' : ''}`}
+          disabled={goKwikButtonLoad}
+          aria-disabled={goKwikButtonLoad}
+          className={`relative flex items-center justify-center border border-black  bg-black px-10 py-2 text-sm font-normal uppercase tracking-wide  text-white  hover:text-purple-400 md:flex-none md:px-12 md:text-sm ${goKwikButtonLoad ? 'cursor-not-allowed opacity-70' : ''}`}
           onClick={(event) => {
             event.preventDefault();
             trackEvent('Checkout Started!');
@@ -202,7 +203,7 @@ export function GokwikButton(passedData) {
           }}
         >
           {passedData.buyNowButton ? passedData.title : 'Pay via UPI/COD'}
-          {(loading || cartLoading) && (
+          {goKwikButtonLoad && (
             <div className="ml-2 h-4 w-4 animate-spin rounded-full border-b-2 border-t-2 border-white md:h-5 md:w-5"></div>
           )}
         </button>
