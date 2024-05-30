@@ -147,7 +147,9 @@ export default async function ProductPage({
           <div className="h-full w-full basis-full lg:basis-3/6">
             <ProductSlider images={product.images} />
           </div>
+
           <ReviewForm product={product} />
+
           <UserForm />
           <SuccessModal />
 
@@ -173,7 +175,9 @@ export default async function ProductPage({
         <ProductDetailsTabs product={product} />
 
         <BestSellingCombos product={product} />
-        <ReviewComponent product={product} />
+        <Suspense fallback={<>...loading reviews</>}>
+          <ReviewComponent product={product} />
+        </Suspense>
 
         <Accordion product={product} />
         <Suspense fallback={null}>

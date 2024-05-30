@@ -106,7 +106,7 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
   };
 
   return (
-    <div className="mx-auto w-full px-4 py-8">
+    <div id="Reviews" className="mx-auto w-full px-4 py-8">
       <div className="flex w-full flex-col justify-between pb-4 md:flex-row md:pb-8">
         <div className="flex flex-row justify-between md:flex-col">
           <h2 className="mb-4 text-2xl font-semibold md:text-3xl">Reviews</h2>
