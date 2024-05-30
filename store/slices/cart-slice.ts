@@ -88,7 +88,7 @@ export const cartSlice = createSlice({
 
       state.cart = {
         ...cart,
-        lines: cart?.lines.filter((item: any) => !lineIds?.includes(item.id))
+        lines: cart?.lines.filter((item: any) => !lineIds?.includes(item.merchandise.id))
       };
     },
 
