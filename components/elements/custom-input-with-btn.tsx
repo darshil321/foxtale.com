@@ -2,6 +2,22 @@
 import axios from 'axios';
 import clsx from 'clsx';
 import React, { useRef } from 'react';
+import { Slide, toast } from 'react-toastify';
+
+interface CustomInputWithBtnProps {
+  res: any;
+}
+
+const ToastContent: React.FC<CustomInputWithBtnProps> = ({ res }: { res: any }) => {
+  return (
+    <div className="flex justify-between">
+      <div className="flex">
+        <img height={20} width={20} src="/Images/tick.svg" alt="" />
+        <span className="ml-2 text-black">{res?.data?.message}</span>
+      </div>
+    </div>
+  );
+};
 
 const CustomInputBtn = ({
   className,
@@ -14,6 +30,14 @@ const CustomInputBtn = ({
   text?: string;
   type?: 'email' | 'password' | 'text';
 }) => {
+  const notify = (res: any) =>
+    toast(<ToastContent res={res} />, {
+      position: 'bottom-center',
+      autoClose: 1000,
+      hideProgressBar: true,
+      transition: Slide
+    });
+
   const emailRef = useRef<HTMLInputElement>(null);
 
   const handleNewsletterSubscription = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -23,10 +47,15 @@ const CustomInputBtn = ({
       return;
     }
     try {
-      const response = await axios.post('/api/subscribe', {
-        email: emailRef.current.value
-      });
-      console.log(response);
+      await axios
+        .post('/api/subscribe', {
+          email: emailRef.current.value
+        })
+        .then((res: any) => {
+          if (res.status === 200) {
+            notify(res);
+          }
+        });
     } catch (error) {}
   };
   return (
