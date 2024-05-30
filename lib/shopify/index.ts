@@ -542,11 +542,7 @@ export async function appendReviewAndRatingInProduct(product: any) {
     const productReviews = reviews?.data
       .filter((rating: any) => rating.subject === 'product')
       .filter((reviews: any) => reviews.is_anonymous !== true)
-      .filter(
-        (reviews: any) =>
-          reviews.customer.generated_display_name !== '' ||
-          reviews.customer.generated_display_name !== null
-      );
+      .filter((reviews: any) => reviews.heading && reviews.customer.generated_display_name);
 
     product.ratings = productRating;
     product.reviews = productReviews;
@@ -564,8 +560,8 @@ export async function getReviewsById(id?: string, page = 1, pageSize = 10) {
   const limit = pageSize;
 
   const url = productId
-    ? `https://api.fera.ai/v3/private/reviews?external_product_id=${productId}&limit=${limit}&offset=${offset}`
-    : `https://api.fera.ai/v3/private/reviews?limit=${limit}&offset=${offset}`;
+    ? `https://api.fera.ai/v3/private/reviews?external_product_id=${productId}&limit=${limit}&offset=${offset}&sort_by=highest_quality`
+    : `https://api.fera.ai/v3/private/reviews?limit=${limit}&offset=${offset}&sort_by=highest_quality`;
 
   try {
     const reviewApiOptions = {

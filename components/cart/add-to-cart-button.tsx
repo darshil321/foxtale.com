@@ -17,7 +17,7 @@ const ToastContent: React.FC = () => {
     <div className="flex justify-between">
       <div className="flex">
         <img height={20} width={20} src="/Images/tick.svg" alt="" />
-        <span className="ml-2">Product Added To Cart!</span>
+        <span className="ml-2 text-black">Product Added To Cart!</span>
       </div>
       <div
         className="text-[15px] font-semibold capitalize text-[#1877f2]"
@@ -66,7 +66,6 @@ function SubmitButton({
         onClick={(e) => {
           e.preventDefault();
           notify();
-          // dispatch(setCartOpen(true));
           dispatch(
             cartActions.addToCart({
               selectedVariantId: selectedVariantId,

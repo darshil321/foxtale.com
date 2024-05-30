@@ -7,14 +7,49 @@ import { getReviewsById } from '@/lib/shopify';
 import Pagination from './pagination';
 
 // Function to calculate the number of months between two dates
-const calculateMonthsAgo = (date: string) => {
+function timeAgo(date: Date): string {
   const now = new Date();
-  const reviewDate = new Date(date);
-  const yearsDifference = now.getFullYear() - reviewDate.getFullYear();
-  const monthsDifference = now.getMonth() - reviewDate.getMonth();
-  const totalMonths = yearsDifference * 12 + monthsDifference;
-  return totalMonths;
-};
+
+  const stripTime = (date: Date): Date => {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  };
+
+  const today = stripTime(now);
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+  const dayBeforeYesterday = new Date(today);
+  dayBeforeYesterday.setDate(today.getDate() - 2);
+
+  const strippedDate = stripTime(date);
+
+  if (strippedDate.getTime() === today.getTime()) {
+    return 'today';
+  } else if (strippedDate.getTime() === yesterday.getTime()) {
+    return 'yesterday';
+  } else if (strippedDate.getTime() === dayBeforeYesterday.getTime()) {
+    return '2 days ago';
+  } else {
+    const diffInMilliseconds = today.getTime() - strippedDate.getTime();
+    const diffInDays = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
+
+    if (diffInDays <= 6) {
+      return `${diffInDays} days ago`;
+    } else if (diffInDays <= 28) {
+      const diffInWeeks = Math.floor(diffInDays / 7);
+      return `${diffInWeeks} weeks ago`;
+    } else if (diffInDays <= 31) {
+      return '1 month ago';
+    } else {
+      const diffInMonths = Math.floor(diffInDays / 30);
+      if (diffInMonths <= 12) {
+        return `${diffInMonths} months ago`;
+      } else {
+        const diffInYears = Math.floor(diffInMonths / 12);
+        return `${diffInYears} years ago`;
+      }
+    }
+  }
+}
 
 interface Review {
   id: string;
@@ -49,7 +84,12 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
     const fetchReviews = async () => {
       try {
         const response = await getReviewsById(product.id, page, pageSize);
-        setReviews(response?.data);
+        setReviews(
+          response?.data
+          // .filter(
+          //   (reviews: any) => reviews.heading && reviews.customer.generated_display_name
+          // )
+        );
         setTotalReviews(response?.total);
       } catch (error) {
         console.error('Error fetching reviews:', error);
@@ -93,66 +133,66 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
       </div>
       <div className="space-y-8">
         {reviews.length > 0 ? (
-          reviews.map((review: any) => (
-            <div
-              key={review.id}
-              className="flex flex-col space-y-2  border-b pb-4 md:flex-row md:space-x-4 "
-            >
-              <div className="flex  flex-shrink-0 flex-row md:w-[250px]">
-                <Image
-                  width={48}
-                  height={48}
-                  src={review.customer.avatar_url}
-                  alt={`${review.customer.generated_display_name}`}
-                  className="h-12 w-12 rounded-full"
-                />
-                <div className="flex flex-col  pl-2">
-                  <h3 className="text-base font-semibold underline">
-                    {review.customer.generated_display_name}
-                  </h3>
-
-                  <p className="text-[10px] text-gray-500">
-                    {review.customer.generated_display_location}
-                  </p>
+          reviews.map((review: any) => {
+            return (
+              <div
+                key={review.id}
+                className="flex flex-col space-y-2 border-b pb-4 md:flex-row md:space-x-4"
+              >
+                <div className="flex flex-shrink-0 flex-row md:w-[250px]">
+                  <Image
+                    width={48}
+                    height={48}
+                    src={review.customer.avatar_url}
+                    alt={`${review.customer.generated_display_name}`}
+                    className="h-12 w-12 rounded-full"
+                  />
+                  <div className="flex flex-col pl-2">
+                    <h3 className="text-base font-semibold underline">
+                      {review.customer.generated_display_name}
+                    </h3>
+                    <p className="text-[10px] text-gray-500">
+                      {review.customer.generated_display_location}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex-1 space-y-2 ">
-                <div className="flex justify-between">
-                  <div className=" flex items-center text-black ">
-                    {Array(5)
-                      .fill(0)
-                      .map((_, i) => (
-                        <span key={i}>{i < review.rating ? '★' : '☆'}</span>
+                <div className="flex-1 space-y-2">
+                  <div className="flex justify-between">
+                    <div className="flex items-center text-black">
+                      {Array(5)
+                        .fill(0)
+                        .map((_, i) => (
+                          <span key={i}>{i < review.rating ? '★' : '☆'}</span>
+                        ))}
+                    </div>
+                    <span className="text-sm text-gray-500">
+                      {timeAgo(new Date(review.created_at))}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-base font-semibold">{review.heading}</p>
+                    </div>
+                  </div>
+                  <p className="mt-2 text-xs text-gray-600">{review.body || review.reviewText}</p>
+                  {review.media && review.media.length > 0 && (
+                    <div className="mt-2 flex space-x-2">
+                      {review.media.map((mediaItem: any, index: any) => (
+                        <Image
+                          width={100}
+                          height={100}
+                          key={index}
+                          src={mediaItem.url}
+                          alt={`media-${index}`}
+                          className="h-16 w-16 rounded-lg"
+                        />
                       ))}
-                  </div>
-                  <span className="text-sm text-gray-500">
-                    {calculateMonthsAgo(review.created_at)} months ago
-                  </span>
+                    </div>
+                  )}
                 </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-base font-semibold  ">{review.heading}</p>
-                  </div>
-                </div>
-                <p className="mt-2 text-xs text-gray-600">{review.body || review.reviewText}</p>
-                {review.media && review.media.length > 0 && (
-                  <div className="mt-2 flex space-x-2">
-                    {review.media.map((mediaItem: any, index: any) => (
-                      <Image
-                        width={100}
-                        height={100}
-                        key={index}
-                        src={mediaItem.url}
-                        alt={`media-${index}`}
-                        className="h-16 w-16 rounded-lg"
-                      />
-                    ))}
-                  </div>
-                )}
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <p>No reviews available.</p>
         )}
