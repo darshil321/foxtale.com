@@ -10,7 +10,7 @@ import CollectionProductsContainer from '@/components/layout/search/collection-p
 export const generateStaticParams = async () => {
   return [
     {
-      collection: 'shop-1'
+      collection: '99-store'
     }
   ];
 };
@@ -20,7 +20,9 @@ export async function generateMetadata({
 }: {
   params: { collection: string };
 }): Promise<Metadata> {
-  const collection = await getCollection(params.collection);
+  console.log('params', params);
+
+  const collection = await getCollection('399-store');
   if (!collection) return notFound();
 
   return {
@@ -29,12 +31,12 @@ export async function generateMetadata({
       collection.seo?.description || collection.description || `${collection.title} products`
   };
 }
+
 export const revalidate = 60;
 
 export default async function CategoryPage({
   searchParams
 }: {
-  params: { collection: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const { sort } = searchParams as { [key: string]: string };
