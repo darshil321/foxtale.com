@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { gokwikConfig } from '../../lib/shopify/gokwik.config';
 import { createCart, getCart } from '@/lib/shopify';
-import { addItem } from '../cart/actions';
+import { addItem, removeItem } from '../cart/actions';
 import { useAppSelector } from '@/store/hooks';
 import { trackEvent } from 'utils/mixpanel';
 
@@ -37,16 +37,15 @@ export function GokwikButton(passedData) {
     console.log('e.data', e.data);
 
     if (e.data.type === 'modal_close_hydrogen') {
-      const checkoutToken = e.data.body.cart_token;
-      console.log('event handled', checkoutToken);
-
       getCart(cartId).then((data) => {
         const lineIds = data?.lines?.map((line) => {
           return line.id;
         });
         console.log('clearing cart', lineIds, cartId);
 
-        removeItem(lineIds);
+        removeItem(lineIds).then((data) => {
+          console.log('cart cleared', data);
+        });
       });
     }
   });
