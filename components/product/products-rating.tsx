@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 
 const ProductsRatings = ({ product }: { product?: any }) => {
@@ -29,9 +30,9 @@ const ProductsRatings = ({ product }: { product?: any }) => {
             </span>
             <span style={{ display: 'none' }}>194</span>
           </div>
-          <span className="text-[10px] font-medium  text-neutral-400 ">
+          <Link href={'#Reviews'} className="text-[10px] font-medium  text-neutral-400 ">
             (Tap to see all reviews)
-          </span>
+          </Link>
         </div>
       )}
     </>

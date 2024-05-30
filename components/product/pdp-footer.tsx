@@ -18,7 +18,7 @@ const ProductDescFooter = ({ product }: { product: any }) => {
     )
   );
 
-  const selectedVariantId = variant?.id || defaultVariantId;
+  const selectedVariantID = variant?.id || defaultVariantId;
 
   return (
     <div className="fixed bottom-0 left-0 z-50 w-screen">
@@ -45,7 +45,7 @@ const ProductDescFooter = ({ product }: { product: any }) => {
               <GokwikButton
                 title={'Buy Now'}
                 buyNowButton={true}
-                variantId={selectedVariantId}
+                variantId={selectedVariantID}
                 quantity={1}
               />
             </CartProvider>

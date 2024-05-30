@@ -31,7 +31,7 @@ export async function BestSellingCombos({ product }: { product: Product }) {
   );
   const products = filteredDataByKey?.value?.split('@');
   return (
-    <section className="grid grid-cols-2 gap-4 px-4 pb-4">
+    <section id="combos" className="grid grid-cols-2 gap-4 px-4 pb-4">
       <h2 className="col-span-2 gap-3 text-center text-2xl font-medium leading-7">
         Best Selling Combos
       </h2>
