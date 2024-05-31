@@ -48,7 +48,7 @@ export function GridTileImage({
 
   const productDescription = product?.metafields?.find((item: any) => item?.key === 'hp_excerpt');
   const setPriority = collectionIndex === 0 && (index === 0 || index === 1);
-  const primaryImage = props.src;
+  const primaryImage = props?.src;
   const secondaryImage = images && images[1]?.url;
 
   return (
@@ -86,9 +86,9 @@ export function GridTileImage({
                 <Link href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}>
                   <Image
                     className={clsx(
-                      'relative aspect-square h-full min-h-[200px] w-full object-cover transition-all duration-500 ease-in-out md:min-h-[300px]',
+                      'relative aspect-square h-full min-h-[200px] w-full object-cover transition-opacity duration-500 ease-in-out  md:min-h-[300px]',
                       {
-                        'group-hover:scale-125': isInteractive
+                        'transition duration-1000 ease-in-out group-hover:scale-125': isInteractive
                       }
                     )}
                     src={isHovered && secondaryImage ? secondaryImage : primaryImage}
@@ -126,7 +126,11 @@ export function GridTileImage({
 
                   <span
                     data-value={product?.ratings?.average}
-                    style={{ transformOrigin: '0px 0px', opacity: 1, transform: 'scale(1, 1)' }}
+                    style={{
+                      transformOrigin: '0px 0px',
+                      opacity: 1,
+                      transform: 'scale(1, 1)'
+                    }}
                   >
                     {product.ratings.average}
                   </span>
