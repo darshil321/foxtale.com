@@ -1,10 +1,12 @@
 'use client';
 import React from 'react';
 import { trackEvent } from 'utils/mixpanel';
+import { sendGAEvent } from '@next/third-parties/google';
 
 const Banner = () => {
   const handleBannerClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
+    sendGAEvent({ event: 'Announcement Bar Clicked', value: {} });
     trackEvent('Announcement Bar Clicked', {});
   };
 

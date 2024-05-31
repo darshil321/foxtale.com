@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from 'store/hooks';
 import '../../assets/styles/embla-products-carousel.css';
 import { getCartData } from '@/lib/helper/helper';
 import { CartItem } from '@/lib/shopify/types';
+import { sendGAEvent } from '@next/third-parties/google';
 import { setCartOpen, setLoading } from '@/store/slices/cart-slice';
 import { GokwikButton } from '../product/go-kwik-button';
 import { EmblaOptionsType } from 'embla-carousel';
@@ -58,6 +59,19 @@ export default function CartModal() {
   const OPTIONS: EmblaOptionsType = { dragFree: false };
 
   const handleProductClick = (product: any, title: string) => {
+    sendGAEvent({
+      event: title,
+      value: {
+        Product_Name: product.title,
+        Product_Url: '',
+        Product_Price: product?.priceRange?.maxVariantPrice?.amount,
+        Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
+        Source: '',
+        Category: '',
+        Tags: product.tags,
+        Variant_SKU: ''
+      }
+    });
     trackEvent(title, {
       Product_Name: product.title,
       Product_Url: '',

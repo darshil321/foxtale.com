@@ -7,6 +7,7 @@ import { addItem, removeItem } from '../cart/actions';
 import { useAppSelector } from '@/store/hooks';
 import { trackEvent } from 'utils/mixpanel';
 import { setCart } from '@/store/slices/cart-slice';
+import { sendGAEvent } from '@next/third-parties/google';
 
 const integrationUrls = {
   local: 'http://localhost:8080/integration.js',
@@ -199,6 +200,10 @@ export function GokwikButton(passedData) {
           className={`text-md relative flex items-center justify-center border  border-black bg-black px-10 py-2 font-normal  tracking-wide  text-white  hover:text-purple-400 md:flex-none md:px-12 md:text-sm ${goKwikButtonLoad ? 'cursor-not-allowed opacity-70' : ''}`}
           onClick={(event) => {
             event.preventDefault();
+
+            sendGAEvent({
+              event: 'Checkout Started!'
+            });
             trackEvent('Checkout Started!');
             passedData.buyNowButton ? triggerBuyNow(passedData) : triggerGokwikCheckout();
           }}

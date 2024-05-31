@@ -8,6 +8,7 @@ import { trackEvent } from 'utils/mixpanel';
 import ProductTag from '../elements/product-tag';
 import SavePriceTag from '../elements/save-price-tag';
 import { calculateSavedPrice } from '@/lib/helper/helper';
+import { sendGAEvent } from '@next/third-parties/google';
 
 export function GridTileImage({
   isInteractive = true,
@@ -58,6 +59,19 @@ export function GridTileImage({
         <div className="flex h-full min-h-[320px] w-full flex-col justify-between md:max-h-[100%] md:min-h-[456px]">
           <div
             onClick={() => {
+              sendGAEvent({
+                event: 'Product Clicked',
+                value: {
+                  Product_Name: product.title,
+                  Product_Url: '',
+                  Product_Price: product?.priceRange?.maxVariantPrice?.amount,
+                  Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
+                  Source: '',
+                  Category: '',
+                  Tags: product.tags,
+                  Variant_SKU: ''
+                }
+              });
               trackEvent('Product Clicked', {
                 Product_Name: product.title,
                 Product_Url: '',

@@ -1,5 +1,6 @@
 'use client';
 
+import { sendGAEvent } from '@next/third-parties/google';
 import { cartActions } from '@/store/actions/cart.action';
 import { useAppDispatch } from '@/store/hooks';
 import clsx from 'clsx';
@@ -26,6 +27,19 @@ function SubmitButton({
         if (pending) e.preventDefault();
 
         dispatch(cartActions.removeCart({ lineIds: [item?.merchandise.id] }));
+        sendGAEvent({
+          event: 'Removed From Cart',
+          value: {
+            Product_Name: product.title,
+            Product_Url: '',
+            Product_Price: product?.priceRange?.maxVariantPrice?.amount,
+            Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
+            Source: '',
+            Category: '',
+            Tags: product.tags,
+            Variant_SKU: ''
+          }
+        });
         trackEvent('Removed From Cart', {
           Product_Name: product?.title,
           Product_Url: '',

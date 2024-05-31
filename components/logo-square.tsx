@@ -2,9 +2,11 @@
 import clsx from 'clsx';
 import Image from 'next/image';
 import { trackEvent } from 'utils/mixpanel';
+import { sendGAEvent } from '@next/third-parties/google';
 
 export default function LogoSquare({ size }: { size?: 'sm' | undefined }) {
   const handleLogoClick = () => {
+    sendGAEvent({ event: 'logo clickerd', value: {} });
     trackEvent('Logo Clicked', {});
   };
   return (

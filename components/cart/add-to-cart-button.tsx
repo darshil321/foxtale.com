@@ -10,6 +10,8 @@ import { trackEvent } from 'utils/mixpanel';
 import { toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from 'react-redux';
+import { sendGAEvent } from '@next/third-parties/google';
+
 const ToastContent: React.FC = () => {
   const dispatch = useDispatch();
 
@@ -74,6 +76,20 @@ function SubmitButton({
               product: product
             })
           );
+          sendGAEvent({
+            event: 'Add To Cart',
+            value: {
+              Product_Name: product.title,
+              Product_Url: '',
+              Product_Price: product?.priceRange?.maxVariantPrice?.amount,
+              Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
+              Source: '',
+              Category: '',
+              Tags: product.tags,
+              Variant_SKU: ''
+            }
+          });
+
           trackEvent('Add To Cart', {
             Product_Name: product.title,
             Product_Url: '',

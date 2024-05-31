@@ -9,6 +9,9 @@ import { Poppins } from 'next/font/google';
 import InitialData from '@/components/initial-data';
 import { ToastContainer } from 'react-toastify';
 import { cookies } from 'next/headers';
+// import GoogleAnalytics from '@/components/google-analytics/google-analytics';
+import { GoogleAnalytics } from '@next/third-parties/google';
+
 // import Script from 'next/script';
 
 const poppins = Poppins({
@@ -68,6 +71,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         href="https://foxtale.in/cdn/shop/files/Favicon-01_1_1.png?v=1678945973&width=32"
       />
       <body>
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
         <Provider>
           <ToastContainer
             style={{

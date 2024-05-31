@@ -1,6 +1,7 @@
 'use client';
 import clsx from 'clsx';
 import { trackEvent } from 'utils/mixpanel';
+import { sendGAEvent } from '@next/third-parties/google';
 
 export default function OpenCart({
   className,
@@ -11,6 +12,8 @@ export default function OpenCart({
 }) {
   const handleOpenCart = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
+
+    sendGAEvent({ event: 'Cart Button Clicked', value: {} });
     trackEvent('Cart Button Clicked', {});
   };
 
