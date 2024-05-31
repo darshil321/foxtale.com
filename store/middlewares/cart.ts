@@ -129,7 +129,7 @@ export function* manageCartSaga(action: {
       const res = yield call({ fn: updateCart, context: null }, cartId, updatePayload);
       console.log('willUpdate', updatePayload, res);
     }
-    yield delay(600);
+    yield delay(1000);
     yield put(setLoading(false));
   } catch (error) {
     console.log('error', error);
