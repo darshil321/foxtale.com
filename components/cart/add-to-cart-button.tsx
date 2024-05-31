@@ -10,6 +10,7 @@ import { trackEvent } from 'utils/mixpanel';
 import { toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from 'react-redux';
+import { scrollToElementById } from '@/lib/utils';
 const ToastContent: React.FC = () => {
   const dispatch = useDispatch();
 
@@ -67,6 +68,7 @@ function SubmitButton({
         onClick={(e) => {
           e.preventDefault();
           notify();
+          scrollToElementById('routine');
           dispatch(setLoading(true));
           dispatch(
             cartActions.addToCart({

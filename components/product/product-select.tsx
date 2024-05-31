@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 
-const categories = [{ name: 'glow-routine' }];
+const categories = [{ name: 'glow-routine', value: 'Glow' }];
 
 export default function SelectCategory({
   selectedCategory,
@@ -44,7 +44,7 @@ export default function SelectCategory({
                       <span
                         className={`block truncate text-sm md:text-base ${selectedCategory ? 'font-medium' : 'font-normal'}`}
                       >
-                        {person.name}
+                        {person.value}
                       </span>
                       {selectedCategory ? (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">

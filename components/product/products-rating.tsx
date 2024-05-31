@@ -1,4 +1,5 @@
-import Link from 'next/link';
+'use client';
+import { scrollToElementById } from '@/lib/utils';
 import React from 'react';
 
 const ProductsRatings = ({ product }: { product?: any }) => {
@@ -30,9 +31,12 @@ const ProductsRatings = ({ product }: { product?: any }) => {
             </span>
             <span style={{ display: 'none' }}>194</span>
           </div>
-          <Link href={'#Reviews'} className="text-[10px] font-medium  text-neutral-400 ">
+          <span
+            onClick={() => scrollToElementById('Reviews')}
+            className="cursor-pointer text-[10px] font-medium text-neutral-400 "
+          >
             (Tap to see all reviews)
-          </Link>
+          </span>
         </div>
       )}
     </>

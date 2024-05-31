@@ -6,7 +6,6 @@ import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import { BestSellingCombos } from '@/components/grid/best-selling-combos';
 import ProductSlider from '@/components/product/product-slider';
 import ProductDisclosure from '@/components/product/product-disclosure';
-// import OfferSection from '@/components/product/offers-section';
 import ProductsRatings from '@/components/product/products-rating';
 import ProductDescription from '@/components/product/product-description';
 import ProductCarouselSlider from '@/components/product/product-carousel';
@@ -19,6 +18,8 @@ import LimitedStockBanner from '@/components/elements/limited-stock-banner';
 import ReviewForm from '@/components/review-component/review-form';
 import UserForm from '@/components/review-component/user-form';
 import SuccessModal from '@/components/review-component/success-modal';
+// import OfferSection from '@/components/product/offers-section';
+
 export const generateStaticParams = async () => {
   const collections = [
     {
@@ -172,47 +173,8 @@ export default async function ProductPage({
         </Suspense>
 
         <Accordion product={product} />
-        {/* <Suspense fallback={null}>
-          <RelatedProducts id={product.id} />
-        </Suspense> */}
         <ProductDescFooter product={product} />
       </div>
     </div>
   );
 }
-
-// async function RelatedProducts({ id }: { id: string }) {
-//   const relatedProducts = await getProductRecommendations(id);
-
-//   if (!relatedProducts.length) return null;
-
-//   return (
-//     <div className="px-4 py-8 md:px-0">
-//       <h2 className="mb-3 text-2xl font-semibold leading-7">Related Products</h2>
-//       <ul className="flex w-full gap-4 overflow-x-auto pt-1">
-//         {relatedProducts.map((product: Product) => (
-//           <li
-//             key={product.handle}
-//             className=" w-1/2 flex-none min-[475px]:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5"
-//           >
-//             <Link
-//               className="relative h-full w-full"
-//               href={`/product/${product.handle}/${product.options[0]?.name}`}
-//             >
-//               <GridTileImage
-//                 product={product}
-//                 alt={product.title}
-//                 label={{
-//                   title: product.title,
-//                   amount: product.priceRange.maxVariantPrice.amount,
-//                   currencyCode: product.priceRange.maxVariantPrice.currencyCode
-//                 }}
-//                 src={product.featuredImage?.url}
-//               />
-//             </Link>
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// }

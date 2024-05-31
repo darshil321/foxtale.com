@@ -6,7 +6,6 @@ import { GokwikButton } from './go-kwik-button';
 import { CartProvider } from '@shopify/hydrogen-react';
 import { ProductVariant } from '@shopify/hydrogen-react/storefront-api-types';
 import { useSearchParams } from 'next/navigation';
-// import { GokwikButton } from 'components/elements/gokwik-button';
 
 const ProductDescFooter = ({ product }: { product: any }) => {
   const searchParams = useSearchParams();
