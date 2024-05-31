@@ -254,8 +254,8 @@ export async function updateCart(
     variables: {
       cartId,
       lines
-    },
-    cache: 'no-store'
+    }
+    // cache: 'no-store'
   });
 
   return reshapeCart(res.body.data.cartLinesUpdate.cart);
