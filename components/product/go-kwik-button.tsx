@@ -9,7 +9,7 @@ import { trackEvent } from 'utils/mixpanel';
 import { setCart } from '@/store/slices/cart-slice';
 import { sendGAEvent } from '@next/third-parties/google';
 import { fbEvent } from 'utils/facebook-pixel';
-import { getCartData } from '@/lib/helper/helper';
+// import { getCartData } from '@/lib/helper/helper';
 
 const integrationUrls = {
   local: 'http://localhost:8080/integration.js',
@@ -36,10 +36,12 @@ const integrationUrls = {
 // };
 export function GokwikButton(passedData) {
   const cartId = useAppSelector((state) => state.cart.cartId);
-  const data = getCartData(carts);
+  // const carts = useAppSelector((state) => state.cart.cart);
+
+  // const data = getCartData(carts);
   // const totalCartQuantity = data.totalQuantity;
 
-  const { currencyCode, totalAmount } = data;
+  // const { currencyCode, totalAmount } = data;
 
   window.addEventListener('message', (e) => {
     if (e.data.type === 'modal_close_hydrogen') {
@@ -210,15 +212,9 @@ export function GokwikButton(passedData) {
             sendGAEvent({
               event: 'Checkout Started!'
             });
-            trackEvent('Checkout Started!');
-            trackEvent('Checkout Started!', {
-              currency: currencyCode,
-              value: totalAmount
-            });
-            fbEvent('Purchase', {
-              currency: currencyCode,
-              value: totalAmount
-            });
+            // trackEvent('Checkout Started!');
+            trackEvent('Initiate checkout', {});
+            fbEvent('Initiate checkout', {});
             passedData.buyNowButton ? triggerBuyNow(passedData) : triggerGokwikCheckout();
           }}
         >
