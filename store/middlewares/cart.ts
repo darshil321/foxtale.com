@@ -32,6 +32,7 @@ export function* getRecommendedProductsSaga(action: {
     const { productId } = action.payload;
 
     const data = yield call({ fn: getProductRecommendations, context: null }, productId);
+
     const res = data && data.map((p: any) => ({ product: p, variantId: getDefaultVariant(p).id }));
 
     yield put(setRecommendedProduct(res));
@@ -89,9 +90,9 @@ export function* manageCartSaga(action: {
         if (!exist) {
           acc.willAdd.push(curr);
         } else {
-          if (exist.quantity !== curr.quantity) {
-            acc.willUpdate.push({ ...curr, id: exist.id });
-          }
+          // if (exist.quantity !== curr.quantity) {
+          acc.willUpdate.push({ ...curr, id: exist.id });
+          // }
         }
         return acc;
       },
@@ -129,7 +130,7 @@ export function* manageCartSaga(action: {
       const res = yield call({ fn: updateCart, context: null }, cartId, updatePayload);
       console.log('willUpdate', updatePayload, res);
     }
-    yield delay(700);
+    yield delay(800);
     yield put(setLoading(false));
   } catch (error) {
     console.log('error', error);
@@ -140,5 +141,5 @@ export function* cartSagaWatchers() {
   yield takeLatest(cartActions.createCart, createCartSaga);
   yield takeLatest(cartActions.getCart, getCartSaga);
   yield takeLatest(cartActions.setRecommendedProduct, getRecommendedProductsSaga);
-  yield debounce(400, cartActions.manageCart, manageCartSaga);
+  yield debounce(200, cartActions.manageCart, manageCartSaga);
 }

@@ -48,9 +48,9 @@ export default function ProductDescription({
               selectedVariantPrice ?? product.priceRange.maxVariantPrice.amount
             ).toString()}
             currencyCode={product.priceRange.maxVariantPrice.currencyCode}
-            text={'Inclusive of all tax'}
             comparePrice={parseInt(product?.variants[0]?.compareAtPrice?.amount || '').toString()}
           />
+          <span className="ml-1 text-sm font-medium text-[#bcbec0]">(inclusive of taxes)</span>
         </div>
       </div>
       <Suspense fallback={null}>

@@ -254,8 +254,8 @@ export async function updateCart(
     variables: {
       cartId,
       lines
-    },
-    cache: 'no-store'
+    }
+    // cache: 'no-store'
   });
 
   return reshapeCart(res.body.data.cartLinesUpdate.cart);
@@ -308,7 +308,6 @@ export async function getCollectionProducts({
       reverse
     }
   });
-  console.log('res', res);
 
   if (!res.body.data.collection) {
     return [];
@@ -578,7 +577,6 @@ export async function getReviewsById(id?: string, page = 1, pageSize = 10) {
     };
     const response = await axios.request(reviewApiOptions);
     const reviews = response.data.data;
-    console.log('reviewssss', reviews);
 
     return {
       data: reviews,
@@ -684,12 +682,6 @@ export async function createCustomer(body: any) {
     };
     const response = await axios.request(user);
     const userData = response.data;
-    const feraUser = {
-      id: userData.id,
-      name: userData.name,
-      email: userData.email
-    };
-    console.log('feraUser', feraUser);
 
     return userData;
   } catch (e) {

@@ -1,7 +1,6 @@
 import { appendReviewAndRating, getCollection, getCollectionProducts } from 'lib/shopify';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { defaultSort, sorting } from 'lib/constants';
 import { Suspense } from 'react';
 import Loading from '../loading';
 
@@ -34,13 +33,9 @@ export async function generateMetadata({
 
 export const revalidate = 60;
 
-export default async function CategoryPage({
-  searchParams
-}: {
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
-  const { sort } = searchParams as { [key: string]: string };
-  const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
+export default async function CategoryPage({}: {}) {
+  // const { sort } = searchParams as { [key: string]: string };
+  // const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
 
   const collections = [
     {
@@ -82,9 +77,9 @@ export default async function CategoryPage({
   // Fetch products for all collections simultaneously
   const promises = collections.map(async (collection) => {
     const res = (await getCollectionProducts({
-      collection: collection.handle,
-      sortKey,
-      reverse
+      collection: collection.handle
+      // sortKey,
+      // reverse
     })) as any;
     return appendReviewAndRating(res);
   });

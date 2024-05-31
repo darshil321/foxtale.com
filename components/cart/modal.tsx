@@ -5,9 +5,8 @@ import { DEFAULT_OPTION } from 'lib/constants';
 import { createUrl } from 'lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import CloseCart from './close-cart';
-import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
 import OpenCart from './open-cart';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
@@ -48,12 +47,12 @@ export default function CartModal() {
     );
   }
 
-  // useEffect(() => {
-  //   if (carts && carts?.lines?.length > 0) {
-  //     const productId = carts?.lines[0].merchandise.product.id;
-  //     dispatch(cartActions.setRecommendedProduct({ productId }));
-  //   }
-  // }, [carts, dispatch]);
+  useEffect(() => {
+    if (carts && carts?.lines?.length > 0) {
+      const productId = carts?.lines[0].merchandise.product.id;
+      dispatch(cartActions.setRecommendedProduct({ productId }));
+    }
+  }, [carts, dispatch]);
 
   const { isCartOpen } = useAppSelector((state) => state.cart);
 
@@ -88,6 +87,7 @@ export default function CartModal() {
     trackEvent('Cart Button Clicked', {});
     fbEvent('Cart Button Clicked', {});
   };
+  console.log('cart in modal', RecommendedProducts);
 
   return (
     <>
@@ -168,7 +168,7 @@ export default function CartModal() {
                               }}
                               className="absolute z-40 -mt-2 ml-[55px]"
                             >
-                              <DeleteItemButton item={item} removeIcon={false} />
+                              {/* <DeleteItemButton item={item} removeIcon={false} /> */}
                             </div>
 
                             <div className="flex h-full w-full items-center justify-between">
@@ -196,8 +196,7 @@ export default function CartModal() {
                                 <div>
                                   <div className="flex flex-1 flex-col gap-0.5 py-2">
                                     <span className="text-xs leading-tight">
-                                      {item.merchandise.product.title.substring(0, 20)}
-                                      {item.merchandise.product.title?.length > 20 && '...'}
+                                      {item.merchandise.product.title}
                                     </span>
                                     {Number(item?.cost?.amountPerQuantity?.amount) === 0 && (
                                       <div className="w-max rounded-md bg-[#9ee67f] px-2 text-xs text-green-700">
@@ -284,7 +283,9 @@ export default function CartModal() {
                       RecommendedProducts.length > 0 &&
                       carts?.lines?.length > 0 && (
                         <div className="mt-4 max-h-60 w-full rounded-md border border-white bg-white p-2 shadow-sm">
-                          <div className="mb-3 font-medium ">Recommended Products</div>
+                          <div className="mb-3 text-lg font-medium ">
+                            Complete Your Routine With
+                          </div>
                           <EmblaProductSlider
                             slides={RecommendedProducts}
                             options={OPTIONS}
@@ -340,7 +341,7 @@ export default function CartModal() {
                       </div>
                     </div>
 
-                    <GokwikButton title={'Proceed To Checkout'} buyNowButton={true} quantity={1} />
+                    <GokwikButton title={'Place Order'} buyNowButton={true} quantity={1} />
                   </div>
                 </div>
               )}

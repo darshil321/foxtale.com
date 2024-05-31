@@ -120,7 +120,7 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
         <div className="mb-6 flex items-center">
           <span className="text-6xl font-normal">{product.ratings.average}</span>
           <div className="flex flex-col">
-            <div className="ml-2 text-yellow-500">
+            <div className="ml-2 text-black">
               {Array(5)
                 .fill(0)
                 .map((_, i) => (
@@ -157,7 +157,7 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
                   </div>
                 </div>
                 <div className="flex-1 space-y-2">
-                  <div className="flex justify-between">
+                  <div className="flex justify-between ">
                     <div className="flex items-center text-black">
                       {Array(5)
                         .fill(0)
@@ -179,12 +179,12 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
                     <div className="mt-2 flex space-x-2">
                       {review.media.map((mediaItem: any, index: any) => (
                         <Image
-                          width={100}
-                          height={100}
+                          width={105}
+                          height={105}
                           key={index}
                           src={mediaItem.url}
                           alt={`media-${index}`}
-                          className="h-16 w-16 rounded-lg"
+                          className="h-24 w-24 rounded-lg"
                         />
                       ))}
                     </div>

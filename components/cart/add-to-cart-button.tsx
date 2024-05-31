@@ -11,6 +11,7 @@ import { toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from 'react-redux';
 import { fbEvent } from 'utils/facebook-pixel';
+import { scrollToElementById } from '@/lib/utils';
 const ToastContent: React.FC = () => {
   const dispatch = useDispatch();
 
@@ -56,8 +57,9 @@ function SubmitButton({
   const notify = () =>
     toast(<ToastContent />, {
       position: 'bottom-center',
-      autoClose: 1000,
+      autoClose: 3000,
       hideProgressBar: true,
+      closeButton: false,
       transition: Slide
     });
 
@@ -67,6 +69,7 @@ function SubmitButton({
         onClick={(e) => {
           e.preventDefault();
           notify();
+          scrollToElementById('routine');
           dispatch(setLoading(true));
           dispatch(
             cartActions.addToCart({

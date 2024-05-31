@@ -2,7 +2,7 @@ import ProductCarouselServer from './product-carousel-server';
 
 export default function ProductCarouselSlider() {
   return (
-    <div>
+    <div id="routine">
       <ProductCarouselServer />
     </div>
   );

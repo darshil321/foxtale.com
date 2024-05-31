@@ -98,7 +98,7 @@ const EmblaHeroCarousel: React.FC<PropType> = (props) => {
                     src={'https://foxtale.in/cdn/shop/files/banners_30_off-02.jpg'}
                     sizes="(max-width: 768px) 70vw"
                     alt="Your alt text"
-                    quality={80}
+                    quality={100}
                   />
                 </div>
               </div>

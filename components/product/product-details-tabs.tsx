@@ -115,7 +115,7 @@ export default function ProductDetailsTabs({ product }: Props) {
                     height={500}
                     width={500}
                     loading="lazy"
-                    quality={80}
+                    quality={100}
                     className="hidden h-full w-full object-cover md:block"
                   />
                 </div>
