@@ -7,7 +7,7 @@ import { ProductCarousel } from './collection-products-slider';
 import '../../assets/styles/embla-css.css';
 
 const OPTIONS: EmblaOptionsType = { align: 'end', loop: true };
-const categories = [{ name: 'fine-lines' }, { name: 'acne-collection' }, { name: 'blemish-prone' }];
+const categories = [{ name: 'glow-routine' }];
 
 export default function ProductCarouselServer() {
   const [selectedCategory, setSelectedCategory] = React.useState(categories[0]);

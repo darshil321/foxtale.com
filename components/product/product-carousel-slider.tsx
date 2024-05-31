@@ -46,7 +46,7 @@ const EmblaCarouselSlider: React.FC<PropType> = (props) => {
                 alt={product.altText as string}
                 src={product?.url as string}
                 priority
-                quality={80}
+                quality={100}
               />
             </div>
           ))}

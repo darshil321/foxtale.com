@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 
-const categories = [{ name: 'fine-lines' }, { name: 'acne-collection' }, { name: 'blemish-prone' }];
+const categories = [{ name: 'glow-routine' }];
 
 export default function SelectCategory({
   selectedCategory,

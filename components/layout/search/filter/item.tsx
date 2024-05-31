@@ -41,7 +41,7 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
             width={70}
             loading="lazy"
             objectFit="cover"
-            quality={75}
+            quality={100}
             height={70}
           />
           <button

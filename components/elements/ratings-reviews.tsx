@@ -120,7 +120,7 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
         <div className="mb-6 flex items-center">
           <span className="text-6xl font-normal">{product.ratings.average}</span>
           <div className="flex flex-col">
-            <div className="ml-2 text-yellow-500">
+            <div className="ml-2 text-black">
               {Array(5)
                 .fill(0)
                 .map((_, i) => (
@@ -157,7 +157,7 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
                   </div>
                 </div>
                 <div className="flex-1 space-y-2">
-                  <div className="flex justify-between">
+                  <div className="flex justify-between ">
                     <div className="flex items-center text-black">
                       {Array(5)
                         .fill(0)

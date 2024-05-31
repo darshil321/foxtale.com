@@ -84,7 +84,7 @@ export function GridTileImage({
                     width={300}
                     height={300}
                     alt={alt}
-                    quality={75}
+                    quality={100}
                     loading={setPriority ? 'eager' : 'lazy'}
                     sizes="(max-width: 640px) 200px, 300px"
                     priority={setPriority ? setPriority : false}
@@ -102,7 +102,7 @@ export function GridTileImage({
                 </Link>
               </div>
               {product.ratings && product.ratings.average !== 0 && (
-                <div className="absolute bottom-2 left-2 flex w-max flex-row justify-between  gap-1 rounded-sm bg-white px-1 py-[1px]  text-black">
+                <div className="absolute bottom-2 left-2 flex w-max flex-row justify-between  gap-1 rounded-sm bg-white px-[5px] py-[1px]  text-black">
                   <div data-rating="4.8">
                     <div
                       className="fera-stars-rating fera-productReviewsSummary-stars-rating"
@@ -123,10 +123,10 @@ export function GridTileImage({
                 </div>
               )}
             </div>
-            <div className=" space-y-[4px] px-3 pt-[10px]">
+            <div className=" space-y-[4px] px-3 py-[9px]">
               <div className="">
                 <Link href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}>
-                  <p className="leading-2 line-clamp-1 cursor-pointer text-[12px] font-normal transition-all hover:text-purple-400 md:text-base md:leading-6">
+                  <p className="leading-2 line-clamp-1 cursor-pointer text-[12px] font-medium transition-all hover:text-purple-400 md:text-base md:leading-6">
                     {label?.title}
                   </p>
                 </Link>
@@ -156,7 +156,7 @@ export function GridTileImage({
                 variants={product.variants}
                 availableForSale={product?.availableForSale || false}
                 buttonClasses={
-                  'p-2 w-full relative flex flex-1 text-sm hover:text-purple-400  items-center justify-center text-base bg-black border border-black text-white  md:px-8 uppercase tracking-wide font-normal md:font-semibold'
+                  'p-2 w-full relative flex flex-1 text-sm hover:text-purple-400  items-center justify-center text-base bg-black border border-black text-white md:py-3  md:px-8 uppercase tracking-wide font-normal md:font-semibold'
                 }
               />
             </Suspense>
