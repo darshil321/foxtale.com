@@ -179,12 +179,12 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
                     <div className="mt-2 flex space-x-2">
                       {review.media.map((mediaItem: any, index: any) => (
                         <Image
-                          width={100}
-                          height={100}
+                          width={105}
+                          height={105}
                           key={index}
                           src={mediaItem.url}
                           alt={`media-${index}`}
-                          className="h-16 w-16 rounded-lg"
+                          className="h-24 w-24 rounded-lg"
                         />
                       ))}
                     </div>
