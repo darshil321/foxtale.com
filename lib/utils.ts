@@ -37,3 +37,10 @@ export const validateEnvironmentVariables = () => {
     );
   }
 };
+
+export const scrollToElementById = (id: string) => {
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
+};

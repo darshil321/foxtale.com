@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from 'react-redux';
 import { sendGAEvent } from '@next/third-parties/google';
 
+import { scrollToElementById } from '@/lib/utils';
 const ToastContent: React.FC = () => {
   const dispatch = useDispatch();
 
@@ -69,6 +70,7 @@ function SubmitButton({
         onClick={(e) => {
           e.preventDefault();
           notify();
+          scrollToElementById('routine');
           dispatch(setLoading(true));
           dispatch(
             cartActions.addToCart({

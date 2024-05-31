@@ -39,7 +39,7 @@ const ResultsSection = ({ product }: Props) => {
             }
             alt="Foxtale"
             width={570}
-            quality={80}
+            quality={100}
             loading="lazy"
             height={370}
           />

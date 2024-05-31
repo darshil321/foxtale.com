@@ -65,7 +65,7 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
                       height={80}
                       alt={product?.images[0]?.altText || product?.title}
                       src={product?.images[0]?.url}
-                      quality={80}
+                      quality={100}
                     />
                     <div
                       className={`${type === 'product' ? 'flex flex-col items-start gap-1 py-2' : 'flex items-center'}`}

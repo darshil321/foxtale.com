@@ -6,7 +6,6 @@ import { GokwikButton } from './go-kwik-button';
 import { CartProvider } from '@shopify/hydrogen-react';
 import { ProductVariant } from '@shopify/hydrogen-react/storefront-api-types';
 import { useSearchParams } from 'next/navigation';
-// import { GokwikButton } from 'components/elements/gokwik-button';
 
 const ProductDescFooter = ({ product }: { product: any }) => {
   const searchParams = useSearchParams();
@@ -36,7 +35,7 @@ const ProductDescFooter = ({ product }: { product: any }) => {
               variants={product?.variants}
               availableForSale={product.availableForSale}
               buttonClasses={
-                ' flex text-sm hover:text-purple-400  items-center justify-center text-base bg-white border border-black text-black py-2 px-6 md:py-2 md:px-8 uppercase tracking-wide font-normal'
+                ' flex text-sm hover:text-purple-400  items-center justify-center text-base bg-white border border-black text-black py-2 px-6 md:py-2  md:px-10 uppercase tracking-wide font-medium'
               }
             />
           </Suspense>
