@@ -55,7 +55,6 @@ export function* manageCartSaga(action: {
   };
 }): Generator<any, void, any> {
   try {
-    yield put(setLoading(true));
     const { updatedCart } = action.payload;
     const cartId = yield call({ fn: createCartIfNotExists, context: null });
     const state = yield select();

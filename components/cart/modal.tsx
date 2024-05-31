@@ -15,7 +15,7 @@ import { useAppDispatch, useAppSelector } from 'store/hooks';
 import '../../assets/styles/embla-products-carousel.css';
 import { getCartData } from '@/lib/helper/helper';
 import { CartItem } from '@/lib/shopify/types';
-import { setCartOpen } from '@/store/slices/cart-slice';
+import { setCartOpen, setLoading } from '@/store/slices/cart-slice';
 import { GokwikButton } from '../product/go-kwik-button';
 import { EmblaOptionsType } from 'embla-carousel';
 
@@ -38,6 +38,7 @@ export default function CartModal() {
   const { currencyCode, totalAmount } = data;
   const dispatch = useAppDispatch();
   function updateCartItem({ item, type }: { item: CartItem; type: string }) {
+    dispatch(setLoading(true));
     dispatch(
       cartActions.updateCartItem({
         productId: item.merchandise.id,
