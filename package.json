@@ -52,6 +52,8 @@
     "next": "^14.3.0-canary.30",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-facebook-pixel": "^1.0.4",
+    "react-ga": "^3.3.1",
     "react-modal": "^3.16.1",
     "react-rating": "^2.0.5",
     "react-rating-stars-component": "^2.2.0",
