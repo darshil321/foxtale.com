@@ -79,6 +79,7 @@ export function* manageCartSaga(action: {
 
     console.log('willRemove', willRemove);
 
+    console.log('updatedCart', updatedCart);
     const { willUpdate, willAdd } = updatedCart.lines.reduce(
       (acc: any, curr: any) => {
         const exist = cartRes.lines.find(
@@ -138,5 +139,5 @@ export function* cartSagaWatchers() {
   yield takeLatest(cartActions.createCart, createCartSaga);
   yield takeLatest(cartActions.getCart, getCartSaga);
   yield takeLatest(cartActions.setRecommendedProduct, getRecommendedProductsSaga);
-  yield debounce(400, cartActions.manageCart, manageCartSaga);
+  yield debounce(800, cartActions.manageCart, manageCartSaga);
 }
