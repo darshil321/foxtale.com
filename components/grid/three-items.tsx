@@ -22,6 +22,7 @@ function ThreeItemGridItem({
           sizes={
             size === 'full' ? '(min-width: 768px) 66vw, 100vw' : '(min-width: 768px) 33vw, 100vw'
           }
+          images={item.images}
           priority={priority}
           alt={item.title}
           label={{

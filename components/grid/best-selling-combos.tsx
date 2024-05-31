@@ -13,6 +13,7 @@ async function BestSellingCombosItem({ priority, handle }: { priority?: boolean;
           product={item}
           src={item.featuredImage.url}
           priority={priority}
+          images={item.images}
           alt={item.title}
           label={{
             title: item.title as string,

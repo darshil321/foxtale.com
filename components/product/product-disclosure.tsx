@@ -62,7 +62,7 @@ export default function ProductDisclosure({ product }: { product: Product }) {
                             width={500}
                             height={500}
                             loading="lazy"
-                            quality={80}
+                            quality={100}
                             className="h-24 w-24 object-cover"
                           />
                           <div className="flex w-full items-center justify-between px-6">
@@ -83,7 +83,7 @@ export default function ProductDisclosure({ product }: { product: Product }) {
                           width={500}
                           height={500}
                           loading="lazy"
-                          quality={80}
+                          quality={100}
                           className="h-full w-full max-w-[500px] object-cover"
                         />
                       </Disclosure.Panel>
