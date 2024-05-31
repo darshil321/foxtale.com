@@ -198,7 +198,13 @@ export const cartSlice = createSlice({
       state.isCartOpen = action.payload;
     },
     setLoading: (state, action) => {
-      state.loading = action.payload;
+      if (action.payload === true) {
+        state.loading = true;
+      }
+
+      setTimeout(() => {
+        state.loading = action.payload;
+      }, 1000);
     },
 
     setGiftFreeProducts: (state, action) => {
