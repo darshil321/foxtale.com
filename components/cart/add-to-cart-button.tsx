@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { useAppDispatch } from 'store/hooks';
 import { cartActions } from 'store/actions/cart.action';
 import { getDefaultVariant } from '@/lib/helper/helper';
-import { setCartOpen } from '@/store/slices/cart-slice';
+import { setCartOpen, setLoading } from '@/store/slices/cart-slice';
 import { trackEvent } from 'utils/mixpanel';
 import { toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -67,6 +67,7 @@ function SubmitButton({
         onClick={(e) => {
           e.preventDefault();
           notify();
+          dispatch(setLoading(true));
           dispatch(
             cartActions.addToCart({
               selectedVariantId: selectedVariantId,

@@ -1,5 +1,5 @@
 import { createCartIfNotExists } from '@/components/cart/actions';
-import { call, debounce, put, select, takeLatest } from 'redux-saga/effects';
+import { call, debounce, delay, put, select, takeLatest } from 'redux-saga/effects';
 import { cartActions } from 'store/actions/cart.action';
 import { setCartId, setLoading, setRecommendedProduct } from '../slices/cart-slice';
 import { addToCart, getCart, getProductRecommendations, updateCart } from '@/lib/shopify';
@@ -56,7 +56,6 @@ export function* manageCartSaga(action: {
   };
 }): Generator<any, void, any> {
   try {
-    yield put(setLoading(true));
     const { updatedCart } = action.payload;
     const cartId = yield call({ fn: createCartIfNotExists, context: null });
     const state = yield select();
@@ -81,6 +80,7 @@ export function* manageCartSaga(action: {
 
     console.log('willRemove', willRemove);
 
+    console.log('updatedCart', updatedCart);
     const { willUpdate, willAdd } = updatedCart.lines.reduce(
       (acc: any, curr: any) => {
         const exist = cartRes.lines.find(
@@ -130,6 +130,7 @@ export function* manageCartSaga(action: {
       const res = yield call({ fn: updateCart, context: null }, cartId, updatePayload);
       console.log('willUpdate', updatePayload, res);
     }
+    yield delay(700);
     yield put(setLoading(false));
   } catch (error) {
     console.log('error', error);

@@ -35,9 +35,7 @@ export function GokwikButton(passedData) {
   const cartId = useAppSelector((state) => state.cart.cartId);
 
   window.addEventListener('message', (e) => {
-    console.log('e.data', e.data);
-
-    if (e.data.type === 'userType') {
+    if (e.data.type === 'modal_close_hydrogen') {
       getCart(cartId).then((data) => {
         const lineIds = data?.lines?.map((line) => {
           return line.id;
@@ -94,6 +92,7 @@ export function GokwikButton(passedData) {
       });
     } else {
       getCart(cartId).then((data) => {
+        console.log('cart after checkout', data);
         setLoading(false);
         triggerGokwikCheckout(data);
       });

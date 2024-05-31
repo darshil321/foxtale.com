@@ -9,14 +9,14 @@ import { Poppins } from 'next/font/google';
 import InitialData from '@/components/initial-data';
 import { ToastContainer } from 'react-toastify';
 import { cookies } from 'next/headers';
-import Script from 'next/script';
+// import Script from 'next/script';
 
 const poppins = Poppins({
   subsets: ['latin'],
   weight: ['200', '300', '400', '500', '600', '700', '800', '900']
 });
 
-const { TWITTER_CREATOR, TWITTER_SITE, SITE_NAME } = process.env;
+const { TWITTER_CREATOR, TWITTER_SITE, SITE_NAME, NEXT_PUBLIC_FB_PIXEL_ID } = process.env;
 const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
   : 'http://localhost:3000';
@@ -87,7 +87,31 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           </Suspense>
           <main className={poppins.className}>{children}</main>
         </Provider>
-        <Script
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+                !function(f,b,e,v,n,t,s)
+                {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                n.queue=[];t=b.createElement(e);t.async=!0;
+                t.src=v;s=b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t,s)}(window, document,'script',
+                'https://connect.facebook.net/en_US/fbevents.js');
+                fbq('init',${NEXT_PUBLIC_FB_PIXEL_ID} );
+                fbq('track', 'PageView');
+              `
+          }}
+        />
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: 'none' }}
+            src={`https://www.facebook.com/tr?id=${NEXT_PUBLIC_FB_PIXEL_ID}&ev=PageView&noscript=1`}
+          />
+        </noscript>
+        {/* <Script
           id="adz_rum"
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
@@ -97,7 +121,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
                 document.head.appendChild(s);
               })()`
           }}
-        />
+        /> */}
       </body>
     </html>
   );
