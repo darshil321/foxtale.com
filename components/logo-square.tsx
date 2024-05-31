@@ -1,11 +1,13 @@
 'use client';
 import clsx from 'clsx';
 import Image from 'next/image';
+import { fbEvent } from 'utils/facebook-pixel';
 import { trackEvent } from 'utils/mixpanel';
 
 export default function LogoSquare({ size }: { size?: 'sm' | undefined }) {
   const handleLogoClick = () => {
     trackEvent('Logo Clicked', {});
+    fbEvent('Logo Clicked', {});
   };
   return (
     <div

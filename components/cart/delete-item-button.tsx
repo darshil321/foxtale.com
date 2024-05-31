@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import LoadingDots from 'components/loading-dots';
 import type { CartItem } from 'lib/shopify/types';
 import { useFormStatus } from 'react-dom';
+import { fbEvent } from 'utils/facebook-pixel';
 import { trackEvent } from 'utils/mixpanel';
 
 function SubmitButton({
@@ -27,6 +28,16 @@ function SubmitButton({
 
         dispatch(cartActions.removeCart({ lineIds: [item?.merchandise.id] }));
         trackEvent('Removed From Cart', {
+          Product_Name: product?.title,
+          Product_Url: '',
+          Product_Price: product?.priceRange?.maxVariantPrice?.amount,
+          Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
+          Source: '',
+          Category: '',
+          Tags: product?.tags,
+          Variant_SKU: ''
+        });
+        fbEvent('Removed From Cart', {
           Product_Name: product?.title,
           Product_Url: '',
           Product_Price: product?.priceRange?.maxVariantPrice?.amount,

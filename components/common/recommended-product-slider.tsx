@@ -11,6 +11,8 @@ import {
   isGiftProductAvailableInCart,
   isThisGiftProductAvailableInCart
 } from '@/lib/helper/helper';
+import { trackEvent } from 'utils/mixpanel';
+import { fbEvent } from 'utils/facebook-pixel';
 
 type PropType = {
   slides: any[] | undefined;
@@ -25,6 +27,12 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
   const cart = useAppSelector((state) => state.cart.cart);
 
   const onClick = (item: any) => {
+    trackEvent('Add To Cart', {
+      product: item
+    });
+    fbEvent('AddToCart', {
+      product: item
+    });
     const isInCart = cart?.lines.some((cartItem: any) => cartItem.merchandise.id === item.id);
     console.log(isInCart);
 

@@ -6,6 +6,8 @@ import { createCart, getCart } from '@/lib/shopify';
 import { addItem, removeItem } from '../cart/actions';
 import { useAppSelector } from '@/store/hooks';
 import { trackEvent } from 'utils/mixpanel';
+import { fbEvent } from 'utils/facebook-pixel';
+import { getCartData } from '@/lib/helper/helper';
 
 const integrationUrls = {
   local: 'http://localhost:8080/integration.js',
@@ -32,10 +34,12 @@ const integrationUrls = {
 // };
 export function GokwikButton(passedData) {
   const cartId = useAppSelector((state) => state.cart.cartId);
+  const data = getCartData(carts);
+  // const totalCartQuantity = data.totalQuantity;
+
+  const { currencyCode, totalAmount } = data;
 
   window.addEventListener('message', (e) => {
-    console.log('e.data', e.data);
-
     if (e.data.type === 'modal_close_hydrogen') {
       getCart(cartId).then((data) => {
         const lineIds = data?.lines?.map((line) => {
@@ -92,6 +96,7 @@ export function GokwikButton(passedData) {
       });
     } else {
       getCart(cartId).then((data) => {
+        console.log('cart after checkout', data);
         setLoading(false);
         triggerGokwikCheckout(data);
       });
@@ -198,7 +203,14 @@ export function GokwikButton(passedData) {
           className={`relative flex items-center justify-center border border-black  bg-black px-10 py-2 text-sm font-normal uppercase tracking-wide  text-white  hover:text-purple-400 md:flex-none md:px-12 md:text-sm ${goKwikButtonLoad ? 'cursor-not-allowed opacity-70' : ''}`}
           onClick={(event) => {
             event.preventDefault();
-            trackEvent('Checkout Started!');
+            trackEvent('Checkout Started!', {
+              currency: currencyCode,
+              value: totalAmount
+            });
+            fbEvent('Purchase', {
+              currency: currencyCode,
+              value: totalAmount
+            });
             passedData.buyNowButton ? triggerBuyNow(passedData) : triggerGokwikCheckout();
           }}
         >

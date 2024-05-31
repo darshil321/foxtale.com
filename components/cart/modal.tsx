@@ -15,13 +15,14 @@ import { useAppDispatch, useAppSelector } from 'store/hooks';
 import '../../assets/styles/embla-products-carousel.css';
 import { getCartData } from '@/lib/helper/helper';
 import { CartItem } from '@/lib/shopify/types';
-import { setCartOpen } from '@/store/slices/cart-slice';
+import { setCartOpen, setLoading } from '@/store/slices/cart-slice';
 import { GokwikButton } from '../product/go-kwik-button';
 import { EmblaOptionsType } from 'embla-carousel';
 
 import { cartActions } from '@/store/actions/cart.action';
 import EmblaProductSlider from '../common/recommended-product-slider';
 import { trackEvent } from 'utils/mixpanel';
+import { fbEvent } from 'utils/facebook-pixel';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -38,6 +39,7 @@ export default function CartModal() {
   const { currencyCode, totalAmount } = data;
   const dispatch = useAppDispatch();
   function updateCartItem({ item, type }: { item: CartItem; type: string }) {
+    dispatch(setLoading(true));
     dispatch(
       cartActions.updateCartItem({
         productId: item.merchandise.id,
@@ -68,11 +70,28 @@ export default function CartModal() {
       Tags: product.tags,
       Variant_SKU: ''
     });
+    fbEvent(title, {
+      Product_Name: product.title,
+      Product_Url: '',
+      Product_Price: product?.priceRange?.maxVariantPrice?.amount,
+      Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
+      Source: '',
+      Category: '',
+      Tags: product.tags,
+      Variant_SKU: ''
+    });
+  };
+
+  const handleCartButtonClicked = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    dispatch(setCartOpen(true));
+    trackEvent('Cart Button Clicked', {});
+    fbEvent('Cart Button Clicked', {});
   };
 
   return (
     <>
-      <button aria-label="Open cart" onClick={() => dispatch(setCartOpen(true))}>
+      <button aria-label="Open cart" onClick={(e) => handleCartButtonClicked(e)}>
         <OpenCart quantity={data?.totalQuantity} />
       </button>
       <Transition show={!!isCartOpen}>

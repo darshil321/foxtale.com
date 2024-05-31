@@ -5,11 +5,12 @@ import { useSearchParams } from 'next/navigation';
 import { useAppDispatch } from 'store/hooks';
 import { cartActions } from 'store/actions/cart.action';
 import { getDefaultVariant } from '@/lib/helper/helper';
-import { setCartOpen } from '@/store/slices/cart-slice';
+import { setCartOpen, setLoading } from '@/store/slices/cart-slice';
 import { trackEvent } from 'utils/mixpanel';
 import { toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from 'react-redux';
+import { fbEvent } from 'utils/facebook-pixel';
 const ToastContent: React.FC = () => {
   const dispatch = useDispatch();
 
@@ -66,6 +67,7 @@ function SubmitButton({
         onClick={(e) => {
           e.preventDefault();
           notify();
+          dispatch(setLoading(true));
           dispatch(
             cartActions.addToCart({
               selectedVariantId: selectedVariantId,
@@ -73,6 +75,16 @@ function SubmitButton({
             })
           );
           trackEvent('Add To Cart', {
+            Product_Name: product.title,
+            Product_Url: '',
+            Product_Price: product?.priceRange?.maxVariantPrice?.amount,
+            Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
+            Source: '',
+            Category: '',
+            Tags: product.tags,
+            Variant_SKU: ''
+          });
+          fbEvent('AddToCart', {
             Product_Name: product.title,
             Product_Url: '',
             Product_Price: product?.priceRange?.maxVariantPrice?.amount,

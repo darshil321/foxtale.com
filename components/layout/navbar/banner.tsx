@@ -1,11 +1,13 @@
 'use client';
 import React from 'react';
+import { fbEvent } from 'utils/facebook-pixel';
 import { trackEvent } from 'utils/mixpanel';
 
 const Banner = () => {
   const handleBannerClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     trackEvent('Announcement Bar Clicked', {});
+    fbEvent('Announcement Bar Clicked', {});
   };
 
   return (

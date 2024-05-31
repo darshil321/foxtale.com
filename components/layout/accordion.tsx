@@ -2,6 +2,7 @@
 import { Product } from '@/lib/shopify/types';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
+import { fbEvent } from 'utils/facebook-pixel';
 import { trackEvent } from 'utils/mixpanel';
 
 export default function Accordion({ product }: { product: Product }) {
@@ -44,6 +45,9 @@ export default function Accordion({ product }: { product: Product }) {
                 className="flex h-full w-full  bg-[#f7f7f7] text-sm font-medium text-black hover:bg-[#f7f7f7] focus:outline-none focus-visible:ring-[#f7f7f7]/75 focus-visible:ring-offset-1"
                 onClick={() => {
                   trackEvent('FAQs Clicked', {
+                    FaqsClicked: 'Clicked'
+                  });
+                  fbEvent('FAQs Clicked', {
                     FaqsClicked: 'Clicked'
                   });
                 }}
