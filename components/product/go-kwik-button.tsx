@@ -6,6 +6,7 @@ import { createCart, getCart } from '@/lib/shopify';
 import { addItem, removeItem } from '../cart/actions';
 import { useAppSelector } from '@/store/hooks';
 import { trackEvent } from 'utils/mixpanel';
+import { setCart } from '@/store/slices/cart-slice';
 
 const integrationUrls = {
   local: 'http://localhost:8080/integration.js',
@@ -36,7 +37,7 @@ export function GokwikButton(passedData) {
   window.addEventListener('message', (e) => {
     console.log('e.data', e.data);
 
-    if (e.data.type === 'modal_close_hydrogen') {
+    if (e.data.type === 'userType') {
       getCart(cartId).then((data) => {
         const lineIds = data?.lines?.map((line) => {
           return line.id;
@@ -44,6 +45,7 @@ export function GokwikButton(passedData) {
         console.log('clearing cart', lineIds, cartId);
 
         removeItem(lineIds).then((data) => {
+          setCart(data);
           console.log('cart cleared', data);
         });
       });
@@ -195,7 +197,7 @@ export function GokwikButton(passedData) {
         <button
           disabled={goKwikButtonLoad}
           aria-disabled={goKwikButtonLoad}
-          className={`relative flex items-center justify-center border border-black  bg-black px-10 py-2 text-sm font-normal uppercase tracking-wide  text-white  hover:text-purple-400 md:flex-none md:px-12 md:text-sm ${goKwikButtonLoad ? 'cursor-not-allowed opacity-70' : ''}`}
+          className={`text-md relative flex items-center justify-center border  border-black bg-black px-10 py-2 font-normal  tracking-wide  text-white  hover:text-purple-400 md:flex-none md:px-12 md:text-sm ${goKwikButtonLoad ? 'cursor-not-allowed opacity-70' : ''}`}
           onClick={(event) => {
             event.preventDefault();
             trackEvent('Checkout Started!');
@@ -203,6 +205,14 @@ export function GokwikButton(passedData) {
           }}
         >
           {passedData.buyNowButton ? passedData.title : 'Pay via UPI/COD'}
+          {passedData.title !== 'Buy Now' && (
+            <img
+              className="ml-4"
+              src="https://cdn.shopify.com/s/files/1/0609/6096/4855/files/Group_163.svg?v=1684908604"
+              alt="SVG Image"
+            />
+          )}
+
           {goKwikButtonLoad && (
             <div className="ml-2 h-4 w-4 animate-spin rounded-full border-b-2 border-t-2 border-white md:h-5 md:w-5"></div>
           )}

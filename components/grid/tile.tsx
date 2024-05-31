@@ -102,7 +102,7 @@ export function GridTileImage({
                 </Link>
               </div>
               {product.ratings && product.ratings.average !== 0 && (
-                <div className="absolute bottom-2 left-2 flex w-max flex-row justify-between  gap-1 rounded-sm bg-white px-1 py-[1px]  text-black">
+                <div className="absolute bottom-2 left-2 flex w-max flex-row justify-between  gap-1 rounded-sm bg-white px-[5px] py-[1px]  text-black">
                   <div data-rating="4.8">
                     <div
                       className="fera-stars-rating fera-productReviewsSummary-stars-rating"
@@ -115,7 +115,11 @@ export function GridTileImage({
 
                   <span
                     data-value={product?.ratings?.average}
-                    style={{ transformOrigin: '0px 0px', opacity: 1, transform: 'scale(1, 1)' }}
+                    style={{
+                      transformOrigin: '0px 0px',
+                      opacity: 1,
+                      transform: 'scale(1, 1)'
+                    }}
                   >
                     {product.ratings.average}
                   </span>

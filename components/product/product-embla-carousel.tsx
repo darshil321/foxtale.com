@@ -13,6 +13,7 @@ type PropType = {
 const EmblaCarousel: React.FC<PropType> = (props) => {
   const { slides, options } = props;
   const [emblaRef] = useEmblaCarousel(options, [Autoplay()]);
+  console.log('slides', slides);
 
   return (
     <section className="embla">

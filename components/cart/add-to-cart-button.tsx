@@ -55,8 +55,9 @@ function SubmitButton({
   const notify = () =>
     toast(<ToastContent />, {
       position: 'bottom-center',
-      autoClose: 1000,
+      autoClose: 3000,
       hideProgressBar: true,
+      closeButton: false,
       transition: Slide
     });
 

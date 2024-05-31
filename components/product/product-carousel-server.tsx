@@ -2,7 +2,7 @@
 import React from 'react';
 // @ts-ignore
 import { EmblaOptionsType } from 'embla-carousel';
-import { getCollectionProducts } from 'lib/shopify';
+import { appendReviewAndRating, getCollectionProducts } from 'lib/shopify';
 import { ProductCarousel } from './collection-products-slider';
 import '../../assets/styles/embla-css.css';
 
@@ -19,7 +19,8 @@ export default function ProductCarouselServer() {
       const products = await getCollectionProducts({
         collection: selectedCategory?.name as string
       });
-      setSlides(products);
+      const productsWithRating = await appendReviewAndRating(products);
+      setSlides(productsWithRating);
     };
 
     fetchData();

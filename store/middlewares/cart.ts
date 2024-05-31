@@ -32,6 +32,7 @@ export function* getRecommendedProductsSaga(action: {
     const { productId } = action.payload;
 
     const data = yield call({ fn: getProductRecommendations, context: null }, productId);
+
     const res = data && data.map((p: any) => ({ product: p, variantId: getDefaultVariant(p).id }));
 
     yield put(setRecommendedProduct(res));

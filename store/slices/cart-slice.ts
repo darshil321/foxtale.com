@@ -177,6 +177,8 @@ export const cartSlice = createSlice({
     },
 
     setCart: (state, action) => {
+      console.log('action.payloadc', action.payload);
+
       state.cart = action.payload;
     },
     setRecommendedProduct: (state, action) => {
