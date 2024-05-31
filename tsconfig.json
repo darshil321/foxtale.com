@@ -20,8 +20,8 @@
       "@/app/*": ["app/*"],
       "@/lib/*": ["lib/*"],
       "@/pages/*": ["pages/*"],
-      "@/store/*":["store/*"],
-      "@/assets/*": ["assets/*"],
+      "@/store/*": ["store/*"],
+      "@/assets/*": ["assets/*"]
     },
     "noUncheckedIndexedAccess": true,
     "plugins": [
@@ -30,6 +30,13 @@
       }
     ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/privacy-policy"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/privacy-policy",
+    "public/scripts/pixel.js"
+  ],
   "exclude": ["node_modules"]
 }

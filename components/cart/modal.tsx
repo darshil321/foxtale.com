@@ -22,6 +22,7 @@ import { EmblaOptionsType } from 'embla-carousel';
 import { cartActions } from '@/store/actions/cart.action';
 import EmblaProductSlider from '../common/recommended-product-slider';
 import { trackEvent } from 'utils/mixpanel';
+import { fbEvent } from 'utils/facebook-pixel';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -82,12 +83,29 @@ export default function CartModal() {
       Tags: product.tags,
       Variant_SKU: ''
     });
+    fbEvent(title, {
+      Product_Name: product.title,
+      Product_Url: '',
+      Product_Price: product?.priceRange?.maxVariantPrice?.amount,
+      Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
+      Source: '',
+      Category: '',
+      Tags: product.tags,
+      Variant_SKU: ''
+    });
+  };
+
+  const handleCartButtonClicked = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    dispatch(setCartOpen(true));
+    trackEvent('Cart Button Clicked', {});
+    fbEvent('Cart Button Clicked', {});
   };
   console.log('cart in modal', RecommendedProducts);
 
   return (
     <>
-      <button aria-label="Open cart" onClick={() => dispatch(setCartOpen(true))}>
+      <button aria-label="Open cart" onClick={(e) => handleCartButtonClicked(e)}>
         <OpenCart quantity={data?.totalQuantity} />
       </button>
       <Transition show={!!isCartOpen}>

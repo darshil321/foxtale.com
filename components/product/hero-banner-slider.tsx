@@ -4,6 +4,7 @@ import '../../assets/styles/hero-slider.css';
 import Image from 'next/image';
 import { trackEvent } from 'utils/mixpanel';
 import { sendGAEvent } from '@next/third-parties/google';
+import { fbEvent } from 'utils/facebook-pixel';
 
 const HeroBannerSlider = () => {
   const handleCollectionBannerClick = (url: string) => {
@@ -15,6 +16,7 @@ const HeroBannerSlider = () => {
     });
 
     trackEvent('Header Collection Clicked', { BannerUrl: url });
+    fbEvent('Header Collection Clicked', { BannerUrl: url });
   };
 
   return (
@@ -38,6 +40,7 @@ const HeroBannerSlider = () => {
         // placeholder="blur"
         loading="eager"
       />
+
       <Image
         onClick={(e: React.MouseEvent<HTMLImageElement>) => {
           e.preventDefault();

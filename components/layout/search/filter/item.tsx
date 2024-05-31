@@ -12,6 +12,7 @@ import { setIsUserClicked, setSelectedCollection } from '@/store/slices/product-
 import { useAppSelector } from '@/store/hooks';
 import { trackEvent } from 'utils/mixpanel';
 import { sendGAEvent } from '@next/third-parties/google';
+import { fbEvent } from 'utils/facebook-pixel';
 
 function PathFilterItem({ item }: { item: PathFilterItem }) {
   const dispatch = useDispatch();
@@ -30,6 +31,11 @@ function PathFilterItem({ item }: { item: PathFilterItem }) {
       collectionName: item.title,
       BannerUrl: item?.image?.url
     });
+    fbEvent('Header Collection Clicked', {
+      collectionName: item.title,
+      BannerUrl: item?.image?.url
+    });
+
     dispatch(setSelectedCollection(item.handle?.toLowerCase()));
     dispatch(setIsUserClicked(true)); // Reset after action
   };

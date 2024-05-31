@@ -1,6 +1,7 @@
 'use client';
 import clsx from 'clsx';
 import Image from 'next/image';
+import { fbEvent } from 'utils/facebook-pixel';
 import { trackEvent } from 'utils/mixpanel';
 import { sendGAEvent } from '@next/third-parties/google';
 
@@ -8,6 +9,7 @@ export default function LogoSquare({ size }: { size?: 'sm' | undefined }) {
   const handleLogoClick = () => {
     sendGAEvent({ event: 'logo clickerd', value: {} });
     trackEvent('Logo Clicked', {});
+    fbEvent('Logo Clicked', {});
   };
   return (
     <div

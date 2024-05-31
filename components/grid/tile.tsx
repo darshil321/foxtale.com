@@ -9,6 +9,7 @@ import ProductTag from '../elements/product-tag';
 import SavePriceTag from '../elements/save-price-tag';
 import { calculateSavedPrice } from '@/lib/helper/helper';
 import { sendGAEvent } from '@next/third-parties/google';
+import { fbEvent } from 'utils/facebook-pixel';
 
 export function GridTileImage({
   isInteractive = true,
@@ -83,6 +84,16 @@ export function GridTileImage({
                 }
               });
               trackEvent('Product Clicked', {
+                Product_Name: product.title,
+                Product_Url: '',
+                Product_Price: product?.priceRange?.maxVariantPrice?.amount,
+                Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
+                Source: '',
+                Category: '',
+                Tags: product.tags,
+                Variant_SKU: ''
+              });
+              fbEvent('Product Clicked', {
                 Product_Name: product.title,
                 Product_Url: '',
                 Product_Price: product?.priceRange?.maxVariantPrice?.amount,

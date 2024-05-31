@@ -2,6 +2,7 @@
 import { Product } from '@/lib/shopify/types';
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
+import { fbEvent } from 'utils/facebook-pixel';
 import { trackEvent } from 'utils/mixpanel';
 import { sendGAEvent } from '@next/third-parties/google';
 
@@ -46,6 +47,9 @@ export default function Accordion({ product }: { product: Product }) {
                 onClick={() => {
                   sendGAEvent({ event: 'FAQs Clicked', value: { FaqsClicked: 'Clicked' } });
                   trackEvent('FAQs Clicked', {
+                    FaqsClicked: 'Clicked'
+                  });
+                  fbEvent('FAQs Clicked', {
                     FaqsClicked: 'Clicked'
                   });
                 }}
