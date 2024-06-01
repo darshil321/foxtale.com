@@ -5,7 +5,7 @@ import { DEFAULT_OPTION } from 'lib/constants';
 import { createUrl } from 'lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment, useEffect } from 'react';
+import { Fragment } from 'react';
 import CloseCart from './close-cart';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
 import OpenCart from './open-cart';
@@ -47,12 +47,12 @@ export default function CartModal() {
     );
   }
 
-  useEffect(() => {
-    if (carts && carts?.lines?.length > 0) {
-      const productId = carts?.lines[0].merchandise.product.id;
-      dispatch(cartActions.setRecommendedProduct({ productId }));
-    }
-  }, [carts, dispatch]);
+  // useEffect(() => {
+  //   if (carts && carts?.lines?.length > 0) {
+  //     const productId = carts?.lines[0].merchandise.product.id;
+  //     dispatch(cartActions.setRecommendedProduct({ productId }));
+  //   }
+  // }, [carts, dispatch]);
 
   const { isCartOpen } = useAppSelector((state) => state.cart);
 
