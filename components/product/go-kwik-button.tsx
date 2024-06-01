@@ -42,6 +42,7 @@ export function GokwikButton(passedData) {
   const { totalAmount } = data;
 
   window.addEventListener('message', (e) => {
+    console.log('DDDDDDDDDDDDDDDDDDD', e);
     if (e.data.type === 'modal_close_hydrogen') {
       getCart(cartId).then((data) => {
         const lineIds = data?.lines?.map((line) => {

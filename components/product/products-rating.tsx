@@ -1,40 +1,8 @@
 'use client';
 import { scrollToElementById } from '@/lib/utils';
-import React, { useEffect, useMemo, useState } from 'react';
-import { fbEvent } from 'utils/facebook-pixel';
+import React from 'react';
 
 const ProductsRatings = ({ product }: { product?: any }) => {
-  const [tracked, setTracked] = useState(false);
-  const productData = useMemo(
-    () => ({
-      ...product
-    }),
-    [product]
-  );
-  useEffect(() => {
-    if (!productData) return;
-
-    if (typeof window !== 'undefined' && typeof window.fbq === 'function' && !tracked) {
-      console.log('useEffectProd', product);
-      const parts = productData.id.split('/');
-      const id = parts[parts.length - 1];
-      if (productData && productData.title && productData.priceRange) {
-        setTracked(true);
-        fbEvent('ViewContent', {
-          content_category: 'recommended',
-          content_ids: [id],
-          content_name: productData.title,
-          content_type: 'product_group',
-          currency: productData?.priceRange?.minVariantPrice?.currencyCode,
-          value: productData?.priceRange?.maxVariantPrice?.amount
-        });
-        console.log('FB Event fired');
-      } else {
-        console.log('Product data incomplete.');
-      }
-    }
-  }, [product, productData, tracked]);
-
   return (
     <>
       {product?.ratings?.average && (
