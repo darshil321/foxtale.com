@@ -226,8 +226,8 @@ export async function addToCart(
     variables: {
       cartId,
       lines
-    },
-    cache: 'no-store'
+    }
+    // cache: 'no-store'
   });
   return reshapeCart(res.body.data.cartLinesAdd.cart);
 }

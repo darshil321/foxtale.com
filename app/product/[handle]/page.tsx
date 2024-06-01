@@ -18,6 +18,7 @@ import LimitedStockBanner from '@/components/elements/limited-stock-banner';
 import ReviewForm from '@/components/review-component/review-form';
 import UserForm from '@/components/review-component/user-form';
 import SuccessModal from '@/components/review-component/success-modal';
+import InitLoad from '@/components/common/init-load';
 // import OfferSection from '@/components/product/offers-section';
 
 export const generateStaticParams = async () => {
@@ -112,6 +113,7 @@ export default async function ProductPage({
     (item: any) => item?.key === 'product-sub-title'
   );
   const decodedHtml = filteredDataByKey?.value || '';
+  console.log('useeffect');
 
   return (
     <div>
@@ -171,7 +173,7 @@ export default async function ProductPage({
         <Suspense fallback={<>...loading reviews</>}>
           <ReviewComponent product={product} />
         </Suspense>
-
+        <InitLoad product={product} />
         <Accordion product={product} />
         <ProductDescFooter product={product} />
       </div>

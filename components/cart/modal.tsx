@@ -64,14 +64,16 @@ export default function CartModal() {
     sendGAEvent({
       event: title,
       value: {
-        Product_Name: product.title,
-        Product_Url: '',
-        Product_Price: product?.priceRange?.maxVariantPrice?.amount,
-        Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
-        Source: '',
-        Category: '',
-        Tags: product.tags,
-        Variant_SKU: ''
+        currency: 'INR',
+        value: product?.priceRange?.maxVariantPrice?.amount,
+        items: [
+          {
+            item_id: product?.id,
+            item_name: product?.title,
+            price: product?.priceRange?.maxVariantPrice?.amount,
+            quantity: 1
+          }
+        ]
       }
     });
     trackEvent(title, {
@@ -86,8 +88,23 @@ export default function CartModal() {
     });
   };
 
-  const handleCartButtonClicked = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const handleCartButtonClicked = () => {
+    sendGAEvent({
+      event: 'view_cart',
+      value: {
+        currency: 'INR',
+        value: totalAmount,
+        items: carts?.lines.map((line: CartItem) => {
+          return {
+            item_id: line?.merchandise.id,
+            item_name: line?.merchandise.title,
+            price: line?.merchandise.product?.priceRange?.maxVariantPrice?.amount,
+            quantity: line?.quantity
+          };
+        })
+      }
+    });
+
     dispatch(setCartOpen(true));
     trackEvent('Cart Button Clicked', {});
   };
