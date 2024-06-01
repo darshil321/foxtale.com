@@ -91,16 +91,51 @@ export function GokwikButton(passedData) {
   }, [buyNowRun]);
 
   const triggerBuyNow = (passedData: { quantity: number; variantId: string; title: string }) => {
+    console.log('111111', 111111);
     setLoading(true);
     if (passedData.title === 'Buy Now') {
       createCart().then((data) => {
         addItem(passedData.variantId, data.id).then((data) => {
+          const parts = data?.lines?.[0]?.merchandise?.product?.id?.split('/');
+          const productId = parts[parts.length - 1];
+          const parts2 = data?.lines?.[0]?.merchandise.id.split('/');
+          const variantId = parts2[parts2.length - 1];
+          fbEvent('InitiateCheckout', {
+            content_ids: [productId],
+            content_type: 'product_group',
+            contents: [
+              {
+                id: productId,
+                quantity: data.totalQuantity,
+                name: data?.lines?.[0].merchandise.product.title,
+                price: data?.lines?.[0].merchandise.product.priceRange.minVariantPrice.amount,
+                currency:
+                  data?.lines?.[0].merchandise.product.priceRange.minVariantPrice.currencyCode,
+                variant: variantId
+              }
+            ],
+            currency: data?.cost.totalAmount.currencyCode,
+            num_items: data.totalQuantity,
+            value: data?.cost.totalAmount.amount
+            //===
+          });
+          console.log('buyNowData', data);
           setLoading(false);
           triggerGokwikCheckout(data);
         });
       });
     } else {
       getCart(cartId).then((data) => {
+        const contentsData = getContentsData();
+        const contentIds = getContentIds();
+        fbEvent('InitiateCheckout', {
+          content_ids: contentIds,
+          content_type: 'product_group',
+          contents: contentsData,
+          currency: 'INR',
+          num_items: carts.totalQuantity,
+          value: totalAmount
+        });
         console.log('cart after checkout', data);
         setLoading(false);
         triggerGokwikCheckout(data);
@@ -185,10 +220,12 @@ export function GokwikButton(passedData) {
 
   const triggerGokwikCheckout = async (cart?) => {
     if (cart) {
+      console.log('4444444', 4444444);
       window.merchantInfo.cart = cart;
       buyNowRun = true;
       // logEvent('gk_buy_now_button_clicked', 'onGkClick');
     } else {
+      console.log('5555555', 5555555);
       const apiResponse = await getCart(cart.id);
       window.merchantInfo.cart = apiResponse.data ? apiResponse.data.cart : null;
       buyNowRun = false;
@@ -241,16 +278,7 @@ export function GokwikButton(passedData) {
             });
             // trackEvent('Checkout Started!');
             trackEvent('Initiate checkout', {});
-            const contentsData = getContentsData();
-            const contentIds = getContentIds();
-            fbEvent('InitiateCheckout', {
-              content_ids: contentIds,
-              content_type: 'product_group',
-              contents: contentsData,
-              currency: 'INR',
-              num_items: carts.totalQuantity,
-              value: totalAmount
-            });
+
             passedData.buyNowButton ? triggerBuyNow(passedData) : triggerGokwikCheckout();
           }}
         >

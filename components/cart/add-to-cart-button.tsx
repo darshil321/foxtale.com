@@ -103,27 +103,29 @@ function SubmitButton({
             Tags: product.tags,
             Variant_SKU: ''
           });
+          const parts = product.id.split('/');
+          const id = parts[parts.length - 1];
           fbEvent('AddToCart', {
-            // //     content_category: 'recommended',
-            // //     content_subcategory: subCategory?.name,
-            // content_ids: [product.handle],
-            // content_name: product.title,
-            // content_type: 'product',
-            // contents: [
-            //   {
-            //     id: product.id,
-            //     quantity: 1,
-            //     price: product?.priceRange?.maxVariantPrice?.amount,
-            //     title: product.title,
-            //     handle: product.handle,
-            //     description: product.description
-            //   }
-            // ],
+            content_ids: [id],
+            content_name: product.title,
+            content_type: 'product',
+            content_category: 'recommended',
+            contents: [
+              {
+                id: id,
+                quantity: 1,
+                price: product?.priceRange?.minVariantPrice?.amount,
+                title: product.title,
+                handle: product.handle,
+                description: product.description
+              }
+            ],
             // content_collections: product.collections,
-            // currency: product?.priceRange?.minVariantPrice?.currencyCode,
-            // value: product?.priceRange?.maxVariantPrice?.amount,
-            // num_items: 1
-            // // fbc: getFbpCookie()
+            currency: product?.priceRange?.minVariantPrice?.currencyCode,
+            value: product?.priceRange?.minVariantPrice?.amount,
+            num_items: 1
+            //===
+            // fbc: getFbpCookie()
           });
         }}
         aria-label="Add to cart"
