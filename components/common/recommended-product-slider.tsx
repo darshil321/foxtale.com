@@ -30,9 +30,21 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
     trackEvent('Add To Cart', {
       product: item
     });
+    // fb events
+    const productItem = item.product;
+    console.log('productItem', productItem);
+    const parts = productItem.id.split('/');
+    const id = parts[parts.length - 1];
     fbEvent('AddToCart', {
-      product: item
+      content_ids: [id],
+      content_name: productItem.title,
+      content_type: 'product_group',
+      content_category: 'recommended',
+      currency: productItem?.priceRange?.minVariantPrice?.currencyCode,
+      value: productItem?.priceRange?.maxVariantPrice?.amount,
+      num_items: 1
     });
+
     const isInCart = cart?.lines.some((cartItem: any) => cartItem.merchandise.id === item.id);
     console.log(isInCart);
 

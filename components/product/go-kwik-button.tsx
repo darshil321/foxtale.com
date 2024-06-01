@@ -9,7 +9,7 @@ import { trackEvent } from 'utils/mixpanel';
 import { setCart } from '@/store/slices/cart-slice';
 import { sendGAEvent } from '@next/third-parties/google';
 import { fbEvent } from 'utils/facebook-pixel';
-// import { getCartData } from '@/lib/helper/helper';
+import { getCartData } from '@/lib/helper/helper';
 
 const integrationUrls = {
   local: 'http://localhost:8080/integration.js',
@@ -36,12 +36,12 @@ const integrationUrls = {
 // };
 export function GokwikButton(passedData) {
   const cartId = useAppSelector((state) => state.cart.cartId);
-  // const carts = useAppSelector((state) => state.cart.cart);
-
-  // const data = getCartData(carts);
+  const carts = useAppSelector((state) => state.cart.cart);
+  console.log('carts=====', carts);
+  const data = getCartData(carts);
   // const totalCartQuantity = data.totalQuantity;
 
-  // const { currencyCode, totalAmount } = data;
+  const { totalAmount } = data;
 
   window.addEventListener('message', (e) => {
     if (e.data.type === 'modal_close_hydrogen') {
@@ -197,6 +197,33 @@ export function GokwikButton(passedData) {
 
     window.gokwikSdk.initCheckout(window.merchantInfo);
   };
+
+  const getContentsData = () => {
+    const data = carts.lines.map((cart) => {
+      const parts = cart.merchandise.id.split('/');
+      const variantId = parts[parts.length - 1];
+      const parts2 = cart.merchandise.product.id.split('/');
+      const productId = parts2[parts2.length - 1];
+      return {
+        id: productId,
+        quantity: cart.quantity,
+        name: cart.merchandise.product.title,
+        price: cart.merchandise.product.priceRange.minVariantPrice.amount,
+        currency: cart.merchandise.product.priceRange.minVariantPrice.currencyCode,
+        variant: variantId
+      };
+    });
+    return data;
+  };
+
+  const getContentIds = () => {
+    const data = carts.lines.map((cart) => {
+      const parts2 = cart.merchandise.product.id.split('/');
+      const productId = parts2[parts2.length - 1];
+      return productId;
+    });
+    return data;
+  };
   const goKwikButtonLoad = loading || (cartLoading && passedData.title !== 'Buy Now');
 
   return (
@@ -214,7 +241,16 @@ export function GokwikButton(passedData) {
             });
             // trackEvent('Checkout Started!');
             trackEvent('Initiate checkout', {});
-            fbEvent('Initiate checkout', {});
+            const contentsData = getContentsData();
+            const contentIds = getContentIds();
+            fbEvent('InitiateCheckout', {
+              content_ids: contentIds,
+              content_type: 'product_group',
+              contents: contentsData,
+              currency: 'INR',
+              num_items: carts.totalQuantity,
+              value: totalAmount
+            });
             passedData.buyNowButton ? triggerBuyNow(passedData) : triggerGokwikCheckout();
           }}
         >
