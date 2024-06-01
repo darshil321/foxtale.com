@@ -8,6 +8,8 @@ import { useAppSelector } from '@/store/hooks';
 import { setCart } from '@/store/slices/cart-slice';
 import { fbEvent } from 'utils/facebook-pixel';
 import { getCartData } from '@/lib/helper/helper';
+import { sendGAEvent } from '@next/third-parties/google';
+import { trackEvent } from 'utils/mixpanel';
 
 const integrationUrls = {
   local: 'http://localhost:8080/integration.js',
