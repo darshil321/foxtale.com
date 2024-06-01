@@ -28,16 +28,18 @@ function SubmitButton({
 
         dispatch(cartActions.removeCart({ lineIds: [item?.merchandise.id] }));
         sendGAEvent({
-          event: 'Removed From Cart',
+          event: 'remove_from_cart',
           value: {
-            Product_Name: product.title,
-            Product_Url: '',
-            Product_Price: product?.priceRange?.maxVariantPrice?.amount,
-            Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
-            Source: '',
-            Category: '',
-            Tags: product.tags,
-            Variant_SKU: ''
+            currency: 'INR',
+            value: product?.priceRange?.maxVariantPrice?.amount,
+            items: [
+              {
+                item_id: item?.merchandise.id,
+                item_name: product?.title,
+                price: product?.priceRange?.maxVariantPrice?.amount,
+                quantity: 1
+              }
+            ]
           }
         });
         trackEvent('Removed From Cart', {

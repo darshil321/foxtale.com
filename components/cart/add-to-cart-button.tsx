@@ -80,16 +80,18 @@ function SubmitButton({
             })
           );
           sendGAEvent({
-            event: 'Add To Cart',
+            event: 'add_to_cart',
             value: {
-              Product_Name: product.title,
-              Product_Url: '',
-              Product_Price: product?.priceRange?.maxVariantPrice?.amount,
-              Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
-              Source: '',
-              Category: '',
-              Tags: product.tags,
-              Variant_SKU: ''
+              currency: 'INR',
+              value: product?.priceRange?.maxVariantPrice?.amount,
+              items: [
+                {
+                  item_id: selectedVariantId,
+                  item_name: product?.title,
+                  price: product?.priceRange?.maxVariantPrice?.amount,
+                  quantity: 1
+                }
+              ]
             }
           });
 

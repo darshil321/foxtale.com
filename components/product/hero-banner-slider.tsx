@@ -3,17 +3,9 @@ import React from 'react';
 import '../../assets/styles/hero-slider.css';
 import Image from 'next/image';
 import { trackEvent } from 'utils/mixpanel';
-import { sendGAEvent } from '@next/third-parties/google';
 
 const HeroBannerSlider = () => {
   const handleCollectionBannerClick = (url: string) => {
-    sendGAEvent({
-      event: 'Header Collection Clicked',
-      value: {
-        BannerUrl: url
-      }
-    });
-
     trackEvent('Header Collection Clicked', { BannerUrl: url });
   };
 

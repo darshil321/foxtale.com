@@ -5,9 +5,7 @@ import { gokwikConfig } from '../../lib/shopify/gokwik.config';
 import { createCart, getCart } from '@/lib/shopify';
 import { addItem, removeItem } from '../cart/actions';
 import { useAppSelector } from '@/store/hooks';
-import { trackEvent } from 'utils/mixpanel';
 import { setCart } from '@/store/slices/cart-slice';
-import { sendGAEvent } from '@next/third-parties/google';
 import { fbEvent } from 'utils/facebook-pixel';
 import { getCartData } from '@/lib/helper/helper';
 
@@ -273,11 +271,9 @@ export function GokwikButton(passedData) {
           onClick={(event) => {
             event.preventDefault();
 
-            sendGAEvent({
-              event: 'Checkout Started!'
-            });
-            // trackEvent('Checkout Started!');
-            trackEvent('Initiate checkout', {});
+            // sendGAEvent({
+            //   event: 'Checkout Started!'
+            // });
 
             passedData.buyNowButton ? triggerBuyNow(passedData) : triggerGokwikCheckout();
           }}

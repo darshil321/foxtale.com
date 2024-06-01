@@ -70,16 +70,18 @@ export function GridTileImage({
           <div
             onClick={() => {
               sendGAEvent({
-                event: 'Product Clicked',
+                event: 'view_item',
                 value: {
-                  Product_Name: product.title,
-                  Product_Url: '',
-                  Product_Price: product?.priceRange?.maxVariantPrice?.amount,
-                  Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
-                  Source: '',
-                  Category: '',
-                  Tags: product.tags,
-                  Variant_SKU: ''
+                  currency: 'INR',
+                  value: product?.priceRange?.maxVariantPrice?.amount,
+                  items: [
+                    {
+                      item_id: product?.id,
+                      item_name: product?.title,
+                      price: product?.priceRange?.maxVariantPrice?.amount,
+                      quantity: 1
+                    }
+                  ]
                 }
               });
               trackEvent('Product Clicked', {
