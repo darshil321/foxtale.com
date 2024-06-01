@@ -1,6 +1,5 @@
 'use client';
 import React from 'react';
-import { fbEvent } from 'utils/facebook-pixel';
 import { trackEvent } from 'utils/mixpanel';
 import { sendGAEvent } from '@next/third-parties/google';
 
@@ -9,7 +8,6 @@ const Banner = () => {
     e.preventDefault();
     sendGAEvent({ event: 'Announcement Bar Clicked', value: {} });
     trackEvent('Announcement Bar Clicked', {});
-    fbEvent('Announcement Bar Clicked', {});
   };
 
   return (
