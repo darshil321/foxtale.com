@@ -43,7 +43,6 @@ export function GridTileImage({
   };
 } & React.ComponentProps<typeof Image>) {
   const [isHovered, setIsHovered] = useState(false);
-  console.log('images', images);
 
   if (!product) return null;
 
