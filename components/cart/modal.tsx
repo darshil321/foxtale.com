@@ -5,17 +5,17 @@ import { DEFAULT_OPTION } from 'lib/constants';
 import { createUrl } from 'lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 import CloseCart from './close-cart';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
 import OpenCart from './open-cart';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import '../../assets/styles/embla-products-carousel.css';
-import { getCartData } from '@/lib/helper/helper';
+import { getCartData, getUpdatedMerchandiseId } from '@/lib/helper/helper';
 import { CartItem } from '@/lib/shopify/types';
 import { sendGAEvent } from '@next/third-parties/google';
-import { setCartOpen, setLoading } from '@/store/slices/cart-slice';
+import { setCartOpen } from '@/store/slices/cart-slice';
 import { GokwikButton } from '../product/go-kwik-button';
 import { EmblaOptionsType } from 'embla-carousel';
 
@@ -31,6 +31,7 @@ export default function CartModal() {
   const carts = useAppSelector((state) => state.cart.cart);
   const { giftFreeProducts } = useAppSelector((state) => state.cart);
   const RecommendedProducts = useAppSelector((state) => state.cart.recommendedProducts);
+  const prevCartsRef = useRef();
 
   const data = getCartData(carts);
   // const totalCartQuantity = data.totalQuantity;
@@ -38,7 +39,6 @@ export default function CartModal() {
   const { currencyCode, totalAmount } = data;
   const dispatch = useAppDispatch();
   function updateCartItem({ item, type }: { item: CartItem; type: string }) {
-    dispatch(setLoading(true));
     dispatch(
       cartActions.updateCartItem({
         productId: item.merchandise.id,
@@ -47,12 +47,14 @@ export default function CartModal() {
     );
   }
 
-  // useEffect(() => {
-  //   if (carts && carts?.lines?.length > 0) {
-  //     const productId = carts?.lines[0].merchandise.product.id;
-  //     dispatch(cartActions.setRecommendedProduct({ productId }));
-  //   }
-  // }, [carts]);
+  useEffect(() => {
+    const productId = getUpdatedMerchandiseId(prevCartsRef.current!, carts);
+    if (productId) dispatch(cartActions.setRecommendedProduct({ productId }));
+    productId && console.log('updating recommend');
+
+    prevCartsRef.current = carts;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [carts]);
 
   const { isCartOpen } = useAppSelector((state) => state.cart);
 

@@ -3,11 +3,13 @@
 import { useEffect, useState } from 'react';
 import { gokwikConfig } from '../../lib/shopify/gokwik.config';
 import { createCart, getCart } from '@/lib/shopify';
-import { addItem, removeItem } from '../cart/actions';
+import { addItem, addItems, removeItem } from '../cart/actions';
 import { useAppSelector } from '@/store/hooks';
 import { setCart } from '@/store/slices/cart-slice';
 import { fbEvent } from 'utils/facebook-pixel';
 import { getCartData } from '@/lib/helper/helper';
+import { sendGAEvent } from '@next/third-parties/google';
+import { trackEvent } from 'utils/mixpanel';
 
 const integrationUrls = {
   local: 'http://localhost:8080/integration.js',
@@ -35,7 +37,7 @@ const integrationUrls = {
 export function GokwikButton(passedData) {
   const cartId = useAppSelector((state) => state.cart.cartId);
   const carts = useAppSelector((state) => state.cart.cart);
-  console.log('carts=====', carts);
+
   const data = getCartData(carts);
   // const totalCartQuantity = data.totalQuantity;
 
@@ -58,7 +60,6 @@ export function GokwikButton(passedData) {
     }
   });
   const [loading, setLoading] = useState(false);
-  const cartLoading = useAppSelector((state) => state.cart.loading);
 
   let buyNowRun = false;
   useEffect(() => {
@@ -79,7 +80,6 @@ export function GokwikButton(passedData) {
         window.gokwikSdk.init();
       } else {
         console.error('GoKwik SDK initialization failed: SDK object or init method is undefined.');
-        // Handle the error condition gracefully, e.g., display a message to the user or fallback to alternative behavior.
       }
 
       window.gokwikSdk &&
@@ -124,98 +124,30 @@ export function GokwikButton(passedData) {
         });
       });
     } else {
-      getCart(cartId).then((data) => {
-        const contentsData = getContentsData();
-        const contentIds = getContentIds();
-        fbEvent('InitiateCheckout', {
-          content_ids: contentIds,
-          content_type: 'product_group',
-          contents: contentsData,
-          currency: 'INR',
-          num_items: carts.totalQuantity,
-          value: totalAmount
+      createCart().then((data) => {
+        const payload = carts.lines.map((cart) => ({
+          quantity: cart.quantity,
+          merchandiseId: cart.merchandise.id
+        }));
+        addItems(payload, data.id).then((data) => {
+          const contentsData = getContentsData();
+          const contentIds = getContentIds();
+          fbEvent('InitiateCheckout', {
+            content_ids: contentIds,
+            content_type: 'product_group',
+            contents: contentsData,
+            currency: 'INR',
+            num_items: carts.totalQuantity,
+            value: totalAmount
+          });
+          console.log('cart after checkout', data);
+
+          setLoading(false);
+          triggerGokwikCheckout(data);
         });
-        console.log('cart after checkout', data);
-        setLoading(false);
-        triggerGokwikCheckout(data);
       });
     }
   };
-
-  // const makeXhr = async (method, url, data, track) => {
-  //   /* Foxtale had some custom hadnling related to "/cart/add.js" which was
-  //   not allowing us to add product to cart hence this merchatn specific code is added */
-  //   const gokwikXhttp = new XMLHttpRequest();
-  //   gokwikXhttp.open(method, url, true);
-  //   gokwikXhttp.setRequestHeader('Content-type', 'application/json');
-  //   gokwikXhttp.onload = function () {
-  //     const status = gokwikXhttp.status;
-  //     const response = gokwikXhttp.response;
-  //     track(status, response);
-  //   };
-  //   let requestBody = data ? JSON.stringify(data) : null;
-  //   if (data?.['properties[_ftmx]']) {
-  //     requestBody = data;
-  //   }
-  //   gokwikXhttp.send(requestBody);
-  // };
-
-  // const logEvent = (evtName, evtType) => {
-  //   const url = analyticsUrl[window.merchantInfo.environment];
-  //   const timestamp = Date.now();
-  //   const userAgent = navigator.userAgent;
-  //   const merchantId = window.merchantInfo.mid;
-  //   const name = evtName;
-  //   const eventType = evtType;
-  //   const type = 'event';
-  //   const adSource = getCookie('_shopify_sa_p');
-  //   const sessionId = localStorage.getItem('gokwik-sessionID') || getCookie('gokwik-sessionID');
-  //   const version = '1';
-  //   const shopifySessionId = getCookie('_shopify_s') || null;
-  //   const landing_page = getCookie('gk_landing_page') || '/';
-  //   const orig_referrer = getCookie('gk_orig_referrer') || 'blank';
-  //   const analyticsObj: {
-  //     timestamp: number;
-  //     userAgent: string;
-  //     version: string;
-  //     merchantId: string;
-  //     name: string;
-  //     sessionId?: string | null;
-  //     type: string;
-  //     adSource?: string;
-  //     eventType: string;
-  //     shopifySessionId: string;
-  //     landing_page: string;
-  //     orig_referrer: string;
-  //   } = {
-  //     timestamp,
-  //     userAgent,
-  //     version,
-  //     merchantId,
-  //     name,
-  //     sessionId,
-  //     type,
-  //     adSource,
-  //     eventType,
-  //     ...(shopifySessionId && { shopifySessionId }),
-  //     landing_page,
-  //     orig_referrer
-  //   };
-  //   if (!sessionId) delete analyticsObj['sessionId'];
-  //   if (!adSource) delete analyticsObj['adSource'];
-
-  //   if (eventType === 'development') {
-  //     delete analyticsObj.shopifySessionId;
-  //     delete analyticsObj.sessionId;
-  //   }
-
-  //   makeXhr('POST', url, analyticsObj, (status, response) => {
-
-  //     //added to pass param
-  //     if (status !== 201) {
-  //     }
-  //   });
-  // };
 
   const triggerGokwikCheckout = async (cart?) => {
     if (cart) {
@@ -260,7 +192,29 @@ export function GokwikButton(passedData) {
     });
     return data;
   };
-  const goKwikButtonLoad = loading || (cartLoading && passedData.title !== 'Buy Now');
+  // const goKwikButtonLoad = loading || (cartLoading && passedData.title !== 'Buy Now');
+  const goKwikButtonLoad = loading;
+
+  const onCheckout = (event) => {
+    event.preventDefault();
+
+    sendGAEvent({
+      event: 'Checkout Started!'
+    });
+
+    trackEvent('Initiate checkout', {});
+    const contentsData = getContentsData();
+    const contentIds = getContentIds();
+    fbEvent('InitiateCheckout', {
+      content_ids: contentIds,
+      content_type: 'product_group',
+      contents: contentsData,
+      currency: 'INR',
+      num_items: carts.totalQuantity,
+      value: totalAmount
+    });
+    passedData.buyNowButton ? triggerBuyNow(passedData) : triggerGokwikCheckout();
+  };
 
   return (
     <>
@@ -270,13 +224,7 @@ export function GokwikButton(passedData) {
           aria-disabled={goKwikButtonLoad}
           className={`relative flex items-center justify-center border border-black  bg-black px-10 py-2 text-sm font-medium uppercase tracking-wide   text-white  hover:text-purple-400 md:flex-none md:px-16 md:text-sm ${goKwikButtonLoad ? 'cursor-not-allowed opacity-70' : ''}`}
           onClick={(event) => {
-            event.preventDefault();
-
-            // sendGAEvent({
-            //   event: 'Checkout Started!'
-            // });
-
-            passedData.buyNowButton ? triggerBuyNow(passedData) : triggerGokwikCheckout();
+            onCheckout(event);
           }}
         >
           {passedData.buyNowButton ? passedData.title : 'Pay via UPI/COD'}

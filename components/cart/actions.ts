@@ -42,11 +42,14 @@ export async function addItem(selectedVariantId: string, cartID?: string) {
     return null;
   }
 }
-export async function addItems(items: { quantity: number; merchandiseId: string }[]) {
-  const cartId = cookies().get('cartId')?.value ?? '';
+export async function addItems(
+  items: { quantity: number; merchandiseId: string }[],
+  cartId?: string
+) {
+  const _cartId = (cartId || cookies().get('cartId')?.value) ?? '';
 
   try {
-    const cartData = await getCart(cartId);
+    const cartData = await getCart(_cartId);
 
     const lineIds =
       cartData?.lines?.map((line) => {

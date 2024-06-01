@@ -1,7 +1,13 @@
 import { createCartIfNotExists } from '@/components/cart/actions';
 import { call, debounce, delay, put, select, takeLatest } from 'redux-saga/effects';
 import { cartActions } from 'store/actions/cart.action';
-import { setCartId, setLoading, setRecommendedProduct } from '../slices/cart-slice';
+import {
+  removeLoadingId,
+  setCartId,
+  setLoading,
+  setRecommendedProduct
+} from '../slices/cart-slice';
+import { v4 as uuidv4 } from 'uuid';
 import { addToCart, getCart, getProductRecommendations, updateCart } from '@/lib/shopify';
 import { getDefaultVariant } from '@/lib/helper/helper';
 
@@ -53,13 +59,20 @@ export function* manageCartSaga(action: {
   type: string;
   payload: {
     updatedCart: any;
+    isLoading: boolean;
   };
 }): Generator<any, void, any> {
+  const id = uuidv4();
+
   try {
+    // yield put(setLoadingId(id));
+    // if (isLoading) {
+    yield put(setLoading(true));
+    // }
     const { updatedCart } = action.payload;
+    console.log('updatedCart', updatedCart);
     const cartId = yield call({ fn: createCartIfNotExists, context: null });
     const state = yield select();
-    console.log('cartId', state);
 
     if (!state.cart.cartId) {
       yield put(setCartId(cartId));
@@ -67,6 +80,7 @@ export function* manageCartSaga(action: {
 
     if (!cartId) {
       console.log('cartId not found');
+      yield put(removeLoadingId(id));
       return;
     }
 
@@ -78,9 +92,6 @@ export function* manageCartSaga(action: {
         !updatedCart.lines.some((cartItem: any) => cartItem.merchandise.id === item.merchandise.id)
     );
 
-    console.log('willRemove', willRemove);
-
-    console.log('updatedCart', updatedCart);
     const { willUpdate, willAdd } = updatedCart.lines.reduce(
       (acc: any, curr: any) => {
         const exist = cartRes.lines.find(
@@ -100,39 +111,47 @@ export function* manageCartSaga(action: {
       { willUpdate: [], willAdd: [] }
     );
 
-    console.log('willUpdate, willAdd', willUpdate, willAdd);
-
     if (willAdd.length > 0) {
       const addPayload = willAdd.map((item: any) => ({
-        quantity: 1,
+        quantity: item.quantity,
         merchandiseId: item.merchandise.id
       }));
       const res = yield call({ fn: addToCart, context: null }, cartId, addPayload);
       console.log('willAdd', addPayload, res);
     }
 
-    if (willRemove.length > 0) {
+    yield put(delay(200));
+
+    if (willUpdate.length > 0 || willRemove.length > 0) {
       const removePayload = willRemove.map((item: any) => ({
         id: item.id,
         merchandiseId: item.merchandise.id,
         quantity: 0
       }));
-      const res = yield call({ fn: updateCart, context: null }, cartId, removePayload);
-      console.log('willRemove', removePayload, res);
-    }
-
-    if (willUpdate.length > 0) {
       const updatePayload = willUpdate.map((item: any) => ({
         id: item.id,
         merchandiseId: item.merchandise.id,
         quantity: item.quantity
       }));
-      const res = yield call({ fn: updateCart, context: null }, cartId, updatePayload);
+
+      const res = yield call({ fn: updateCart, context: null }, cartId, [
+        ...updatePayload,
+        ...removePayload
+      ]);
       console.log('willUpdate', updatePayload, res);
     }
-    yield delay(800);
+
+    // yield put(removeLoadingId(id));
+    // if (isLoading) {
     yield put(setLoading(false));
+    // }
   } catch (error) {
+    console.log('error', error);
+    // yield put(removeLoadingId(id));
+    // if (isLoading) {
+    yield put(setLoading(false));
+    console.log('***Error');
+    // }
     console.log('error', error);
   }
 }
@@ -141,5 +160,5 @@ export function* cartSagaWatchers() {
   yield takeLatest(cartActions.createCart, createCartSaga);
   yield takeLatest(cartActions.getCart, getCartSaga);
   yield takeLatest(cartActions.setRecommendedProduct, getRecommendedProductsSaga);
-  yield debounce(200, cartActions.manageCart, manageCartSaga);
+  yield debounce(900, cartActions.manageCart, manageCartSaga);
 }
