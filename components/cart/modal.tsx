@@ -110,7 +110,7 @@ export default function CartModal() {
 
   return (
     <>
-      <button aria-label="Open cart" onClick={(e) => handleCartButtonClicked(e)}>
+      <button aria-label="Open cart" onClick={() => handleCartButtonClicked()}>
         <OpenCart quantity={data?.totalQuantity} />
       </button>
       <Transition show={!!isCartOpen}>
