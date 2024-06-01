@@ -47,8 +47,8 @@ interface MagicLinkCoupon {
 }
 export interface CartState {
   getCartLoading: boolean;
+  loadingIds: string[];
   loading: boolean;
-
   cart: Cart | any;
   quantities: any;
   error: any;
@@ -65,6 +65,7 @@ export interface CartState {
 
 export const initialState: CartState = {
   getCartLoading: false,
+  loadingIds: [],
   loading: false,
   cart: null,
   error: null,
@@ -177,8 +178,6 @@ export const cartSlice = createSlice({
     },
 
     setCart: (state, action) => {
-      console.log('action.payloadc', action.payload);
-
       state.cart = action.payload;
     },
     setRecommendedProduct: (state, action) => {
@@ -202,6 +201,22 @@ export const cartSlice = createSlice({
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
+    setLoadingId: (state, action) => {
+      if (action.payload) {
+        const _state = current(state);
+        const prev = _state?.loadingIds || [];
+        state.loadingIds = [...prev, action.payload];
+      }
+    },
+    removeLoadingId: (state, action) => {
+      const _state = current(state);
+      const ids = _state.loadingIds.filter((id) => id !== action.payload);
+      state.loadingIds = ids;
+    },
+
+    clearLoadingIds: (state) => {
+      state.loadingIds = [];
+    },
 
     setGiftFreeProducts: (state, action) => {
       state.giftFreeProducts = action.payload;
@@ -224,7 +239,10 @@ export const {
   setCartOpen,
   removeCart,
   setRecommendedProduct,
+  setLoadingId,
   setLoading,
+  clearLoadingIds,
+  removeLoadingId,
   addToCart,
   setMagicLinkCoupons,
   setCartId,

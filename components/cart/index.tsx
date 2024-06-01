@@ -6,7 +6,7 @@ import useCoupon from '@/lib/hooks/use-coupon';
 import { createCartItem, getCartData, getDefaultVariant, getTempId } from '@/lib/helper/helper';
 import { useDispatch } from 'react-redux';
 import { cartActions } from '@/store/actions/cart.action';
-import { setGiftFreeProducts } from '@/store/slices/cart-slice';
+import { clearLoadingIds, setGiftFreeProducts } from '@/store/slices/cart-slice';
 
 export default function Cart() {
   const cart = useAppSelector((state) => state.cart.cart);
@@ -40,6 +40,10 @@ export default function Cart() {
       dispatch(setGiftFreeProducts(giftProducts));
       dispatch(cartActions.manageCart({ updatedCart }));
     }
+
+    return () => {
+      dispatch(clearLoadingIds());
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalQuantity]);
 
