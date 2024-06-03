@@ -45,7 +45,7 @@ function initializeFacebookPixel() {
   fbPixelScript.src = 'https://connect.facebook.net/en_US/fbevents.js';
   document.head.appendChild(fbPixelScript);
 
-  window.fbq('init', '751018776434062');
+  window.fbq('init', '201840112147405');
   window.fbq('track', 'PageView');
 }
 
