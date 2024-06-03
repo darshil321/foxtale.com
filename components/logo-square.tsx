@@ -19,7 +19,7 @@ export default function LogoSquare({ size }: { size?: 'sm' | undefined }) {
         onClick={handleLogoClick}
         src={'/foxtalelogo.avif'}
         className={clsx({
-          'h-[36px] w-full': !size,
+          'w-full md:h-[36px]': !size,
           'h-[30px] w-full': size === 'sm'
         })}
         alt={'Foxtale'}
