@@ -61,21 +61,19 @@ export default function CartModal() {
   const OPTIONS: EmblaOptionsType = { dragFree: false };
 
   const handleProductClick = (product: any, title: string) => {
-    sendGAEvent({
-      event: title,
-      value: {
-        currency: 'INR',
-        value: product?.priceRange?.maxVariantPrice?.amount,
-        items: [
-          {
-            item_id: product?.id,
-            item_name: product?.title,
-            price: product?.priceRange?.maxVariantPrice?.amount,
-            quantity: 1
-          }
-        ]
-      }
+    sendGAEvent('event', title, {
+      currency: 'INR',
+      value: product?.priceRange?.maxVariantPrice?.amount,
+      items: [
+        {
+          item_id: product?.id,
+          item_name: product?.title,
+          price: product?.priceRange?.maxVariantPrice?.amount,
+          quantity: 1
+        }
+      ]
     });
+
     trackEvent(title, {
       Product_Name: product.title,
       Product_Url: '',
@@ -89,20 +87,17 @@ export default function CartModal() {
   };
 
   const handleCartButtonClicked = () => {
-    sendGAEvent({
-      event: 'view_cart',
-      value: {
-        currency: 'INR',
-        value: totalAmount,
-        items: carts?.lines.map((line: CartItem) => {
-          return {
-            item_id: line?.merchandise.id,
-            item_name: line?.merchandise.title,
-            price: line?.merchandise.product?.priceRange?.maxVariantPrice?.amount,
-            quantity: line?.quantity
-          };
-        })
-      }
+    sendGAEvent('event', 'view_cart', {
+      currency: 'INR',
+      value: totalAmount,
+      items: carts?.lines.map((line: CartItem) => {
+        return {
+          item_id: line?.merchandise.id,
+          item_name: line?.merchandise.title,
+          price: line?.merchandise.product?.priceRange?.maxVariantPrice?.amount,
+          quantity: line?.quantity
+        };
+      })
     });
 
     dispatch(setCartOpen(true));
@@ -192,7 +187,7 @@ export default function CartModal() {
                               {/* <DeleteItemButton item={item} removeIcon={false} /> */}
                             </div>
 
-                            <div className="flex h-full w-full items-center justify-between">
+                            <div className=" flex h-full w-full items-center justify-between">
                               <Link
                                 href={merchandiseUrl}
                                 onClick={() => {

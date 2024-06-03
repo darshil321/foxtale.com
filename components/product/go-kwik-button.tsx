@@ -7,7 +7,7 @@ import { addItem, addItems, removeItem } from '../cart/actions';
 import { useAppSelector } from '@/store/hooks';
 import { setCart } from '@/store/slices/cart-slice';
 import { fbEvent } from 'utils/facebook-pixel';
-import { getCartData } from '@/lib/helper/helper';
+import { getCartData, getProductId } from '@/lib/helper/helper';
 import { sendGAEvent } from '@next/third-parties/google';
 import { trackEvent } from 'utils/mixpanel';
 
@@ -198,8 +198,17 @@ export function GokwikButton(passedData) {
   const onCheckout = (event) => {
     event.preventDefault();
 
-    sendGAEvent({
-      event: 'Checkout Started!'
+    sendGAEvent('event', 'begin_checkout', {
+      currency: 'INR',
+      value: totalAmount,
+      items: carts.lines.map((line) => {
+        return {
+          item_name: line.merchandise.product.title,
+          price: line.merchandise.product.priceRange.minVariantPrice.amount,
+          quantity: line.quantity,
+          item_id: getProductId(line.merchandise.id)
+        };
+      })
     });
 
     trackEvent('Initiate checkout', {});
