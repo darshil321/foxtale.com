@@ -74,6 +74,7 @@ function SubmitButton({
         onClick={(e) => {
           e.preventDefault();
           notify();
+
           scrollToElementById('routine');
           dispatch(
             cartActions.addToCart({
@@ -81,6 +82,17 @@ function SubmitButton({
               product: product
             })
           );
+
+          if (window && window.dataLayer) {
+            window.dataLayer.push({ ecommerce: null, attribute: null, user: null });
+            window.dataLayer.push({
+              event: 'add_to_cart',
+              attribute: 'pixel',
+              ecommerce: {
+                currency: 'INR'
+              }
+            });
+          }
           sendGAEvent('event', 'add_to_cart', {
             currency: 'INR',
             value: product?.priceRange?.maxVariantPrice?.amount,
