@@ -10,7 +10,9 @@ import InitialData from '@/components/initial-data';
 import { ToastContainer } from 'react-toastify';
 import { cookies } from 'next/headers';
 // import GoogleAnalytics from '@/components/google-analytics/google-analytics';
-import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
+import { GoogleTagManager } from '@next/third-parties/google';
+
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 // import Script from 'next/script';
 import { FacebookPixel } from '@/components/facebook-pixel';
@@ -73,7 +75,9 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       />
       <body>
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
-        <GoogleTagManager gtmId="GTM-XYZ" />
+
+        <GoogleTagManager gtmId="GTM-KP8TX5F4" />
+
         <Provider>
           <ToastContainer
             style={{
