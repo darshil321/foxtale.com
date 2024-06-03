@@ -60,8 +60,8 @@ export default function CartModal() {
 
   const OPTIONS: EmblaOptionsType = { dragFree: false };
 
-  const handleProductClick = (product: any, title: string) => {
-    sendGAEvent('event', title, {
+  const handleProductClick = (product: any, title: { mixpanel: string; ga: string }) => {
+    sendGAEvent('event', title.ga, {
       currency: 'INR',
       value: product?.priceRange?.maxVariantPrice?.amount,
       items: [
@@ -74,7 +74,7 @@ export default function CartModal() {
       ]
     });
 
-    trackEvent(title, {
+    trackEvent(title.mixpanel, {
       Product_Name: product.title,
       Product_Url: '',
       Product_Price: product?.priceRange?.maxVariantPrice?.amount,
@@ -177,10 +177,10 @@ export default function CartModal() {
                           <div className="relative flex w-full flex-row justify-between rounded-sm px-1 py-1 ">
                             <div
                               onClick={() => {
-                                handleProductClick(
-                                  item.merchandise?.product,
-                                  'Product removed from cart'
-                                );
+                                handleProductClick(item.merchandise?.product, {
+                                  mixpanel: 'Product removed from cart',
+                                  ga: 'remove_from_cart'
+                                });
                               }}
                               className="absolute z-40 -mt-2 ml-[55px]"
                             >
@@ -191,7 +191,10 @@ export default function CartModal() {
                               <Link
                                 href={merchandiseUrl}
                                 onClick={() => {
-                                  handleProductClick(item.merchandise?.product, 'product clicked');
+                                  handleProductClick(item.merchandise?.product, {
+                                    mixpanel: 'product clicked',
+                                    ga: 'view_item'
+                                  });
                                   dispatch(setCartOpen(false));
                                 }}
                                 className=" flex flex-row space-x-4"
@@ -251,10 +254,10 @@ export default function CartModal() {
                                     {item.quantity > 1 && (
                                       <EditItemQuantityButton
                                         onClick={() => {
-                                          handleProductClick(
-                                            item.merchandise?.product,
-                                            'Quantity decreased'
-                                          );
+                                          handleProductClick(item.merchandise?.product, {
+                                            mixpanel: 'Quantity decreased',
+                                            ga: 'remove_from_cart'
+                                          });
 
                                           updateCartItem({ item, type: 'minus' });
                                         }}
@@ -264,10 +267,10 @@ export default function CartModal() {
                                     {item.quantity === 1 && (
                                       <EditItemQuantityButton
                                         onClick={() => {
-                                          handleProductClick(
-                                            item.merchandise?.product,
-                                            'Product removed from cart'
-                                          );
+                                          handleProductClick(item.merchandise?.product, {
+                                            mixpanel: 'Product removed from cart',
+                                            ga: 'remove_from_cart'
+                                          });
 
                                           updateCartItem({ item, type: 'minus' });
                                         }}
@@ -279,10 +282,10 @@ export default function CartModal() {
                                     </p>
                                     <EditItemQuantityButton
                                       onClick={() => {
-                                        handleProductClick(
-                                          item.merchandise?.product,
-                                          'Quantity increased'
-                                        );
+                                        handleProductClick(item.merchandise?.product, {
+                                          mixpanel: 'Quantity increased',
+                                          ga: 'add_to_cart'
+                                        });
                                         updateCartItem({ item, type: 'plus' });
                                       }}
                                       type="plus"
