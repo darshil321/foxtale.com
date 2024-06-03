@@ -128,7 +128,7 @@ export function GridTileImage({
                     />
                   )}
                   {isCollection && productTopBar.value && (
-                    <div className="absolute left-0 top-0 w-full bg-black px-2 py-1 text-center text-xs font-medium uppercase text-white">
+                    <div className="absolute left-0 top-0 w-full bg-black px-2 py-1 text-center text-xs font-medium uppercase tracking-widest text-white">
                       {productTopBar.value}
                     </div>
                   )}
