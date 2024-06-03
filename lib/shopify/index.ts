@@ -89,8 +89,7 @@ export async function shopifyFetch<T>({
       }),
       cache,
       next: {
-        ...(tags && { tags }),
-        revalidate: 10
+        ...(tags && { tags })
       }
     });
 

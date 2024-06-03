@@ -109,7 +109,7 @@ const ReviewForm = ({ product }: { product: Product }) => {
       }}
       shouldReturnFocusAfterClose={false}
       shouldFocusAfterRender={false}
-      className="mx-auto my-auto mt-[130px] w-[380px] rounded-md bg-white font-poppins shadow-md md:w-[420px]"
+      className="mx-auto my-auto mt-[130px] w-[340px] rounded-md bg-white font-poppins shadow-md md:w-[420px]"
       isOpen={isReviewFormOpen}
     >
       <div

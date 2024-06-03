@@ -113,7 +113,6 @@ export default async function ProductPage({
     (item: any) => item?.key === 'product-sub-title'
   );
   const decodedHtml = filteredDataByKey?.value || '';
-  console.log('useeffect');
 
   return (
     <div>
