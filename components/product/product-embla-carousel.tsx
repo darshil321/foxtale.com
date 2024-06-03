@@ -24,6 +24,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
               <GridTileImage
                 product={product}
                 alt={product.title}
+                isCollection={true}
                 label={{
                   title: product.title,
                   description: product.description,
