@@ -68,21 +68,19 @@ export function GridTileImage({
         <div className="flex h-full min-h-[320px] w-full flex-col justify-between md:max-h-[100%] md:min-h-[456px]">
           <div
             onClick={() => {
-              sendGAEvent({
-                event: 'view_item',
-                value: {
-                  currency: 'INR',
-                  value: product?.priceRange?.maxVariantPrice?.amount,
-                  items: [
-                    {
-                      item_id: product?.id,
-                      item_name: product?.title,
-                      price: product?.priceRange?.maxVariantPrice?.amount,
-                      quantity: 1
-                    }
-                  ]
-                }
+              sendGAEvent('event', 'view_item', {
+                currency: 'INR',
+                value: product?.priceRange?.maxVariantPrice?.amount,
+                items: [
+                  {
+                    item_id: product?.id,
+                    item_name: product?.title,
+                    price: product?.priceRange?.maxVariantPrice?.amount,
+                    quantity: 1
+                  }
+                ]
               });
+
               trackEvent('Product Clicked', {
                 Product_Name: product.title,
                 Product_Url: '',

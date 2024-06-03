@@ -7,7 +7,7 @@ import { addItem, addItems, removeItem } from '../cart/actions';
 import { useAppSelector } from '@/store/hooks';
 import { setCart } from '@/store/slices/cart-slice';
 import { fbEvent } from 'utils/facebook-pixel';
-import { getCartData } from '@/lib/helper/helper';
+import { getCartData, getProductId } from '@/lib/helper/helper';
 import { sendGAEvent } from '@next/third-parties/google';
 import { trackEvent } from 'utils/mixpanel';
 
@@ -198,8 +198,17 @@ export function GokwikButton(passedData) {
   const onCheckout = (event) => {
     event.preventDefault();
 
-    sendGAEvent({
-      event: 'Checkout Started!'
+    sendGAEvent('event', 'begin_checkout', {
+      currency: 'INR',
+      value: totalAmount,
+      items: carts.lines.map((line) => {
+        return {
+          item_name: line.merchandise.product.title,
+          price: line.merchandise.product.priceRange.minVariantPrice.amount,
+          quantity: line.quantity,
+          item_id: getProductId(line.merchandise.id)
+        };
+      })
     });
 
     trackEvent('Initiate checkout', {});
@@ -222,7 +231,7 @@ export function GokwikButton(passedData) {
         <button
           disabled={goKwikButtonLoad}
           aria-disabled={goKwikButtonLoad}
-          className={`relative flex items-center justify-center border border-black  bg-black px-10 py-2 text-sm font-medium uppercase tracking-wide   text-white  hover:text-purple-400 md:flex-none md:px-16 md:text-sm ${goKwikButtonLoad ? 'cursor-not-allowed opacity-70' : ''}`}
+          className={`relative flex items-center justify-center border border-black  bg-black px-10 py-2 text-sm font-medium  tracking-wide   text-white  hover:text-purple-400 md:flex-none md:px-16 md:text-sm ${goKwikButtonLoad ? 'cursor-not-allowed opacity-70' : ''}`}
           onClick={(event) => {
             onCheckout(event);
           }}

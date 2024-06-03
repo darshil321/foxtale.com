@@ -29,6 +29,7 @@ const productFragment = /* GraphQL */ `
         { key: "product_tag", namespace: "custom" }
         { key: "boost_with", namespace: "product_handle" }
         { key: "pair_best_with", namespace: "product_handle" }
+        { key: "group_product_items", namespace: "my_fields" }
       ]
     ) {
       description
