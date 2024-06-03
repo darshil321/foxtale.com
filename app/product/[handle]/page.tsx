@@ -112,6 +112,10 @@ export default async function ProductPage({
   const filteredDataByKey = product?.metafields?.find(
     (item: any) => item?.key === 'product-sub-title'
   );
+  const GroupProductData = product?.metafields?.find(
+    (item: any) => item?.key === 'group_product_items'
+  );
+  console.log('GroupProductData', GroupProductData);
   const decodedHtml = filteredDataByKey?.value || '';
 
   return (
