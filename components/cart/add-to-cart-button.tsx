@@ -25,7 +25,10 @@ const ToastContent: React.FC = () => {
       </div>
       <div
         className="text-[15px] font-semibold capitalize text-[#1877f2]"
-        onClick={() => dispatch(setCartOpen(true))}
+        onClick={() => {
+          dispatch(setCartOpen(true));
+          toast.dismiss();
+        }}
         style={{ cursor: 'pointer', textDecoration: 'underline' }}
       >
         View Cart
