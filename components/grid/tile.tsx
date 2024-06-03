@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { Suspense, useState } from 'react';
 import { AddToCartButton } from '@/components/cart/add-to-cart-button';
 import { trackEvent } from 'utils/mixpanel';
-import ProductTag from '../elements/product-tag';
 import SavePriceTag from '../elements/save-price-tag';
 import { calculateSavedPrice } from '@/lib/helper/helper';
 import { sendGAEvent } from '@next/third-parties/google';
+import ProductTag from '../elements/product-tag';
 
 export function GridTileImage({
   isInteractive = true,
@@ -24,6 +24,7 @@ export function GridTileImage({
   },
   index = 0,
   alt = 'image',
+  isCollection,
   collectionIndex = -1,
   ...props
 }: {
@@ -32,7 +33,9 @@ export function GridTileImage({
   active?: boolean;
   images?: any;
   product?: any;
+  isCollection?: boolean;
   alt?: string;
+
   index?: number;
   label?: {
     title: string;
@@ -47,20 +50,22 @@ export function GridTileImage({
   if (!product) return null;
 
   const productDescription = product?.metafields?.find((item: any) => item?.key === 'hp_excerpt');
+  const productTopBar = product?.metafields?.find((item: any) => item?.key === 'pr_excerpt');
+  console.log('productTopBar', productTopBar);
+
   const setPriority = collectionIndex === 0 && (index === 0 || index === 1);
   const primaryImage = props?.src;
   const secondaryImage = images && images[1]?.url;
 
   return (
     <div
-      className={clsx(
-        'flex w-full items-center justify-center overflow-hidden rounded-lg border bg-white',
-        {
-          relative: label,
-          'border-2 border-blue-600': active,
-          'border-neutral-200': !active
-        }
-      )}
+      className={clsx('flex w-full items-center justify-center overflow-hidden  border bg-white', {
+        relative: label,
+        'border-2 border-blue-600': active,
+        'border-neutral-200': !active,
+        'rounded-lg': !isCollection,
+        ' rounded-b-lg': isCollection
+      })}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -122,7 +127,13 @@ export function GridTileImage({
                       )}
                     />
                   )}
-                  <ProductTag product={product} />
+                  {isCollection && productTopBar.value && (
+                    <div className="absolute left-0 top-0 w-full bg-black px-2 py-1 text-center text-xs font-medium uppercase text-white">
+                      {productTopBar.value}
+                    </div>
+                  )}
+
+                  <ProductTag show={isCollection ? false : true} product={product} />
                 </Link>
               </div>
               {product.ratings && product.ratings.average !== 0 && (

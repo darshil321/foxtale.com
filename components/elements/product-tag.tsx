@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
-const ProductTag = ({ product }: any) => {
+const ProductTag = ({ product, show }: any) => {
   const [tagText, setTagText] = useState<string | null>(null);
 
   useEffect(() => {
@@ -23,9 +23,13 @@ const ProductTag = ({ product }: any) => {
   if (!tagText) return null;
 
   return (
-    <div className="absolute right-2 top-2 rounded-md bg-white p-1 text-xs font-bold uppercase text-orange-400">
-      {tagText}
-    </div>
+    <>
+      {show && (
+        <div className="absolute right-2 top-2 rounded-md bg-white p-1 text-xs font-bold uppercase text-orange-400">
+          {tagText}
+        </div>
+      )}
+    </>
   );
 };
 

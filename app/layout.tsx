@@ -10,9 +10,7 @@ import InitialData from '@/components/initial-data';
 import { ToastContainer } from 'react-toastify';
 import { cookies } from 'next/headers';
 // import GoogleAnalytics from '@/components/google-analytics/google-analytics';
-import { GoogleTagManager } from '@next/third-parties/google';
-
-import { GoogleAnalytics } from '@next/third-parties/google';
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 
 // import Script from 'next/script';
 import { FacebookPixel } from '@/components/facebook-pixel';
