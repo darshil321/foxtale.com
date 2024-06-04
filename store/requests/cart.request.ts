@@ -13,11 +13,12 @@ export async function getCart({ cartId: cartId }: { cartId: any }) {
 
   return res;
 }
-export async function createCart({ lines }: { lines: any }) {
+export async function createCart({ lines }: { lines?: { id: string; quantity: number } }) {
+  console.log('liness', lines);
   const res = await shopifyFetch({
     query: createCartMutation,
     variables: {
-      input: { lines }
+      lineItems: lines
     }
   });
 
