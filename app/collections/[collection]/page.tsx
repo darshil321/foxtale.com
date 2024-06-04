@@ -1,8 +1,6 @@
-import { appendReviewAndRating, getCollection, getCollectionProducts } from 'lib/shopify';
+import { getCollection, getCollectionProducts } from 'lib/shopify';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Suspense } from 'react';
-import Loading from '../loading';
 
 import CollectionProductsContainer from '@/components/layout/search/collection-products';
 
@@ -31,27 +29,7 @@ export async function generateMetadata({
   };
 }
 
-export const revalidate = 60;
-
-export default async function CategoryPage({}: {}) {
-  // const { sort } = searchParams as { [key: string]: string };
-  // const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
-
-  const collections = [
-    {
-      handle: 'sp-moisturisers'
-    },
-    {
-      handle: 'sp-sunscreens'
-    },
-    {
-      handle: 'sp-serums'
-    },
-    {
-      handle: 'sp-masks'
-    }
-  ];
-
+export default async function CategoryPage({}: { params?: string; searchParams?: string }) {
   const collectionsView = [
     {
       section: 'Moisturisers',
@@ -74,30 +52,42 @@ export default async function CategoryPage({}: {}) {
       Description: ''
     }
   ];
+
+  const collections = [
+    {
+      handle: 'sp-moisturisers'
+    },
+    {
+      handle: 'sp-sunscreens'
+    },
+    {
+      handle: 'sp-serums'
+    },
+    {
+      handle: 'sp-masks'
+    }
+  ];
+
   // Fetch products for all collections simultaneously
   const promises = collections.map(async (collection) => {
     const res = (await getCollectionProducts({
       collection: collection.handle
-      // sortKey,
-      // reverse
     })) as any;
-    return appendReviewAndRating(res);
+    return res;
   });
 
   const productsByCollection = await Promise.all(promises);
-
+  console.log('productsByCollection', productsByCollection);
   return (
     <>
       <div className="h-full w-full gap-4 space-y-6 ">
         {productsByCollection?.map((product: any, index: number) => (
-          <Suspense fallback={<Loading />} key={index}>
-            <CollectionProductsContainer
-              key={index}
-              index={index}
-              collections={collectionsView}
-              products={product}
-            />
-          </Suspense>
+          <CollectionProductsContainer
+            key={index}
+            index={index}
+            collections={collectionsView}
+            products={product}
+          />
         ))}
       </div>
     </>

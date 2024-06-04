@@ -5,6 +5,7 @@ import { setIsUserClicked, setSelectedCollection } from '@/store/slices/product-
 import { useAppSelector } from '@/store/hooks';
 import Grid from '@/components/grid';
 import ProductGridItems from '../product-grid-items';
+// import { appendReviewAndRating } from '@/lib/shopify';
 
 const CollectionProductsContainer = ({
   collections,
@@ -21,6 +22,8 @@ const CollectionProductsContainer = ({
   const isUserClicked = useAppSelector((state) => state.products.isUserClicked);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [topBarHeight, setTopBarHeight] = useState(0);
+  // const [productsWithReviews, setProductsWithReviews] = useState<any[]>([]);
+
   useEffect(() => {
     const topBar = document.querySelector('.sticky.top-0');
     if (topBar) {
@@ -53,6 +56,15 @@ const CollectionProductsContainer = ({
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [dispatch, collections, index, isUserClicked]);
+
+  // useEffect(() => {
+  //   const appendReviewsAndRatings = async () => {
+  //     const productsWithReviewsAndRatings = await appendReviewAndRating(products);
+  //     setProductsWithReviews(productsWithReviewsAndRatings);
+  //   };
+
+  //   appendReviewsAndRatings();
+  // }, [products]);
 
   return (
     <section

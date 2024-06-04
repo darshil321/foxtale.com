@@ -586,7 +586,7 @@ export async function getReviewsById(id?: string, page = 1, pageSize = 10) {
   }
 }
 
-async function getRatingsById(id: string | string[]) {
+export async function getRatingsById(id: string | string[]) {
   let productId;
 
   if (typeof id === 'string') {
