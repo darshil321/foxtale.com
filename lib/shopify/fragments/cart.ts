@@ -51,6 +51,10 @@ const cartFragment = /* GraphQL */ `
         }
       }
     }
+    attributes: {
+      key: "domain"
+      value: "https://lp.foxtale.in"
+    }
     totalQuantity
   }
   ${productFragment}

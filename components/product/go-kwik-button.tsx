@@ -90,7 +90,6 @@ export function GokwikButton(passedData) {
   }, [buyNowRun]);
 
   const triggerBuyNow = (passedData: { quantity: number; variantId: string; title: string }) => {
-    console.log('111111', 111111);
     setLoading(true);
     if (passedData.title === 'Buy Now') {
       createCart().then((data) => {
