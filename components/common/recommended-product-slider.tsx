@@ -34,8 +34,8 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
     // fb events
     const productItem = item.product;
     console.log('productItem', productItem);
-    // const parts = productItem.id.split('/');
-    // const id = parts[parts.length - 1];
+    const parts = productItem.id.split('/');
+    const id = parts[parts.length - 1];
 
     // sendGAEvent('event', 'add_to_cart', {
     //   currency: 'INR',
@@ -49,6 +49,42 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
     //     }
     //   ]
     // });
+    if (window && window.dataLayer) {
+      window.dataLayer.push({
+        event: 'add_to_cart',
+        ga: {
+          currency: 'INR',
+          value: item?.priceRange?.maxVariantPrice?.amount,
+          items: [
+            {
+              item_id: id,
+              item_name: item?.title,
+              price: item?.priceRange?.maxVariantPrice?.amount,
+              quantity: 1
+            }
+          ]
+        },
+        fb: {
+          content_ids: [id],
+          content_name: productItem.title,
+          content_type: 'product',
+          content_category: 'recommended',
+          contents: [
+            {
+              id: id,
+              quantity: 1,
+              price: productItem?.priceRange?.minVariantPrice?.amount,
+              title: productItem.title,
+              handle: productItem.handle,
+              description: productItem.description
+            }
+          ],
+          currency: productItem?.priceRange?.minVariantPrice?.currencyCode,
+          value: productItem?.priceRange?.minVariantPrice?.amount,
+          num_items: 1
+        }
+      });
+    }
 
     // fbEvent('AddToCart', {
     //   content_ids: [id],

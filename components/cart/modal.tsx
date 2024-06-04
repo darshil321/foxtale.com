@@ -73,6 +73,37 @@ export default function CartModal() {
     //     }
     //   ]
     // });
+    if (window && window.dataLayer) {
+      window.dataLayer.push({
+        event: title.ga,
+        ga: {
+          currency: 'INR',
+          value: product?.priceRange?.maxVariantPrice?.amount,
+          items: [
+            {
+              item_id: product?.id,
+              item_name: product?.title,
+              price: product?.priceRange?.maxVariantPrice?.amount,
+              quantity: 1
+            }
+          ]
+        },
+        fb: {
+          content_ids: [product?.id],
+          content_name: product?.title,
+          content_type: 'product',
+          content_category: 'recommended',
+          contents: [
+            {
+              id: product?.id,
+              title: product?.title,
+              price: product?.priceRange?.maxVariantPrice?.amount,
+              currency: product?.priceRange?.maxVariantPrice?.currencyCode
+            }
+          ]
+        }
+      });
+    }
 
     trackEvent(title.mixpanel, {
       Product_Name: product.title,
@@ -99,6 +130,36 @@ export default function CartModal() {
     //     };
     //   })
     // });
+    if (window && window.dataLayer) {
+      window.dataLayer.push({
+        event: 'view_cart',
+        ga: {
+          currency: 'INR',
+          value: totalAmount,
+          items: carts?.lines.map((line: CartItem) => {
+            return {
+              item_id: line?.merchandise.id,
+              item_name: line?.merchandise.title,
+              price: line?.merchandise.product?.priceRange?.maxVariantPrice?.amount,
+              quantity: line?.quantity
+            };
+          })
+        },
+        fb: {
+          content_ids: carts?.lines.map((line: CartItem) => line?.merchandise.id),
+          content_name: carts?.lines.map((line: CartItem) => line?.merchandise.title),
+          content_type: 'product',
+          content_category: 'cart',
+          contents: carts?.lines.map((line: CartItem) => {
+            return {
+              id: line?.merchandise.id,
+              quantity: line?.quantity,
+              price: line?.merchandise.product?.priceRange?.maxVariantPrice?.amount
+            };
+          })
+        }
+      });
+    }
 
     dispatch(setCartOpen(true));
     trackEvent('Cart Button Clicked', {});
