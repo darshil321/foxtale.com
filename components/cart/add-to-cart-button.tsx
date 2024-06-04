@@ -9,8 +9,11 @@ import { setCartOpen } from '@/store/slices/cart-slice';
 import { toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from 'react-redux';
+// import { sendGAEvent } from '@next/third-parties/google';
 
+// import { fbEvent } from 'utils/facebook-pixel';
 import { scrollToElementById } from '@/lib/utils';
+import { trackEvent } from 'utils/mixpanel';
 const ToastContent: React.FC = () => {
   const dispatch = useDispatch();
 
@@ -144,16 +147,16 @@ function SubmitButton({
           //   ]
           // });
 
-          // trackEvent('Add To Cart', {
-          //   Product_Name: product.title,
-          //   Product_Url: '',
-          //   Product_Price: product?.priceRange?.maxVariantPrice?.amount,
-          //   Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
-          //   Source: '',
-          //   Category: '',
-          //   Tags: product.tags,
-          //   Variant_SKU: ''
-          // });
+          trackEvent('Add To Cart', {
+            Product_Name: product.title,
+            Product_Url: '',
+            Product_Price: product?.priceRange?.maxVariantPrice?.amount,
+            Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
+            Source: '',
+            Category: '',
+            Tags: product.tags,
+            Variant_SKU: ''
+          });
           // const parts = product.id.split('/');
           // const id = parts[parts.length - 1];
           // fbEvent('AddToCart', {
