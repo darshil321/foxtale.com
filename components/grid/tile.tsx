@@ -7,7 +7,7 @@ import { AddToCartButton } from '@/components/cart/add-to-cart-button';
 import { trackEvent } from 'utils/mixpanel';
 import SavePriceTag from '../elements/save-price-tag';
 import { calculateSavedPrice } from '@/lib/helper/helper';
-import { sendGAEvent } from '@next/third-parties/google';
+// import { sendGAEvent } from '@next/third-parties/google';
 import ProductTag from '../elements/product-tag';
 
 export function GridTileImage({
@@ -73,18 +73,18 @@ export function GridTileImage({
         <div className="flex h-full min-h-[320px] w-full flex-col justify-between md:max-h-[100%] md:min-h-[456px]">
           <div
             onClick={() => {
-              sendGAEvent('event', 'view_item', {
-                currency: 'INR',
-                value: product?.priceRange?.maxVariantPrice?.amount,
-                items: [
-                  {
-                    item_id: product?.id,
-                    item_name: product?.title,
-                    price: product?.priceRange?.maxVariantPrice?.amount,
-                    quantity: 1
-                  }
-                ]
-              });
+              // sendGAEvent('event', 'view_item', {
+              //   currency: 'INR',
+              //   value: product?.priceRange?.maxVariantPrice?.amount,
+              //   items: [
+              //     {
+              //       item_id: product?.id,
+              //       item_name: product?.title,
+              //       price: product?.priceRange?.maxVariantPrice?.amount,
+              //       quantity: 1
+              //     }
+              //   ]
+              // });
 
               trackEvent('Product Clicked', {
                 Product_Name: product.title,

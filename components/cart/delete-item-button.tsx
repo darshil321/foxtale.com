@@ -1,6 +1,6 @@
 'use client';
 
-import { sendGAEvent } from '@next/third-parties/google';
+// import { sendGAEvent } from '@next/third-parties/google';
 import { cartActions } from '@/store/actions/cart.action';
 import { useAppDispatch } from '@/store/hooks';
 import clsx from 'clsx';
@@ -27,18 +27,18 @@ function SubmitButton({
         if (pending) e.preventDefault();
 
         dispatch(cartActions.removeCart({ lineIds: [item?.merchandise.id] }));
-        sendGAEvent('event', 'remove_from_cart', {
-          currency: 'INR',
-          value: product?.priceRange?.maxVariantPrice?.amount,
-          items: [
-            {
-              item_id: item?.merchandise.id,
-              item_name: product?.title,
-              price: product?.priceRange?.maxVariantPrice?.amount,
-              quantity: 1
-            }
-          ]
-        });
+        // sendGAEvent('event', 'remove_from_cart', {
+        //   currency: 'INR',
+        //   value: product?.priceRange?.maxVariantPrice?.amount,
+        //   items: [
+        //     {
+        //       item_id: item?.merchandise.id,
+        //       item_name: product?.title,
+        //       price: product?.priceRange?.maxVariantPrice?.amount,
+        //       quantity: 1
+        //     }
+        //   ]
+        // });
 
         trackEvent('Removed From Cart', {
           Product_Name: product?.title,

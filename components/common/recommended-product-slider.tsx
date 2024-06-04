@@ -12,8 +12,8 @@ import {
   isThisGiftProductAvailableInCart
 } from '@/lib/helper/helper';
 import { trackEvent } from 'utils/mixpanel';
-import { fbEvent } from 'utils/facebook-pixel';
-import { sendGAEvent } from '@next/third-parties/google';
+// import { fbEvent } from 'utils/facebook-pixel';
+// import { sendGAEvent } from '@next/third-parties/google';
 
 type PropType = {
   slides: any[] | undefined;
@@ -34,31 +34,31 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
     // fb events
     const productItem = item.product;
     console.log('productItem', productItem);
-    const parts = productItem.id.split('/');
-    const id = parts[parts.length - 1];
+    // const parts = productItem.id.split('/');
+    // const id = parts[parts.length - 1];
 
-    sendGAEvent('event', 'add_to_cart', {
-      currency: 'INR',
-      value: item?.priceRange?.maxVariantPrice?.amount,
-      items: [
-        {
-          item_id: id,
-          item_name: item?.title,
-          price: item?.priceRange?.maxVariantPrice?.amount,
-          quantity: 1
-        }
-      ]
-    });
+    // sendGAEvent('event', 'add_to_cart', {
+    //   currency: 'INR',
+    //   value: item?.priceRange?.maxVariantPrice?.amount,
+    //   items: [
+    //     {
+    //       item_id: id,
+    //       item_name: item?.title,
+    //       price: item?.priceRange?.maxVariantPrice?.amount,
+    //       quantity: 1
+    //     }
+    //   ]
+    // });
 
-    fbEvent('AddToCart', {
-      content_ids: [id],
-      content_name: productItem.title,
-      content_type: 'product_group',
-      content_category: 'recommended',
-      currency: productItem?.priceRange?.minVariantPrice?.currencyCode,
-      value: productItem?.priceRange?.maxVariantPrice?.amount,
-      num_items: 1
-    });
+    // fbEvent('AddToCart', {
+    //   content_ids: [id],
+    //   content_name: productItem.title,
+    //   content_type: 'product_group',
+    //   content_category: 'recommended',
+    //   currency: productItem?.priceRange?.minVariantPrice?.currencyCode,
+    //   value: productItem?.priceRange?.maxVariantPrice?.amount,
+    //   num_items: 1
+    // });
 
     const isInCart = cart?.lines.some((cartItem: any) => cartItem.merchandise.id === item.id);
     console.log(isInCart);
