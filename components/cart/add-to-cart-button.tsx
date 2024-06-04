@@ -71,7 +71,6 @@ function SubmitButton({
         onClick={(e) => {
           e.preventDefault();
           notify();
-
           scrollToElementById('routine');
           dispatch(
             cartActions.addToCart({
@@ -86,16 +85,17 @@ function SubmitButton({
           if (window && window.dataLayer) {
             window.dataLayer.push({
               event: 'add_to_cart',
-
               ga: {
-                Product_Name: product.title,
-                Product_Url: '',
-                Product_Price: product?.priceRange?.maxVariantPrice?.amount,
-                Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
-                Source: '',
-                Category: '',
-                Tags: product.tags,
-                Variant_SKU: ''
+                currency: 'INR',
+                value: product?.priceRange?.maxVariantPrice?.amount,
+                items: [
+                  {
+                    item_id: selectedVariantId,
+                    item_name: product?.title,
+                    price: product?.priceRange?.maxVariantPrice?.amount,
+                    quantity: 1
+                  }
+                ]
               },
               fb: {
                 content_ids: [id],
@@ -112,72 +112,12 @@ function SubmitButton({
                     description: product.description
                   }
                 ],
-                // content_collections: product.collections,
                 currency: product?.priceRange?.minVariantPrice?.currencyCode,
                 value: product?.priceRange?.minVariantPrice?.amount,
                 num_items: 1
-                //===
-                // fbc: getFbpCookie()
-              },
-              mixpanel: {
-                Product_Name: product.title,
-                Product_Url: '',
-                Product_Price: product?.priceRange?.maxVariantPrice?.amount,
-                Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
-                Source: '',
-                Category: '',
-                Tags: product.tags,
-                Variant_SKU: ''
               }
             });
           }
-          // sendGAEvent('event', 'add_to_cart', {
-          //   currency: 'INR',
-          //   value: product?.priceRange?.maxVariantPrice?.amount,
-          //   items: [
-          //     {
-          //       item_id: selectedVariantId,
-          //       item_name: product?.title,
-          //       price: product?.priceRange?.maxVariantPrice?.amount,
-          //       quantity: 1
-          //     }
-          //   ]
-          // });
-
-          // trackEvent('Add To Cart', {
-          //   Product_Name: product.title,
-          //   Product_Url: '',
-          //   Product_Price: product?.priceRange?.maxVariantPrice?.amount,
-          //   Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
-          //   Source: '',
-          //   Category: '',
-          //   Tags: product.tags,
-          //   Variant_SKU: ''
-          // });
-          // const parts = product.id.split('/');
-          // const id = parts[parts.length - 1];
-          // fbEvent('AddToCart', {
-          //   content_ids: [id],
-          //   content_name: product.title,
-          //   content_type: 'product',
-          //   content_category: 'recommended',
-          //   contents: [
-          //     {
-          //       id: id,
-          //       quantity: 1,
-          //       price: product?.priceRange?.minVariantPrice?.amount,
-          //       title: product.title,
-          //       handle: product.handle,
-          //       description: product.description
-          //     }
-          //   ],
-          //   // content_collections: product.collections,
-          //   currency: product?.priceRange?.minVariantPrice?.currencyCode,
-          //   value: product?.priceRange?.minVariantPrice?.amount,
-          //   num_items: 1
-          //   //===
-          //   // fbc: getFbpCookie()
-          // });
         }}
         aria-label="Add to cart"
         className={clsx(buttonClasses, {
