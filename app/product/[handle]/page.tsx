@@ -1,14 +1,12 @@
 import type { Metadata } from 'next';
-import { appendReviewAndRatingInProduct, getCollectionProducts, getProduct } from 'lib/shopify';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
-import { BestSellingCombos } from '@/components/grid/best-selling-combos';
+import { appendReviewAndRatingInProduct, getCollectionProducts, getProduct } from 'lib/shopify';
 import ProductSlider from '@/components/product/product-slider';
 import ProductDisclosure from '@/components/product/product-disclosure';
 import ProductsRatings from '@/components/product/products-rating';
 import ProductDescription from '@/components/product/product-description';
-import ProductCarouselSlider from '@/components/product/product-carousel';
 import ProductDetailsTabs from '@/components/product/product-details-tabs';
 import ProductDescFooter from '@/components/product/pdp-footer';
 import Accordion from '@/components/layout/accordion';
@@ -19,6 +17,8 @@ import ReviewForm from '@/components/review-component/review-form';
 import UserForm from '@/components/review-component/user-form';
 import SuccessModal from '@/components/review-component/success-modal';
 import InitLoad from '@/components/common/init-load';
+// import ProductCarouselSlider from '@/components/product/product-carousel';
+// import { BestSellingCombos } from '@/components/grid/best-selling-combos';
 // import OfferSection from '@/components/product/offers-section';
 
 export const generateStaticParams = async () => {
@@ -156,7 +156,6 @@ export default async function ProductPage({
               <ProductDescription product={product} searchParams={searchParams} />
             </div>
             <LimitedStockBanner />
-            {/* <OfferSection /> */}
           </div>
         </div>
         <div>{<ProductDisclosure product={product} />}</div>
@@ -167,12 +166,9 @@ export default async function ProductPage({
               ...Loading Products
             </div>
           }
-        >
-          <ProductCarouselSlider />
-        </Suspense>
+        ></Suspense>
         <ProductDetailsTabs product={product} />
 
-        <BestSellingCombos product={product} />
         <Suspense fallback={<>...loading reviews</>}>
           <ReviewComponent product={product} />
         </Suspense>
