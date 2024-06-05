@@ -17,9 +17,6 @@ import ReviewForm from '@/components/review-component/review-form';
 import UserForm from '@/components/review-component/user-form';
 import SuccessModal from '@/components/review-component/success-modal';
 import InitLoad from '@/components/common/init-load';
-// import ProductCarouselSlider from '@/components/product/product-carousel';
-// import { BestSellingCombos } from '@/components/grid/best-selling-combos';
-// import OfferSection from '@/components/product/offers-section';
 
 export const generateStaticParams = async () => {
   const collections = [
@@ -156,7 +153,6 @@ export default async function ProductPage({
               <ProductDescription product={product} searchParams={searchParams} />
             </div>
             <LimitedStockBanner />
-            {/* <OfferSection /> */}
           </div>
         </div>
         <div>{<ProductDisclosure product={product} />}</div>
@@ -167,12 +163,8 @@ export default async function ProductPage({
               ...Loading Products
             </div>
           }
-        >
-          {/* <ProductCarouselSlider /> */}
-        </Suspense>
+        ></Suspense>
         <ProductDetailsTabs product={product} />
-
-        {/* <BestSellingCombos product={product} /> */}
         <Suspense fallback={<>...loading reviews</>}>
           <ReviewComponent product={product} />
         </Suspense>

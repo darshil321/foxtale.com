@@ -11,16 +11,17 @@ export default function LogoSquare({ size }: { size?: 'sm' | undefined }) {
   return (
     <div
       className={clsx('flex flex-none items-center justify-center border-neutral-200 bg-white ', {
-        'h-[40px] w-full rounded-xl': !size,
+        'h-[40px] rounded-xl md:w-full': !size,
         'h-[40px] w-full rounded-lg': size === 'sm'
       })}
     >
       <Image
+        priority
         onClick={handleLogoClick}
-        src={'/foxtalelogo.avif'}
+        src={'/foxtalelogo.svg'}
         className={clsx({
-          'w-full md:h-[36px]': !size,
-          'h-[30px] w-full': size === 'sm'
+          'h-[36px] w-[105px] md:w-full': !size,
+          'h-[30px] w-[105px]': size === 'sm'
         })}
         alt={'Foxtale'}
         width={96}
