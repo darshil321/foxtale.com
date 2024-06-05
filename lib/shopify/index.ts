@@ -514,17 +514,6 @@ export async function appendReviewAndRating(products: any) {
     // const reviews = await getReviewsById();
     const ratings = await getRatingsById(productIds);
 
-    // reviews.forEach((review: any) => {
-    //   const product = products.find((product: any) => {
-    //     const id = getProductId(product.id);
-
-    //     return id === review.external_product_id;
-    //   });
-    //   if (product) {
-    //     product.reviews = review;
-    //   }
-    // });
-
     ratings?.forEach((rating: any) => {
       const product = products.find((product: any) => {
         const id = getProductId(product.id);
@@ -602,16 +591,20 @@ export async function getRatingsById(id: string | string[]) {
   const url = `https://api.fera.ai/v3/private/ratings?page_size=100&external_ids=${productId}`;
 
   try {
-    const ratingApiOptions = {
+    const response = await fetch(url, {
       method: 'GET',
-      url: url,
       headers: {
         accept: 'application/json',
-        'SECRET-KEY': process.env.NEXT_PUBLIC_FERA_FOXTALE_SECRET_KEY
+        'SECRET-KEY': process.env.NEXT_PUBLIC_FERA_FOXTALE_SECRET_KEY || ''
       }
-    };
-    const response = await axios.request(ratingApiOptions);
-    const ratings = response.data.data;
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const ratings = data.data;
 
     return ratings;
   } catch (e) {
@@ -700,7 +693,7 @@ export async function uploadMedia(formData: FormData) {
     const response = await axios.post(url, formData, {
       headers: {
         accept: 'application/json',
-        'SECRET-KEY': process.env.NEXT_PUBLIC_FERA_FOXTALE_SECRET_KEY
+        'SECRET-KEY': process.env.NEXT_PUBLIC_FERA_FOXTALE_SECRET_KEY || ''
         // 'Content-Type': 'multipart/form-data' // Do not set Content-Type manually
       }
     });

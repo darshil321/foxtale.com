@@ -9,10 +9,12 @@ import { Poppins } from 'next/font/google';
 import InitialData from '@/components/initial-data';
 import { ToastContainer } from 'react-toastify';
 import { cookies } from 'next/headers';
+import { GoogleTagManager } from '@next/third-parties/google';
 // import GoogleAnalytics from '@/components/google-analytics/google-analytics';
-import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
+// import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
+
 // import Script from 'next/script';
-import { FacebookPixel } from '@/components/facebook-pixel';
+// import { FacebookPixel } from '@/components/facebook-pixel';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -71,7 +73,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         href="https://foxtale.in/cdn/shop/files/Favicon-01_1_1.png?v=1678945973&width=32"
       />
       <body>
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
+        {/* <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} /> */}
 
         <GoogleTagManager gtmId="GTM-KP8TX5F4" />
 
@@ -85,7 +87,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
               zIndex: 9999
             }}
           />
-          <FacebookPixel />
+          {/* <FacebookPixel /> */}
           <Banner />
           <WrapperContainer>
             <Navbar />
