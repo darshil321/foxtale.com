@@ -73,11 +73,18 @@ export default async function CategoryPage({}: { params?: string; searchParams?:
     const res = (await getCollectionProducts({
       collection: collection.handle
     })) as any;
+
     return res;
   });
 
   const productsByCollection = await Promise.all(promises);
-  console.log('productsByCollection', productsByCollection);
+  // const productsByCollectionWithReviews = productsByCollection.map(
+  //   async (t) => await appendReviewAndRating(t)
+  // );
+
+  // const ress = await Promise.all(productsByCollectionWithReviews);
+  // console.log('ress', ress);
+
   return (
     <>
       <div className="h-full w-full gap-4 space-y-6 ">

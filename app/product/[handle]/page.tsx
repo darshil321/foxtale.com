@@ -156,7 +156,6 @@ export default async function ProductPage({
               <ProductDescription product={product} searchParams={searchParams} />
             </div>
             <LimitedStockBanner />
-            {/* <OfferSection /> */}
           </div>
         </div>
         <div>{<ProductDisclosure product={product} />}</div>
@@ -167,12 +166,9 @@ export default async function ProductPage({
               ...Loading Products
             </div>
           }
-        >
-          {/* <ProductCarouselSlider /> */}
-        </Suspense>
+        ></Suspense>
         <ProductDetailsTabs product={product} />
 
-        {/* <BestSellingCombos product={product} /> */}
         <Suspense fallback={<>...loading reviews</>}>
           <ReviewComponent product={product} />
         </Suspense>

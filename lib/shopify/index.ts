@@ -296,7 +296,7 @@ export async function getCollectionProducts({
   collection: string;
   reverse?: boolean;
   sortKey?: string;
-}): Promise<Product[]> {
+}): Promise<any[]> {
   console.log(sortKey);
 
   const res = await shopifyFetch<ShopifyCollectionProductsOperation>({
@@ -312,11 +312,16 @@ export async function getCollectionProducts({
     return [];
   }
 
-  const products = reshapeProducts(removeEdgesAndNodes(res.body.data.collection.products));
-  return products.map((p: any) => ({
+  let products = reshapeProducts(removeEdgesAndNodes(res.body.data.collection.products));
+  products = products.map((p: any) => ({
     ...p,
     collections: removeEdgesAndNodes(p.collections).map((c) => c.title)
   }));
+
+  // Append reviews and ratings to products
+  // products = await appendReviewAndRating(products);
+
+  return products;
 }
 
 export async function getCollections(): Promise<Collection[]> {
