@@ -78,6 +78,7 @@ export default async function CategoryPage({}: { params?: string; searchParams?:
   });
 
   const productsByCollection = await Promise.all(promises);
+  console.log('productsByCollection', productsByCollection);
   // const productsByCollectionWithReviews = productsByCollection.map(
   //   async (t) => await appendReviewAndRating(t)
   // );
