@@ -10,6 +10,7 @@ import SavePriceTag from '../elements/save-price-tag';
 import { calculateSavedPrice } from '@/lib/helper/helper';
 // import { sendGAEvent } from '@next/third-parties/google';
 import ProductTag from '../elements/product-tag';
+import { getSource } from '@/lib/helper/helper';
 import { useSelector } from 'react-redux';
 
 export function GridTileImage({
@@ -81,38 +82,26 @@ export function GridTileImage({
     >
       {primaryImage ? (
         <div className="flex h-full min-h-[320px] w-full flex-col justify-between md:max-h-[100%] md:min-h-[456px]">
-          <div
-            onClick={() => {
-              // sendGAEvent('event', 'view_item', {
-              //   currency: 'INR',
-              //   value: product?.priceRange?.maxVariantPrice?.amount,
-              //   items: [
-              //     {
-              //       item_id: product?.id,
-              //       item_name: product?.title,
-              //       price: product?.priceRange?.maxVariantPrice?.amount,
-              //       quantity: 1
-              //     }
-              //   ]
-              // });
-
-              trackEvent('Product Clicked', {
-                Product_Name: product.title,
-                Product_Url: '',
-                Product_Price: product?.priceRange?.maxVariantPrice?.amount,
-                Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
-                Source: '',
-                Category: '',
-                Tags: product.tags,
-                Variant_SKU: ''
-              });
-            }}
-            className="flex h-full w-full flex-col"
-          >
+          <div className="flex h-full w-full flex-col">
             <div className="relative">
               <div className="h-full w-full overflow-hidden object-cover">
                 <Link href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}>
                   <Image
+                    onClick={() => {
+                      trackEvent('Clicked Product', {
+                        productName: product.handle,
+                        productTitle: product.title,
+                        productUrl: window.location.href,
+                        productPrice: product?.priceRange?.maxVariantPrice?.amount,
+                        productCurrency: product?.priceRange?.maxVariantPrice?.currencyCode,
+                        category: '',
+                        from: 'from-feature-collection-image',
+                        source: getSource(window.location.href),
+                        'api-url-for-data': window.location.href,
+                        tags: product.tags.join(','),
+                        varientSku: ''
+                      });
+                    }}
                     className={clsx(
                       'relative aspect-square h-full min-h-[200px] w-full object-cover transition-opacity duration-500 ease-in-out  md:min-h-[300px]',
                       {
@@ -174,7 +163,24 @@ export function GridTileImage({
             </div>
             <div className="space-y-[4px] px-3 py-[9px]">
               <div>
-                <Link href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}>
+                <Link
+                  onClick={() => {
+                    trackEvent('Clicked Product', {
+                      productName: product.handle,
+                      productTitle: product.title,
+                      productUrl: window.location.href,
+                      productPrice: product?.priceRange?.maxVariantPrice?.amount,
+                      productCurrency: product?.priceRange?.maxVariantPrice?.currencyCode,
+                      category: '',
+                      from: 'from-feature-collection-product-info',
+                      source: getSource(window.location.href),
+                      'api-url-for-data': window.location.href,
+                      tags: product.tags.join(','),
+                      varientSku: ''
+                    });
+                  }}
+                  href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}
+                >
                   <p className="leading-2 line-clamp-1 cursor-pointer text-[12px] font-medium transition-all hover:text-purple-400 md:text-base md:leading-6">
                     {label?.title}
                   </p>

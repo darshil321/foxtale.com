@@ -1,4 +1,5 @@
 'use client';
+import { getSource } from '@/lib/helper/helper';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { trackEvent } from 'utils/mixpanel';
@@ -6,7 +7,10 @@ import { trackEvent } from 'utils/mixpanel';
 export default function LogoSquare({ size }: { size?: 'sm' | undefined }) {
   const handleLogoClick = () => {
     // sendGAEvent({ event: 'logo clickerd', value: {} });
-    trackEvent('Logo Clicked', {});
+
+    trackEvent('Foxtale Logo Clicked', {
+      source: getSource(window.location.href)
+    });
   };
   return (
     <div
