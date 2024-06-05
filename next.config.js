@@ -45,6 +45,11 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/',
+        destination: '/collections/99-store',
+        permanent: true
+      },
+      {
         source: '/password',
         destination: '/',
         permanent: true
@@ -52,7 +57,5 @@ const nextConfig = {
     ];
   }
 };
-
-// module.exports =
 
 module.exports = process.env.ANALYZE === 'true' ? withBundleAnalyzer(nextConfig) : nextConfig;

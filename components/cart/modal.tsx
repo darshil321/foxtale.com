@@ -96,6 +96,7 @@ export default function CartModal() {
         }
       });
     }
+
     trackEvent(title.mixpanel, {
       productName: product.handle,
       productTitle: product.title,
