@@ -36,7 +36,7 @@ export default function CartModal() {
   const data = getCartData(carts);
   // const totalCartQuantity = data.totalQuantity;
 
-  const { currencyCode, totalAmount } = data;
+  const { currencyCode, totalAmount, totalQuantity } = data;
   const dispatch = useAppDispatch();
   function updateCartItem({ item, type }: { item: CartItem; type: string }) {
     dispatch(
@@ -96,6 +96,7 @@ export default function CartModal() {
         }
       });
     }
+    console.log(getSource(window.location.href));
 
     trackEvent(title.mixpanel, {
       productName: product.handle,
@@ -105,7 +106,18 @@ export default function CartModal() {
       productCurrency: product?.priceRange?.maxVariantPrice?.currencyCode,
       category: '',
       from: from || '',
-      cart: carts,
+      cart: {
+        totalQuantity: totalQuantity,
+        totalAmount: totalAmount,
+        lines: carts.lines.map((line: CartItem) => {
+          return {
+            merchandiseId: line?.merchandise.id,
+            name: line?.merchandise.title,
+            price: line?.merchandise.product?.priceRange?.maxVariantPrice?.amount,
+            quantity: line?.quantity
+          };
+        })
+      },
       source: getSource(window.location.href),
       'api-url-for-data': window.location.href,
       tags: product.tags.join(','),

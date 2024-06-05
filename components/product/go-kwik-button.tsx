@@ -94,30 +94,6 @@ export function GokwikButton(passedData) {
     setLoading(true);
     if (passedData.title === 'Buy Now') {
       createCart({ lines: [{ quantity: 1, merchandiseId: passedData.variantId }] }).then((data) => {
-        // const parts = data?.lines?.[0]?.merchandise?.product?.id?.split('/');
-        // const productId = parts[parts.length - 1];
-        // const parts2 = data?.lines?.[0]?.merchandise.id.split('/');
-        // const variantId = parts2[parts2.length - 1];
-        // fbEvent('InitiateCheckout', {
-        //   content_ids: [productId],
-        //   content_type: 'product_group',
-        //   contents: [
-        //     {
-        //       id: productId,
-        //       quantity: data.totalQuantity,
-        //       name: data?.lines?.[0].merchandise.product.title,
-        //       price: data?.lines?.[0].merchandise.product.priceRange.minVariantPrice.amount,
-        //       currency:
-        //         data?.lines?.[0].merchandise.product.priceRange.minVariantPrice.currencyCode,
-        //       variant: variantId
-        //     }
-        //   ],
-        //   currency: data?.cost.totalAmount.currencyCode,
-        //   num_items: data.totalQuantity,
-        //   value: data?.cost.totalAmount.amount
-        //   //===
-        // });
-        console.log('buyNowData', data);
         setLoading(false);
         triggerGokwikCheckout(data.body.data.cartCreate.cart);
       });
@@ -128,8 +104,6 @@ export function GokwikButton(passedData) {
       }));
 
       createCart({ lines: payload }).then((data) => {
-        console.log('crdata', data.body.data.cartCreate.cart);
-
         setLoading(false);
         triggerGokwikCheckout(data.body.data.cartCreate.cart);
       });
