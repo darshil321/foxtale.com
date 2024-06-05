@@ -1,14 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { AddToCartButton } from '@/components/cart/add-to-cart-button';
 import { trackEvent } from 'utils/mixpanel';
 import SavePriceTag from '../elements/save-price-tag';
 import { calculateSavedPrice } from '@/lib/helper/helper';
 // import { sendGAEvent } from '@next/third-parties/google';
 import ProductTag from '../elements/product-tag';
+import { useSelector } from 'react-redux';
 
 export function GridTileImage({
   isInteractive = true,
@@ -45,13 +47,21 @@ export function GridTileImage({
     position?: 'bottom' | 'center';
   };
 } & React.ComponentProps<typeof Image>) {
+  const productCollections = useSelector((state: any) => state.collections.collectionsProducts);
+  const [ratings, setRatings] = useState<any>(null);
+
   const [isHovered, setIsHovered] = useState(false);
+  useEffect(() => {
+    if (!product || product?.ratings) return;
+    const _prod = productCollections.find((p: any) => p.id === product.id);
+
+    if (_prod && _prod?.ratings) setRatings(_prod.ratings);
+  }, [product, productCollections]);
 
   if (!product) return null;
 
   const productDescription = product?.metafields?.find((item: any) => item?.key === 'hp_excerpt');
   const productTopBar = product?.metafields?.find((item: any) => item?.key === 'pr_excerpt');
-  console.log('productTopBar', productTopBar);
 
   const setPriority = collectionIndex === 0 && (index === 0 || index === 1);
   const primaryImage = props?.src;
@@ -136,7 +146,7 @@ export function GridTileImage({
                   <ProductTag show={isCollection ? false : true} product={product} />
                 </Link>
               </div>
-              {product.ratings && product.ratings.average !== 0 && (
+              {ratings && ratings?.average !== 0 && (
                 <div className="absolute bottom-2 left-2 flex w-max flex-row justify-between gap-1 rounded-sm bg-white px-[5px] py-[1px] text-black">
                   <div data-rating="4.8">
                     <div
@@ -156,7 +166,7 @@ export function GridTileImage({
                       transform: 'scale(1, 1)'
                     }}
                   >
-                    {product.ratings.average}
+                    {ratings.average}
                   </span>
                   <span style={{ display: 'none' }}>52</span>
                 </div>

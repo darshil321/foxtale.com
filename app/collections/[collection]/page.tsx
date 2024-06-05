@@ -1,10 +1,11 @@
-import { appendReviewAndRating, getCollection, getCollectionProducts } from 'lib/shopify';
+import { getCollection, getCollectionProducts } from 'lib/shopify';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import Loading from '../loading';
 
 import CollectionProductsContainer from '@/components/layout/search/collection-products';
+import InitialReviews from '@/components/initial-reviews';
 
 export const generateStaticParams = async () => {
   return [
@@ -81,13 +82,14 @@ export default async function CategoryPage({}: {}) {
       // sortKey,
       // reverse
     })) as any;
-    return appendReviewAndRating(res);
+    return res;
   });
 
   const productsByCollection = await Promise.all(promises);
 
   return (
     <>
+      <InitialReviews products={productsByCollection} />
       <div className="h-full w-full gap-4 space-y-6 ">
         {productsByCollection?.map((product: any, index: number) => (
           <Suspense fallback={<Loading />} key={index}>
