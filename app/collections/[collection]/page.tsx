@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import CollectionProductsContainer from '@/components/layout/search/collection-products';
+import InitLoad from '@/components/common/init-load';
 import InitialReviews from '@/components/initial-reviews';
 
 export const generateStaticParams = async () => {
@@ -90,6 +91,7 @@ export default async function CategoryPage({}: { params?: string; searchParams?:
     <>
       <InitialReviews products={productsByCollection} />
       <div className="h-full w-full gap-4 space-y-6 ">
+        <InitLoad isCollectionPage={true} />
         {productsByCollection?.map((product: any, index: number) => (
           <CollectionProductsContainer
             key={index}

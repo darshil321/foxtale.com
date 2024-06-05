@@ -2,7 +2,7 @@
 import clsx from 'clsx';
 import { Product, ProductVariant } from 'lib/shopify/types';
 import { useSearchParams } from 'next/navigation';
-import { useAppDispatch } from 'store/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { cartActions } from 'store/actions/cart.action';
 import { getDefaultVariant } from '@/lib/helper/helper';
 import { setCartOpen } from '@/store/slices/cart-slice';
@@ -14,8 +14,10 @@ import { useDispatch } from 'react-redux';
 // import { fbEvent } from 'utils/facebook-pixel';
 import { scrollToElementById } from '@/lib/utils';
 import { trackEvent } from 'utils/mixpanel';
+import { getSource } from '@/lib/helper/helper';
 const ToastContent: React.FC = () => {
   const dispatch = useDispatch();
+  const cart = useAppSelector((state) => state.cart.cart);
 
   return (
     <div className="flex justify-between">
@@ -26,6 +28,11 @@ const ToastContent: React.FC = () => {
       <div
         className="text-[15px] font-semibold capitalize text-[#1877f2]"
         onClick={() => {
+          trackEvent('Viewed Cart', {
+            from: 'view-cart-popup',
+            source: getSource(window.location.href),
+            cart: cart
+          });
           dispatch(setCartOpen(true));
           toast.dismiss();
         }}
@@ -51,6 +58,7 @@ function SubmitButton({
   const dispatch = useAppDispatch();
 
   const disabledClasses = 'cursor-not-allowed  hover:opacity-80';
+  const cart = useAppSelector((state) => state.cart.cart);
 
   if (!availableForSale) {
     return (
@@ -59,6 +67,7 @@ function SubmitButton({
       </button>
     );
   }
+
   const notify = () =>
     toast(<ToastContent />, {
       position: 'bottom-center',
@@ -121,53 +130,23 @@ function SubmitButton({
               }
             });
           }
-          // sendGAEvent('event', 'add_to_cart', {
-          //   currency: 'INR',
-          //   value: product?.priceRange?.maxVariantPrice?.amount,
-          //   items: [
-          //     {
-          //       item_id: selectedVariantId,
-          //       item_name: product?.title,
-          //       price: product?.priceRange?.maxVariantPrice?.amount,
-          //       quantity: 1
-          //     }
-          //   ]
-          // });
 
-          trackEvent('Add To Cart', {
-            Product_Name: product.title,
-            Product_Url: '',
-            Product_Price: product?.priceRange?.maxVariantPrice?.amount,
-            Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
-            Source: '',
-            Category: '',
-            Tags: product.tags,
-            Variant_SKU: ''
+          trackEvent('Added to cart', {
+            productName: product.title,
+            productUrl: window.location.href,
+            productPrice: product?.priceRange?.maxVariantPrice?.amount,
+            productCurrency: product?.priceRange?.maxVariantPrice?.currencyCode,
+            category: '',
+            from:
+              getSource(window.location.href) === 'product'
+                ? 'from-pdp'
+                : 'from-feature-collection',
+            cart: cart,
+            source: getSource(window.location.href),
+            'api-url-for-data': window.location.href,
+            tags: product.tags.join(','),
+            varientSku: ''
           });
-          // const parts = product.id.split('/');
-          // const id = parts[parts.length - 1];
-          // fbEvent('AddToCart', {
-          //   content_ids: [id],
-          //   content_name: product.title,
-          //   content_type: 'product',
-          //   content_category: 'recommended',
-          //   contents: [
-          //     {
-          //       id: id,
-          //       quantity: 1,
-          //       price: product?.priceRange?.minVariantPrice?.amount,
-          //       title: product.title,
-          //       handle: product.handle,
-          //       description: product.description
-          //     }
-          //   ],
-          //   // content_collections: product.collections,
-          //   currency: product?.priceRange?.minVariantPrice?.currencyCode,
-          //   value: product?.priceRange?.minVariantPrice?.amount,
-          //   num_items: 1
-          //   //===
-          //   // fbc: getFbpCookie()
-          // });
         }}
         aria-label="Add to cart"
         className={clsx(buttonClasses, {

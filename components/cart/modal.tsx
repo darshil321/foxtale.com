@@ -12,7 +12,7 @@ import OpenCart from './open-cart';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import '../../assets/styles/embla-products-carousel.css';
-import { getCartData, getUpdatedMerchandiseId } from '@/lib/helper/helper';
+import { getCartData, getUpdatedMerchandiseId, getSource } from '@/lib/helper/helper';
 import { CartItem } from '@/lib/shopify/types';
 // import { sendGAEvent } from '@next/third-parties/google';
 import { setCartOpen } from '@/store/slices/cart-slice';
@@ -36,7 +36,7 @@ export default function CartModal() {
   const data = getCartData(carts);
   // const totalCartQuantity = data.totalQuantity;
 
-  const { currencyCode, totalAmount } = data;
+  const { currencyCode, totalAmount, totalQuantity } = data;
   const dispatch = useAppDispatch();
   function updateCartItem({ item, type }: { item: CartItem; type: string }) {
     dispatch(
@@ -60,19 +60,11 @@ export default function CartModal() {
 
   const OPTIONS: EmblaOptionsType = { dragFree: false };
 
-  const handleProductClick = (product: any, title: { mixpanel: string; ga: string }) => {
-    // sendGAEvent('event', title.ga, {
-    //   currency: 'INR',
-    //   value: product?.priceRange?.maxVariantPrice?.amount,
-    //   items: [
-    //     {
-    //       item_id: product?.id,
-    //       item_name: product?.title,
-    //       price: product?.priceRange?.maxVariantPrice?.amount,
-    //       quantity: 1
-    //     }
-    //   ]
-    // });
+  const handleProductClick = (
+    product: any,
+    title: { mixpanel: string; ga: string },
+    from: string
+  ) => {
     if (window && window.dataLayer) {
       window.dataLayer.push({
         event: title.ga,
@@ -104,32 +96,41 @@ export default function CartModal() {
         }
       });
     }
+    console.log(getSource(window.location.href));
 
     trackEvent(title.mixpanel, {
-      Product_Name: product.title,
-      Product_Url: '',
-      Product_Price: product?.priceRange?.maxVariantPrice?.amount,
-      Price_Currency: product?.priceRange?.maxVariantPrice?.currencyCode,
-      Source: '',
-      Category: '',
-      Tags: product.tags,
-      Variant_SKU: ''
+      productName: product.handle,
+      productTitle: product.title,
+      productUrl: window.location.href,
+      productPrice: product?.priceRange?.maxVariantPrice?.amount,
+      productCurrency: product?.priceRange?.maxVariantPrice?.currencyCode,
+      category: '',
+      from: from || '',
+      cart: {
+        totalQuantity: totalQuantity,
+        totalAmount: totalAmount,
+        lines: carts.lines.map((line: CartItem) => {
+          return {
+            merchandiseId: line?.merchandise.id,
+            name: line?.merchandise.title,
+            price: line?.merchandise.product?.priceRange?.maxVariantPrice?.amount,
+            quantity: line?.quantity
+          };
+        })
+      },
+      source: getSource(window.location.href),
+      'api-url-for-data': window.location.href,
+      tags: product.tags.join(','),
+      variantSku: ''
     });
   };
 
   const handleCartButtonClicked = () => {
-    // sendGAEvent('event', 'view_cart', {
-    //   currency: 'INR',
-    //   value: totalAmount,
-    //   items: carts?.lines.map((line: CartItem) => {
-    //     return {
-    //       item_id: line?.merchandise.id,
-    //       item_name: line?.merchandise.title,
-    //       price: line?.merchandise.product?.priceRange?.maxVariantPrice?.amount,
-    //       quantity: line?.quantity
-    //     };
-    //   })
-    // });
+    trackEvent('Viewed Cart', {
+      from: 'view-cart-button',
+      source: getSource(window.location.href),
+      cart: carts
+    });
     if (window && window.dataLayer) {
       window.dataLayer.push({
         event: 'view_cart',
@@ -162,7 +163,6 @@ export default function CartModal() {
     }
 
     dispatch(setCartOpen(true));
-    trackEvent('Cart Button Clicked', {});
   };
   console.log('cart in modal', RecommendedProducts);
 
@@ -213,7 +213,6 @@ export default function CartModal() {
                   <ul className="flex-grow overflow-auto bg-grey p-2 py-1 ">
                     {carts?.lines?.map((item: any, i: number) => {
                       const merchandiseSearchParams = {} as MerchandiseSearchParams;
-
                       item.merchandise.selectedOptions.forEach(
                         ({ name, value }: { name: string; value: string }) => {
                           if (value !== DEFAULT_OPTION) {
@@ -236,15 +235,7 @@ export default function CartModal() {
                           className="flex w-full flex-col bg-white "
                         >
                           <div className="relative flex w-full flex-row justify-between rounded-sm px-1 py-1 ">
-                            <div
-                              onClick={() => {
-                                handleProductClick(item.merchandise?.product, {
-                                  mixpanel: 'Product removed from cart',
-                                  ga: 'remove_from_cart'
-                                });
-                              }}
-                              className="absolute z-40 -mt-2 ml-[55px]"
-                            >
+                            <div className="absolute z-40 -mt-2 ml-[55px]">
                               {/* <DeleteItemButton item={item} removeIcon={false} /> */}
                             </div>
 
@@ -252,15 +243,23 @@ export default function CartModal() {
                               <Link
                                 href={merchandiseUrl}
                                 onClick={() => {
-                                  handleProductClick(item.merchandise?.product, {
-                                    mixpanel: 'product clicked',
-                                    ga: 'view_item'
-                                  });
                                   dispatch(setCartOpen(false));
                                 }}
                                 className=" flex flex-row space-x-4"
                               >
-                                <div className="relative h-16 w-16 cursor-pointer overflow-hidden rounded-md  border border-neutral-300 bg-neutral-300 ">
+                                <div
+                                  onClick={() =>
+                                    handleProductClick(
+                                      item.merchandise?.product,
+                                      {
+                                        mixpanel: 'Clicked Product',
+                                        ga: 'view_item'
+                                      },
+                                      'from-mini-cart-drawer-product-image'
+                                    )
+                                  }
+                                  className="relative h-16 w-16 cursor-pointer overflow-hidden rounded-md  border border-neutral-300 bg-neutral-300 "
+                                >
                                   <Image
                                     className="h-full w-full object-cover"
                                     width={64}
@@ -275,7 +274,19 @@ export default function CartModal() {
 
                                 <div>
                                   <div className="flex flex-1 flex-col gap-0.5 py-2">
-                                    <span className="text-xs leading-tight">
+                                    <span
+                                      onClick={() =>
+                                        handleProductClick(
+                                          item.merchandise?.product,
+                                          {
+                                            mixpanel: 'Clicked Product',
+                                            ga: 'view_item'
+                                          },
+                                          'from-mini-cart-drawer-product-info'
+                                        )
+                                      }
+                                      className="text-xs leading-tight"
+                                    >
                                       {item.merchandise.product.title}
                                     </span>
                                     {Number(item?.cost?.amountPerQuantity?.amount) === 0 && (
@@ -315,10 +326,14 @@ export default function CartModal() {
                                     {item.quantity > 1 && (
                                       <EditItemQuantityButton
                                         onClick={() => {
-                                          handleProductClick(item.merchandise?.product, {
-                                            mixpanel: 'Quantity decreased',
-                                            ga: 'remove_from_cart'
-                                          });
+                                          handleProductClick(
+                                            item.merchandise?.product,
+                                            {
+                                              mixpanel: 'Removed from cart',
+                                              ga: 'remove_from_cart'
+                                            },
+                                            'from-mini-cart-drawer-quantity-change-button'
+                                          );
 
                                           updateCartItem({ item, type: 'minus' });
                                         }}
@@ -328,10 +343,14 @@ export default function CartModal() {
                                     {item.quantity === 1 && (
                                       <EditItemQuantityButton
                                         onClick={() => {
-                                          handleProductClick(item.merchandise?.product, {
-                                            mixpanel: 'Product removed from cart',
-                                            ga: 'remove_from_cart'
-                                          });
+                                          handleProductClick(
+                                            item.merchandise?.product,
+                                            {
+                                              mixpanel: 'Removed from cart',
+                                              ga: 'remove_from_cart'
+                                            },
+                                            'from-mini-cart-drawer-quantity-change-button'
+                                          );
 
                                           updateCartItem({ item, type: 'minus' });
                                         }}
@@ -343,10 +362,14 @@ export default function CartModal() {
                                     </p>
                                     <EditItemQuantityButton
                                       onClick={() => {
-                                        handleProductClick(item.merchandise?.product, {
-                                          mixpanel: 'Quantity increased',
-                                          ga: 'add_to_cart'
-                                        });
+                                        handleProductClick(
+                                          item.merchandise?.product,
+                                          {
+                                            mixpanel: 'Added to cart',
+                                            ga: 'add_to_cart'
+                                          },
+                                          'from-mini-cart-drawer-quantity-change-button'
+                                        );
                                         updateCartItem({ item, type: 'plus' });
                                       }}
                                       type="plus"
