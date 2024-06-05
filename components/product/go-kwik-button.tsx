@@ -7,6 +7,7 @@ import { removeItem } from '../cart/actions';
 import { useAppSelector } from '@/store/hooks';
 import { setCart } from '@/store/slices/cart-slice';
 import { createCart } from '@/store/requests/cart.request';
+import { getSource } from '@/lib/helper/helper';
 // import { fbEvent } from 'utils/facebook-pixel';
 // import { getCartData } from '@/lib/helper/helper';
 // import { sendGAEvent } from '@next/third-parties/google';
@@ -153,7 +154,6 @@ export function GokwikButton(passedData) {
     window.gokwikSdk.initCheckout(window.merchantInfo);
   };
 
-  // const getContentsData = () => {
   //   const data = carts.lines.map((cart) => {
   //     const parts = cart.merchandise.id.split('/');
   //     const variantId = parts[parts.length - 1];
@@ -185,30 +185,15 @@ export function GokwikButton(passedData) {
   const onCheckout = (event) => {
     event.preventDefault();
 
-    // sendGAEvent('event', 'begin_checkout', {
-    //   currency: 'INR',
-    //   value: totalAmount,
-    //   items: carts.lines.map((line) => {
-    //     return {
-    //       item_name: line.merchandise.product.title,
-    //       price: line.merchandise.product.priceRange.minVariantPrice.amount,
-    //       quantity: line.quantity,
-    //       item_id: getProductId(line.merchandise.id)
-    //     };
-    //   })
-    // });
+    trackEvent(
+      passedData.title === 'Buy Now' ? 'Clicked Dynamic Checkout Button' : 'Started Checkout',
+      {
+        'api-url-for-data': window.location.href,
+        from: passedData.title === 'Buy Now' ? 'from-pdp' : 'from-mini-cart-drawer',
+        source: getSource(window.location.href)
+      }
+    );
 
-    trackEvent('Initiate checkout', {});
-    // const contentsData = getContentsData();
-    // const contentIds = getContentIds();
-    // fbEvent('InitiateCheckout', {
-    //   content_ids: contentIds,
-    //   content_type: 'product_group',
-    //   contents: contentsData,
-    //   currency: 'INR',
-    //   num_items: carts.totalQuantity,
-    //   value: totalAmount
-    // });
     passedData.buyNowButton ? triggerBuyNow(passedData) : triggerGokwikCheckout();
   };
 

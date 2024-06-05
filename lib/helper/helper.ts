@@ -237,3 +237,12 @@ export const getUpdatedMerchandiseId = (prevCart: Cart, currentCart: Cart) => {
 
   return null;
 };
+export function getSource(url: string) {
+  if (url.includes('collections')) {
+    return 'collection';
+  } else if (url.includes('product')) {
+    return 'product';
+  } else {
+    return 'other';
+  }
+}

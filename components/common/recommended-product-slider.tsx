@@ -12,6 +12,7 @@ import {
   isThisGiftProductAvailableInCart
 } from '@/lib/helper/helper';
 import { trackEvent } from 'utils/mixpanel';
+import { getSource } from '@/lib/helper/helper';
 // import { fbEvent } from 'utils/facebook-pixel';
 // import { sendGAEvent } from '@next/third-parties/google';
 
@@ -28,10 +29,20 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
   const cart = useAppSelector((state) => state.cart.cart);
 
   const onClick = (item: any) => {
-    trackEvent('Add To Cart', {
-      product: item
+    trackEvent('Added to cart', {
+      productName: item.title,
+      productUrl: window.location.href,
+      productPrice: item?.priceRange?.maxVariantPrice?.amount,
+      productCurrency: item?.priceRange?.maxVariantPrice?.currencyCode,
+      category: '',
+      from: 'from-mini-cart-drawer',
+      cart: cart,
+      source: getSource(window.location.href),
+      'api-url-for-data': window.location.href,
+      tags: item?.tags?.join(','),
+      varientSku: ''
     });
-    // fb events
+
     const productItem = item.product;
     console.log('productItem', productItem);
     const parts = productItem.id.split('/');

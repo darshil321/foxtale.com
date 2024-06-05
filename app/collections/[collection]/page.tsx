@@ -5,6 +5,7 @@ import { Suspense } from 'react';
 import Loading from '../loading';
 
 import CollectionProductsContainer from '@/components/layout/search/collection-products';
+import InitLoad from '@/components/common/init-load';
 
 export const generateStaticParams = async () => {
   return [
@@ -89,6 +90,7 @@ export default async function CategoryPage({}: {}) {
   return (
     <>
       <div className="h-full w-full gap-4 space-y-6 ">
+        <InitLoad isCollectionPage={true} />
         {productsByCollection?.map((product: any, index: number) => (
           <Suspense fallback={<Loading />} key={index}>
             <CollectionProductsContainer

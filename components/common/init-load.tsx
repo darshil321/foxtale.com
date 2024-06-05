@@ -1,7 +1,9 @@
 'use client';
+import { getSource } from '@/lib/helper/helper';
 import { useEffect, useRef, useMemo } from 'react';
+import { trackEvent } from 'utils/mixpanel';
 
-const InitLoad = ({ product }: { product: any }) => {
+const InitLoad = ({ product, isCollectionPage }: { product?: any; isCollectionPage?: boolean }) => {
   const trackedRef = useRef(false);
   const productData = useMemo(
     () => ({
@@ -9,6 +11,20 @@ const InitLoad = ({ product }: { product: any }) => {
     }),
     [product]
   );
+
+  useEffect(() => {
+    if (isCollectionPage && !trackedRef.current) {
+      trackedRef.current = true;
+      trackEvent('Viewed Collection', {
+        page_type: 'collection',
+        source: getSource(window.location.href),
+        page_url: window.location.href,
+        page_name: window.location.href.split('/').pop()
+      });
+    }
+    return;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (
@@ -26,6 +42,12 @@ const InitLoad = ({ product }: { product: any }) => {
       if (window && window.dataLayer) {
         const parts = productData.id.split('/');
         const id = parts[parts.length - 1];
+        trackEvent('Viewed Product', {
+          page_type: 'product',
+          source: getSource(window.location.href),
+          page_url: window.location.href,
+          page_name: window.location.href.split('/').pop()
+        });
 
         window.dataLayer.push({
           event: 'view_item',
@@ -51,10 +73,6 @@ const InitLoad = ({ product }: { product: any }) => {
           }
         });
       }
-
-      console.log('FB Event fired');
-    } else {
-      console.log('Product data incomplete.');
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
