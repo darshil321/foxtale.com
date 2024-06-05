@@ -53,7 +53,7 @@ export function GridTileImage({
   const [isHovered, setIsHovered] = useState(false);
   useEffect(() => {
     if (!product || product?.ratings) return;
-    const _prod = productCollections.find((p: any) => p.id === product.id);
+    const _prod = productCollections?.find((p: any) => p.id === product.id);
 
     if (_prod && _prod?.ratings) setRatings(_prod.ratings);
   }, [product, productCollections]);
