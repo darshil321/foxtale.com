@@ -7,7 +7,7 @@ import { Suspense, useEffect, useState } from 'react';
 import { AddToCartButton } from '@/components/cart/add-to-cart-button';
 import { trackEvent } from 'utils/mixpanel';
 import SavePriceTag from '../elements/save-price-tag';
-import { calculateSavedPrice } from '@/lib/helper/helper';
+import { calculateSavedPrice, getProductId } from '@/lib/helper/helper';
 // import { sendGAEvent } from '@next/third-parties/google';
 import ProductTag from '../elements/product-tag';
 import { getSource } from '@/lib/helper/helper';
@@ -88,18 +88,21 @@ export function GridTileImage({
                 <Link href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}>
                   <Image
                     onClick={() => {
-                      trackEvent('Clicked Product', {
-                        productName: product.handle,
+                      trackEvent('Viewed Product', {
+                        'Viewed Product Name': product.handle,
+                        'Viewed Product Tags': product.tags.join(','),
+                        'Viewed Product SKU': '',
+                        'Viewed Product Type': product.productType,
+                        'Viewed Product Variant': getProductId(product.id),
+                        'Viewed Product Vendor': product.vendor,
+                        'Viewed Product Price': product?.priceRange?.maxVariantPrice?.amount,
                         productTitle: product.title,
                         productUrl: window.location.href,
-                        productPrice: product?.priceRange?.maxVariantPrice?.amount,
                         productCurrency: product?.priceRange?.maxVariantPrice?.currencyCode,
                         category: '',
                         from: 'from-feature-collection-image',
                         source: getSource(window.location.href),
-                        'api-url-for-data': window.location.href,
-                        tags: product.tags.join(','),
-                        varientSku: ''
+                        'api-url-for-data': window.location.href
                       });
                     }}
                     className={clsx(
@@ -165,18 +168,21 @@ export function GridTileImage({
               <div>
                 <Link
                   onClick={() => {
-                    trackEvent('Clicked Product', {
-                      productName: product.handle,
+                    trackEvent('Viewed Product', {
+                      'Viewed Product Name': product.handle,
+                      'Viewed Product Tags': product.tags.join(','),
+                      'Viewed Product SKU': '',
+                      'Viewed Product Type': product.productType,
+                      'Viewed Product Variant': getProductId(product.id),
+                      'Viewed Product Vendor': product.vendor,
+                      'Viewed Product Price': product?.priceRange?.maxVariantPrice?.amount,
                       productTitle: product.title,
                       productUrl: window.location.href,
-                      productPrice: product?.priceRange?.maxVariantPrice?.amount,
                       productCurrency: product?.priceRange?.maxVariantPrice?.currencyCode,
                       category: '',
-                      from: 'from-feature-collection-product-info',
+                      from: 'from-feature-collection-image',
                       source: getSource(window.location.href),
-                      'api-url-for-data': window.location.href,
-                      tags: product.tags.join(','),
-                      varientSku: ''
+                      'api-url-for-data': window.location.href
                     });
                   }}
                   href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}
