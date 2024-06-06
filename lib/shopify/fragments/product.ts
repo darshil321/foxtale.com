@@ -3,6 +3,8 @@ import seoFragment from './seo';
 
 const productFragment = /* GraphQL */ `
   fragment product on Product {
+    vendor
+    productType
     id
     handle
     availableForSale

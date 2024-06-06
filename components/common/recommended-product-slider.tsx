@@ -9,6 +9,7 @@ import { cartActions } from '@/store/actions/cart.action';
 import { v4 as uuidv4 } from 'uuid';
 import {
   getCartData,
+  getProductId,
   isGiftProductAvailableInCart,
   isThisGiftProductAvailableInCart
 } from '@/lib/helper/helper';
@@ -33,16 +34,19 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
 
   const onClick = (item: any) => {
     trackEvent('Added to cart', {
-      productName: item.title,
+      'Added to Product Name': item.handle,
+      productTitle: item.title,
       productUrl: window.location.href,
-      productPrice: item?.priceRange?.maxVariantPrice?.amount,
+      'Added to Product Type': item.productType,
+      'Added to Product Variant': getProductId(item.id),
+      'Added to Product Vendor': item.vendor,
+      'Added to Product Price': item?.priceRange?.maxVariantPrice?.amount,
       productCurrency: item?.priceRange?.maxVariantPrice?.currencyCode,
-      category: '',
       from: 'from-mini-cart-drawer',
       cart: {
         totalQuantity: totalQuantity,
         totalAmount: totalAmount,
-        lines: cart.lines.map((line: CartItem) => {
+        lines: cart?.lines?.map((line: CartItem) => {
           return {
             merchandiseId: line?.merchandise.id,
             name: line?.merchandise.title,
@@ -53,8 +57,8 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
       },
       source: getSource(window.location.href),
       'api-url-for-data': window.location.href,
-      tags: item?.tags?.join(','),
-      varientSku: ''
+      'Added to Product Tags': item.tags.join(','),
+      'Added to Product SKU': ''
     });
 
     const productItem = item.product;

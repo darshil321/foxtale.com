@@ -12,7 +12,7 @@ import OpenCart from './open-cart';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import '../../assets/styles/embla-products-carousel.css';
-import { getCartData, getUpdatedMerchandiseId, getSource } from '@/lib/helper/helper';
+import { getCartData, getUpdatedMerchandiseId, getSource, getProductId } from '@/lib/helper/helper';
 import { CartItem } from '@/lib/shopify/types';
 // import { sendGAEvent } from '@next/third-parties/google';
 import { setCartOpen } from '@/store/slices/cart-slice';
@@ -22,6 +22,7 @@ import { EmblaOptionsType } from 'embla-carousel';
 import { cartActions } from '@/store/actions/cart.action';
 import EmblaProductSlider from '../common/recommended-product-slider';
 import { trackEvent } from 'utils/mixpanel';
+import { Product } from '@shopify/hydrogen-react/storefront-api-types';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -61,7 +62,7 @@ export default function CartModal() {
   const OPTIONS: EmblaOptionsType = { dragFree: false };
 
   const handleProductClick = (
-    product: any,
+    product: Product,
     title: { mixpanel: string; ga: string },
     from: string
   ) => {
@@ -99,12 +100,15 @@ export default function CartModal() {
     console.log(getSource(window.location.href));
 
     trackEvent(title.mixpanel, {
-      productName: product.handle,
+      'Added to Product Name': product.handle,
       productTitle: product.title,
       productUrl: window.location.href,
-      productPrice: product?.priceRange?.maxVariantPrice?.amount,
+      'Added to Product Type': product.productType,
+      'Added to Product Variant': getProductId(product.id),
+      'Added to Product Vendor': product.vendor,
+      'Added to Product Price': product?.priceRange?.maxVariantPrice?.amount,
       productCurrency: product?.priceRange?.maxVariantPrice?.currencyCode,
-      category: '',
+
       from: from || '',
       cart: {
         totalQuantity: totalQuantity,
@@ -120,8 +124,8 @@ export default function CartModal() {
       },
       source: getSource(window.location.href),
       'api-url-for-data': window.location.href,
-      tags: product.tags.join(','),
-      variantSku: ''
+      'Added to Product Tags': product.tags.join(','),
+      'Added to Product SKU': ''
     });
   };
 

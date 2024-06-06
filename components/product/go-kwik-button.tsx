@@ -7,10 +7,7 @@ import { removeItem } from '../cart/actions';
 import { useAppSelector } from '@/store/hooks';
 import { setCart } from '@/store/slices/cart-slice';
 import { createCart } from '@/store/requests/cart.request';
-import { getSource } from '@/lib/helper/helper';
-// import { fbEvent } from 'utils/facebook-pixel';
-// import { getCartData } from '@/lib/helper/helper';
-// import { sendGAEvent } from '@next/third-parties/google';
+import { getCookieValue, getSource } from '@/lib/helper/helper';
 import { trackEvent } from 'utils/mixpanel';
 
 const integrationUrls = {
@@ -25,6 +22,7 @@ const integrationUrls = {
 };
 
 // const analyticsUrl = {
+
 //   local: 'http://localhost:8080/integration.js',
 //   dev: 'https://devhits.gokwik.co/api/v1/events',
 //   hdev: 'https://devhits.gokwik.co/api/v1/events',
@@ -44,6 +42,11 @@ export function GokwikButton(passedData) {
   // const totalCartQuantity = data.totalQuantity;
 
   // const { totalAmount } = data;
+
+  const mixpanelDefaultCookieObj = getCookieValue(
+    'mp_' + process.env.NEXT_PUBLIC_MIXPANEL_TOKEN + '_mixpanel'
+  );
+  const distinct_id = JSON.parse(mixpanelDefaultCookieObj)?.distinct_id;
 
   window.addEventListener('message', (e) => {
     if (e.data.type === 'modal_close_hydrogen') {
@@ -93,7 +96,15 @@ export function GokwikButton(passedData) {
   const triggerBuyNow = (passedData: { quantity: number; variantId: string; title: string }) => {
     setLoading(true);
     if (passedData.title === 'Buy Now') {
-      createCart({ lines: [{ quantity: 1, merchandiseId: passedData.variantId }] }).then((data) => {
+      createCart({
+        lines: [{ quantity: 1, merchandiseId: passedData.variantId }],
+        attributes: [
+          {
+            key: 'distinct_id',
+            value: distinct_id
+          }
+        ]
+      }).then((data) => {
         setLoading(false);
         triggerGokwikCheckout(data.body.data.cartCreate.cart);
       });
@@ -103,7 +114,17 @@ export function GokwikButton(passedData) {
         merchandiseId: cart.merchandise.id
       }));
 
-      createCart({ lines: payload }).then((data) => {
+      createCart({
+        lines: payload,
+        attributes: [
+          {
+            key: 'distinct_id',
+            value: distinct_id
+          }
+        ]
+      }).then((data) => {
+        console.log('dataaaa', data);
+
         setLoading(false);
         triggerGokwikCheckout(data.body.data.cartCreate.cart);
       });
