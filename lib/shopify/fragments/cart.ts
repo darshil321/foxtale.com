@@ -3,6 +3,10 @@ import productFragment from './product';
 const cartFragment = /* GraphQL */ `
   fragment cart on Cart {
     id
+    attribute(key: "distinct_id") {
+      key
+      value
+    }
     checkoutUrl
     cost {
       subtotalAmount {

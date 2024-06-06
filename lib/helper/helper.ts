@@ -246,3 +246,17 @@ export function getSource(url: string) {
     return 'other';
   }
 }
+export function getCookieValue(key: string): string | null {
+  const cookies = document.cookie?.split(';');
+  if (!cookies) {
+    return null;
+  }
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    if (cookie.startsWith(key + '=')) {
+      const value = cookie.substring(key.length + 1);
+      return decodeURIComponent(value);
+    }
+  }
+  return null;
+}
