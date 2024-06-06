@@ -99,34 +99,83 @@ export default function CartModal() {
     }
     console.log(getSource(window.location.href));
 
-    trackEvent(title.mixpanel, {
-      'Added to Product Name': product.handle,
-      productTitle: product.title,
-      productUrl: window.location.href,
-      'Added to Product Type': product.productType,
-      'Added to Product Variant': getProductId(product.id),
-      'Added to Product Vendor': product.vendor,
-      'Added to Product Price': product?.priceRange?.maxVariantPrice?.amount,
-      productCurrency: product?.priceRange?.maxVariantPrice?.currencyCode,
+    const mixpanelOb = title.mixpanel.includes('Added')
+      ? {
+          'Added to Product Name': product.handle,
+          productTitle: product.title,
+          productUrl: window.location.href,
+          'Added to Product Type': product.productType,
+          'Added to Product Variant': getProductId(product.id),
+          'Added to Product Vendor': product.vendor,
+          'Added to Product Price': product?.priceRange?.maxVariantPrice?.amount,
+          productCurrency: product?.priceRange?.maxVariantPrice?.currencyCode,
 
-      from: from || '',
-      cart: {
-        totalQuantity: totalQuantity,
-        totalAmount: totalAmount,
-        lines: carts.lines.map((line: CartItem) => {
-          return {
-            merchandiseId: line?.merchandise.id,
-            name: line?.merchandise.title,
-            price: line?.merchandise.product?.priceRange?.maxVariantPrice?.amount,
-            quantity: line?.quantity
-          };
-        })
-      },
-      source: getSource(window.location.href),
-      'api-url-for-data': window.location.href,
-      'Added to Product Tags': product.tags.join(','),
-      'Added to Product SKU': ''
-    });
+          from: from || '',
+          cart: {
+            totalQuantity: totalQuantity,
+            totalAmount: totalAmount,
+            lines: carts.lines.map((line: CartItem) => {
+              return {
+                merchandiseId: line?.merchandise.id,
+                name: line?.merchandise.title,
+                price: line?.merchandise.product?.priceRange?.maxVariantPrice?.amount,
+                quantity: line?.quantity
+              };
+            })
+          },
+          source: getSource(window.location.href),
+          'api-url-for-data': window.location.href,
+          'Added to Product Tags': product.tags.join(','),
+          'Added to Product SKU': ''
+        }
+      : title.mixpanel.includes('Removed')
+        ? {
+            'Removed from Product Name': product.handle,
+            productTitle: product.title,
+            productUrl: window.location.href,
+            'Removed from Product Type': product.productType,
+            'Removed from Product Variant': getProductId(product.id),
+            'Removed from Product Vendor': product.vendor,
+            'Removed from Product Price': product?.priceRange?.maxVariantPrice?.amount,
+            productCurrency: product?.priceRange?.maxVariantPrice?.currencyCode,
+
+            from: from || '',
+            cart: {
+              totalQuantity: totalQuantity,
+              totalAmount: totalAmount,
+              lines: carts.lines.map((line: CartItem) => {
+                return {
+                  merchandiseId: line?.merchandise.id,
+                  name: line?.merchandise.title,
+                  price: line?.merchandise.product?.priceRange?.maxVariantPrice?.amount,
+                  quantity: line?.quantity
+                };
+              })
+            },
+            source: getSource(window.location.href),
+            'api-url-for-data': window.location.href,
+            'Removed from Product Tags': product.tags.join(','),
+            'Removed from Product SKU': ''
+          }
+        : title.mixpanel.includes('Viewed')
+          ? {
+              'Viewed Product Name': product.handle,
+              'Viewed Product Tags': product.tags.join(','),
+              'Viewed Product SKU': '',
+              'Viewed Product Type': product.productType,
+              'Viewed Product Variant': getProductId(product.id),
+              'Viewed Product Vendor': product.vendor,
+              'Viewed Product Price': product?.priceRange?.maxVariantPrice?.amount,
+              productTitle: product.title,
+              productUrl: window.location.href,
+              productCurrency: product?.priceRange?.maxVariantPrice?.currencyCode,
+              from: from,
+              source: getSource(window.location.href),
+              'api-url-for-data': window.location.href
+            }
+          : {};
+
+    trackEvent(title.mixpanel, mixpanelOb);
   };
 
   const handleCartButtonClicked = () => {
@@ -168,7 +217,6 @@ export default function CartModal() {
 
     dispatch(setCartOpen(true));
   };
-  console.log('cart in modal', RecommendedProducts);
 
   return (
     <>
@@ -256,7 +304,7 @@ export default function CartModal() {
                                     handleProductClick(
                                       item.merchandise?.product,
                                       {
-                                        mixpanel: 'Clicked Product',
+                                        mixpanel: 'Viewed Product',
                                         ga: 'view_item'
                                       },
                                       'from-mini-cart-drawer-product-image'
@@ -283,7 +331,7 @@ export default function CartModal() {
                                         handleProductClick(
                                           item.merchandise?.product,
                                           {
-                                            mixpanel: 'Clicked Product',
+                                            mixpanel: 'Viewed Product',
                                             ga: 'view_item'
                                           },
                                           'from-mini-cart-drawer-product-info'
