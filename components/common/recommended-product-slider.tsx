@@ -8,11 +8,14 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { cartActions } from '@/store/actions/cart.action';
 import { v4 as uuidv4 } from 'uuid';
 import {
+  getCartData,
+  getProductId,
   isGiftProductAvailableInCart,
   isThisGiftProductAvailableInCart
 } from '@/lib/helper/helper';
 import { trackEvent } from 'utils/mixpanel';
 import { getSource } from '@/lib/helper/helper';
+import { CartItem } from '@/lib/shopify/types';
 // import { fbEvent } from 'utils/facebook-pixel';
 // import { sendGAEvent } from '@next/third-parties/google';
 
@@ -27,20 +30,35 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
   const [emblaRef] = useEmblaCarousel(options);
   const dispatch = useAppDispatch();
   const cart = useAppSelector((state) => state.cart.cart);
+  const { totalAmount, totalQuantity } = getCartData(cart);
 
   const onClick = (item: any) => {
     trackEvent('Added to cart', {
-      productName: item.title,
+      'Added to Product Name': item.handle,
+      productTitle: item.title,
       productUrl: window.location.href,
-      productPrice: item?.priceRange?.maxVariantPrice?.amount,
+      'Added to Product Type': item.productType,
+      'Added to Product Variant': getProductId(item.id),
+      'Added to Product Vendor': item.vendor,
+      'Added to Product Price': item?.priceRange?.maxVariantPrice?.amount,
       productCurrency: item?.priceRange?.maxVariantPrice?.currencyCode,
-      category: '',
       from: 'from-mini-cart-drawer',
-      cart: cart,
+      cart: {
+        totalQuantity: totalQuantity,
+        totalAmount: totalAmount,
+        lines: cart?.lines?.map((line: CartItem) => {
+          return {
+            merchandiseId: line?.merchandise.id,
+            name: line?.merchandise.title,
+            price: line?.merchandise.product?.priceRange?.maxVariantPrice?.amount,
+            quantity: line?.quantity
+          };
+        })
+      },
       source: getSource(window.location.href),
       'api-url-for-data': window.location.href,
-      tags: item?.tags?.join(','),
-      varientSku: ''
+      'Added to Product Tags': item.tags.join(','),
+      'Added to Product SKU': ''
     });
 
     const productItem = item.product;

@@ -1,10 +1,10 @@
 'use client';
 import clsx from 'clsx';
-import { Product, ProductVariant } from 'lib/shopify/types';
+import { CartItem, ProductVariant } from 'lib/shopify/types';
 import { useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { cartActions } from 'store/actions/cart.action';
-import { getDefaultVariant } from '@/lib/helper/helper';
+import { getCartData, getDefaultVariant, getProductId } from '@/lib/helper/helper';
 import { setCartOpen } from '@/store/slices/cart-slice';
 import { toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,6 +15,7 @@ import { useDispatch } from 'react-redux';
 import { scrollToElementById } from '@/lib/utils';
 import { trackEvent } from 'utils/mixpanel';
 import { getSource } from '@/lib/helper/helper';
+import { Product } from '@shopify/hydrogen-react/storefront-api-types';
 const ToastContent: React.FC = () => {
   const dispatch = useDispatch();
   const cart = useAppSelector((state) => state.cart.cart);
@@ -76,6 +77,7 @@ function SubmitButton({
       closeButton: false,
       transition: Slide
     });
+  const { totalAmount, totalQuantity } = getCartData(cart);
 
   return (
     <>
@@ -132,20 +134,35 @@ function SubmitButton({
           }
 
           trackEvent('Added to cart', {
-            productName: product.title,
+            'Added to Product Name': product.handle,
+            productTitle: product.title,
             productUrl: window.location.href,
-            productPrice: product?.priceRange?.maxVariantPrice?.amount,
+            'Added to Product Type': product.productType,
+            'Added to Product Variant': getProductId(product.id),
+            'Added to Product Vendor': product.vendor,
+            'Added to Product Price': product?.priceRange?.maxVariantPrice?.amount,
             productCurrency: product?.priceRange?.maxVariantPrice?.currencyCode,
-            category: '',
+
             from:
               getSource(window.location.href) === 'product'
                 ? 'from-pdp'
                 : 'from-feature-collection',
-            cart: cart,
+            cart: {
+              totalQuantity: totalQuantity,
+              totalAmount: totalAmount,
+              lines: cart.lines.map((line: CartItem) => {
+                return {
+                  merchandiseId: line?.merchandise.id,
+                  name: line?.merchandise.title,
+                  price: line?.merchandise.product?.priceRange?.maxVariantPrice?.amount,
+                  quantity: line?.quantity
+                };
+              })
+            },
             source: getSource(window.location.href),
             'api-url-for-data': window.location.href,
-            tags: product.tags.join(','),
-            varientSku: ''
+            'Added to Product Tags': product.tags.join(','),
+            'Added to Product SKU': ''
           });
         }}
         aria-label="Add to cart"

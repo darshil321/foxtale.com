@@ -12,7 +12,7 @@ import OpenCart from './open-cart';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import '../../assets/styles/embla-products-carousel.css';
-import { getCartData, getUpdatedMerchandiseId, getSource } from '@/lib/helper/helper';
+import { getCartData, getUpdatedMerchandiseId, getSource, getProductId } from '@/lib/helper/helper';
 import { CartItem } from '@/lib/shopify/types';
 // import { sendGAEvent } from '@next/third-parties/google';
 import { setCartOpen } from '@/store/slices/cart-slice';
@@ -22,6 +22,7 @@ import { EmblaOptionsType } from 'embla-carousel';
 import { cartActions } from '@/store/actions/cart.action';
 import EmblaProductSlider from '../common/recommended-product-slider';
 import { trackEvent } from 'utils/mixpanel';
+import { Product } from '@shopify/hydrogen-react/storefront-api-types';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -61,7 +62,7 @@ export default function CartModal() {
   const OPTIONS: EmblaOptionsType = { dragFree: false };
 
   const handleProductClick = (
-    product: any,
+    product: Product,
     title: { mixpanel: string; ga: string },
     from: string
   ) => {
@@ -98,31 +99,83 @@ export default function CartModal() {
     }
     console.log(getSource(window.location.href));
 
-    trackEvent(title.mixpanel, {
-      productName: product.handle,
-      productTitle: product.title,
-      productUrl: window.location.href,
-      productPrice: product?.priceRange?.maxVariantPrice?.amount,
-      productCurrency: product?.priceRange?.maxVariantPrice?.currencyCode,
-      category: '',
-      from: from || '',
-      cart: {
-        totalQuantity: totalQuantity,
-        totalAmount: totalAmount,
-        lines: carts.lines.map((line: CartItem) => {
-          return {
-            merchandiseId: line?.merchandise.id,
-            name: line?.merchandise.title,
-            price: line?.merchandise.product?.priceRange?.maxVariantPrice?.amount,
-            quantity: line?.quantity
-          };
-        })
-      },
-      source: getSource(window.location.href),
-      'api-url-for-data': window.location.href,
-      tags: product.tags.join(','),
-      variantSku: ''
-    });
+    const mixpanelOb = title.mixpanel.includes('Added')
+      ? {
+          'Added to Product Name': product.handle,
+          productTitle: product.title,
+          productUrl: window.location.href,
+          'Added to Product Type': product.productType,
+          'Added to Product Variant': getProductId(product.id),
+          'Added to Product Vendor': product.vendor,
+          'Added to Product Price': product?.priceRange?.maxVariantPrice?.amount,
+          productCurrency: product?.priceRange?.maxVariantPrice?.currencyCode,
+
+          from: from || '',
+          cart: {
+            totalQuantity: totalQuantity,
+            totalAmount: totalAmount,
+            lines: carts.lines.map((line: CartItem) => {
+              return {
+                merchandiseId: line?.merchandise.id,
+                name: line?.merchandise.title,
+                price: line?.merchandise.product?.priceRange?.maxVariantPrice?.amount,
+                quantity: line?.quantity
+              };
+            })
+          },
+          source: getSource(window.location.href),
+          'api-url-for-data': window.location.href,
+          'Added to Product Tags': product.tags.join(','),
+          'Added to Product SKU': ''
+        }
+      : title.mixpanel.includes('Removed')
+        ? {
+            'Removed from Product Name': product.handle,
+            productTitle: product.title,
+            productUrl: window.location.href,
+            'Removed from Product Type': product.productType,
+            'Removed from Product Variant': getProductId(product.id),
+            'Removed from Product Vendor': product.vendor,
+            'Removed from Product Price': product?.priceRange?.maxVariantPrice?.amount,
+            productCurrency: product?.priceRange?.maxVariantPrice?.currencyCode,
+
+            from: from || '',
+            cart: {
+              totalQuantity: totalQuantity,
+              totalAmount: totalAmount,
+              lines: carts.lines.map((line: CartItem) => {
+                return {
+                  merchandiseId: line?.merchandise.id,
+                  name: line?.merchandise.title,
+                  price: line?.merchandise.product?.priceRange?.maxVariantPrice?.amount,
+                  quantity: line?.quantity
+                };
+              })
+            },
+            source: getSource(window.location.href),
+            'api-url-for-data': window.location.href,
+            'Removed from Product Tags': product.tags.join(','),
+            'Removed from Product SKU': ''
+          }
+        : title.mixpanel.includes('Viewed')
+          ? {
+              'Viewed Product Name': product.handle,
+              'Viewed Product Tags': product.tags.join(','),
+              'Viewed Product SKU': '',
+              'Viewed Product Type': product.productType,
+              'Viewed Product Variant': getProductId(product.id),
+              'Viewed Product Vendor': product.vendor,
+              'Viewed Product Price': product?.priceRange?.maxVariantPrice?.amount,
+              productTitle: product.title,
+              productUrl: window.location.href,
+              productCurrency: product?.priceRange?.maxVariantPrice?.currencyCode,
+              from: from,
+              source: getSource(window.location.href),
+              'api-url-for-data': window.location.href
+            }
+          : {};
+
+    trackEvent(title.mixpanel, mixpanelOb);
   };
 
   const handleCartButtonClicked = () => {
@@ -164,7 +217,6 @@ export default function CartModal() {
 
     dispatch(setCartOpen(true));
   };
-  console.log('cart in modal', RecommendedProducts);
 
   return (
     <>
@@ -252,7 +304,7 @@ export default function CartModal() {
                                     handleProductClick(
                                       item.merchandise?.product,
                                       {
-                                        mixpanel: 'Clicked Product',
+                                        mixpanel: 'Viewed Product',
                                         ga: 'view_item'
                                       },
                                       'from-mini-cart-drawer-product-image'
@@ -279,7 +331,7 @@ export default function CartModal() {
                                         handleProductClick(
                                           item.merchandise?.product,
                                           {
-                                            mixpanel: 'Clicked Product',
+                                            mixpanel: 'Viewed Product',
                                             ga: 'view_item'
                                           },
                                           'from-mini-cart-drawer-product-info'
