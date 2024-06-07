@@ -10,7 +10,7 @@ const HeroBannerSlider = () => {
   };
 
   return (
-    <div className=" h-auto max-h-[460px]  w-full   rounded-md lg:max-h-[800px]  xl:max-h-[1200px]">
+    <div className=" h-auto max-h-[460px] w-full rounded-md lg:max-h-[800px] xl:max-h-[1200px]">
       <Image
         // blurDataURL={banner_1}
         onClick={(e: React.MouseEvent<HTMLImageElement>) => {

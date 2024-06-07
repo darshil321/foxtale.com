@@ -70,22 +70,28 @@ export function GridTileImage({
 
   return (
     <div
-      className={clsx('flex w-full items-center justify-center overflow-hidden  border bg-white', {
-        relative: label,
-        'border-2 border-blue-600': active,
-        'border-neutral-200': !active,
-        'rounded-lg': !isCollection,
-        ' rounded-b-lg': isCollection
-      })}
+      className={clsx(
+        'flex h-full w-full items-center justify-between overflow-hidden border bg-white',
+        {
+          relative: label,
+          'border-2 border-blue-600': active,
+          'border-neutral-200': !active,
+          'rounded-lg': !isCollection,
+          ' rounded-b-lg': isCollection
+        }
+      )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {primaryImage ? (
-        <div className="flex h-full min-h-[320px] w-full flex-col justify-between md:min-h-[456px]">
+        <div className="flex h-full min-h-[350px] w-full flex-col justify-between md:min-h-[456px]">
           <div className="flex h-full w-full flex-col">
-            <div className="relative h-full">
-              <div className="h-full w-full overflow-hidden object-cover">
-                <Link href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}>
+            <div className=" h-fit">
+              <div className=" h-fit w-full overflow-hidden object-cover">
+                <Link
+                  href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}
+                  className="relative"
+                >
                   <Image
                     onClick={() => {
                       trackEvent('Viewed Product', {
@@ -106,7 +112,7 @@ export function GridTileImage({
                       });
                     }}
                     className={clsx(
-                      'relative aspect-square h-full min-h-[200px] w-full object-cover transition-opacity duration-500 ease-in-out  md:min-h-[300px]',
+                      'relative aspect-square h-full max-h-[200px] min-h-[200px] w-full object-cover transition-opacity duration-500 ease-in-out md:max-h-max  md:min-h-[300px]',
                       {
                         'transition duration-1000 ease-in-out group-hover:scale-125': isInteractive
                       }
@@ -134,33 +140,33 @@ export function GridTileImage({
                       {productTopBar.value}
                     </div>
                   )}
+                  {ratings && ratings?.average !== 0 && (
+                    <div className="absolute bottom-2 left-2 flex w-max flex-row justify-between gap-1 rounded-sm bg-white px-[5px] py-[1px] text-black">
+                      <div data-rating="4.8">
+                        <div className=" text-[11px]" style={{ width: '11px' }}>
+                          ★
+                        </div>
+                        <div />
+                      </div>
+
+                      <span
+                        data-value={product?.ratings?.average}
+                        style={{
+                          transformOrigin: '0px 0px',
+                          opacity: 1,
+                          transform: 'scale(1, 1)'
+                        }}
+                        className="text-xs font-medium"
+                      >
+                        {ratings.average}
+                      </span>
+                      <span style={{ display: 'none' }}>52</span>
+                    </div>
+                  )}
 
                   <ProductTag show={isCollection ? false : true} product={product} />
                 </Link>
               </div>
-              {ratings && ratings?.average !== 0 && (
-                <div className="absolute bottom-2 left-2 flex w-max flex-row justify-between gap-1 rounded-sm bg-white px-[5px] py-[1px] text-black">
-                  <div data-rating="4.8">
-                    <div className=" text-[11px]" style={{ width: '11px' }}>
-                      ★
-                    </div>
-                    <div />
-                  </div>
-
-                  <span
-                    data-value={product?.ratings?.average}
-                    style={{
-                      transformOrigin: '0px 0px',
-                      opacity: 1,
-                      transform: 'scale(1, 1)'
-                    }}
-                    className="text-xs font-medium"
-                  >
-                    {ratings.average}
-                  </span>
-                  <span style={{ display: 'none' }}>52</span>
-                </div>
-              )}
             </div>
             <div className="flex h-full flex-1 flex-grow flex-col justify-between space-y-[4px] px-3 py-[9px]">
               <div>
