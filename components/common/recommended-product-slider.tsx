@@ -170,11 +170,11 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
                     <div
                       className={`${type === 'product' ? 'flex flex-col items-start gap-1 py-2' : 'flex items-center'}`}
                     >
-                      <span className="text-sm leading-tight">
+                      <span className="text-[11px] leading-tight md:text-xs">
                         {product?.title?.substring(0, 15)}
                         {product?.title?.length > 15 && '...'}
                       </span>
-                      <p className="text-xs text-[#6d6e71]">
+                      <p className="text-[9px] text-[#6d6e71] md:text-xs">
                         {productDescription?.value.substring(0, 15)}
                       </p>
 
@@ -188,7 +188,7 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
                     <button
                       disabled={alreadyAdded && type === 'gift'}
                       onClick={() => onClick({ product, variantId })}
-                      className={`bg-black px-4 py-1 text-white ${alreadyAdded && type === 'gift' ? 'cursor-not-allowed bg-gray-500' : ''}`}
+                      className={`bg-black px-4 py-1 text-sm text-white ${alreadyAdded && type === 'gift' ? 'cursor-not-allowed bg-gray-500' : ''}`}
                     >
                       {buttonText}
                     </button>

@@ -246,14 +246,14 @@ export default function CartModal() {
             leaveTo="translate-x-full"
           >
             <Dialog.Panel className="fixed bottom-0 right-0 top-0 flex h-full w-full flex-col border-l border-neutral-200 bg-white  text-black  md:w-[390px]">
-              <div className="flex items-center justify-between border-b p-2 ">
-                <p className="w-full text-lg">Your Cart</p>
+              <div className="flex items-center justify-between border-b p-[12px]">
+                <p className="w-full text-base text-[#2c2c2c]">Your Cart</p>
 
                 <button aria-label="Close carts" onClick={() => dispatch(setCartOpen(false))}>
                   <CloseCart />
                 </button>
               </div>
-              <p className="bg-grey px-2 py-2 text-xs">Free Shipping + Free Sachet</p>
+              <p className="bg-grey px-2 py-[6px] text-[10px]">Free Shipping + Free Sachet</p>
 
               {!carts || carts?.lines?.length === 0 ? (
                 <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
@@ -262,7 +262,7 @@ export default function CartModal() {
                 </div>
               ) : (
                 <div className="bg-gray flex h-full flex-col justify-between overflow-hidden">
-                  <ul className="flex-grow overflow-auto bg-grey p-2 py-1 ">
+                  <ul className="flex-grow overflow-auto bg-grey px-2 py-0 ">
                     {carts?.lines?.map((item: any, i: number) => {
                       const merchandiseSearchParams = {} as MerchandiseSearchParams;
                       item.merchandise.selectedOptions.forEach(
@@ -297,7 +297,7 @@ export default function CartModal() {
                                 onClick={() => {
                                   dispatch(setCartOpen(false));
                                 }}
-                                className=" flex flex-row space-x-4"
+                                className=" flex flex-row space-x-2"
                               >
                                 <div
                                   onClick={() =>
@@ -310,12 +310,12 @@ export default function CartModal() {
                                       'from-mini-cart-drawer-product-image'
                                     )
                                   }
-                                  className="relative h-16 w-16 cursor-pointer overflow-hidden rounded-md  border border-neutral-300 bg-neutral-300 "
+                                  className="relative h-[60px] w-[60px] cursor-pointer overflow-hidden rounded-md  border border-neutral-300 bg-neutral-300 "
                                 >
                                   <Image
                                     className="h-full w-full object-cover"
-                                    width={64}
-                                    height={64}
+                                    width={60}
+                                    height={60}
                                     alt={
                                       item.merchandise.product.featuredImage.altText ||
                                       item.merchandise.product.title
@@ -325,7 +325,7 @@ export default function CartModal() {
                                 </div>
 
                                 <div>
-                                  <div className="flex flex-1 flex-col gap-0.5 py-2">
+                                  <div className="flex flex-1 flex-col gap-1 py-2">
                                     <span
                                       onClick={() =>
                                         handleProductClick(
@@ -337,7 +337,7 @@ export default function CartModal() {
                                           'from-mini-cart-drawer-product-info'
                                         )
                                       }
-                                      className="text-xs leading-tight"
+                                      className="leading-wide text-xs text-[#2c2c2c]"
                                     >
                                       {item.merchandise.product.title}
                                     </span>
@@ -346,11 +346,11 @@ export default function CartModal() {
                                         free
                                       </div>
                                     )}
-                                    {item.merchandise.title !== DEFAULT_OPTION ? (
+                                    {/* {item.merchandise.title !== DEFAULT_OPTION ? (
                                       <p className="text-xs text-neutral-500 ">
                                         {item.merchandise.title}
                                       </p>
-                                    ) : null}
+                                    ) : null} */}
                                     {/* <div className="t4s-product-price text-base font-medium">
                                       <span className="font-poppins text-xs">
                                         {' '}
@@ -362,10 +362,14 @@ export default function CartModal() {
                                     {Number(item?.cost?.amountPerQuantity?.amount) != 0 && (
                                       <Price
                                         className="flex justify-end space-y-2 text-right text-sm"
-                                        amount={(
-                                          item?.quantity *
-                                          Number(item?.cost?.amountPerQuantity?.amount)
+                                        amount={Number(
+                                          item?.cost?.amountPerQuantity?.amount
                                         ).toString()}
+                                        comparePrice={
+                                          item?.merchandise.product.variants.edges[0]
+                                            .compareAtPrice &&
+                                          item?.merchandise.product.variants.edges[0].compareAtPrice
+                                        }
                                         currencyCode={item?.cost?.totalAmount?.currencyCode}
                                       />
                                     )}
@@ -437,8 +441,8 @@ export default function CartModal() {
                     {RecommendedProducts &&
                       RecommendedProducts.length > 0 &&
                       carts?.lines?.length > 0 && (
-                        <div className="mt-4 max-h-60 w-full rounded-md border border-white bg-white p-2 shadow-sm">
-                          <div className="mb-3 text-lg font-medium ">
+                        <div className="mt-[5px]  max-h-60 w-full rounded-md border border-white bg-white p-[5px] shadow-sm">
+                          <div className="mb-1 text-sm font-medium ">
                             Complete Your Routine With
                           </div>
                           <EmblaProductSlider
@@ -489,7 +493,7 @@ export default function CartModal() {
                           Subtotal:
                         </p>
                         <Price
-                          className="text-right text-base text-black "
+                          className="text-right text-base text-black md:text-lg "
                           amount={totalAmount?.toString() || '0'}
                           currencyCode={currencyCode}
                         />
