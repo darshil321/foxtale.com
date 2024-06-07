@@ -10,7 +10,10 @@ function Grid(props: React.ComponentProps<'ul'>) {
 
 function GridItem(props: React.ComponentProps<'li'>) {
   return (
-    <li {...props} className={clsx(' max-w-fit transition-opacity', props.className)}>
+    <li
+      {...props}
+      className={clsx(' max-w-max flex-1 flex-grow transition-opacity', props.className)}
+    >
       {props.children}
     </li>
   );

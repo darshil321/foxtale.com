@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function CloseCart({ className }: { className?: string }) {
   return (
-    <div className="relative flex h-11 w-11 items-center justify-center rounded-md border border-neutral-200 text-black transition-colors ">
+    <div className="relative flex h-full w-11 items-center justify-center text-black ">
       <Image
         src={'/Images/close.svg'}
         alt={'close'}

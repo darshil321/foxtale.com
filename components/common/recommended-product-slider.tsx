@@ -57,7 +57,7 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
       },
       source: getSource(window.location.href),
       'api-url-for-data': window.location.href,
-      'Added to Product Tags': item.tags.join(','),
+      'Added to Product Tags': item?.tags?.join(','),
       'Added to Product SKU': ''
     });
 
@@ -125,7 +125,7 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
     //   num_items: 1
     // });
 
-    const isInCart = cart?.lines.some((cartItem: any) => cartItem.merchandise.id === item.id);
+    const isInCart = cart?.lines?.some((cartItem: any) => cartItem.merchandise.id === item.id);
     console.log(isInCart);
 
     if (!isInCart) {
@@ -170,16 +170,16 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
                     <div
                       className={`${type === 'product' ? 'flex flex-col items-start gap-1 py-2' : 'flex items-center'}`}
                     >
-                      <span className="text-sm leading-tight">
+                      <span className="text-[11px] leading-tight md:text-xs">
                         {product?.title?.substring(0, 15)}
                         {product?.title?.length > 15 && '...'}
                       </span>
-                      <p className="text-xs text-[#6d6e71]">
+                      <p className="text-[9px] text-[#6d6e71] md:text-xs">
                         {productDescription?.value.substring(0, 15)}
                       </p>
 
                       {type === 'product' && (
-                        <p className="text-sm">₹{product?.variants[0]?.price?.amount}</p>
+                        <p className="text-sm">₹{parseInt(product?.variants[0]?.price?.amount)}</p>
                       )}
                     </div>
                   </div>
@@ -188,7 +188,7 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
                     <button
                       disabled={alreadyAdded && type === 'gift'}
                       onClick={() => onClick({ product, variantId })}
-                      className={`bg-black px-4 py-1 text-white ${alreadyAdded && type === 'gift' ? 'cursor-not-allowed bg-gray-500' : ''}`}
+                      className={`bg-black px-4 py-1 text-sm text-white ${alreadyAdded && type === 'gift' ? 'cursor-not-allowed bg-gray-500' : ''}`}
                     >
                       {buttonText}
                     </button>

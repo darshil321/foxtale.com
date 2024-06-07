@@ -66,7 +66,7 @@ export default function ProductDisclosure({ product }: { product: Product }) {
                             className="h-24 w-24 object-cover"
                           />
                           <div className="flex w-full items-center justify-between px-6">
-                            <span className="h-full text-start text-sm font-semibold md:text-lg">
+                            <span className="h-full text-start text-[15px] font-semibold md:text-lg">
                               {item.title}
                             </span>
                             <ChevronUpIcon

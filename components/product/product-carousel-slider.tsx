@@ -1,7 +1,7 @@
 'use client';
-import React, { useCallback } from 'react';
+import React from 'react';
 // @ts-ignore
-import { EmblaOptionsType, EmblaCarouselType } from 'embla-carousel';
+import { EmblaOptionsType } from 'embla-carousel';
 import { PrevButton, NextButton, usePrevNextButtons } from './embla-carousel-arrow-buttons';
 import Autoplay from 'embla-carousel-autoplay';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -20,18 +20,8 @@ const EmblaCarouselSlider: React.FC<PropType> = (props) => {
   const { slides, options } = props;
   const [emblaRef, emblaApi] = useEmblaCarousel(options, [Autoplay()]);
 
-  const onNavButtonClick = useCallback((emblaApi: EmblaCarouselType) => {
-    const autoplay = emblaApi?.plugins()?.autoplay;
-    if (!autoplay) return;
-
-    const resetOrStop =
-      autoplay.options.stopOnInteraction === false ? autoplay.reset : autoplay.stop;
-
-    resetOrStop();
-  }, []);
-
   const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } =
-    usePrevNextButtons(emblaApi, onNavButtonClick);
+    usePrevNextButtons(emblaApi);
 
   return (
     <section className="embla_product relative pl-4 md:px-0">
