@@ -70,7 +70,7 @@ const CollectionProductsContainer = ({
     <section
       ref={sectionRef}
       id={collections[index]?.section.toLowerCase()}
-      className="rounded-md bg-white px-1.5 py-1 md:order-none md:px-4 md:py-6"
+      className="rounded-md bg-white px-1.5 py-1.5 md:order-none md:px-4 md:py-6"
       key={index}
     >
       <div className="space-y-1 px-1 pb-2 sm:px-3 md:px-5 md:pb-4">

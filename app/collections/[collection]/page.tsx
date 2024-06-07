@@ -90,7 +90,7 @@ export default async function CategoryPage({}: { params?: string; searchParams?:
   return (
     <>
       <InitialReviews products={productsByCollection} />
-      <div className="h-full w-full gap-4 space-y-2 md:space-y-6 ">
+      <div className="h-full w-full gap-4 space-y-3 md:space-y-6 ">
         <InitLoad isCollectionPage={true} />
         {productsByCollection?.map((product: any, index: number) => (
           <CollectionProductsContainer
