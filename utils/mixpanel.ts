@@ -11,7 +11,7 @@ mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_TOKEN!, {
 
 export const trackEvent = (name: string, props?: Record<string, unknown>): void => {
   if (typeof window !== 'undefined') {
-    mixpanel.track(name, props);
+    mixpanel.track(name, { ...props, source_domain: 'lp.foxtale.in' });
   }
 };
 
