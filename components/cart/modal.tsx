@@ -125,7 +125,7 @@ export default function CartModal() {
           },
           source: getSource(window.location.href),
           'api-url-for-data': window.location.href,
-          'Added to Product Tags': product.tags.join(','),
+          'Added to Product Tags': product?.tags?.join(','),
           'Added to Product SKU': ''
         }
       : title.mixpanel.includes('Removed')
@@ -154,13 +154,13 @@ export default function CartModal() {
             },
             source: getSource(window.location.href),
             'api-url-for-data': window.location.href,
-            'Removed from Product Tags': product.tags.join(','),
+            'Removed from Product Tags': product?.tags?.join(','),
             'Removed from Product SKU': ''
           }
         : title.mixpanel.includes('Viewed')
           ? {
               'Viewed Product Name': product.handle,
-              'Viewed Product Tags': product.tags.join(','),
+              'Viewed Product Tags': product?.tags?.join(','),
               'Viewed Product SKU': '',
               'Viewed Product Type': product.productType,
               'Viewed Product Variant': getProductId(product.id),

@@ -90,7 +90,7 @@ export function GridTileImage({
                     onClick={() => {
                       trackEvent('Viewed Product', {
                         'Viewed Product Name': product.handle,
-                        'Viewed Product Tags': product.tags.join(','),
+                        'Viewed Product Tags': product?.tags?.join(','),
                         'Viewed Product SKU': '',
                         'Viewed Product Type': product.productType,
                         'Viewed Product Variant': getProductId(product.id),
@@ -170,7 +170,7 @@ export function GridTileImage({
                   onClick={() => {
                     trackEvent('Viewed Product', {
                       'Viewed Product Name': product.handle,
-                      'Viewed Product Tags': product.tags.join(','),
+                      'Viewed Product Tags': product?.tags?.join(','),
                       'Viewed Product SKU': '',
                       'Viewed Product Type': product.productType,
                       'Viewed Product Variant': getProductId(product.id),
@@ -187,7 +187,7 @@ export function GridTileImage({
                   }}
                   href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}
                 >
-                  <p className="leading-2 line-clamp-1 cursor-pointer text-[12px] font-medium transition-all hover:text-purple-400 md:text-base md:leading-6">
+                  <p className="leading-2 line-clamp-1 cursor-pointer text-[14px] font-medium transition-all hover:text-purple-400 md:text-base md:leading-6">
                     {label?.title}
                   </p>
                 </Link>
