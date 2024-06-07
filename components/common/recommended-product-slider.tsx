@@ -57,7 +57,7 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
       },
       source: getSource(window.location.href),
       'api-url-for-data': window.location.href,
-      'Added to Product Tags': item.tags.join(','),
+      'Added to Product Tags': item?.tags?.join(','),
       'Added to Product SKU': ''
     });
 
@@ -125,7 +125,7 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
     //   num_items: 1
     // });
 
-    const isInCart = cart?.lines.some((cartItem: any) => cartItem.merchandise.id === item.id);
+    const isInCart = cart?.lines?.some((cartItem: any) => cartItem.merchandise.id === item.id);
     console.log(isInCart);
 
     if (!isInCart) {
@@ -179,7 +179,7 @@ const EmblaProductSlider: React.FC<PropType> = (props) => {
                       </p>
 
                       {type === 'product' && (
-                        <p className="text-sm">₹{product?.variants[0]?.price?.amount}</p>
+                        <p className="text-sm">₹{parseInt(product?.variants[0]?.price?.amount)}</p>
                       )}
                     </div>
                   </div>

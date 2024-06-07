@@ -161,7 +161,7 @@ function SubmitButton({
             },
             source: getSource(window.location.href),
             'api-url-for-data': window.location.href,
-            'Added to Product Tags': product.tags.join(','),
+            'Added to Product Tags': product?.tags?.join(','),
             'Added to Product SKU': ''
           });
         }}
