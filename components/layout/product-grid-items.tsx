@@ -12,8 +12,8 @@ export default function ProductGridItems({
   return (
     <>
       {products?.map((product, index) => (
-        <Grid.Item key={product.handle} className="animate-fadeIn">
-          <div className="relative inline-block h-full w-full max-w-[200px] md:max-w-[270px] ">
+        <Grid.Item key={product.handle} className=" h-full flex-grow">
+          <div className="relative inline-block h-full w-full max-w-[200px] flex-grow md:max-w-[270px] ">
             <GridTileImage
               collectionIndex={collectionIndex}
               product={product}

@@ -9,19 +9,15 @@ import Pagination from './pagination';
 // Function to calculate the number of months between two dates
 function timeAgo(date: Date): string {
   const now = new Date();
-
   const stripTime = (date: Date): Date => {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   };
-
   const today = stripTime(now);
   const yesterday = new Date(today);
   yesterday.setDate(today.getDate() - 1);
   const dayBeforeYesterday = new Date(today);
   dayBeforeYesterday.setDate(today.getDate() - 2);
-
   const strippedDate = stripTime(date);
-
   if (strippedDate.getTime() === today.getTime()) {
     return 'today';
   } else if (strippedDate.getTime() === yesterday.getTime()) {
@@ -31,21 +27,20 @@ function timeAgo(date: Date): string {
   } else {
     const diffInMilliseconds = today.getTime() - strippedDate.getTime();
     const diffInDays = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
-
     if (diffInDays <= 6) {
-      return `${diffInDays} days ago`;
+      return `${diffInDays} day${diffInDays === 1 ? '' : 's'} ago`;
     } else if (diffInDays <= 28) {
       const diffInWeeks = Math.floor(diffInDays / 7);
-      return `${diffInWeeks} weeks ago`;
+      return `${diffInWeeks} week${diffInWeeks === 1 ? '' : 's'} ago`;
     } else if (diffInDays <= 31) {
       return '1 month ago';
     } else {
       const diffInMonths = Math.floor(diffInDays / 30);
       if (diffInMonths <= 12) {
-        return `${diffInMonths} months ago`;
+        return `${diffInMonths} month${diffInMonths === 1 ? '' : 's'} ago`;
       } else {
         const diffInYears = Math.floor(diffInMonths / 12);
-        return `${diffInYears} years ago`;
+        return `${diffInYears} year${diffInYears === 1 ? '' : 's'} ago`;
       }
     }
   }
@@ -118,13 +113,15 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
           </button>
         </div>
         <div className="mb-6 flex items-center">
-          <span className="text-6xl font-normal">{product.ratings.average}</span>
+          <span className=" text-[40px] font-normal md:text-6xl">{product.ratings.average}</span>
           <div className="flex flex-col">
             <div className="ml-2 text-black">
               {Array(5)
                 .fill(0)
                 .map((_, i) => (
-                  <span key={i}>{i < product.ratings.average ? '★' : '☆'}</span>
+                  <span className="text-2xl" key={i}>
+                    {i < product.ratings.average ? '★' : '☆'}
+                  </span>
                 ))}
             </div>
             <span className="ml-2 text-xs text-gray-600">{totalReviews} REVIEWS</span>
@@ -165,7 +162,7 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
                           <span key={i}>{i < review.rating ? '★' : '☆'}</span>
                         ))}
                     </div>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm uppercase text-gray-500">
                       {timeAgo(new Date(review.created_at))}
                     </span>
                   </div>

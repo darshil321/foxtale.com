@@ -16,6 +16,7 @@ import { scrollToElementById } from '@/lib/utils';
 import { trackEvent } from 'utils/mixpanel';
 import { getSource } from '@/lib/helper/helper';
 import { Product } from '@shopify/hydrogen-react/storefront-api-types';
+import Image from 'next/image';
 const ToastContent: React.FC = () => {
   const dispatch = useDispatch();
   const cart = useAppSelector((state) => state.cart.cart);
@@ -23,7 +24,7 @@ const ToastContent: React.FC = () => {
   return (
     <div className="flex justify-between">
       <div className="flex">
-        <img height={20} width={20} src="/Images/tick.svg" alt="" />
+        <Image height={20} width={20} src="/Images/tick.svg" alt="" />
         <span className="ml-2 text-black">Product Added To Cart!</span>
       </div>
       <div
@@ -150,7 +151,7 @@ function SubmitButton({
             cart: {
               totalQuantity: totalQuantity,
               totalAmount: totalAmount,
-              lines: cart.lines.map((line: CartItem) => {
+              lines: cart?.lines?.map((line: CartItem) => {
                 return {
                   merchandiseId: line?.merchandise.id,
                   name: line?.merchandise.title,

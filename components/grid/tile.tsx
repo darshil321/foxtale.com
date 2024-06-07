@@ -81,9 +81,9 @@ export function GridTileImage({
       onMouseLeave={() => setIsHovered(false)}
     >
       {primaryImage ? (
-        <div className="flex h-full min-h-[320px] w-full flex-col justify-between md:max-h-[100%] md:min-h-[456px]">
+        <div className="flex h-full min-h-[320px] w-full flex-col justify-between md:min-h-[456px]">
           <div className="flex h-full w-full flex-col">
-            <div className="relative">
+            <div className="relative h-full">
               <div className="h-full w-full overflow-hidden object-cover">
                 <Link href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}>
                   <Image
@@ -141,10 +141,7 @@ export function GridTileImage({
               {ratings && ratings?.average !== 0 && (
                 <div className="absolute bottom-2 left-2 flex w-max flex-row justify-between gap-1 rounded-sm bg-white px-[5px] py-[1px] text-black">
                   <div data-rating="4.8">
-                    <div
-                      className="fera-stars-rating fera-productReviewsSummary-stars-rating"
-                      style={{ width: '96.0%' }}
-                    >
+                    <div className=" text-[11px]" style={{ width: '11px' }}>
                       ★
                     </div>
                     <div />
@@ -157,6 +154,7 @@ export function GridTileImage({
                       opacity: 1,
                       transform: 'scale(1, 1)'
                     }}
+                    className="text-xs font-medium"
                   >
                     {ratings.average}
                   </span>
@@ -164,7 +162,7 @@ export function GridTileImage({
                 </div>
               )}
             </div>
-            <div className="space-y-[4px] px-3 py-[9px]">
+            <div className="flex h-full flex-1 flex-grow flex-col justify-between space-y-[4px] px-3 py-[9px]">
               <div>
                 <Link
                   onClick={() => {
@@ -187,7 +185,7 @@ export function GridTileImage({
                   }}
                   href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}
                 >
-                  <p className="leading-2 line-clamp-1 cursor-pointer text-[14px] font-medium transition-all hover:text-purple-400 md:text-base md:leading-6">
+                  <p className="leading-2 line-clamp-2 cursor-pointer text-[14px] font-medium transition-all hover:text-purple-400 md:text-base md:leading-6">
                     {label?.title}
                   </p>
                 </Link>

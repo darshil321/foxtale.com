@@ -35,7 +35,7 @@ export default function Accordion({ product }: { product: Product }) {
   const FaqItems = extractQuestionsAndAnswersFromHTML(filteredDataByKey?.value);
 
   return (
-    <div className="w-full px-4 py-8 md:py-16">
+    <div className="w-full px-4 py-4 md:py-16">
       <div className="mx-auto w-full rounded-2xl bg-white">
         <Disclosure>
           {({ open }) => (
