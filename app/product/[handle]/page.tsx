@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
-import { appendReviewAndRatingInProduct, getCollectionProducts, getProduct } from 'lib/shopify';
+import { getCollectionProducts, getProduct } from 'lib/shopify';
 import ProductSlider from '@/components/product/product-slider';
 import ProductDisclosure from '@/components/product/product-disclosure';
 import ProductsRatings from '@/components/product/products-rating';
@@ -17,6 +17,7 @@ import ReviewForm from '@/components/review-component/review-form';
 import UserForm from '@/components/review-component/user-form';
 import SuccessModal from '@/components/review-component/success-modal';
 import InitLoad from '@/components/common/init-load';
+import InitialReviews from '@/components/initial-reviews';
 
 export const generateStaticParams = async () => {
   const collections = [
@@ -85,9 +86,8 @@ export default async function ProductPage({
   params: { handle: string };
   searchParams: any;
 }) {
-  const productWithoutRating = await getProduct(params.handle);
-  const product = await appendReviewAndRatingInProduct(productWithoutRating);
-
+  const product = await getProduct(params.handle);
+  // const product = await appendReviewAndRatingInProduct(productWithoutRating);
   if (!product) return notFound();
 
   const productJsonLd = {
@@ -109,10 +109,7 @@ export default async function ProductPage({
   const filteredDataByKey = product?.metafields?.find(
     (item: any) => item?.key === 'product-sub-title'
   );
-  const GroupProductData = product?.metafields?.find(
-    (item: any) => item?.key === 'group_product_items'
-  );
-  console.log('GroupProductData', GroupProductData);
+
   const decodedHtml = filteredDataByKey?.value || '';
 
   return (
@@ -123,6 +120,7 @@ export default async function ProductPage({
           __html: JSON.stringify(productJsonLd)
         }}
       />
+      <InitialReviews product={product} />
       <div className="max-w-screen-3xl mx-auto animate-fadeIn pt-4 transition-opacity  md:pt-8">
         <div className="flex flex-col rounded-lg  lg:flex-row lg:gap-8 ">
           <div className="flex flex-col px-4 pb-2 md:hidden">

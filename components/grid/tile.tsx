@@ -1,17 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
+import { AddToCartButton } from '@/components/cart/add-to-cart-button';
+import { calculateSavedPrice, getProductId } from '@/lib/helper/helper';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense, useEffect, useState } from 'react';
-import { AddToCartButton } from '@/components/cart/add-to-cart-button';
+import { useSelector } from 'react-redux';
+
 import { trackEvent } from 'utils/mixpanel';
 import SavePriceTag from '../elements/save-price-tag';
-import { calculateSavedPrice, getProductId } from '@/lib/helper/helper';
 // import { sendGAEvent } from '@next/third-parties/google';
-import ProductTag from '../elements/product-tag';
 import { getSource } from '@/lib/helper/helper';
-import { useSelector } from 'react-redux';
+import ProductTag from '../elements/product-tag';
 
 export function GridTileImage({
   isInteractive = true,
@@ -89,8 +90,10 @@ export function GridTileImage({
             <div className=" h-fit">
               <div className=" h-fit w-full overflow-hidden object-cover">
                 <Link
-                  href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}
+                  href={`/product/[handle]`}
+                  as={`/product/${product?.handle}?option=${product.options[0].values[0]}`}
                   className="relative"
+                  prefetch
                 >
                   <Image
                     onClick={() => {
@@ -148,7 +151,6 @@ export function GridTileImage({
                         </div>
                         <div />
                       </div>
-
                       <span
                         data-value={product?.ratings?.average}
                         style={{

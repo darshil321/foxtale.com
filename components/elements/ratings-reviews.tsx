@@ -5,6 +5,7 @@ import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { getReviewsById } from '@/lib/shopify';
 import Pagination from './pagination';
+import { useSelector } from 'react-redux';
 
 // Function to calculate the number of months between two dates
 function timeAgo(date: Date): string {
@@ -72,6 +73,15 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10); // Set your page size
   const [totalReviews, setTotalReviews] = useState(product?.reviewsCount || 0);
+  const productCollections = useSelector((state: any) => state.collections.collectionsProducts);
+  const [ratings, setRatings] = useState<any>(null);
+
+  useEffect(() => {
+    if (!product || product?.ratings) return;
+    const _prod = productCollections?.find((p: any) => p.id === product.id);
+
+    if (_prod && _prod?.ratings) setRatings(_prod.ratings);
+  }, [product, productCollections]);
 
   const dispatch = useAppDispatch();
 
@@ -115,14 +125,14 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
           </button>
         </div>
         <div className="mb-6 flex items-center">
-          <span className=" text-[40px] font-normal md:text-6xl">{product.ratings.average}</span>
+          <span className=" text-[40px] font-normal md:text-6xl">{ratings?.average}</span>
           <div className="flex flex-col">
             <div className="ml-2 text-black">
               {Array(5)
                 .fill(0)
                 .map((_, i) => (
                   <span className="text-2xl" key={i}>
-                    {i < product.ratings.average ? '★' : '☆'}
+                    {i < ratings?.average ? '★' : '☆'}
                   </span>
                 ))}
             </div>
