@@ -103,11 +103,13 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
   return (
     <div id="Reviews" className="mx-auto w-full px-4 py-8">
       <div className="flex w-full flex-col justify-between pb-4 md:flex-row md:pb-8">
-        <div className="flex flex-row justify-between md:flex-col">
-          <h2 className="mb-4 text-2xl font-semibold md:text-3xl">Reviews</h2>
+        <div className="mb-4 flex flex-row items-center justify-between md:flex-col md:items-start">
+          <h2 className=" text-start text-[16px] font-medium md:justify-start md:text-3xl md:font-semibold">
+            Reviews
+          </h2>
           <button
             onClick={() => dispatch(setReviewFormOpen(true))}
-            className="mb-6 max-w-xs rounded px-4 py-2 text-xs text-blue-500 underline underline-offset-2 md:w-[231px] md:bg-black md:text-sm md:text-black md:text-white md:no-underline"
+            className="font-md   max-w-xs rounded px-4 text-xs  text-blue-600 underline underline-offset-2 md:w-[231px] md:bg-black md:py-[10px] md:text-sm md:text-black md:text-white md:no-underline"
           >
             Write a review
           </button>
