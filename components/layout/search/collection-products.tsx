@@ -18,6 +18,7 @@ const CollectionProductsContainer = ({
   key?: number;
 }) => {
   const dispatch = useDispatch();
+
   const selectedCollection = useAppSelector((state) => state.products.selectedCollection);
   const isUserClicked = useAppSelector((state) => state.products.isUserClicked);
   const sectionRef = useRef<HTMLDivElement>(null);

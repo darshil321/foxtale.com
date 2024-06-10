@@ -28,7 +28,9 @@ const ResultsSection = ({ product }: Props) => {
 
   return (
     <div className="w-full px-4 py-3 md:px-0  md:py-10">
-      <h2 className=" mb-3 text-2xl font-medium leading-7">Real People, Verified Results</h2>
+      <h2 className=" mb-3 text-[21px] font-semibold leading-8 md:text-2xl">
+        Real People, Verified Results
+      </h2>
       <div className="flex  flex-col gap-4 rounded-lg bg-grey lg:flex-row lg:gap-0 ">
         <div className="h-full w-full basis-full lg:basis-3/6">
           <Image
