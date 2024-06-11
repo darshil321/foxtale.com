@@ -5,6 +5,7 @@ import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { getReviewsById } from '@/lib/shopify';
 import Pagination from './pagination';
+import { useSelector } from 'react-redux';
 
 // Function to calculate the number of months between two dates
 function timeAgo(date: Date): string {
@@ -72,6 +73,15 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10); // Set your page size
   const [totalReviews, setTotalReviews] = useState(product?.reviewsCount || 0);
+  const productCollections = useSelector((state: any) => state.collections.collectionsProducts);
+  const [ratings, setRatings] = useState<any>(null);
+
+  useEffect(() => {
+    if (!product || product?.ratings) return;
+    const _prod = productCollections?.find((p: any) => p.id === product.id);
+
+    if (_prod && _prod?.ratings) setRatings(_prod.ratings);
+  }, [product, productCollections]);
 
   const dispatch = useAppDispatch();
 
@@ -103,24 +113,26 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
   return (
     <div id="Reviews" className="mx-auto w-full px-4 py-8">
       <div className="flex w-full flex-col justify-between pb-4 md:flex-row md:pb-8">
-        <div className="flex flex-row justify-between md:flex-col">
-          <h2 className="mb-4 text-2xl font-semibold md:text-3xl">Reviews</h2>
+        <div className="mb-4 flex flex-row items-center justify-between md:flex-col md:items-start">
+          <h2 className=" text-start text-[16px] font-medium md:justify-start md:text-3xl md:font-semibold">
+            Reviews
+          </h2>
           <button
             onClick={() => dispatch(setReviewFormOpen(true))}
-            className="mb-6 max-w-xs rounded px-4 py-2 text-xs text-blue-500 underline underline-offset-2 md:w-[231px] md:bg-black md:text-sm md:text-black md:text-white md:no-underline"
+            className="font-md   max-w-xs rounded px-4 text-xs  text-blue-600 underline underline-offset-2 md:w-[231px] md:bg-black md:py-[10px] md:text-sm md:text-black md:text-white md:no-underline"
           >
             Write a review
           </button>
         </div>
         <div className="mb-6 flex items-center">
-          <span className=" text-[40px] font-normal md:text-6xl">{product.ratings.average}</span>
+          <span className=" text-[40px] font-normal md:text-6xl">{ratings?.average}</span>
           <div className="flex flex-col">
             <div className="ml-2 text-black">
               {Array(5)
                 .fill(0)
                 .map((_, i) => (
                   <span className="text-2xl" key={i}>
-                    {i < product.ratings.average ? '★' : '☆'}
+                    {i < ratings?.average ? '★' : '☆'}
                   </span>
                 ))}
             </div>

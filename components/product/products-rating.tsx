@@ -1,11 +1,24 @@
 'use client';
 import { scrollToElementById } from '@/lib/utils';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const ProductsRatings = ({ product }: { product?: any }) => {
+  const productCollections = useSelector((state: any) => state.collections.collectionsProducts);
+  const [ratings, setRatings] = useState<any>(null);
+
+  useEffect(() => {
+    if (!product || product?.ratings) return;
+    const _prod = productCollections?.find((p: any) => p.id === product.id);
+
+    if (_prod && _prod?.ratings) setRatings(_prod.ratings);
+  }, [product, productCollections]);
+
+  if (!product) return null;
+
   return (
     <>
-      {product?.ratings?.average && (
+      {ratings?.average !== 0 && (
         <div className="flex flex-row items-center gap-2 py-2">
           <div className="flex flex-row items-center gap-2">
             <div
@@ -24,7 +37,7 @@ const ProductsRatings = ({ product }: { product?: any }) => {
               data-value="4.8"
               style={{ transformOrigin: '0px 0px', opacity: 1, transform: 'scale(1, 1)' }}
             >
-              {product?.ratings?.average}
+              {ratings?.average}
             </span>
             <span className="sr-only bg-slate-600" data-value={194}>
               194

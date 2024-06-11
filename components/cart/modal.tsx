@@ -489,7 +489,7 @@ export default function CartModal() {
                   <div className="items-cener flex flex-col p-2">
                     <div className="py-1 text-lg">
                       <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1">
-                        <p className="font-bold" id="test123">
+                        <p className="font-poppins font-medium leading-normal " id="test123">
                           Subtotal:
                         </p>
                         <Price
