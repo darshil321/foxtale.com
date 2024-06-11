@@ -95,7 +95,7 @@ export function GokwikButton(passedData) {
 
   const triggerBuyNow = (passedData: { quantity: number; variantId: string; title: string }) => {
     setLoading(true);
-    if (passedData.title === 'Buy Now') {
+    if (passedData.title === 'BUY NOW') {
       createCart({
         lines: [{ quantity: 1, merchandiseId: passedData.variantId }],
         attributes: [
@@ -173,17 +173,17 @@ export function GokwikButton(passedData) {
   //   });
   //   return data;
   // };
-  // const goKwikButtonLoad = loading || (cartLoading && passedData.title !== 'Buy Now');
+  // const goKwikButtonLoad = loading || (cartLoading && passedData.title !== 'BUY NOW');
   const goKwikButtonLoad = loading;
 
   const onCheckout = (event) => {
     event.preventDefault();
 
     trackEvent(
-      passedData.title === 'Buy Now' ? 'Clicked Dynamic Checkout Button' : 'Started Checkout',
+      passedData.title === 'BUY NOW' ? 'Clicked Dynamic Checkout Button' : 'Started Checkout',
       {
         'api-url-for-data': window.location.href,
-        from: passedData.title === 'Buy Now' ? 'from-pdp' : 'from-mini-cart-drawer',
+        from: passedData.title === 'BUY NOW' ? 'from-pdp' : 'from-mini-cart-drawer',
         source: getSource(window.location.href)
       }
     );
@@ -203,7 +203,7 @@ export function GokwikButton(passedData) {
           }}
         >
           {passedData.buyNowButton ? passedData.title : 'Pay via UPI/COD'}
-          {passedData.title !== 'Buy Now' && (
+          {passedData.title !== 'BUY NOW' && (
             <img
               className="ml-4"
               src="https://cdn.shopify.com/s/files/1/0609/6096/4855/files/Group_163.svg?v=1684908604"
