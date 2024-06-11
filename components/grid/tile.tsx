@@ -144,9 +144,9 @@ export function GridTileImage({
                     </div>
                   )}
                   {ratings && ratings?.average !== 0 && (
-                    <div className="absolute bottom-2 left-2 flex w-max flex-row justify-between gap-1 rounded-sm bg-white px-[5px] py-[1px] text-black">
+                    <div className="absolute bottom-2 left-2 flex w-max flex-row items-center justify-between gap-1 rounded-sm bg-white px-[5px] py-[1px] text-black md:py-[1.5px] ">
                       <div data-rating="4.8">
-                        <div className=" text-[11px]" style={{ width: '11px' }}>
+                        <div className=" text-[11px] md:text-[14px]" style={{ width: '11px' }}>
                           ★
                         </div>
                         <div />
@@ -158,7 +158,7 @@ export function GridTileImage({
                           opacity: 1,
                           transform: 'scale(1, 1)'
                         }}
-                        className="text-xs font-medium"
+                        className="text-xs font-normal md:ml-[3px] md:text-[14px]"
                       >
                         {ratings.average}
                       </span>
@@ -170,7 +170,7 @@ export function GridTileImage({
                 </Link>
               </div>
             </div>
-            <div className="flex h-full flex-1 flex-grow flex-col justify-between space-y-[4px] px-3 py-[9px]">
+            <div className="flex h-full flex-1 flex-grow flex-col justify-between space-y-[4px] px-3 py-1 md:py-[9px]">
               <div>
                 <Link
                   onClick={() => {
@@ -197,7 +197,7 @@ export function GridTileImage({
                     {label?.title}
                   </p>
                 </Link>
-                <p className="line-clamp-1 pt-1 text-[10px] leading-7 text-[#6e6e6e] md:text-xs">
+                <p className="line-clamp-1  text-[10px] leading-7 text-[#6e6e6e] md:text-xs">
                   {productDescription?.value}
                 </p>
               </div>
