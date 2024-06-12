@@ -104,7 +104,23 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
+  const average = ratings?.average || 0;
 
+  // Helper function to get star type
+  const getStarType = (index: number, average: number) => {
+    const diff = average - index;
+    if (diff >= 1) {
+      return 'full';
+    } else if (diff >= 0.75) {
+      return 'three-quarters';
+    } else if (diff >= 0.5) {
+      return 'half';
+    } else if (diff >= 0.25) {
+      return 'quarter';
+    } else {
+      return 'empty';
+    }
+  };
   return (
     <div id="Reviews" className="mx-auto w-full px-4 py-8">
       <div className="flex w-full flex-col justify-between pb-4 md:flex-row md:pb-8">
@@ -120,16 +136,20 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
           </button>
         </div>
         <div className="mb-6 flex items-center">
-          <span className=" text-[40px] font-light md:text-6xl">{ratings?.average}</span>
+          <span className="text-[40px] font-light md:text-6xl">{average.toFixed(1)}</span>
           <div className="flex flex-col">
-            <div className="ml-2 text-black">
+            <div className="ml-2 flex text-black">
               {Array(5)
                 .fill(0)
-                .map((_, i) => (
-                  <span className="text-2xl" key={i}>
-                    {i < ratings?.average ? '★' : '☆'}
-                  </span>
-                ))}
+                .map((_, i) => {
+                  const starType = getStarType(i, average);
+
+                  return (
+                    <span className={`star text-2xl  ${starType}`} key={i}>
+                      ★
+                    </span>
+                  );
+                })}
             </div>
             <span className="ml-2 text-xs text-gray-600">{totalReviews} REVIEWS</span>
           </div>
@@ -207,3 +227,42 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
 };
 
 export default ReviewComponent;
+
+const styles = `
+  .star {
+    position: relative;
+    display: inline-block;
+    color: #ccc; /* Base color for empty part */
+  }
+  .star.full {
+    color: black; /* Full star color */
+  }
+  .star.three-quarters::before,
+  .star.half::before,
+  .star.quarter::before {
+    content: '★';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    overflow: hidden;
+  }
+  .star.three-quarters::before {
+    width: 75%;
+    color: black; /* Three-quarters star color */
+  }
+  .star.half::before {
+    width: 50%;
+    color: black; /* Half star color */
+  }
+  .star.quarter::before {
+    width: 25%;
+    color: black; /* Quarter star color */
+  }
+`;
+
+// Add CSS to the document head
+const styleSheet = document.createElement('style');
+styleSheet.type = 'text/css';
+styleSheet.innerText = styles;
+document.head.appendChild(styleSheet);
