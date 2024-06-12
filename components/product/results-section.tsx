@@ -22,7 +22,7 @@ const ResultsSection = ({ product }: Props) => {
     return imageSources;
   }
 
-  function extractTwoImageSources(htmlString, id1, id2, className) {
+  function extractTwoImageSources(htmlString: any, id1: string, id2: string, className: string) {
     const parser = new DOMParser();
     const htmlDocument = parser.parseFromString(htmlString, 'text/html');
 
