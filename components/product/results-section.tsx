@@ -14,6 +14,7 @@ const ResultsSection = ({ product }: Props) => {
   function extractImageSources(htmlString: string, className: string) {
     const parser = new DOMParser();
     const htmlDocument = parser.parseFromString(htmlString, 'text/html');
+    console.log('htmlDocument', htmlString);
 
     const resultImages = htmlDocument.querySelectorAll(`.${className}`);
     const imageSources = Array.from(resultImages).map((image) => image.getAttribute('src'));
@@ -21,10 +22,31 @@ const ResultsSection = ({ product }: Props) => {
     return imageSources;
   }
 
-  const htmlString = filteredDataByKey?.value; // Assign your HTML string here
-  const className = 'result-img'; // Define the class name you want to search for
+  function extractTwoImageSources(htmlString, id1, id2, className) {
+    const parser = new DOMParser();
+    const htmlDocument = parser.parseFromString(htmlString, 'text/html');
+
+    const result1Images = htmlDocument.querySelectorAll(`#${id1} .${className}`);
+    const result2Images = htmlDocument.querySelectorAll(`#${id2} .${className}`);
+
+    const imageSources = [
+      ...Array.from(result1Images).map((image) => image.getAttribute('src')),
+      ...Array.from(result2Images).map((image) => image.getAttribute('src'))
+    ];
+
+    return imageSources;
+  }
+
+  const htmlString = filteredDataByKey?.value;
+  const className = 'result-img';
 
   const imageSources = extractImageSources(htmlString, className);
+  const imageSources2 = extractTwoImageSources(
+    htmlString,
+    'result1',
+    'result2',
+    'result-after-img'
+  );
 
   return (
     <div className="w-full px-4 py-3 md:px-0  md:py-10">
@@ -47,7 +69,7 @@ const ResultsSection = ({ product }: Props) => {
           />
         </div>
         <div className="basis-full px-2 pb-4 pt-5 lg:basis-3/6">
-          <ResultsTabs />
+          <ResultsTabs images={imageSources2} />
         </div>
       </div>
     </div>

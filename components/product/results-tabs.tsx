@@ -7,18 +7,22 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function ResultsTabs() {
+export default function ResultsTabs({ images }: { images: any[] }) {
+  console.log('images', images);
+
   const [categories] = useState([
     {
       id: 1,
       cetegory: 'RESULTS AFTER 10 DAYS',
       contentImage:
-        'https://cdn.shopify.com/s/files/1/0609/6096/4855/files/Matte_Finish_Sunscreen_SPF_70_-13.jpg?v=1685299918'
+        images[0] ||
+        'https://cdn.shopify.com/s/files/1/0609/6096/4855/files/10-Day_Sunscreen_SPF_70_01.jpg?v=1685299918'
     },
     {
       id: 2,
       cetegory: 'RESULTS AFTER 30 DAYS',
       contentImage:
+        images[2] ||
         'https://cdn.shopify.com/s/files/1/0609/6096/4855/files/Matte_Finish_Sunscreen_SPF_70_-04.jpg?v=1685299918'
     }
   ]);
@@ -32,10 +36,10 @@ export default function ResultsTabs() {
               key={result.cetegory}
               className={({ selected }) =>
                 classNames(
-                  'w-full py-2 text-sm font-medium leading-5 md:px-2 md:text-base',
+                  'w-full py-2 text-xs font-semibold leading-5 md:px-2 md:text-lg',
                   selected
                     ? 'bg-black text-gray-200 md:bg-transparent md:text-black md:underline md:underline-offset-2 '
-                    : ' hover:text-black'
+                    : ' text-[#878787] hover:text-black'
                 )
               }
             >

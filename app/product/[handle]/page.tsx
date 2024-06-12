@@ -135,7 +135,9 @@ export default async function ProductPage({
               </h1>
             </div>
             <div className="text-[#6d6e71]" dangerouslySetInnerHTML={{ __html: decodedHtml }} />
-            <ProductsRatings product={product} />
+            <Suspense fallback={null}>
+              <ProductsRatings product={product} />
+            </Suspense>
           </div>
           <div className="h-full w-full basis-full lg:basis-3/6">
             <ProductSlider images={product.images} />
