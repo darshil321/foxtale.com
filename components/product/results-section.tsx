@@ -14,7 +14,6 @@ const ResultsSection = ({ product }: Props) => {
   function extractImageSources(htmlString: string, className: string) {
     const parser = new DOMParser();
     const htmlDocument = parser.parseFromString(htmlString, 'text/html');
-    console.log('htmlDocument', htmlString);
 
     const resultImages = htmlDocument.querySelectorAll(`.${className}`);
     const imageSources = Array.from(resultImages).map((image) => image.getAttribute('src'));

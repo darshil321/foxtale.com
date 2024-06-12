@@ -8,8 +8,6 @@ function classNames(...classes: string[]) {
 }
 
 export default function ResultsTabs({ images }: { images: any[] }) {
-  console.log('images', images);
-
   const [categories] = useState([
     {
       id: 1,
