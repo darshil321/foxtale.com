@@ -21,7 +21,7 @@ const ProductDescFooter = ({ product }: { product: any }) => {
 
   return (
     <div className="fixed bottom-0 left-0 z-50 w-screen">
-      <div className="flex w-full justify-center border-t bg-white px-4 py-3 md:justify-between  md:px-[140px] md:py-4">
+      <div className="flex w-full justify-center border-t bg-white px-4 py-4 md:justify-between  md:px-[140px] md:py-5">
         <div className="hidden md:block">
           <Suspense fallback={null}>
             <ProductDetailsItem product={product} />
@@ -35,7 +35,7 @@ const ProductDescFooter = ({ product }: { product: any }) => {
               variants={product?.variants}
               availableForSale={product.availableForSale}
               buttonClasses={
-                ' flex text-sm hover:text-purple-400  items-center justify-center text-base bg-white border border-black text-black py-2 px-6 md:py-2  md:px-10 uppercase tracking-wide font-medium'
+                ' flex text-sm hover:text-purple-400 leading-7 leading-[22px] items-center justify-center text-base bg-white border border-black text-black py-2 px-6 md:py-2  md:px-10 uppercase tracking-wide font-medium'
               }
             />
           </Suspense>

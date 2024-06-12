@@ -71,7 +71,7 @@ interface Product {
 const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [page, setPage] = useState(1);
-  const [pageSize] = useState(10); // Set your page size
+  const [pageSize] = useState(15); // Set your page size
   const [totalReviews, setTotalReviews] = useState(product?.reviewsCount || 0);
   const productCollections = useSelector((state: any) => state.collections.collectionsProducts);
   const [ratings, setRatings] = useState<any>(null);
@@ -89,12 +89,7 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
     const fetchReviews = async () => {
       try {
         const response = await getReviewsById(product.id, page, pageSize);
-        setReviews(
-          response?.data
-          // .filter(
-          //   (reviews: any) => reviews.heading && reviews.customer.generated_display_name
-          // )
-        );
+        setReviews(response?.data);
         setTotalReviews(response?.total);
       } catch (error) {
         console.error('Error fetching reviews:', error);
@@ -125,7 +120,7 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
           </button>
         </div>
         <div className="mb-6 flex items-center">
-          <span className=" text-[40px] font-normal md:text-6xl">{ratings?.average}</span>
+          <span className=" text-[40px] font-light md:text-6xl">{ratings?.average}</span>
           <div className="flex flex-col">
             <div className="ml-2 text-black">
               {Array(5)
