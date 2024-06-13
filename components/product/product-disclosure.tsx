@@ -17,7 +17,7 @@ export default function ProductDisclosure({ product }: { product: Product }) {
   const disclosureItems = [] as {
     image: string | null;
     title: string | null;
-    contentImage: string | null;
+    contentImage: any;
   }[];
 
   const dropdownElements = htmlDocument?.querySelectorAll('.unique-section-dropdown');
@@ -43,11 +43,18 @@ export default function ProductDisclosure({ product }: { product: Product }) {
             : dropdownElement.querySelector('.mb_img_slide');
 
         const dekImgSlideClass = extraImgElement.classList.contains('dek_img_slide');
-        const mbImgSlideClass = extraImgElement.classList.contains('mb_img_slide');
-        console.log('dekImgSlideClass', dekImgSlideClass, 'mbImgSlideClass', mbImgSlideClass);
 
         if (dekImgSlideClass && imgElement) {
-          contentImage = imgElement.querySelector('img')?.getAttribute('src') || null;
+          contentImage = {
+            dekImg: dropdownElement
+              .querySelector('.dek_img_slide')
+              ?.querySelector('img')
+              ?.getAttribute('src'),
+            mdImg: dropdownElement
+              .querySelector('.mb_img_slide')
+              ?.querySelector('img')
+              ?.getAttribute('src')
+          };
         } else {
           contentImage = extraImgElement.getAttribute('src') || null;
         }
@@ -95,15 +102,38 @@ export default function ProductDisclosure({ product }: { product: Product }) {
                       </Disclosure.Button>
 
                       <Disclosure.Panel className="flex justify-center px-4 pb-2 pt-4 text-sm text-gray-500">
-                        <Image
-                          src={item?.contentImage || item?.image || '/Images/defualt.png'}
-                          alt={item?.title || 'image'}
-                          width={500}
-                          height={500}
-                          loading="lazy"
-                          quality={100}
-                          className="h-full w-full max-w-[500px] object-cover"
-                        />
+                        {typeof item?.contentImage === 'string' && (
+                          <Image
+                            src={item?.contentImage || item?.image || '/Images/defualt.png'}
+                            alt={item?.title || 'image'}
+                            width={500}
+                            height={500}
+                            loading="lazy"
+                            quality={100}
+                            className="h-full w-full max-w-[500px] object-cover"
+                          />
+                        )}
+                        {typeof item?.contentImage !== 'string' && window.innerWidth > 500 ? (
+                          <Image
+                            src={item?.contentImage?.dekImg || item?.image || '/Images/defualt.png'}
+                            alt={item?.title || 'image'}
+                            width={500}
+                            height={500}
+                            loading="lazy"
+                            quality={100}
+                            className="h-full w-full max-w-[500px] object-cover"
+                          />
+                        ) : (
+                          <Image
+                            src={item?.contentImage?.mdImg || item?.image || '/Images/defualt.png'}
+                            alt={item?.title || 'image'}
+                            width={500}
+                            height={500}
+                            loading="lazy"
+                            quality={100}
+                            className="h-full w-full max-w-[500px] object-cover"
+                          />
+                        )}
                       </Disclosure.Panel>
                     </>
                   )}
