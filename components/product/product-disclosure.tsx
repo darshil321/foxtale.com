@@ -57,6 +57,8 @@ export default function ProductDisclosure({ product }: { product: Product }) {
     }
   });
 
+  console.log('disclosureItems', disclosureItems);
+
   return (
     <>
       {disclosureItems && disclosureItems?.length ? (
