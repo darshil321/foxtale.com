@@ -197,7 +197,7 @@ export function GokwikButton(passedData) {
         <button
           disabled={goKwikButtonLoad}
           aria-disabled={goKwikButtonLoad}
-          className={`relative flex items-center justify-center border border-black bg-black  px-[41.5px] py-2 text-sm font-medium leading-[22px]   tracking-wider   text-white  hover:text-purple-400 md:flex-none md:px-16 md:text-sm ${goKwikButtonLoad ? 'cursor-not-allowed opacity-70' : ''}`}
+          className={`relative flex items-center justify-center border border-black bg-black  px-[40.5px] py-2 text-sm font-medium leading-[22px]   tracking-wider   text-white  hover:text-purple-400 md:flex-none md:px-16 md:text-sm ${goKwikButtonLoad ? 'cursor-not-allowed opacity-70' : ''}`}
           onClick={(event) => {
             onCheckout(event);
           }}

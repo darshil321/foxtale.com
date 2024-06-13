@@ -51,7 +51,7 @@ export default async function CategoryPage({}: { params?: string; searchParams?:
     {
       section: 'Masks',
       title: 'Masks at 499/-',
-      Description: ''
+      Description: 'High-powered masks to deliver instant benefits'
     }
   ];
 

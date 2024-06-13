@@ -78,7 +78,7 @@ export default function ProductDetailsTabs({ product }: Props) {
   return (
     <div className="w-full px-2 sm:px-0">
       <Tab.Group>
-        <Tab.List className="flex justify-between gap-1 p-1  ">
+        <Tab.List className="flex justify-between gap-[2px] p-1  ">
           {categories?.map((result) => (
             <Tab
               key={result.category}
@@ -123,8 +123,8 @@ export default function ProductDetailsTabs({ product }: Props) {
                 <div className="px-4  md:px-8">
                   {post?.contentText?.map((text) => (
                     <div className="my-2 py-1 md:mb-3" key={text.title}>
-                      <h2 className="text-base font-semibold uppercase ">{text.title}</h2>
-                      <p className="text-sm">{text.content}</p>
+                      <h2 className="text-base font-semibold ">{text.title}</h2>
+                      <p className="text-sm text-[#58595b]">{text.content}</p>
                     </div>
                   ))}
                 </div>
