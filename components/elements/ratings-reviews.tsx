@@ -130,7 +130,7 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
           </h2>
           <button
             onClick={() => dispatch(setReviewFormOpen(true))}
-            className="font-md   max-w-xs rounded px-4 text-xs  text-blue-600 underline underline-offset-2 md:w-[231px] md:bg-black md:py-[10px] md:text-sm md:text-black md:text-white md:no-underline"
+            className="font-md   max-w-xs rounded  text-xs  text-blue-600 underline underline-offset-2 md:w-[231px] md:bg-black md:py-[10px] md:text-sm md:text-black md:text-white md:no-underline"
           >
             Write a review
           </button>

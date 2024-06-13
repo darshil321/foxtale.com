@@ -35,7 +35,7 @@ const ProductDescFooter = ({ product }: { product: any }) => {
               variants={product?.variants}
               availableForSale={product.availableForSale}
               buttonClasses={
-                ' flex text-sm hover:text-purple-400 leading-7 leading-[22px] items-center justify-center text-base bg-white border border-black text-black py-2 px-6 md:py-2  md:px-10 uppercase tracking-wide font-medium'
+                ' flex text-sm hover:text-purple-400 leading-7 leading-[22px] items-center justify-center text-base bg-white border border-black text-black py-2 px-[25px] md:py-2  md:px-10 uppercase tracking-wide font-medium'
               }
             />
           </Suspense>
