@@ -120,7 +120,9 @@ export default async function ProductPage({
           __html: JSON.stringify(productJsonLd)
         }}
       />
-      <InitialReviews product={product} />
+      <Suspense fallback={null}>
+        <InitialReviews product={product} />
+      </Suspense>
       <div className="max-w-screen-3xl mx-auto animate-fadeIn pt-4 transition-opacity  md:pt-8">
         <div className="flex flex-col rounded-lg  lg:flex-row lg:gap-8 ">
           <div className="flex flex-col px-4 pb-2 md:hidden">
@@ -157,13 +159,6 @@ export default async function ProductPage({
         </div>
         <div>{<ProductDisclosure product={product} />}</div>
         <ResultsSection product={product} />
-        <Suspense
-          fallback={
-            <div className="relative aspect-square  h-full max-h-[550px] w-full overflow-hidden">
-              ...Loading Products
-            </div>
-          }
-        ></Suspense>
         <ProductDetailsTabs product={product} />
         <Suspense fallback={<>...loading reviews</>}>
           <ReviewComponent product={product} />
