@@ -156,8 +156,8 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
         </div>
       </div>
       <div className="space-y-8">
-        {reviews.length > 0 ? (
-          reviews.map((review: any) => {
+        {reviews?.length > 0 ? (
+          reviews?.map((review: any) => {
             return (
               <div
                 key={review.id}
