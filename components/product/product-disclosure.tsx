@@ -9,7 +9,10 @@ import { Product } from '@/lib/shopify/types';
 export default function ProductDisclosure({ product }: { product: Product }) {
   const filteredDataByKey = product?.metafields?.find((item: any) => item?.key === 'unique');
   const parser = new DOMParser();
+  console.log('filter', filteredDataByKey?.value);
   const htmlDocument = parser.parseFromString(filteredDataByKey?.value, 'text/html');
+
+  console.log('htmlDocument', htmlDocument);
 
   const disclosureItems = [] as {
     image: string | null;

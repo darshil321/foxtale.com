@@ -121,6 +121,9 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
       return 'empty';
     }
   };
+
+  const numStars = Math.ceil(average);
+
   return (
     <div id="Reviews" className="mx-auto w-full px-4 py-8">
       <div className="flex w-full flex-col justify-between pb-4 md:flex-row md:pb-8">
@@ -139,7 +142,7 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
           <span className="text-[40px] font-light md:text-6xl">{average.toFixed(1)}</span>
           <div className="flex flex-col">
             <div className="ml-2 flex text-black">
-              {Array(5)
+              {Array(numStars)
                 .fill(0)
                 .map((_, i) => {
                   const starType = getStarType(i, average);
@@ -183,7 +186,7 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
                 <div className="flex-1 space-y-2">
                   <div className="flex justify-between ">
                     <div className="flex items-center text-black">
-                      {Array(5)
+                      {Array(Math.ceil(review.rating))
                         .fill(0)
                         .map((_, i) => (
                           <span key={i}>{i < review.rating ? '★' : '☆'}</span>
