@@ -27,13 +27,24 @@ export default function ProductDisclosure({ product }: { product: Product }) {
       const image = imgElement?.getAttribute('src');
       const title = titleElement?.textContent?.trim() || null;
 
+      console.log('dropdownElement', dropdownElement);
+
       const extraImgElement = dropdownElement.querySelector('.dropdown-content-img');
+
       let contentImage = null;
       if (extraImgElement) {
-        const dekImgSlideClass = extraImgElement.classList.contains('dek_img_slide');
+        console.log('extraImgElement', extraImgElement);
+        const imgElement =
+          window.innerWidth > 500
+            ? dropdownElement.querySelector('.dek_img_slide')
+            : dropdownElement.querySelector('.mb_img_slide');
 
-        if (dekImgSlideClass) {
-          contentImage = extraImgElement.querySelector('img')?.getAttribute('src') || null;
+        const dekImgSlideClass = extraImgElement.classList.contains('dek_img_slide');
+        const mbImgSlideClass = extraImgElement.classList.contains('mb_img_slide');
+        console.log('dekImgSlideClass', dekImgSlideClass, 'mbImgSlideClass', mbImgSlideClass);
+
+        if (dekImgSlideClass && imgElement) {
+          contentImage = imgElement.querySelector('img')?.getAttribute('src') || null;
         } else {
           contentImage = extraImgElement.getAttribute('src') || null;
         }
