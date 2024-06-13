@@ -123,8 +123,6 @@ export function GokwikButton(passedData) {
           }
         ]
       }).then((data) => {
-        console.log('dataaaa', data);
-
         setLoading(false);
         triggerGokwikCheckout(data.body.data.cartCreate.cart);
       });
@@ -133,12 +131,10 @@ export function GokwikButton(passedData) {
 
   const triggerGokwikCheckout = async (cart?) => {
     if (cart) {
-      console.log('4444444', 4444444);
       window.merchantInfo.cart = cart;
       buyNowRun = true;
       // logEvent('gk_buy_now_button_clicked', 'onGkClick');
     } else {
-      console.log('5555555', 5555555);
       const apiResponse = await getCart(cart.id);
       window.merchantInfo.cart = apiResponse.data ? apiResponse.data.cart : null;
       buyNowRun = false;
