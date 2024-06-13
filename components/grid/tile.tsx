@@ -101,10 +101,23 @@ export function GridTileImage({
                 >
                   Test 3
                 </div>
+                <a href={`/product/${product?.handle}?option=${product.options[0].values[0]}`}>
+                  test4
+                </a>
+                <div
+                  onClick={() => {
+                    router.push(
+                      `/product/${product?.handle}?option=${product.options[0].values[0]}`,
+                      undefined
+                    );
+                  }}
+                >
+                  Test 3
+                </div>
 
                 <Link
                   href={`/product/[handle]`}
-                  as={`/product/${product?.handle}?option=${product.options[0].values[0]}`}
+                  as={`/product/399-store-super-glow-moisturizer?option=Single`}
                   className="relative"
                   prefetch
                   shallow
