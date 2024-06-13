@@ -159,13 +159,6 @@ export default async function ProductPage({
         </div>
         <div>{<ProductDisclosure product={product} />}</div>
         <ResultsSection product={product} />
-        <Suspense
-          fallback={
-            <div className="relative aspect-square  h-full max-h-[550px] w-full overflow-hidden">
-              ...Loading Products
-            </div>
-          }
-        ></Suspense>
         <ProductDetailsTabs product={product} />
         <Suspense fallback={<>...loading reviews</>}>
           <ReviewComponent product={product} />
