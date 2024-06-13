@@ -24,13 +24,13 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
   return (
     <div className="flex h-full w-full items-center justify-between py-3 sm:px-2">
       <div className="flex w-full flex-col items-center justify-center space-y-2 sm:flex-1 sm:justify-between md:flex-row">
-        <div>
+        {/* <div>
           <p className="px-2 text-sm text-gray-700">
             Showing <span className="font-medium">{(currentPage - 1) * 10 + 1}</span> to{' '}
             <span className="font-medium">{Math.min(currentPage * 10, totalPages * 10)}</span> of{' '}
             <span className="font-medium">{totalPages * 10}</span> results
           </p>
-        </div>
+        </div> */}
         <div>
           <nav className="isolate inline-flex -space-x-px rounded-md" aria-label="Pagination">
             {currentPage > 1 && (
