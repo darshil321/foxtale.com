@@ -13,6 +13,7 @@ import SavePriceTag from '../elements/save-price-tag';
 // import { sendGAEvent } from '@next/third-parties/google';
 import { getSource } from '@/lib/helper/helper';
 import ProductTag from '../elements/product-tag';
+import { useRouter } from 'next/router';
 
 export function GridTileImage({
   isInteractive = true,
@@ -50,6 +51,7 @@ export function GridTileImage({
   };
 } & React.ComponentProps<typeof Image>) {
   const productCollections = useSelector((state: any) => state.collections.collectionsProducts);
+  const router = useRouter();
   const [ratings, setRatings] = useState<any>(null);
 
   const [isHovered, setIsHovered] = useState(false);
@@ -89,6 +91,27 @@ export function GridTileImage({
           <div className="flex h-full w-full flex-col">
             <div className=" h-fit">
               <div className=" h-fit w-full overflow-hidden object-cover">
+                <div
+                  onClick={() => {
+                    router.push(
+                      `/product/${product?.handle}?option=${product.options[0].values[0]}`,
+                      undefined,
+                      { shallow: true }
+                    );
+                  }}
+                >
+                  Test 3
+                </div>
+
+                <Link
+                  href={`/product/[handle]`}
+                  as={`/product/${product?.handle}?option=${product.options[0].values[0]}`}
+                  className="relative"
+                  prefetch
+                  shallow
+                >
+                  test1
+                </Link>
                 <Link
                   href={`/product/[handle]`}
                   as={`/product/${product?.handle}?option=${product.options[0].values[0]}`}
