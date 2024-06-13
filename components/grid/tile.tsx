@@ -13,7 +13,7 @@ import SavePriceTag from '../elements/save-price-tag';
 // import { sendGAEvent } from '@next/third-parties/google';
 import { getSource } from '@/lib/helper/helper';
 import ProductTag from '../elements/product-tag';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 export function GridTileImage({
   isInteractive = true,
@@ -95,8 +95,7 @@ export function GridTileImage({
                   onClick={() => {
                     router.push(
                       `/product/${product?.handle}?option=${product.options[0].values[0]}`,
-                      undefined,
-                      { shallow: true }
+                      undefined
                     );
                   }}
                 >
