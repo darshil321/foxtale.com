@@ -79,7 +79,7 @@ export default function ProductDisclosure({ product }: { product: Product }) {
                             height={500}
                             loading="lazy"
                             quality={100}
-                            className="h-24 w-24 object-cover"
+                            className="h-24 w-24 object-contain"
                           />
                           <div className="flex w-full items-center justify-between px-6">
                             <span className="h-full text-start text-[18px] font-semibold leading-5 md:text-lg">
