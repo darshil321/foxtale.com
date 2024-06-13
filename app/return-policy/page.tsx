@@ -1,9 +1,16 @@
 import WrapperContainer from '@/components/layout/wrapper-container';
+import Link from 'next/link';
 import React from 'react';
 
 export default function ReturnPolicyPage() {
   return (
     <WrapperContainer>
+      <Link
+        href={`/product/[handle]`}
+        as="product/399-store-hydrating-moisturizer-with-ceramide?option=Single"
+      >
+        Test
+      </Link>
       <div className="mt-8 font-poppins">
         <h3 className="mb-4 text-xl font-semibold">Refund & Cancellation Policy</h3>
         <p className="mb-2 text-gray-500">
