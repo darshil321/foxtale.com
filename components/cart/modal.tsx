@@ -253,7 +253,7 @@ export default function CartModal() {
                   <CloseCart />
                 </button>
               </div>
-              <p className="bg-grey px-2 py-[6px] text-[10px]">Free Shipping + Free Sachet</p>
+              <p className="bg-grey px-2 py-[12px] text-[10px]">Free Shipping + Free Sachet</p>
 
               {!carts || carts?.lines?.length === 0 ? (
                 <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">

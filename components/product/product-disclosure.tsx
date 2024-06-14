@@ -104,7 +104,7 @@ export default function ProductDisclosure({ product }: { product: Product }) {
                         className={`${
                           index === 0 && item.contentHtml
                             ? 'flex justify-center px-2 pb-2 '
-                            : 'flex justify-center px-2 pb-2 pt-4 text-sm text-gray-500'
+                            : 'flex justify-center pb-2 text-sm text-gray-500'
                         }`}
                       >
                         {item?.contentHtml ? (

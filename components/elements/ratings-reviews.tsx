@@ -71,7 +71,7 @@ interface Product {
 const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [page, setPage] = useState(1);
-  const [pageSize] = useState(15); // Set your page size
+  const [pageSize] = useState(4); // Set your page size
   const [totalReviews, setTotalReviews] = useState(product?.reviewsCount || 0);
   const productCollections = useSelector((state: any) => state.collections.collectionsProducts);
   const [ratings, setRatings] = useState<any>(null);
@@ -201,9 +201,9 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
                       <p className="text-base font-semibold">{review.heading}</p>
                     </div>
                   </div>
-                  <p className="mt-2 text-xs text-gray-600">{review.body || review.reviewText}</p>
+                  <p className="mt-2 text-xs text-[#AAAAAA]">{review.body || review.reviewText}</p>
                   {review.media && review.media.length > 0 && (
-                    <div className="mt-2 flex space-x-2">
+                    <div className="mt-2 flex space-x-2 ">
                       {review.media.map((mediaItem: any, index: any) => (
                         <Image
                           width={105}
@@ -211,7 +211,7 @@ const ReviewComponent: React.FC<{ product: Product }> = ({ product }) => {
                           key={index}
                           src={mediaItem.url}
                           alt={`media-${index}`}
-                          className="h-24 w-24 rounded-lg"
+                          className="h-24 w-24 rounded-lg object-cover"
                         />
                       ))}
                     </div>
