@@ -20,14 +20,16 @@ button {
   outline: none;
 }
 
-.ceopos , .ceo {
- width: 100%;
- text-align: center;
+.ceopos,
+.ceo {
+  width: 100%;
+  text-align: center;
 }
-.intro-ceo{
-  padding: 0px 0px 20px 0px;
+.intro-ceo {
+  padding-bottom: 20px;
+  text-align: center;
 }
 
-.firs-content{
+.firs-content {
   margin: 3rem auto 3rem !important;
 }
