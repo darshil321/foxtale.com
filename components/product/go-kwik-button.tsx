@@ -102,6 +102,10 @@ export function GokwikButton(passedData) {
           {
             key: 'distinct_id',
             value: distinct_id
+          },
+          {
+            key: 'source_domain',
+            value: 'lp.foxtale.in'
           }
         ]
       }).then((data) => {
@@ -120,6 +124,10 @@ export function GokwikButton(passedData) {
           {
             key: 'distinct_id',
             value: distinct_id
+          },
+          {
+            key: 'source_domain',
+            value: 'lp.foxtale.in'
           }
         ]
       }).then((data) => {
