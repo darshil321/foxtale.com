@@ -88,7 +88,7 @@ export default function ProductDisclosure({ product }: { product: Product }) {
                               {item.title}
                             </span>
                             <ChevronUpIcon
-                              className={`${open ? '' : 'rotate-180 transform'} h-10 w-10 text-black`}
+                              className={`${open ? '' : 'rotate-180 transform'} h-10 min-h-10 w-8 min-w-8 text-black`}
                             />
                           </div>
                         </div>
