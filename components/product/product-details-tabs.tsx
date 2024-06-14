@@ -27,6 +27,7 @@ export default function ProductDetailsTabs({ product }: Props) {
   const parser = new DOMParser();
 
   const htmlDocument = parser.parseFromString(filteredDataByKey?.value, 'text/html');
+  console.log('htmlDocument', filteredDataByKey?.value);
   const parseHTML = (doc: Document): Category[] => {
     const categories: Category[] = [];
 
@@ -58,15 +59,38 @@ export default function ProductDetailsTabs({ product }: Props) {
     });
 
     const tabContents = doc.querySelectorAll('.tabcontent');
+
     tabContents.forEach((content, index) => {
-      const textBlocks = content.querySelectorAll('.combo-hero-ingredients p');
-      const contentText = Array.from(textBlocks)?.map((block: any) => ({
-        title: block?.previousElementSibling?.textContent?.trim(),
-        content: block?.textContent?.trim()
-      }));
+      const contentText: { title: string; content: string[] }[] = [];
+      let currentTitle = '';
+      let currentContents: string[] = [];
+
+      const elements = content.querySelectorAll('.combo-hero-ingredients > *');
+
+      elements.forEach((element: Element) => {
+        if (element.tagName.toLowerCase() === 'h6') {
+          if (currentTitle && currentContents.length > 0) {
+            contentText.push({
+              title: currentTitle,
+              content: currentContents
+            });
+          }
+          currentTitle = element.textContent?.trim() || '';
+          currentContents = [];
+        } else if (element.tagName.toLowerCase() === 'p' && currentTitle) {
+          currentContents.push(element.textContent?.trim() || '');
+        }
+      });
+
+      if (currentTitle && currentContents.length > 0) {
+        contentText.push({
+          title: currentTitle,
+          content: currentContents
+        });
+      }
 
       if (categories[index]) {
-        (categories[index] as any).contentText = contentText || [];
+        (categories[index] as any).contentText = contentText;
       }
     });
 
@@ -74,7 +98,6 @@ export default function ProductDetailsTabs({ product }: Props) {
   };
 
   const categories: Category[] = parseHTML(htmlDocument);
-
   return (
     <div className="w-full px-2 sm:px-0">
       <Tab.Group>
@@ -121,10 +144,14 @@ export default function ProductDetailsTabs({ product }: Props) {
                 </div>
               ) : (
                 <div className="px-4  md:px-8">
-                  {post?.contentText?.map((text) => (
-                    <div className="my-2 py-1 md:mb-3" key={text.title}>
+                  {post?.contentText?.map((text, idx) => (
+                    <div className="my-2 py-1 md:mb-3" key={idx}>
                       <h2 className="text-base font-semibold ">{text.title}</h2>
-                      <p className="text-sm text-[#58595b]">{text.content}</p>
+                      {text?.content?.map((paragraph: any, pIdx: any) => (
+                        <p className="space-y-1 text-sm text-[#58595b]" key={pIdx}>
+                          {paragraph}
+                        </p>
+                      ))}
                     </div>
                   ))}
                 </div>

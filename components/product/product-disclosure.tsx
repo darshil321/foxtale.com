@@ -8,17 +8,20 @@ import { Product } from '@/lib/shopify/types';
 
 export default function ProductDisclosure({ product }: { product: Product }) {
   const filteredDataByKey = product?.metafields?.find((item: any) => item?.key === 'unique');
+  console.log('product.title', product.title);
   const parser = new DOMParser();
   console.log('filter', filteredDataByKey?.value);
   const htmlDocument = parser.parseFromString(filteredDataByKey?.value, 'text/html');
-
-  console.log('htmlDocument', htmlDocument);
 
   const disclosureItems = [] as {
     image: string | null;
     title: string | null;
     contentImage: string | null;
+    contentHtml: string | null;
   }[];
+
+  const styleElement = htmlDocument?.querySelector('style');
+  const styleContent = styleElement ? styleElement.innerHTML : '';
 
   const dropdownElements = htmlDocument?.querySelectorAll('.unique-section-dropdown');
 
@@ -33,27 +36,33 @@ export default function ProductDisclosure({ product }: { product: Product }) {
       console.log('dropdownElement', dropdownElement);
 
       const extraImgElement = dropdownElement.querySelector('.dropdown-content-img');
-
       let contentImage = null;
+      let contentHtml = null;
+
       if (extraImgElement) {
         console.log('extraImgElement', extraImgElement);
-        const imgElement =
-          window.innerWidth > 500
-            ? dropdownElement.querySelector('.dek_img_slide')
-            : dropdownElement.querySelector('.mb_img_slide');
 
-        const dekImgSlideClass = extraImgElement.classList.contains('dek_img_slide');
-        const mbImgSlideClass = extraImgElement.classList.contains('mb_img_slide');
-        console.log('dekImgSlideClass', dekImgSlideClass, 'mbImgSlideClass', mbImgSlideClass);
-
-        if (dekImgSlideClass && imgElement) {
-          contentImage = imgElement.querySelector('img')?.getAttribute('src') || null;
+        if (extraImgElement.tagName === 'DIV') {
+          contentHtml = extraImgElement.innerHTML;
         } else {
-          contentImage = extraImgElement.getAttribute('src') || null;
+          const imgElement =
+            window.innerWidth > 500
+              ? dropdownElement.querySelector('.dek_img_slide')
+              : dropdownElement.querySelector('.mb_img_slide');
+
+          const dekImgSlideClass = extraImgElement.classList.contains('dek_img_slide');
+          const mbImgSlideClass = extraImgElement.classList.contains('mb_img_slide');
+          console.log('dekImgSlideClass', dekImgSlideClass, 'mbImgSlideClass', mbImgSlideClass);
+
+          if (dekImgSlideClass && imgElement) {
+            contentImage = imgElement.querySelector('img')?.getAttribute('src') || null;
+          } else {
+            contentImage = extraImgElement.getAttribute('src') || null;
+          }
         }
       }
 
-      disclosureItems?.push({ image, title, contentImage });
+      disclosureItems?.push({ image, title, contentImage, contentHtml });
     }
   });
 
@@ -61,6 +70,7 @@ export default function ProductDisclosure({ product }: { product: Product }) {
 
   return (
     <>
+      {styleContent && <style dangerouslySetInnerHTML={{ __html: styleContent }} />}
       {disclosureItems && disclosureItems?.length ? (
         <div className="w-full px-0 py-4 md:px-0 md:py-10">
           <h2 className="ml-4 text-[21px] font-semibold leading-8 md:ml-0  md:text-2xl">
@@ -94,16 +104,20 @@ export default function ProductDisclosure({ product }: { product: Product }) {
                         </div>
                       </Disclosure.Button>
 
-                      <Disclosure.Panel className="flex justify-center px-4 pb-2 pt-4 text-sm text-gray-500">
-                        <Image
-                          src={item?.contentImage || item?.image || '/Images/defualt.png'}
-                          alt={item?.title || 'image'}
-                          width={500}
-                          height={500}
-                          loading="lazy"
-                          quality={100}
-                          className="h-full w-full max-w-[500px] object-cover"
-                        />
+                      <Disclosure.Panel className="flex justify-center pb-2 pt-4 text-sm text-gray-500">
+                        {item.contentHtml ? (
+                          <div dangerouslySetInnerHTML={{ __html: item.contentHtml }} />
+                        ) : (
+                          <Image
+                            src={item?.contentImage || item?.image || '/Images/defualt.png'}
+                            alt={item?.title || 'image'}
+                            width={500}
+                            height={500}
+                            loading="lazy"
+                            quality={100}
+                            className="h-full w-full max-w-[500px] object-cover"
+                          />
+                        )}
                       </Disclosure.Panel>
                     </>
                   )}
