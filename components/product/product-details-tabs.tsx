@@ -9,7 +9,7 @@ type Category = {
   contentType: 'text' | 'image';
   contentImage: string | null;
   contentImageMobile: string | null;
-  contentText?: { title?: string; content?: string }[];
+  contentText?: { title?: string; content?: string | any }[];
 };
 
 type Props = {
@@ -27,7 +27,7 @@ export default function ProductDetailsTabs({ product }: Props) {
   const parser = new DOMParser();
 
   const htmlDocument = parser.parseFromString(filteredDataByKey?.value, 'text/html');
-  console.log('htmlDocument', filteredDataByKey?.value);
+
   const parseHTML = (doc: Document): Category[] => {
     const categories: Category[] = [];
 
@@ -101,7 +101,7 @@ export default function ProductDetailsTabs({ product }: Props) {
   return (
     <div className="w-full px-2 sm:px-0">
       <Tab.Group>
-        <Tab.List className="flex justify-between gap-[2px] p-1  ">
+        <Tab.List className="flex justify-between gap-[1px] p-1 ">
           {categories?.map((result) => (
             <Tab
               key={result.category}

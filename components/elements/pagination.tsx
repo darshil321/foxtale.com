@@ -23,7 +23,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
 
   return (
     <div className="flex h-full w-full items-center justify-between py-3 sm:px-2">
-      <div className="flex w-full flex-col items-center justify-center space-y-2 sm:flex-1 sm:justify-between md:flex-row">
+      <div className="flex w-full flex-col items-center justify-center space-y-2 sm:flex-1 md:flex-row">
         {/* <div>
           <p className="px-2 text-sm text-gray-700">
             Showing <span className="font-medium">{(currentPage - 1) * 10 + 1}</span> to{' '}
