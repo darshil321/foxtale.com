@@ -33,15 +33,11 @@ export default function ProductDisclosure({ product }: { product: Product }) {
       const image = imgElement?.getAttribute('src');
       const title = titleElement?.textContent?.trim() || null;
 
-      console.log('dropdownElement', dropdownElement);
-
       const extraImgElement = dropdownElement.querySelector('.dropdown-content-img');
       let contentImage = null;
       let contentHtml = null;
 
       if (extraImgElement) {
-        console.log('extraImgElement', extraImgElement);
-
         if (extraImgElement.tagName === 'DIV') {
           contentHtml = extraImgElement.innerHTML;
         } else {
@@ -104,8 +100,14 @@ export default function ProductDisclosure({ product }: { product: Product }) {
                         </div>
                       </Disclosure.Button>
 
-                      <Disclosure.Panel className="flex justify-center pb-2 pt-4 text-sm text-gray-500">
-                        {item.contentHtml ? (
+                      <Disclosure.Panel
+                        className={`${
+                          index === 0 && item.contentHtml
+                            ? 'flex justify-center px-2 pb-2 '
+                            : 'flex justify-center px-2 pb-2 pt-4 text-sm text-gray-500'
+                        }`}
+                      >
+                        {item?.contentHtml ? (
                           <div dangerouslySetInnerHTML={{ __html: item.contentHtml }} />
                         ) : (
                           <Image

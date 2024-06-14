@@ -101,7 +101,7 @@ export default function ProductDetailsTabs({ product }: Props) {
   return (
     <div className="w-full px-2 sm:px-0">
       <Tab.Group>
-        <Tab.List className="flex justify-between gap-[1px] p-1 ">
+        <Tab.List className="flex justify-between p-1 ">
           {categories?.map((result) => (
             <Tab
               key={result.category}
