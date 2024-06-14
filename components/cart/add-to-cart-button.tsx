@@ -22,7 +22,7 @@ const ToastContent: React.FC = () => {
   const cart = useAppSelector((state) => state.cart.cart);
 
   return (
-    <div className="flex justify-between">
+    <div className=" flex justify-between">
       <div className="flex">
         <Image height={20} width={20} src="/Images/tick.svg" alt="" />
         <span className="ml-2 text-black">Product Added To Cart!</span>

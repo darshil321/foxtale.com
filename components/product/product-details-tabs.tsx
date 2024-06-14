@@ -148,7 +148,7 @@ export default function ProductDetailsTabs({ product }: Props) {
                     <div className="my-2 py-1 md:mb-3" key={idx}>
                       <h2 className="text-base font-semibold ">{text.title}</h2>
                       {text?.content?.map((paragraph: any, pIdx: any) => (
-                        <p className="space-y-1 text-sm text-[#58595b]" key={pIdx}>
+                        <p className="space-y-1 text-sm font-medium text-[#58595b]" key={pIdx}>
                           {paragraph}
                         </p>
                       ))}
