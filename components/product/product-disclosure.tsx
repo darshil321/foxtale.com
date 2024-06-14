@@ -67,7 +67,7 @@ export default function ProductDisclosure({ product }: { product: Product }) {
             All About Our {product.title}
           </h2>
           <div className="w-full pt-2">
-            <div className="mx-auto w-full gap-4 space-y-4 px-4  md:px-0">
+            <div className="mx-auto w-full gap-4 space-y-4">
               {disclosureItems?.map((item, index) => (
                 <Disclosure key={index}>
                   {({ open }) => (
