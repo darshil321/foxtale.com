@@ -118,7 +118,7 @@ export default function ProductDetailsTabs({ product }: Props) {
         </Tab.List>
         <Tab.Panels className="mt-2">
           {categories?.map((post, idx) => (
-            <Tab.Panel key={idx} className={classNames(' bg-white p-3')}>
+            <Tab.Panel key={idx} className={classNames(' bg-white')}>
               {post.contentType === 'image' ? (
                 <div className="h-full w-full">
                   <Image
