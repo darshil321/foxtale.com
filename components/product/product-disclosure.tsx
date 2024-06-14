@@ -108,7 +108,10 @@ export default function ProductDisclosure({ product }: { product: Product }) {
                         }`}
                       >
                         {item?.contentHtml ? (
-                          <div dangerouslySetInnerHTML={{ __html: item.contentHtml }} />
+                          <div
+                            className="max-w-[60%]"
+                            dangerouslySetInnerHTML={{ __html: item.contentHtml }}
+                          />
                         ) : (
                           <Image
                             src={item?.contentImage || item?.image || '/Images/defualt.png'}
