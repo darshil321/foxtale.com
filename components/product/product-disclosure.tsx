@@ -10,7 +10,7 @@ export default function ProductDisclosure({ product }: { product: Product }) {
   const filteredDataByKey = product?.metafields?.find((item: any) => item?.key === 'unique');
   console.log('product.title', product.title);
   const parser = new DOMParser();
-  console.log('filter', filteredDataByKey?.value);
+
   const htmlDocument = parser.parseFromString(filteredDataByKey?.value, 'text/html');
 
   const disclosureItems = [] as {
@@ -33,7 +33,15 @@ export default function ProductDisclosure({ product }: { product: Product }) {
       const image = imgElement?.getAttribute('src');
       const title = titleElement?.textContent?.trim() || null;
 
-      const extraImgElement = dropdownElement.querySelector('.dropdown-content-img');
+      const isDekImgSlideClass = dropdownElement
+        .querySelector('.dropdown-content-img')
+        ?.classList.contains('dek_img_slide');
+
+      const extraImgElement = isDekImgSlideClass
+        ? window.innerWidth > 500
+          ? dropdownElement.querySelector('.dek_img_slide')
+          : dropdownElement.querySelector('.mb_img_slide')
+        : dropdownElement.querySelector('.dropdown-content-img');
       let contentImage = null;
       let contentHtml = null;
 
@@ -51,6 +59,7 @@ export default function ProductDisclosure({ product }: { product: Product }) {
           console.log('dekImgSlideClass', dekImgSlideClass, 'mbImgSlideClass', mbImgSlideClass);
 
           if (dekImgSlideClass && imgElement) {
+            console.log('dropdownElement', dropdownElement);
             contentImage = imgElement.querySelector('img')?.getAttribute('src') || null;
           } else {
             contentImage = extraImgElement.getAttribute('src') || null;
@@ -61,8 +70,6 @@ export default function ProductDisclosure({ product }: { product: Product }) {
       disclosureItems?.push({ image, title, contentImage, contentHtml });
     }
   });
-
-  console.log('disclosureItems', disclosureItems);
 
   return (
     <>
