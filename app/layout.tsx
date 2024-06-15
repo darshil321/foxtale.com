@@ -75,7 +75,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       <body>
         {/* <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} /> */}
 
-        <GoogleTagManager gtmId="GTM-KP8TX5F4" />
+        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID as string} />
 
         <Provider>
           <ToastContainer
