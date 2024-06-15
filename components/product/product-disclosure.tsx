@@ -109,7 +109,7 @@ export default function ProductDisclosure({ product }: { product: Product }) {
                       >
                         {item?.contentHtml ? (
                           <div
-                            className="  md:max-w-[60%]"
+                            className="px-2   md:max-w-[60%]"
                             dangerouslySetInnerHTML={{ __html: item.contentHtml }}
                           />
                         ) : (
